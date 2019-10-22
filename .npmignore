@@ -1,0 +1,15 @@
+.DS_Store
+node_modules
+build
+.eslintignore
+.eslintrc.js
+tsconfig.json
+babel.config.js
+.gitignore
+yarn.lock
+_config.yml
+.nyc_output
+.travis.yml
+coverage
+.nycrc
+mocha.opts

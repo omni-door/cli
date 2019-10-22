@@ -1,0 +1,69 @@
+{
+  "name": "omni-door",
+  "version": "0.0.1",
+  "description": "A tool set for set up the standard JS project",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "nyc mocha --opts mocha.opts",
+    "lint": "eslint src/ --ext .ts --ext .tsx",
+    "lint:fix": "eslint src/ --ext .ts --ext .tsx --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BobbyLH/omni-door.git"
+  },
+  "keywords": [
+    "omni",
+    "omni-door"
+  ],
+  "author": "bobby.li",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BobbyLH/omni-door/issues"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run lint && npm run test",
+      "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{ts,tsx}": [
+      "npm run lint:fix",
+      "git add"
+    ]
+  },
+  "homepage": "https://github.com/BobbyLH/omni-door#readme",
+  "devDependencies": {
+    "@types/chai": "^4.2.3",
+    "@types/figlet": "^1.2.0",
+    "@types/fs-extra": "^8.0.1",
+    "@types/inquirer": "^6.5.0",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.11.1",
+    "@typescript-eslint/eslint-plugin": "^2.4.0",
+    "@typescript-eslint/parser": "^2.4.0",
+    "chai": "^4.2.0",
+    "commitlint": "^8.2.0",
+    "eslint": "^6.5.1",
+    "husky": "^3.0.9",
+    "lint-staged": "^9.4.2",
+    "mocha": "^6.2.2",
+    "nyc": "^14.1.1",
+    "ts-loader": "^6.2.0",
+    "ts-node": "^8.4.1",
+    "typescript": "^3.6.4"
+  },
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "clui": "^0.3.6",
+    "commander": "^3.0.2",
+    "del": "^5.1.0",
+    "figlet": "^1.2.4",
+    "fs-extra": "^8.1.0",
+    "inquirer": "^7.0.0",
+    "ora": "^4.0.2",
+    "shelljs": "^0.8.3"
+  }
+}
