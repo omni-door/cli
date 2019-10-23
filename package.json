@@ -2,11 +2,16 @@
   "name": "omni-door",
   "version": "0.0.1",
   "description": "A tool set for set up the standard JS project",
-  "main": "lib/index.js",
+  "bin": {
+    "omni": "./bin/omni-door.js"
+  },
   "scripts": {
     "test": "nyc mocha --opts mocha.opts",
     "lint": "eslint src/ --ext .ts --ext .tsx",
-    "lint:fix": "eslint src/ --ext .ts --ext .tsx --fix"
+    "lint:fix": "eslint src/ --ext .ts --ext .tsx --fix",
+    "build": "npm run build:rm && npm run build:tsc",
+    "build:rm": "rm -rf lib/*",
+    "build:tsc": "tsc --build"
   },
   "repository": {
     "type": "git",
@@ -42,6 +47,7 @@
     "@types/inquirer": "^6.5.0",
     "@types/mocha": "^5.2.7",
     "@types/node": "^12.11.1",
+    "@types/shelljs": "^0.8.5",
     "@typescript-eslint/eslint-plugin": "^2.4.0",
     "@typescript-eslint/parser": "^2.4.0",
     "chai": "^4.2.0",

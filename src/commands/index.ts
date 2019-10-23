@@ -19,5 +19,25 @@ program.version(version, '-v, --version');
 
 program
   .command('init')
-  .description('initialize your omni config')
+  .description('initialize your project')
   .action(initial);
+
+program
+  .command('new')
+  .description('omni new [name] [-t|--type]')
+  .action(initial);
+
+program
+  .command('build')
+  .description('build your project according to [omni.config.js]')
+  .action(initial);
+
+program
+  .command('release')
+  .description('publish your project according to [omni.config.js]')
+  .action(initial);
+
+program.parse(process.argv);
+if (!program.args[0]) {
+  program.help();
+}
