@@ -1,17 +1,18 @@
 
+import { NPM, CDN } from '../index.d';
 
-interface Config {
+export default (config: {
+  ts: boolean;
   test: boolean;
+  testFrame: string;
   eslint: boolean;
   commitlint: boolean;
   stylelint: boolean;
   git?: string;
-  npm: 'npm' | 'hnpm';
-  cdn: 'w1' | 'w4';
-}
-
-export default (config: Config) => {
-  const { test, eslint, commitlint, stylelint, git, npm, cdn } = config;
+  npm: NPM | string;
+  cdn: CDN | string;
+}) => {
+  const { ts, test, testFrame, eslint, commitlint, stylelint, git, npm, cdn } = config;
 
   const npmMap = {
     npm: 'https://registry.npmjs.org/',
@@ -25,6 +26,8 @@ export default (config: Config) => {
   };
 
   return `
+'use strict';
+
 const path = require('path');
 
 module.exports = {
@@ -38,26 +41,32 @@ module.exports = {
     commitlint: ${commitlint},
     // whether or not process style lint check
     stylelint: ${stylelint},
-    // whether or not auto release after build
-    autoRelease: false
+    // the root directory for compiled project
+    root: path.resolve('lib'),
+    // es6 module compiled directory
+    esmRoot: path.resolve('es')
   },
 
   // project release address config
   release: {
     // project git url
-    git: '${git || 'your git repo url'}',
+    git: '${git}',
     // npm depository url
-    npm: '${npmMap[npm] || npm}',
+    npm: '${npmMap[npm as NPM] || npm}',
     // cdn url
-    cdn: '${cdnMap[cdn] || cdn}',
-    // version iterate strategy
-    version: 'auto'
+    cdn: '${cdnMap[cdn as CDN] || cdn}'
   },
 
   // new template config
   template: {
     // the root directory for generate template
-    root: path.resolve('src/components')
+    root: path.resolve('src'),
+    // the unit test frame
+    test: '${testFrame}',
+    // whether or not apply typescript
+    typescript: ${ts},
+    // whether or not README.md
+    readme: true
   }
 };
   `;

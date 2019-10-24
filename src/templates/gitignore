@@ -1,9 +1,12 @@
+.idea
 .DS_Store
-node_modules
-.nyc_output
-coverage
-lib
+*~
+~*
 
-omni.config.js
+node_modules
+lib
+es
+
 package-lock.json
+
 *.log

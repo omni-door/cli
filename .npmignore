@@ -5,6 +5,7 @@ build
 .eslintrc.js
 tsconfig.json
 babel.config.js
+omni.config.js
 .gitignore
 yarn.lock
 _config.yml

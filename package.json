@@ -42,6 +42,7 @@
   "homepage": "https://github.com/BobbyLH/omni-door#readme",
   "devDependencies": {
     "@types/chai": "^4.2.3",
+    "@types/clui": "^0.3.0",
     "@types/figlet": "^1.2.0",
     "@types/fs-extra": "^8.0.1",
     "@types/inquirer": "^6.5.0",

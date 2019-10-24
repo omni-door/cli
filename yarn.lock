@@ -256,6 +256,18 @@
   resolved "http://hnpm.hupu.io/@types%2fchai/-/chai-4.2.3.tgz#419477a3d5202bad19e14c787940a61dc9ea6407"
   integrity sha512-VRw2xEGbll3ZiTQ4J02/hUjNqZoue1bMhoo2dgM2LXjDdyaq4q80HgBDHwpI0/VKlo4Eg+BavyQMv/NYgTetzA==
 
+"@types/cli-color@*":
+  version "0.3.29"
+  resolved "https://registry.yarnpkg.com/@types/cli-color/-/cli-color-0.3.29.tgz#c83a71fe02c8c7e1ccec048dd6a2458d1f6c96ea"
+  integrity sha1-yDpx/gLIx+HM7ASN1qJFjR9sluo=
+
+"@types/clui@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@types/clui/-/clui-0.3.0.tgz#a7512770d50c06b403e018c46f850a0064e53c74"
+  integrity sha512-4GM6iuKwOs4Lq2qUWbxw8LMiamh6YXEuPq4uKeYd7SfFWNK1sNsw41M9GjIhwbIRBOaVgxkutZLLdfZwSNDwtg==
+  dependencies:
+    "@types/cli-color" "*"
+
 "@types/eslint-visitor-keys@^1.0.0":
   version "1.0.0"
   resolved "http://hnpm.hupu.io/@types%2feslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#1ee30d79544ca84d68d4b3cdb0af4f205663dd2d"

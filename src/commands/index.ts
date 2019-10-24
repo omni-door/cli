@@ -1,10 +1,13 @@
 import program from 'commander';
 import fs from 'fs';
 import path from 'path';
-// const build = require('./build');
+import chalk from 'chalk';
 import initial from './initial';
-// const release = require('./release');
-// const template = require('./template');
+// import new from './new';
+// import build from './build';
+// import release from './release';
+// import test from './test';
+// import lint from './lint';
 
 let config = {};
 if (fs.existsSync(path.resolve('omni.config.js'))) {
@@ -19,25 +22,47 @@ program.version(version, '-v, --version');
 
 program
   .command('init')
+  .option('-y', 'create default project')
   .description('initialize your project')
   .action(initial);
 
 program
-  .command('new')
-  .description('omni new [name] [-t|--type]')
+  .command('new [module]')
+  .option('-fc, --sfc', 'create functional component')
+  .option('-b, --business', 'create business module')
+  .description('omni new [module] [-fc | -b]')
   .action(initial);
 
 program
   .command('build')
+  .option('-m, --mode <es|lib|umd>', 'build pattern')
   .description('build your project according to [omni.config.js]')
   .action(initial);
 
 program
   .command('release')
+  .option('-i, --ignore', 'ignore automatic iteration version')
+  .option('-m, --manual <version>', 'manual iteration version')
   .description('publish your project according to [omni.config.js]')
+  .action(initial);
+
+program
+  .command('test')
+  .option('--snapshot', 'update test snapshot')
+  .description('test your project by unit test frame')
+  .action(initial);
+
+program
+  .command('lint')
+  .option('--commit', 'commitlint check')
+  .option('--style', 'stylelint check')
+  .option('--fix', 'eslint and stylelint fix')
+  .description('check your project by lint-tools')
   .action(initial);
 
 program.parse(process.argv);
 if (!program.args[0]) {
   program.help();
+} else if (program.debug) {
+  console.info(chalk.red(JSON.stringify(program.opts())));
 }
