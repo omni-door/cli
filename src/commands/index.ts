@@ -8,7 +8,7 @@ import initial from './initial';
 // import release from './release';
 // import test from './test';
 // import lint from './lint';
-import pkj from '../../package.json';
+const pkj = require('../../package.json');
 
 let config = {};
 if (fs.existsSync(path.resolve('omni.config.js'))) {
