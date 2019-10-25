@@ -15,7 +15,7 @@ module.exports = {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        include: path.resolve(__dirname, "..", "src/components/"),
+        include: path.resolve(__dirname, "..", "src/"),
         exclude: /node_modules/,
         use: [
           {loader: 'babel-loader'}
@@ -34,26 +34,24 @@ module.exports = {
       {
         test: /\.css$/,
         use:  ['style-loader', 'css-loader'],
-        exclude: /node_modules(?!\/@storybook\/addon-info)/
+        include: path.resolve(__dirname, "..", "src/")
       },
       {
         test: /\.less$/,
         use: ['style-loader', 'css-loader', 'less-loader'],
-        include: path.resolve(__dirname, "..", "src/components/"),
+        include: path.resolve(__dirname, "..", "src/")
       },
       {
         test: /\.scss$/,
         use: ['style-loader', 'css-loader', 'sass-loader'],
-        include: path.resolve(__dirname, "..", "src/components/"),
+        include: path.resolve(__dirname, "..", "src/")
       }
     ],
   },
-  plugins: [
-    // your custom plugins
-  ],
+  plugins: [],
   mode: 'production',
   resolve: {
-    extensions: [${ts ? '".ts", ".tsx", ' : ''}".js", ".jsx", ".scss", ".less", ".css"]
+    extensions: [${ts ? `".ts", ".tsx", ` : ''}".js", ".jsx", ".scss", ".less", ".css"]
   }
 };
 `;
