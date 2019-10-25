@@ -15,7 +15,7 @@ export default (config: {
     "start": "bisheng start",
     "dev": "bisheng start",
     "test": "omni test",
-    "test:snapshot": "omni test --snapshot"
+    "test:snapshot": "omni test --snapshot",
     "lint": "omni lint",
     "lint:commit": "omni lint --commit",
     "lint:fix": "omni lint --fix",

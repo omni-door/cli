@@ -22,13 +22,17 @@ program.version(version, '-v, --version');
 
 program
   .command('init')
-  .option('-y', 'create default project')
+  .option('-s --simple', 'create a simple project')
+  .option('-t --standard', 'create a standard project')
+  .option('-e --entire', 'create a most versatile project')
+  .option('-u --utils', 'create a utils library')
+  .option('-c --components', 'create a component library')
   .description('initialize your project')
   .action(initial);
 
 program
   .command('new [module]')
-  .option('-fc, --sfc', 'create functional component')
+  .option('-f, --sfc', 'create functional component')
   .option('-b, --business', 'create business module')
   .description('omni new [module] [-fc | -b]')
   .action(initial);
@@ -63,6 +67,4 @@ program
 program.parse(process.argv);
 if (!program.args[0]) {
   program.help();
-} else if (program.debug) {
-  console.info(chalk.red(JSON.stringify(program.opts())));
 }
