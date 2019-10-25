@@ -3,8 +3,7 @@ export default (config: {
 }) => {
   const { name } = config;
 
-  return `
-{
+  return `{
   "name": "${name}",
   "version": "0.0.1",
   "description": "",

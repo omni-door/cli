@@ -1,4 +1,5 @@
-.idea
+export default function () {
+  return `.idea
 .DS_Store
 *~
 ~*
@@ -33,3 +34,5 @@ package-lock.json
 # log files
 *.log
 *.log.*
+`;
+}

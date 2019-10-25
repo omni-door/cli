@@ -3,8 +3,7 @@ export default function (config: {
 }) {
   const { ts } = config;
 
-  return `
-'use strict';
+  return `'use strict';
 
 module.exports = function () {
   const presets = ['@babel/preset-env', '@babel/preset-react', '${ts ? '@babel/preset-typescript' : ''}']

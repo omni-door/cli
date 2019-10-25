@@ -46,11 +46,13 @@ export function devDependencies (config: Config) {
     ...babelDependencies
   ] : build === 'rollup' ? [
     'rollup',
+    'rollup-plugin-node-resolve',
     'rollup-plugin-babel',
     'rollup-plugin-commonjs',
     'rollup-plugin-node-resolve',
     'rollup-plugin-uglify',
     ts ? 'rollup-plugin-typescript' : '',
+    ts ? 'rollup-plugin-typescript2' : '',
     ...babelDependencies
   ] : [];
 
@@ -98,6 +100,7 @@ export function devDependencies (config: Config) {
   return [
     'bisheng',
     'omni-door',
+    'del',
     ...buildDependencies,
     ...tsDependencies,
     ...testDependencies,

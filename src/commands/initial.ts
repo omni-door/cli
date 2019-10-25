@@ -14,6 +14,11 @@ import commitlintConfigJs from '../templates/commitlint';
 import babelConfigJs from '../templates/babel';
 import bishengConfigJs from '../templates/bisheng';
 import tsConfigJson from '../templates/tsconfig';
+import eslintignore from '../templates/eslintignore';
+import gitignore from '../templates/gitignore';
+import npmignore from '../templates/npmignore';
+import webpackConfigJs from '../templates/build/webpack';
+import rollupConfigJs from '../templates/build/rollup';
 import { dependencies, devDependencies } from './dependecies';
 import templates from '../configs/initial_tpls';
 import installClis from '../configs/initial_clis';
@@ -89,6 +94,11 @@ export default function ({
     const content_commitlint = commitlint && commitlintConfigJs({ name });
     const content_babel = build && build !== 'tsc' && babelConfigJs({ ts });
     const content_ts = ts && tsConfigJson();
+    const content_eslint = eslint && eslintignore();
+    const content_gitignore = gitignore();
+    const content_npmignore = npmignore();
+    const content_webpack = build && build === 'webpack' && webpackConfigJs({ ts });
+    const content_rollup = build && build === 'rollup' && rollupConfigJs({ ts });
 
     fsExtra.outputFileSync(targetFilePath, content_omni, 'utf8');
 
@@ -103,6 +113,16 @@ export default function ({
     content_babel && fsExtra.outputFileSync(path.resolve('bable.config.js'), content_babel, 'utf8');
 
     content_ts && fsExtra.outputFileSync(path.resolve('tsconfig.json'), content_ts, 'utf8');
+
+    content_eslint && fsExtra.outputFileSync(path.resolve('.eslintignore'), content_eslint, 'utf8');
+
+    fsExtra.outputFileSync(path.resolve('.gitignore'), content_gitignore, 'utf8');
+
+    fsExtra.outputFileSync(path.resolve('.npmignore'), content_npmignore, 'utf8');
+
+    content_webpack && fsExtra.outputFileSync(path.resolve('build/webpack.config.js'), content_webpack, 'utf8');
+
+    content_rollup && fsExtra.outputFileSync(path.resolve('build/rollup.config.js'), content_rollup, 'utf8');
   }
 
   function generateInstallDenpendencies ({

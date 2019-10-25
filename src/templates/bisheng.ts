@@ -1,6 +1,5 @@
 export default function () {
-  return `
-'use strict';
+  return `'use strict';
 
 const path = require('path');
 

@@ -1,6 +1,5 @@
 export default function () {
-  return `
-'use strict';
+  return `'use strict';
 
 module.exports = {
 	extends: [

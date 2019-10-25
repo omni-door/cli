@@ -25,8 +25,7 @@ export default (config: {
     w11: 'https://w11.hoopchina.com.cn/'
   };
 
-  return `
-'use strict';
+  return `'use strict';
 
 const path = require('path');
 

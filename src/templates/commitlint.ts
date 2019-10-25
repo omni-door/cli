@@ -3,8 +3,7 @@ export default function (config: {
 }) {
   const { name } = config;
 
-  return `
-'use strict';
+  return `'use strict';
 
 const Configuration = {
   formatter: '@commitlint/format',
