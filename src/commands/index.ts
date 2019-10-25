@@ -8,17 +8,14 @@ import initial from './initial';
 // import release from './release';
 // import test from './test';
 // import lint from './lint';
+import pkj from '../../package.json';
 
 let config = {};
 if (fs.existsSync(path.resolve('omni.config.js'))) {
   config = require(path.resolve('omni.config.js'));
 }
 
-const pkg = fs.readFileSync(path.resolve('package.json'), 'utf-8');
-const vmatch = pkg.match(/version.*(\d+).(\d+).(\d+)/);
-const version = vmatch ? `${vmatch[1]}.${vmatch[2]}.${vmatch[3]}` : 'unknown';
-
-program.version(version, '-v, --version');
+program.version(pkj.version, '-v, --version');
 
 program
   .command('init')

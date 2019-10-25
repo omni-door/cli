@@ -136,6 +136,7 @@ export default function ({
    * todo 2. jest --init
    * todo 3. webpack config
    * todo 4. rollup config
+   * todo 5. karma config
    */
   function generateFiglet (fn: () => any) {
     return figlet('omni cli', function (err, data) {
@@ -224,7 +225,7 @@ export default function ({
       },{
         name: 'test',
         type: 'rawlist',
-        choices: [ 'mocha', 'jest', 'no thanks' ],
+        choices: [ 'mocha', 'jest', 'karma', 'no thanks' ],
         message: '应用那种单测框架? (which unit test frame would you like apllying?)',
       },{
         name: 'build',
