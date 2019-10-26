@@ -51,6 +51,21 @@ export type GInstallCli = {
   stylelint: boolean;
 };
 
+const spinner = ora('[OMNI-DOOR] Initialize');
+const bar = new ProgressBar(' [:bar] :percent :elapsed', { 
+  complete: '=',
+  incomplete: ' ',
+  width: 50,
+  total: 100
+});
+
+function forwardBar () {
+  bar.tick(1);
+  if (bar.curr < 98) {
+    setTimeout(forwardBar, 200);
+  }
+}
+
 export default function ({
   simple,
   standard,
@@ -64,20 +79,6 @@ export default function ({
   utils?: boolean;
   components?: boolean;
 }) {
-  const spinner = ora('[OMNI-DOOR] Initialize').start();
-  const bar = new ProgressBar(' [:bar] :percent :elapsed', { 
-    complete: '=',
-    incomplete: ' ',
-    width: 50,
-    total: 100
-  });
-  function forward () {
-    bar.tick(1);
-    if (bar.curr < 98) {
-      setTimeout(forward, 200);
-    }
-  }
-
   const { name: defaultName } = parse(process.cwd());
   const omniConfigPath = path.resolve('omni.config.js');
 
@@ -179,6 +180,7 @@ export default function ({
    * todo 4. rollup config stylesheet
    * todo 5. karma config
    */
+
   function generateFiglet (fn: (done: () => void) => any) {
     function done () {
       spinner.succeed();
@@ -200,17 +202,17 @@ export default function ({
   async function execShell (clis: string[], done?: () => void) {
     for (let i = 0; i < clis.length; i++) {
       const cli = clis[i];
+      logInfo('execShell: ' + i);
       try {
         await new Promise((resolve, reject) => {
           shelljs.exec(cli, {
             async: true
           }, function (code, stdout, stderr) {
-            logInfo('Exit code: ' + code);
-            logInfo('output: ' + stdout);
-            logErr('stderr: ' + stderr);
             resolve(stdout);
           });
-        }).then(res => res);
+        })
+          .then(res => logInfo('shelljs.exec ' +  res))
+          .catch(err => logErr('shelljs.exec ' + err));
       } catch (err) {
         spinner.warn();
         logErr(JSON.stringify(err));
@@ -221,6 +223,10 @@ export default function ({
   }
 
   if (simple || standard || entire || utils || components) {
+    // loading and progress bar start display
+    spinner.start();
+    forwardBar();
+
     let cli, tpl;
     if (simple) {
       cli = installClis.cli_simple;
@@ -377,6 +383,10 @@ export default function ({
 
         const testFrame: TESTFRAME = test === 'none' ? '' : test;
         const stylesheet = style === 'none' ? '' : style;
+
+        // loading and progress bar start display
+        spinner.start();
+        forwardBar();
 
         generateTpls({
           name,

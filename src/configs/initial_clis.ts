@@ -12,7 +12,7 @@ export const cli_simple: GInstallCli = {
 };
 
 export const cli_standard: GInstallCli = {
-  pkgtool: 'npm',
+  pkgtool: 'yarn',
   build: 'webpack',
   ts: true,
   testFrame: '',
@@ -23,7 +23,7 @@ export const cli_standard: GInstallCli = {
 };
 
 export const cli_entire: GInstallCli = {
-  pkgtool: 'npm',
+  pkgtool: 'yarn',
   build: 'webpack',
   ts: true,
   testFrame: '',
@@ -34,7 +34,7 @@ export const cli_entire: GInstallCli = {
 };
 
 export const cli_lib_utils: GInstallCli = {
-  pkgtool: 'npm',
+  pkgtool: 'yarn',
   build: 'rollup',
   ts: true,
   testFrame: 'mocha',
@@ -45,7 +45,7 @@ export const cli_lib_utils: GInstallCli = {
 };
 
 export const cli_lib_components: GInstallCli = {
-  pkgtool: 'npm',
+  pkgtool: 'yarn',
   build: 'tsc',
   ts: true,
   testFrame: 'jest',
