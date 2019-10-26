@@ -33,6 +33,5 @@ package-lock.json
 
 # log files
 *.log
-*.log.*
-`;
+*.log.*`;
 }

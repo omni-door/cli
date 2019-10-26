@@ -14,7 +14,6 @@ module.exports = function () {
     presets,
     plugins
   }
-};
-`;
+};`;
 }
 

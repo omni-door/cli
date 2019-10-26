@@ -16,7 +16,6 @@ module.exports = {
 		"no-descending-specificity": null,
 		"plugin/declaration-block-no-ignored-properties": true
 	}
-};
-`;
+};`;
 }
 

@@ -44,6 +44,5 @@ const Configuration = {
   defaultIgnores: true
 };
 
-module.exports = Configuration;
-`;
+module.exports = Configuration;`;
 }

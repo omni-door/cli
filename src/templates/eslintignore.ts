@@ -9,7 +9,6 @@ babel.config.js
 commitlint.config.js
 jest.config.js
 stylelint.config.js
-karma.conf.js;
-`;
+karma.conf.js;`;
 }
 

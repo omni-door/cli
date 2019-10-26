@@ -70,6 +70,5 @@ module.exports = {
     // whether or not README.md
     readme: true
   }
-};
-  `;
+};`;
 };

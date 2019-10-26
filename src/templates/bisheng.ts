@@ -8,7 +8,6 @@ module.exports = {
   output: path.resolve('.site'),
   theme: path.resolve('.theme'),
   port: 6200,
-};
-`;
+};`;
 }
 

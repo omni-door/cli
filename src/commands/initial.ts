@@ -6,13 +6,15 @@ import figlet from 'figlet';
 import inquirer from 'inquirer';
 import shelljs from 'shelljs';
 import ora from 'ora';
-import ProgressBar from 'progress';
 import omniConfigJs from '../templates/omni';
 import packageJson from '../templates/package';
 import stylelintConfigJs from '../templates/stylelint';
 import commitlintConfigJs from '../templates/commitlint';
 import babelConfigJs from '../templates/babel';
 import bishengConfigJs from '../templates/bisheng';
+import mochaOpts from '../templates/mocha';
+import karmaConfigJs from '../templates/karma';
+import jestConfigJs from '../templates/jest';
 import tsConfigJson from '../templates/tsconfig';
 import eslintignore from '../templates/eslintignore';
 import gitignore from '../templates/gitignore';
@@ -23,7 +25,7 @@ import { dependencies, devDependencies } from '../configs/dependecies';
 import templates from '../configs/initial_tpls';
 import installClis from '../configs/initial_clis';
 import { BUILD, NPM, CDN, TESTFRAME, PKJTOOL, STYLE } from '../index.d';
-import { logErr, logInfo, logSuc } from '../utils/logger';
+import { logErr, logInfo } from '../utils/logger';
 
 export type GTpls = {
   name: string;
@@ -52,19 +54,6 @@ export type GInstallCli = {
 };
 
 const spinner = ora('[OMNI-DOOR] Initialize in processing, please wait patiently\n');
-const bar = new ProgressBar(' [:bar] :percent :elapsed', { 
-  complete: '=',
-  incomplete: ' ',
-  width: 50,
-  total: 100
-});
-
-function forwardBar () {
-  bar.tick(1);
-  if (bar.curr < 98) {
-    setTimeout(forwardBar, 500);
-  }
-}
 
 export default function ({
   simple,
@@ -110,6 +99,9 @@ export default function ({
     });
     const content_pkg = packageJson({ name });
     const content_bisheng = bishengConfigJs();
+    const content_mocha = testFrame === 'mocha' && mochaOpts({ ts });
+    const content_karma = testFrame === 'karma' && karmaConfigJs({ ts });
+    const content_jest = testFrame === 'jest' && jestConfigJs({ ts });
     const content_stylelint = stylelint && stylelintConfigJs();
     const content_commitlint = commitlint && commitlintConfigJs({ name });
     const content_babel = build && build !== 'tsc' && babelConfigJs({ ts });
@@ -125,6 +117,12 @@ export default function ({
     fsExtra.outputFileSync(path.resolve('package.json'), content_pkg, 'utf8');
 
     fsExtra.outputFileSync(path.resolve('bisheng.config.js'), content_bisheng, 'utf8');
+
+    content_mocha && fsExtra.outputFileSync(path.resolve('mocha.opts'), content_mocha, 'utf8');
+
+    content_karma && fsExtra.outputFileSync(path.resolve('karma.conf.js'), content_karma, 'utf8');
+
+    content_jest && fsExtra.outputFileSync(path.resolve('jest.conf.js'), content_jest, 'utf8');
 
     content_stylelint && fsExtra.outputFileSync(path.resolve('stylelint.config.js'), content_stylelint, 'utf8');
 
@@ -178,13 +176,11 @@ export default function ({
    * todo 2. jest --init
    * todo 3. gulp config
    * todo 4. rollup config stylesheet
-   * todo 5. karma config
    */
 
   function generateFiglet (fn: (done: () => void) => any) {
     function done () {
       spinner.succeed(chalk.green('Initialize project success \n'));
-      if (!bar.complete) bar.update(1);
       process.exit(0);
     }
 
@@ -222,9 +218,8 @@ export default function ({
   }
 
   if (simple || standard || entire || utils || components) {
-    // loading and progress bar start display
+    // loading start display
     spinner.start();
-    forwardBar();
 
     let cli, tpl;
     if (simple) {
@@ -383,9 +378,8 @@ export default function ({
         const testFrame: TESTFRAME = test === 'none' ? '' : test;
         const stylesheet = style === 'none' ? '' : style;
 
-        // loading and progress bar start display
+        // loading start display
         spinner.start();
-        forwardBar();
 
         generateTpls({
           name,

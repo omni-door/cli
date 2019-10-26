@@ -38,7 +38,6 @@ export default (config: {
   "keywords": [],
   "author": "",
   "license": "ISC"
-}
-`;
+}`;
 };
 

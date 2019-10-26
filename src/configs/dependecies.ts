@@ -75,15 +75,35 @@ export function devDependencies (config: Config) {
     ] : []
   ] : [];
 
-  const testDependencies = testFrame ? testFrame === 'jest' ? [
-    'enzyme',
-    'enzyme-adapter-react-16',
-    'jest'
-  ] : [
-    'chai',
-    'mocha',
-    'nyc'
-  ] : [];
+  const testDependencies = testFrame
+    ? testFrame === 'jest'
+      ? [
+        'enzyme',
+        'enzyme-adapter-react-16',
+        'jest'
+      ]
+      : testFrame === 'karma'
+        ? [
+          'chai',
+          'mocha',
+          'nyc',
+          'karma',
+          'karma-chrome-launcher',
+          'karma-firefox-launcher',
+          'karma-coverage',
+          'karma-firefox-launcher',
+          'karma-mocha',
+          'karma-opera-launcher',
+          'karma-safari-launcher',
+          'karma-typescript',
+          'karma-webpack'
+        ]
+        : [
+          'chai',
+          'mocha',
+          'nyc'
+        ]
+    : [];
 
   const eslintDependencies = eslint ? [
     'eslint'

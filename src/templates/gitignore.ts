@@ -10,8 +10,7 @@ es
 
 package-lock.json
 
-*.log
-`;
+*.log`;
 }
 
 
