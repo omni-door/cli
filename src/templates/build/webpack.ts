@@ -1,7 +1,10 @@
+import { STYLE } from '../../index.d';
+
 export default function (config: {
   ts: boolean;
+  style: STYLE;
 }) {
-  const { ts } = config;
+  const { ts, style } = config;
 
   return `const path = require('path')
 
@@ -31,7 +34,12 @@ module.exports = {
           }
         ]
       },` : ''}
-      {
+      ${style ? (style === 'css' ? `{
+        test: /\.css$/,
+        use:  ['style-loader', 'css-loader'],
+        include: path.resolve(__dirname, "..", "src/")
+      }
+      ` : style === 'less' ? `{
         test: /\.css$/,
         use:  ['style-loader', 'css-loader'],
         include: path.resolve(__dirname, "..", "src/")
@@ -40,18 +48,22 @@ module.exports = {
         test: /\.less$/,
         use: ['style-loader', 'css-loader', 'less-loader'],
         include: path.resolve(__dirname, "..", "src/")
+      }` : `{
+        test: /\.css$/,
+        use:  ['style-loader', 'css-loader'],
+        include: path.resolve(__dirname, "..", "src/")
       },
       {
         test: /\.scss$/,
         use: ['style-loader', 'css-loader', 'sass-loader'],
         include: path.resolve(__dirname, "..", "src/")
-      }
+      }`) : ''}
     ],
   },
   plugins: [],
   mode: 'production',
   resolve: {
-    extensions: [${ts ? `".ts", ".tsx", ` : ''}".js", ".jsx", ".scss", ".less", ".css"]
+    extensions: [${ts ? '".ts", ".tsx", ' : ''}".js", ".jsx", ${style ? (style === 'css' ? '".css"' : (style === 'less' ? '".less", ".css"' : '".scss", ".css"')) : ''}]
   }
 };
 `;

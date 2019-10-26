@@ -1,4 +1,4 @@
-import { BUILD, TESTFRAME } from '../index.d';
+import { BUILD, TESTFRAME, STYLE } from '../index.d';
 
 interface Config {
   build: BUILD;
@@ -6,6 +6,7 @@ interface Config {
   testFrame: TESTFRAME | '';
   eslint: boolean;
   commitlint: boolean;
+  style: STYLE;
   stylelint: boolean;
 }
 
@@ -23,17 +24,18 @@ export function devDependencies (config: Config) {
     testFrame,
     eslint,
     commitlint,
+    style,
     stylelint
   } = config;
 
   const babelDependencies = [
     'babel-loader',
-    'style-loader',
-    'css-loader',
-    'less',
-    'less-loader',
-    'sass-loader',
-    'node-sass',
+    style ? 'style-loader' : '',
+    style ? 'css-loader' : '',
+    style === 'less' ? 'less' : '',
+    style === 'less' ? 'less-loader' : '',
+    style === 'scss' ? 'sass-loader' : '',
+    style === 'scss' ? 'node-sass' : '',
     '@babel/core',
     '@babel/preset-env',
     '@babel/preset-react',

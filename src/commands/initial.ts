@@ -1,5 +1,3 @@
-import { tpl_entire } from './../configs/initial_tpls';
-import { cli_entire } from './../configs/initial_clis';
 import path, { parse } from 'path';
 import fs from 'fs';
 import fsExtra from 'fs-extra';
@@ -19,10 +17,10 @@ import gitignore from '../templates/gitignore';
 import npmignore from '../templates/npmignore';
 import webpackConfigJs from '../templates/build/webpack';
 import rollupConfigJs from '../templates/build/rollup';
-import { dependencies, devDependencies } from './dependecies';
+import { dependencies, devDependencies } from '../configs/dependecies';
 import templates from '../configs/initial_tpls';
 import installClis from '../configs/initial_clis';
-import { BUILD, NPM, CDN, TESTFRAME, PKJTOOL } from '../index.d';
+import { BUILD, NPM, CDN, TESTFRAME, PKJTOOL, STYLE } from '../index.d';
 
 export type GTpls = {
   name: string;
@@ -32,6 +30,7 @@ export type GTpls = {
   testFrame: TESTFRAME | '';
   eslint: boolean;
   commitlint: boolean;
+  style: STYLE;
   stylelint: boolean;
   git: string;
   npm: NPM | '';
@@ -45,6 +44,7 @@ export type GInstallCli = {
   testFrame: TESTFRAME | '';
   eslint: boolean;
   commitlint: boolean;
+  style: STYLE;
   stylelint: boolean;
 };
 
@@ -62,7 +62,7 @@ export default function ({
   components?: boolean;
 }) {
   const { name: defaultName } = parse(process.cwd());
-  const targetFilePath = path.resolve('omni.config.js');
+  const omniConfigPath = path.resolve('omni.config.js');
 
   function generateTpls ({
     name,
@@ -72,6 +72,7 @@ export default function ({
     testFrame,
     eslint,
     commitlint,
+    style,
     stylelint,
     git,
     npm,
@@ -83,6 +84,7 @@ export default function ({
       testFrame,
       eslint,
       commitlint,
+      style,
       stylelint,
       git,
       npm,
@@ -97,10 +99,10 @@ export default function ({
     const content_eslint = eslint && eslintignore();
     const content_gitignore = gitignore();
     const content_npmignore = npmignore();
-    const content_webpack = build && build === 'webpack' && webpackConfigJs({ ts });
+    const content_webpack = build && build === 'webpack' && webpackConfigJs({ ts, style });
     const content_rollup = build && build === 'rollup' && rollupConfigJs({ ts });
 
-    fsExtra.outputFileSync(targetFilePath, content_omni, 'utf8');
+    fsExtra.outputFileSync(omniConfigPath, content_omni, 'utf8');
 
     fsExtra.outputFileSync(path.resolve('package.json'), content_pkg, 'utf8');
 
@@ -131,87 +133,90 @@ export default function ({
     ts,
     eslint,
     commitlint,
+    style,
     stylelint,
     testFrame
   }: GInstallCli) {
     const installCliPrefix = pkgtool === 'yarn' ? `${pkgtool} add` : `${pkgtool} install --save`;
     const installCli = `${installCliPrefix} ${dependencies().join(' ')}`;
-    const installCliDevPrefix = pkgtool === 'yarn' ? `${pkgtool} add -D` : `${pkgtool} install --save-dev`;
-    const installCliDev = `${installCliDevPrefix} ${devDependencies({
+    const installDevCliPrefix = pkgtool === 'yarn' ? `${pkgtool} add -D` : `${pkgtool} install --save-dev`;
+    const installDevCli = `${installDevCliPrefix} ${devDependencies({
       build,
       ts,
       eslint,
       commitlint,
+      style,
       stylelint,
       testFrame
     }).join(' ')}`;
 
     return {
       installCli,
-      installCliDev
+      installDevCli
     };
   }
   /**
    * todo 1. eslint --init
    * todo 2. jest --init
-   * todo 3. webpack config
-   * todo 4. rollup config
+   * todo 3. gulp config
+   * todo 4. rollup config stylesheet
    * todo 5. karma config
    */
-  function generateFiglet (fn: () => any) {
+  function generateFiglet (fn: (done: () => void) => any) {
+    function done () {
+      console.info(chalk.green('[omni-door]: Initialize project success \n'));
+      process.exit(0);
+    }
+
     return figlet('omni cli', function (err, data) {
       if (err) {
         console.error(chalk.red('Some thing about figlet is wrong!'));
       }
       console.info(chalk.yellow(data || 'OMNI CLI'));
-      fn();
-      console.info(chalk.green('Initialize project success \n'));
-      process.exit(0);
+      fn(done);
     });
   }
 
-  async function execShell (clis: string[]) {
+  async function execShell (clis: string[], done?: () => void) {
     for (let i = 0; i < clis.length; i++) {
       const cli = clis[i];
       await new Promise((resolve, reject) => {
         shelljs.exec(cli, {
           async: true
         }, function (code, stdout, stderr) {
-          console.info('Exit code:', code);
-          console.info('Program output:', stdout);
-          console.info('Program stderr:', stderr);
+          console.info(chalk.white('[omni-door] Exit code:', '' + code));
+          console.info(chalk.yellow('[omni-door] output:', stdout));
+          console.info(chalk.red('[omni-door] stderr:', stderr));
           resolve();
         });
       });
     }
+    done && done();
   }
+
+  let cli, tpl;
 
   if (simple || standard || entire || utils || components) {
     if (simple) {
-      const { installCli, installCliDev } = generateInstallDenpendencies(installClis.cli_simple);
-      generateTpls(Object.assign(templates.tpl_simple, { name: defaultName }));
-      generateFiglet(() => execShell([installCli, installCliDev]));
+      cli = installClis.cli_simple;
+      tpl = templates.tpl_simple;
     } else if (standard) {
-      const { installCli, installCliDev } = generateInstallDenpendencies(installClis.cli_standard);
-      generateTpls(Object.assign(templates.tpl_standard, { name: defaultName }));
-      generateFiglet(() => execShell([installCli, installCliDev]));
+      cli = installClis.cli_standard;
+      tpl = templates.tpl_standard;
     } else if (entire) {
-      const { installCli, installCliDev } = generateInstallDenpendencies(installClis.cli_entire);
-      generateTpls(Object.assign(templates.tpl_entire, { name: defaultName }));
-      generateFiglet(() => execShell([installCli, installCliDev]));
+      cli = installClis.cli_entire;
+      tpl = templates.tpl_entire;
     } else if (utils) {
-      const { installCli, installCliDev } = generateInstallDenpendencies(installClis.cli_lib_utils);
-      generateTpls(Object.assign(templates.tpl_lib_utils, { name: defaultName }));
-      generateFiglet(() => execShell([installCli, installCliDev]));
+      cli = installClis.cli_lib_utils;
+      tpl = templates.tpl_lib_utils;
     } else if (components) {
-      const { installCli, installCliDev } = generateInstallDenpendencies(installClis.cli_lib_components);
-      generateTpls(Object.assign(templates.tpl_lib_components, { name: defaultName }));
-      generateFiglet(() => execShell([installCli, installCliDev]));
+      cli = installClis.cli_lib_components;
+      tpl = templates.tpl_lib_components;
     }
   } else {
     const questions = [
       {
-        name: 'confirm',
+        name: 'overwrite',
         type: 'confirm',
         message: '确定要覆盖已经存在的 [omni.config.js] 文件? (Are you sure to overwrite [omni.config.js]?)',
         default: false
@@ -220,7 +225,7 @@ export default function ({
         type: 'input',
         message: '请输入项目名称 (please enter your project name)',
         when: function (answer: any) {
-          if (answer.confirm === false) {
+          if (answer.overwrite === false) {
             return process.exit(0);
           }
           return true;
@@ -239,18 +244,30 @@ export default function ({
         type: 'confirm',
         message: '是否使用commitlint? (whether or not apply commitlint?)'
       },{
+        name: 'style',
+        type: 'rawlist',
+        choices: [ 'less', 'scss', 'css', 'none' ],
+        message: '应用那种样式文件? (which the stylesheet type you like apllying?)',
+        default: 'less'
+      },{
         name: 'stylelint',
         type: 'confirm',
-        message: '是否使用stylelint? (whether or not apply stylelint?)'
+        message: '是否使用stylelint? (whether or not apply stylelint?)',
+        when: function (answer: any) {
+          if (answer.style === 'none') {
+            return false;
+          }
+          return true;
+        }
       },{
         name: 'test',
         type: 'rawlist',
-        choices: [ 'mocha', 'jest', 'karma', 'no thanks' ],
+        choices: [ 'mocha', 'jest', 'karma', 'none' ],
         message: '应用那种单测框架? (which unit test frame would you like apllying?)',
       },{
         name: 'build',
         type: 'rawlist',
-        choices: [ 'webpack', 'rollup', 'tsc', 'no thanks' ],
+        choices: [ 'webpack', 'rollup', 'tsc', 'none' ],
         message: '应用那种打包工具? (which build tool would you like apllying?)',
       },{
         name: 'git',
@@ -259,7 +276,7 @@ export default function ({
       },{
         name: 'npm',
         type: 'rawlist',
-        choices: [ 'npm', 'hnpm', 'set by yourself', 'no thanks' ],
+        choices: [ 'npm', 'hnpm', 'set by yourself', 'none' ],
         message: '请选择npm仓库地址 (please chioce the npm depository address)'
       },{
         name: 'npm_custom',
@@ -281,7 +298,7 @@ export default function ({
       },{
         name: 'cdn',
         type: 'rawlist',
-        choices: [ 'w1', 'w4', 'w11', 'set by yourself', 'no thanks' ],
+        choices: [ 'w1', 'w4', 'w11', 'set by yourself', 'none' ],
         message: '请选择cdn地址 (please chioce the cdn address)'
       },{
         name: 'cdn_custom',
@@ -311,47 +328,53 @@ export default function ({
 
     // 如果不存在config文件，取消二次确认的选项
     try {
-      !fs.existsSync(targetFilePath) && questions.shift();
+      !fs.existsSync(omniConfigPath) && questions.shift();
     } catch (err) {
       console.error(chalk.red(err));
     }
 
     inquirer.prompt(questions)
       .then(answers => {
-        const { name, ts, eslint, commitlint, stylelint, test, build, git, npm, npm_custom, cdn, cdn_custom, pkgtool } = answers;
+        const { name, ts, eslint, commitlint, style, stylelint, test, build, git, npm, npm_custom, cdn, cdn_custom, pkgtool } = answers;
 
-        const testFrame: TESTFRAME = test === 'no thanks' ? '' : test;
-        const { installCli, installCliDev } = generateInstallDenpendencies({
+        const testFrame: TESTFRAME = test === 'none' ? '' : test;
+        const stylesheet = style === 'none' ? '' : style;
+
+        cli = {
           pkgtool,
           build,
           ts,
           eslint,
           commitlint,
+          style: stylesheet,
           stylelint,
           testFrame
-        });
+        };
 
-        generateTpls({
+        tpl = {
           name,
           build,
           ts,
-          test: test === 'no thanks' ? false : true,
+          test: test === 'none' ? false : true,
           testFrame,
           eslint,
           commitlint,
+          style: stylesheet,
           stylelint,
           git,
-          npm: npm_custom || npm === 'no thanks' ? '' : npm,
-          cdn: cdn_custom || cdn === 'no thanks' ? '' : cdn
-        });
-
-        generateFiglet(() => {
-          shelljs.exec(installCli);
-          shelljs.exec(installCliDev);
-        });
+          npm: npm_custom || npm === 'none' ? '' : npm,
+          cdn: cdn_custom || cdn === 'none' ? '' : cdn
+        };
       })
       .catch(err => {
-        console.error(chalk.red(err));
+        console.error(chalk.red(`[omni-door]: ${JSON.stringify(err)}`));
+        process.exit(1);
       });
   }
+
+  generateTpls({...{ name: defaultName }, ...tpl} as GTpls);
+
+  const { installCli, installDevCli } = generateInstallDenpendencies(cli as GInstallCli);
+
+  generateFiglet((done) => execShell([installCli, installDevCli], done));
 }

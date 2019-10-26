@@ -1,5 +1,5 @@
 
-import { NPM, CDN } from '../index.d';
+import { NPM, CDN, STYLE } from '../index.d';
 
 export default (config: {
   ts: boolean;
@@ -7,12 +7,13 @@ export default (config: {
   testFrame: string;
   eslint: boolean;
   commitlint: boolean;
+  style: STYLE;
   stylelint: boolean;
   git?: string;
   npm: NPM | string;
   cdn: CDN | string;
 }) => {
-  const { ts, test, testFrame, eslint, commitlint, stylelint, git, npm, cdn } = config;
+  const { ts, test, testFrame, eslint, commitlint, style, stylelint, git, npm, cdn } = config;
 
   const npmMap = {
     npm: 'https://registry.npmjs.org/',
@@ -64,6 +65,8 @@ module.exports = {
     test: '${testFrame}',
     // whether or not apply typescript
     typescript: ${ts},
+    // stylesheet type
+    stylesheet: '${style}',
     // whether or not README.md
     readme: true
   }

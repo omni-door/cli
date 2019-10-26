@@ -68,13 +68,13 @@
   },
   "dependencies": {
     "chalk": "^2.4.2",
-    "clui": "^0.3.6",
     "commander": "^3.0.2",
     "del": "^5.1.0",
     "figlet": "^1.2.4",
     "fs-extra": "^8.1.0",
     "inquirer": "^7.0.0",
     "ora": "^4.0.2",
+    "progress": "^2.0.3",
     "shelljs": "^0.8.3"
   }
 }

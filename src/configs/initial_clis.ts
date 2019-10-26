@@ -7,6 +7,7 @@ export const cli_simple: GInstallCli = {
   testFrame: '',
   eslint: false,
   commitlint: false,
+  style: 'css',
   stylelint: false
 };
 
@@ -17,6 +18,7 @@ export const cli_standard: GInstallCli = {
   testFrame: '',
   eslint: true,
   commitlint: false,
+  style: 'less',
   stylelint: true
 };
 
@@ -27,6 +29,7 @@ export const cli_entire: GInstallCli = {
   testFrame: '',
   eslint: true,
   commitlint: true,
+  style: 'less',
   stylelint: true
 };
 
@@ -37,6 +40,7 @@ export const cli_lib_utils: GInstallCli = {
   testFrame: 'mocha',
   eslint: true,
   commitlint: true,
+  style: '',
   stylelint: false
 };
 
@@ -47,6 +51,7 @@ export const cli_lib_components: GInstallCli = {
   testFrame: 'jest',
   eslint: true,
   commitlint: true,
+  style: 'less',
   stylelint: true
 };
 
