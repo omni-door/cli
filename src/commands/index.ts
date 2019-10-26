@@ -1,16 +1,16 @@
 import program from 'commander';
 import fs from 'fs';
 import path from 'path';
-import chalk from 'chalk';
 import initial from './initial';
 import newTpl from './new';
 // import build from './build';
 // import release from './release';
 // import test from './test';
 // import lint from './lint';
+import { OmniConfig } from '../index.d';
 const pkj = require('../../package.json');
 
-let config = {};
+let config: OmniConfig | null = null;
 if (fs.existsSync(path.resolve('omni.config.js'))) {
   config = require(path.resolve('omni.config.js'));
 }
