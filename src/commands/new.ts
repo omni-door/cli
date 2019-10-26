@@ -1,5 +1,5 @@
 import shelljs from 'shelljs';
-import { logErr, logInfo } from '../utils/logger';
+import { logErr, logInfo, logWarn } from '../utils/logger';
 import { OmniConfig } from '../index.d';
 
 export default function ({
@@ -9,9 +9,10 @@ export default function ({
 }: {
   fc?: boolean;
   cc?: boolean;
-  config: OmniConfig | null;
+  config: OmniConfig | {};
 }) {
-  if (!config) {
+  if (JSON.stringify(config) === '{}') {
+    logWarn('Please Initialize project first');
     shelljs.exec('omni init');
     return;
   }

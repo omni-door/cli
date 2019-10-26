@@ -10,7 +10,7 @@ import newTpl from './new';
 import { OmniConfig } from '../index.d';
 const pkj = require('../../package.json');
 
-let config: OmniConfig | null = null;
+let config: OmniConfig | {} = {};
 if (fs.existsSync(path.resolve('omni.config.js'))) {
   config = require(path.resolve('omni.config.js'));
 }
