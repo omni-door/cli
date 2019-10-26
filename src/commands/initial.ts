@@ -51,7 +51,7 @@ export type GInstallCli = {
   stylelint: boolean;
 };
 
-const spinner = ora('[OMNI-DOOR] Initialize');
+const spinner = ora('[OMNI-DOOR] Initialize in processing, please wait patiently\n');
 const bar = new ProgressBar(' [:bar] :percent :elapsed', { 
   complete: '=',
   incomplete: ' ',
@@ -62,7 +62,7 @@ const bar = new ProgressBar(' [:bar] :percent :elapsed', {
 function forwardBar () {
   bar.tick(1);
   if (bar.curr < 98) {
-    setTimeout(forwardBar, 200);
+    setTimeout(forwardBar, 500);
   }
 }
 
@@ -183,9 +183,8 @@ export default function ({
 
   function generateFiglet (fn: (done: () => void) => any) {
     function done () {
-      spinner.succeed();
+      spinner.succeed(chalk.green('Initialize project success \n'));
       if (!bar.complete) bar.update(1);
-      logSuc('Initialize project success \n');
       process.exit(0);
     }
 
