@@ -106,7 +106,10 @@ export function devDependencies (config: Config) {
     : [];
 
   const eslintDependencies = eslint ? [
-    'eslint'
+    'eslint',
+    'eslint-plugin-react',
+    ts ? '@typescript-eslint/eslint-plugin' : '',
+    ts ? '@typescript-eslint/parser' : ''
   ] : [];
 
   const commitlintDependencies = commitlint ? [

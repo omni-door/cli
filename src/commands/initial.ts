@@ -16,6 +16,7 @@ import mochaOpts from '../templates/mocha';
 import karmaConfigJs from '../templates/karma';
 import jestConfigJs from '../templates/jest';
 import tsConfigJson from '../templates/tsconfig';
+import eslintrcJS from '../templates/eslint';
 import eslintignore from '../templates/eslintignore';
 import gitignore from '../templates/gitignore';
 import npmignore from '../templates/npmignore';
@@ -55,6 +56,10 @@ export type GInstallCli = {
 
 const spinner = ora('[OMNI-DOOR] Initialize in processing, please wait patiently\n');
 
+/**
+ * todo 1. gulp config
+ * todo 2. rollup config stylesheet
+ */
 export default function ({
   simple,
   standard,
@@ -106,7 +111,8 @@ export default function ({
     const content_commitlint = commitlint && commitlintConfigJs({ name });
     const content_babel = build && build !== 'tsc' && babelConfigJs({ ts });
     const content_ts = ts && tsConfigJson();
-    const content_eslint = eslint && eslintignore();
+    const content_eslintrc = eslint && eslintrcJS({ ts });
+    const content_eslintignore = eslint && eslintignore();
     const content_gitignore = gitignore();
     const content_npmignore = npmignore();
     const content_webpack = build && build === 'webpack' && webpackConfigJs({ ts, style });
@@ -132,7 +138,9 @@ export default function ({
 
     content_ts && fsExtra.outputFileSync(path.resolve('tsconfig.json'), content_ts, 'utf8');
 
-    content_eslint && fsExtra.outputFileSync(path.resolve('.eslintignore'), content_eslint, 'utf8');
+    content_eslintrc && fsExtra.outputFileSync(path.resolve('.eslintrc.js'), content_eslintrc, 'utf8');
+
+    content_eslintignore && fsExtra.outputFileSync(path.resolve('.eslintignore'), content_eslintignore, 'utf8');
 
     fsExtra.outputFileSync(path.resolve('.gitignore'), content_gitignore, 'utf8');
 
@@ -171,12 +179,6 @@ export default function ({
       installDevCli
     };
   }
-  /**
-   * todo 1. eslint --init
-   * todo 2. jest --init
-   * todo 3. gulp config
-   * todo 4. rollup config stylesheet
-   */
 
   function generateFiglet (fn: (done: () => void) => any) {
     function done () {
@@ -197,7 +199,6 @@ export default function ({
   async function execShell (clis: string[], done?: () => void) {
     for (let i = 0; i < clis.length; i++) {
       const cli = clis[i];
-      logInfo('execShell: ' + i);
       try {
         await new Promise((resolve, reject) => {
           shelljs.exec(cli, {

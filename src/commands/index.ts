@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
 import initial from './initial';
-// import new from './new';
+import newTpl from './new';
 // import build from './build';
 // import release from './release';
 // import test from './test';
@@ -29,14 +29,13 @@ program
 
 program
   .command('new [module]')
-  .option('-f, --sfc', 'create functional component')
-  .option('-b, --business', 'create business module')
-  .description('omni new [module] [-fc | -b]')
-  .action(initial);
+  .option('-f, --fc', 'create a functional component')
+  .option('-c, --cc', 'create a class component')
+  .description('omni new [module] [-f | -c]')
+  .action(params => newTpl(Object.assign(params, { config })));
 
 program
   .command('build')
-  .option('-m, --mode <es|lib|umd>', 'build pattern')
   .description('build your project according to [omni.config.js]')
   .action(initial);
 

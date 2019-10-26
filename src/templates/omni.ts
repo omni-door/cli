@@ -1,18 +1,7 @@
 
-import { NPM, CDN, STYLE } from '../index.d';
+import { NPM, CDN, OmniConfig } from '../index.d';
 
-export default (config: {
-  ts: boolean;
-  test: boolean;
-  testFrame: string;
-  eslint: boolean;
-  commitlint: boolean;
-  style: STYLE;
-  stylelint: boolean;
-  git?: string;
-  npm: NPM | string;
-  cdn: CDN | string;
-}) => {
+export default (config: OmniConfig) => {
   const { ts, test, testFrame, eslint, commitlint, style, stylelint, git, npm, cdn } = config;
 
   const npmMap = {
@@ -43,8 +32,10 @@ module.exports = {
     stylelint: ${stylelint},
     // the root directory for compiled project
     root: path.resolve('lib'),
-    // es6 module compiled directory
-    esmRoot: path.resolve('es')
+    // es6 module compiled directory, set to empty string to make this invalid
+    esmRoot: path.resolve('es'),
+    // auto release project after build success
+    autoRelease: false
   },
 
   // project release address config
