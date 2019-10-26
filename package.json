@@ -1,6 +1,6 @@
 {
   "name": "omni-door",
-  "version": "0.0.5-alpha.4",
+  "version": "0.0.5-alpha.5",
   "description": "A tool set for set up the standard JS project",
   "bin": {
     "omni": "./bin/omni-door.js"
@@ -52,6 +52,7 @@
     "@types/inquirer": "^6.5.0",
     "@types/mocha": "^5.2.7",
     "@types/node": "^12.11.1",
+    "@types/progress": "^2.0.3",
     "@types/shelljs": "^0.8.5",
     "@typescript-eslint/eslint-plugin": "^2.4.0",
     "@typescript-eslint/parser": "^2.4.0",

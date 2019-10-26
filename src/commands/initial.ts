@@ -5,6 +5,8 @@ import chalk from 'chalk';
 import figlet from 'figlet';
 import inquirer from 'inquirer';
 import shelljs from 'shelljs';
+import ora from 'ora';
+import ProgressBar from 'progress';
 import omniConfigJs from '../templates/omni';
 import packageJson from '../templates/package';
 import stylelintConfigJs from '../templates/stylelint';
@@ -21,6 +23,7 @@ import { dependencies, devDependencies } from '../configs/dependecies';
 import templates from '../configs/initial_tpls';
 import installClis from '../configs/initial_clis';
 import { BUILD, NPM, CDN, TESTFRAME, PKJTOOL, STYLE } from '../index.d';
+import { logErr, logInfo, logSuc } from '../utils/logger';
 
 export type GTpls = {
   name: string;
@@ -61,6 +64,20 @@ export default function ({
   utils?: boolean;
   components?: boolean;
 }) {
+  const spinner = ora('[OMNI-DOOR] Initialize').start();
+  const bar = new ProgressBar(' [:bar] :percent :elapsed', { 
+    complete: '=',
+    incomplete: ' ',
+    width: 50,
+    total: 100
+  });
+  function forward () {
+    bar.tick(1);
+    if (bar.curr < 98) {
+      setTimeout(forward, 200);
+    }
+  }
+
   const { name: defaultName } = parse(process.cwd());
   const omniConfigPath = path.resolve('omni.config.js');
 
@@ -164,13 +181,16 @@ export default function ({
    */
   function generateFiglet (fn: (done: () => void) => any) {
     function done () {
-      console.info(chalk.green('[omni-door]: Initialize project success \n'));
+      spinner.succeed();
+      if (!bar.complete) bar.update(1);
+      logSuc('Initialize project success \n');
       process.exit(0);
     }
 
     return figlet('omni cli', function (err, data) {
       if (err) {
-        console.error(chalk.red('Some thing about figlet is wrong!'));
+        spinner.fail();
+        logErr('Some thing about figlet is wrong!');
       }
       console.info(chalk.yellow(data || 'OMNI CLI'));
       fn(done);
@@ -180,23 +200,28 @@ export default function ({
   async function execShell (clis: string[], done?: () => void) {
     for (let i = 0; i < clis.length; i++) {
       const cli = clis[i];
-      await new Promise((resolve, reject) => {
-        shelljs.exec(cli, {
-          async: true
-        }, function (code, stdout, stderr) {
-          console.info(chalk.white('[omni-door] Exit code:', '' + code));
-          console.info(chalk.yellow('[omni-door] output:', stdout));
-          console.info(chalk.red('[omni-door] stderr:', stderr));
-          resolve();
-        });
-      });
+      try {
+        await new Promise((resolve, reject) => {
+          shelljs.exec(cli, {
+            async: true
+          }, function (code, stdout, stderr) {
+            logInfo('Exit code: ' + code);
+            logInfo('output: ' + stdout);
+            logErr('stderr: ' + stderr);
+            resolve(stdout);
+          });
+        }).then(res => res);
+      } catch (err) {
+        spinner.warn();
+        logErr(JSON.stringify(err));
+      }
+      
     }
     done && done();
   }
 
-  let cli, tpl;
-
   if (simple || standard || entire || utils || components) {
+    let cli, tpl;
     if (simple) {
       cli = installClis.cli_simple;
       tpl = templates.tpl_simple;
@@ -213,6 +238,18 @@ export default function ({
       cli = installClis.cli_lib_components;
       tpl = templates.tpl_lib_components;
     }
+
+    try {
+      generateTpls(Object.assign(tpl, { name: defaultName }));
+
+      const { installCli, installDevCli } = generateInstallDenpendencies(cli as GInstallCli);
+    
+      generateFiglet((done) => execShell([installCli, installDevCli], done));
+    } catch (err) {
+      spinner.fail();
+      logErr(JSON.stringify(err));
+    }
+
   } else {
     const questions = [
       {
@@ -330,7 +367,8 @@ export default function ({
     try {
       !fs.existsSync(omniConfigPath) && questions.shift();
     } catch (err) {
-      console.error(chalk.red(err));
+      spinner.warn();
+      logErr(JSON.stringify(err));
     }
 
     inquirer.prompt(questions)
@@ -340,18 +378,7 @@ export default function ({
         const testFrame: TESTFRAME = test === 'none' ? '' : test;
         const stylesheet = style === 'none' ? '' : style;
 
-        cli = {
-          pkgtool,
-          build,
-          ts,
-          eslint,
-          commitlint,
-          style: stylesheet,
-          stylelint,
-          testFrame
-        };
-
-        tpl = {
+        generateTpls({
           name,
           build,
           ts,
@@ -364,17 +391,25 @@ export default function ({
           git,
           npm: npm_custom || npm === 'none' ? '' : npm,
           cdn: cdn_custom || cdn === 'none' ? '' : cdn
-        };
+        });
+
+        const { installCli, installDevCli } = generateInstallDenpendencies({
+          pkgtool,
+          build,
+          ts,
+          eslint,
+          commitlint,
+          style: stylesheet,
+          stylelint,
+          testFrame
+        });
+      
+        generateFiglet((done) => execShell([installCli, installDevCli], done));
       })
       .catch(err => {
-        console.error(chalk.red(`[omni-door]: ${JSON.stringify(err)}`));
+        spinner.fail();
+        logErr(JSON.stringify(err));
         process.exit(1);
       });
   }
-
-  generateTpls({...{ name: defaultName }, ...tpl} as GTpls);
-
-  const { installCli, installDevCli } = generateInstallDenpendencies(cli as GInstallCli);
-
-  generateFiglet((done) => execShell([installCli, installDevCli], done));
 }
