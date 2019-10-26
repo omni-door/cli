@@ -2,14 +2,12 @@ import shelljs from 'shelljs';
 import { logErr, logInfo, logWarn } from '../utils/logger';
 import { OmniConfig } from '../index.d';
 
-export default function ({
-  config,
+export default function (config: OmniConfig | {}, {
   fc,
   cc
 }: {
   fc?: boolean;
   cc?: boolean;
-  config: OmniConfig | {};
 }) {
   if (JSON.stringify(config) === '{}') {
     logWarn('Please Initialize project first');

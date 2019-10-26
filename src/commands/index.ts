@@ -32,7 +32,7 @@ program
   .option('-f, --fc', 'create a functional component')
   .option('-c, --cc', 'create a class component')
   .description('omni new [module] [-f | -c]')
-  .action(params => newTpl(Object.assign(params, { config })));
+  .action(params => newTpl(config, params));
 
 program
   .command('build')
