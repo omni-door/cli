@@ -6,10 +6,7 @@ server/
 node_modules/
 
 .eslintrc.js
-babel.config.js
-commitlint.config.js
-jest.config.js
-stylelint.config.js
-karma.conf.js;`;
+*.config.js
+*.conf.js`;
 }
 
