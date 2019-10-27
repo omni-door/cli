@@ -248,6 +248,7 @@ export default function ({
       const cli = clis[i];
       try {
         await new Promise((resolve, reject) => {
+          logInfo(`${i}-shelljs.exec ` +  cli);
           shelljs.exec(cli, {
             async: true
           }, function (code, stdout, stderr) {
