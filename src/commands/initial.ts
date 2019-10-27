@@ -255,8 +255,8 @@ export default function ({
             resolve(stdout);
           });
         })
-          .then(res => logInfo(`${i}-shelljs.exec ` +  res))
-          .catch(err => logErr(`${i}-shelljs.exec ` + err));
+          .then(res => logInfo(`${i}-shelljs.exec.then ` +  res))
+          .catch(err => logErr(`${i}-shelljs.exec.catch ` + err));
       } catch (err) {
         spinner.warn();
         logErr(JSON.stringify(err));

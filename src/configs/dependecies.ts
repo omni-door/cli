@@ -60,21 +60,23 @@ export function devDependencies (config: Config) {
     ...babelDependencies
   ] : [];
 
+  const tsTypesDependencies = testFrame ? testFrame === 'jest' ? [
+    '@types/jest',
+    '@types/enzyme',
+    '@types/enzyme-adapter-react-16',
+    'ts-jest'
+  ] : [
+    '@types/chai',
+    '@types/mocha'
+  ] : [];
+
   const tsDependencies = ts ? [
     '@types/react',
     '@types/react-dom',
     'typescript',
     'ts-node',
     'ts-loader',
-    testFrame ? testFrame === 'jest' ? [
-      '@types/jest',
-      '@types/enzyme',
-      '@types/enzyme-adapter-react-16',
-      'ts-jest'
-    ] : [
-      '@types/chai',
-      '@types/mocha'
-    ] : []
+    ...tsTypesDependencies
   ] : [];
 
   const testDependencies = testFrame
