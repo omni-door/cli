@@ -66,7 +66,6 @@ const spinner = ora('[OMNI-DOOR] Initialize in processing, please wait patiently
 /**
  * todo 1. gulp config
  * todo 2. rollup config stylesheet
- * todo 3. init src dir
  */
 export default function ({
   simple,
@@ -248,7 +247,6 @@ export default function ({
       const cli = clis[i];
       if (!cli) continue;
 
-      logInfo(`${i}-shelljs.exec.cli ` +  cli);
       try {
         await new Promise((resolve, reject) => {
           shelljs.exec(cli, {
