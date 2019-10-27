@@ -254,8 +254,8 @@ export default function ({
             resolve(stdout);
           });
         })
-          .then(res => logInfo('shelljs.exec ' +  res))
-          .catch(err => logErr('shelljs.exec ' + err));
+          .then(res => logInfo(`${i}-shelljs.exec ` +  res))
+          .catch(err => logErr(`${i}-shelljs.exec ` + err));
       } catch (err) {
         spinner.warn();
         logErr(JSON.stringify(err));
@@ -298,7 +298,8 @@ export default function ({
         installTestDevCli,
         installEslintDevCli,
         installCommitlintDevCli,
-        installStylelintDevCli
+        installStylelintDevCli,
+        installServerDevCli
       } = generateInstallDenpendencies(cli as GInstallCli);
     
       generateFiglet((done) => execShell([
@@ -309,7 +310,8 @@ export default function ({
         installTestDevCli,
         installEslintDevCli,
         installCommitlintDevCli,
-        installStylelintDevCli
+        installStylelintDevCli,
+        installServerDevCli
       ], done));
     } catch (err) {
       spinner.fail();
