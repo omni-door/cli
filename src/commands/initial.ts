@@ -205,7 +205,7 @@ export default function ({
       testFrame,
       devServer
     });
-    const installDevCli = `${installDevCliPrefix} ${defaultDep.join(' ')}`;
+    const installDevCli = defaultDep.length > 0 ? `${installDevCliPrefix} ${defaultDep.join(' ')}` : '';
     const installBuildDevCli = buildDep.length > 0 ? `${installDevCliPrefix} ${buildDep.join(' ')}` : '';
     const installTsDevCli = tsDep.length > 0 ? `${installDevCliPrefix} ${tsDep.join(' ')}` : '';
     const installTestDevCli = testDep.length > 0 ? `${installDevCliPrefix} ${testDep.join(' ')}` : '';
@@ -246,9 +246,11 @@ export default function ({
   async function execShell (clis: string[], done?: () => void) {
     for (let i = 0; i < clis.length; i++) {
       const cli = clis[i];
+      if (!cli) continue;
+
+      logInfo(`${i}-shelljs.exec.cli ` +  cli);
       try {
         await new Promise((resolve, reject) => {
-          logInfo(`${i}-shelljs.exec ` +  cli);
           shelljs.exec(cli, {
             async: true
           }, function (code, stdout, stderr) {
