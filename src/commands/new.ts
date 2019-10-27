@@ -13,7 +13,6 @@ export default function (config: OmniConfig | {}, params?: {
 
   if (JSON.stringify(config) === '{}') {
     logWarn('Please Initialize project first');
-    shelljs.exec('omni init');
     return;
   }
 

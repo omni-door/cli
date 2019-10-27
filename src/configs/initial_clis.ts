@@ -8,7 +8,8 @@ export const cli_simple: GInstallCli = {
   eslint: false,
   commitlint: false,
   style: 'css',
-  stylelint: false
+  stylelint: false,
+  devServer: 'express'
 };
 
 export const cli_standard: GInstallCli = {
@@ -19,7 +20,8 @@ export const cli_standard: GInstallCli = {
   eslint: true,
   commitlint: false,
   style: 'less',
-  stylelint: true
+  stylelint: true,
+  devServer: 'express'
 };
 
 export const cli_entire: GInstallCli = {
@@ -30,7 +32,8 @@ export const cli_entire: GInstallCli = {
   eslint: true,
   commitlint: true,
   style: 'less',
-  stylelint: true
+  stylelint: true,
+  devServer: 'express'
 };
 
 export const cli_lib_utils: GInstallCli = {
@@ -41,7 +44,8 @@ export const cli_lib_utils: GInstallCli = {
   eslint: true,
   commitlint: true,
   style: '',
-  stylelint: false
+  stylelint: false,
+  devServer: 'express'
 };
 
 export const cli_lib_components: GInstallCli = {
@@ -52,7 +56,8 @@ export const cli_lib_components: GInstallCli = {
   eslint: true,
   commitlint: true,
   style: 'less',
-  stylelint: true
+  stylelint: true,
+  devServer: 'bisheng'
 };
 
 export default {

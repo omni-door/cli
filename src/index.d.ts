@@ -5,6 +5,7 @@ export type CDN = 'w1' | 'w4' | 'w11';
 export type TESTFRAME = 'mocha' | 'jest' | 'karma' | '';
 export type PKJTOOL = 'yarn' | 'npm' | 'cnpm';
 export type STYLE = 'less' | 'scss' | 'css' | '';
+export type DevServer = 'bisheng' | 'express' | '';
 
 export type OmniConfig = {
   ts: boolean;

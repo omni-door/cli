@@ -63,7 +63,8 @@ export default function () {
     "src/**/__test__/*",
     "lib/*",
     "es/*",
-    "build/*"
+    "build/*",
+    "server/*"
   ]
 }`;
 }

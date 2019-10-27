@@ -1,20 +1,30 @@
 import { STYLE } from '../../index.d';
 
 export default function (config: {
+  name: string;
   ts: boolean;
   style: STYLE;
 }) {
-  const { ts, style } = config;
+  const { name, ts, style } = config;
 
   return `'use strict';
 
-const path = require('path')
+const path = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const htmlWebpackPlugin = new HtmlWebpackPlugin({
+  title: '${name}',
+  path: path.resolve(__dirname, 'server'),
+  template: path.join(__dirname, '../src/index.html'),
+  filename: 'index.html'
+})
 
 module.exports = {
   entry: path.join(__dirname, '../src/index.${ts ? 'tsx' : 'jsx'}'),
   output: {
-    filename: '[name]/index.js',
-    path: path.resolve(__dirname, '../lib')
+    filename: 'main.js',
+    path: path.resolve(__dirname, 'server')
   },
   module: {
     rules: [
@@ -62,11 +72,13 @@ module.exports = {
       }`) : ''}
     ],
   },
-  plugins: [],
-  mode: 'production',
+  plugins: [
+    htmlWebpackPlugin,
+    new webpack.HotModuleReplacementPlugin()
+  ],
+  mode: 'development',
   resolve: {
     extensions: [${ts ? '".ts", ".tsx", ' : ''}".js", ".jsx", ${style ? (style === 'css' ? '".css"' : (style === 'less' ? '".less", ".css"' : '".scss", ".css"')) : ''}]
   }
-};
-`;
+};`;
 }

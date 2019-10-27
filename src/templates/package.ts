@@ -1,7 +1,10 @@
+import { DevServer } from '../index.d';
+
 export default (config: {
   name: string;
+  devServer: DevServer;
 }) => {
-  const { name } = config;
+  const { name, devServer } = config;
 
   return `{
   "name": "${name}",
@@ -11,8 +14,8 @@ export default (config: {
   "module": "es/index.js",
   "typings": "lib/index.d.ts",
   "scripts": {
-    "start": "bisheng start",
-    "dev": "bisheng start",
+    ${devServer ? `"start": "${devServer === 'express' ? 'node server/index.js' : 'bisheng start'}",
+    "dev": "${devServer === 'express' ? 'node server/index.js' : 'bisheng start'}",` : ''}
     "test": "omni test",
     "test:snapshot": "omni test --snapshot",
     "lint": "omni lint",

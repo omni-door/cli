@@ -1,13 +1,22 @@
-export default function () {
+export default function (config: {
+  name: string;
+  git: string;
+}) {
+  const { name, git } = config;
   return `'use strict';
 
 const path = require('path');
 
 module.exports = {
-  source: path.resolve('src'),
-  output: path.resolve('.site'),
-  theme: path.resolve('.theme'),
   port: 6200,
+  root: '/bisheng/',
+  theme: 'bisheng-theme-one',
+  themeConfig: {
+    home: '/',
+    sitename: '${name}',
+    tagline: 'THE OMNI PROJECT',
+    github: '${git}',
+  }
 };`;
 }
 

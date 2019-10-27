@@ -21,11 +21,16 @@ import eslintignore from '../templates/eslintignore';
 import gitignore from '../templates/gitignore';
 import npmignore from '../templates/npmignore';
 import webpackConfigJs from '../templates/build/webpack';
+import serverTpl from '../templates/server';
+import webpackDevConfigJs from '../templates/server/webpack_dev';
+import indexTpl from '../templates/src/index';
+import indexHtml from '../templates/src/html';
+import postReadMe from '../templates/posts/readme';
 import rollupConfigJs from '../templates/build/rollup';
 import { dependencies, devDependencies } from '../configs/dependecies';
 import templates from '../configs/initial_tpls';
 import installClis from '../configs/initial_clis';
-import { BUILD, NPM, CDN, TESTFRAME, PKJTOOL, STYLE } from '../index.d';
+import { BUILD, NPM, CDN, TESTFRAME, PKJTOOL, STYLE, DevServer } from '../index.d';
 import { logErr, logInfo } from '../utils/logger';
 
 export type GTpls = {
@@ -41,6 +46,7 @@ export type GTpls = {
   git: string;
   npm: NPM | '';
   cdn: CDN | '';
+  devServer: DevServer;
 };
 
 export type GInstallCli = {
@@ -52,6 +58,7 @@ export type GInstallCli = {
   commitlint: boolean;
   style: STYLE;
   stylelint: boolean;
+  devServer: DevServer;
 };
 
 const spinner = ora('[OMNI-DOOR] Initialize in processing, please wait patiently\n');
@@ -59,6 +66,7 @@ const spinner = ora('[OMNI-DOOR] Initialize in processing, please wait patiently
 /**
  * todo 1. gulp config
  * todo 2. rollup config stylesheet
+ * todo 3. init src dir
  */
 export default function ({
   simple,
@@ -88,8 +96,10 @@ export default function ({
     stylelint,
     git,
     npm,
-    cdn
+    cdn,
+    devServer
   }: GTpls) {
+    // default files
     const content_omni = omniConfigJs({
       ts,
       test,
@@ -102,53 +112,73 @@ export default function ({
       npm,
       cdn
     });
-    const content_pkg = packageJson({ name });
-    const content_bisheng = bishengConfigJs();
+    const content_pkg = packageJson({ name, devServer });
+    const content_gitignore = gitignore();
+    const content_npmignore = npmignore();
+    const content_indexTpl = indexTpl();
+    const content_indexHtml = indexHtml({ name });
+
+    // tsconfig
+    const content_ts = ts && tsConfigJson();
+
+    // test files
     const content_mocha = testFrame === 'mocha' && mochaOpts({ ts });
     const content_karma = testFrame === 'karma' && karmaConfigJs({ ts });
     const content_jest = testFrame === 'jest' && jestConfigJs({ ts });
-    const content_stylelint = stylelint && stylelintConfigJs();
-    const content_commitlint = commitlint && commitlintConfigJs({ name });
-    const content_babel = build && build !== 'tsc' && babelConfigJs({ ts });
-    const content_ts = ts && tsConfigJson();
+
+    // lint files
     const content_eslintrc = eslint && eslintrcJS({ ts });
     const content_eslintignore = eslint && eslintignore();
-    const content_gitignore = gitignore();
-    const content_npmignore = npmignore();
+    const content_stylelint = stylelint && stylelintConfigJs();
+    const content_commitlint = commitlint && commitlintConfigJs({ name });
+
+    // build files
+    const content_babel = build && build !== 'tsc' && babelConfigJs({ ts });
     const content_webpack = build && build === 'webpack' && webpackConfigJs({ ts, style });
     const content_rollup = build && build === 'rollup' && rollupConfigJs({ ts });
 
+    // server files
+    const content_bisheng = devServer === 'bisheng' && bishengConfigJs({ name, git });
+    const content_postReadMe = devServer === 'bisheng' && postReadMe();
+    const content_serverTpl = devServer === 'express' && serverTpl();
+    const content_webpackDev = devServer === 'express' && webpackDevConfigJs({ name, ts, style });
+
+    /**
+     * create files
+     */
+
+    // default files
     fsExtra.outputFileSync(omniConfigPath, content_omni, 'utf8');
-
     fsExtra.outputFileSync(path.resolve('package.json'), content_pkg, 'utf8');
+    fsExtra.outputFileSync(path.resolve('.gitignore'), content_gitignore, 'utf8');
+    fsExtra.outputFileSync(path.resolve('.npmignore'), content_npmignore, 'utf8');
+    fsExtra.outputFileSync(path.resolve(`src/index.${ts ? 'tsx' : 'jsx'}`), content_indexTpl, 'utf8');
+    fsExtra.outputFileSync(path.resolve('src/index.html'), content_indexHtml, 'utf8');
 
-    fsExtra.outputFileSync(path.resolve('bisheng.config.js'), content_bisheng, 'utf8');
-
-    content_mocha && fsExtra.outputFileSync(path.resolve('mocha.opts'), content_mocha, 'utf8');
-
-    content_karma && fsExtra.outputFileSync(path.resolve('karma.conf.js'), content_karma, 'utf8');
-
-    content_jest && fsExtra.outputFileSync(path.resolve('jest.conf.js'), content_jest, 'utf8');
-
-    content_stylelint && fsExtra.outputFileSync(path.resolve('stylelint.config.js'), content_stylelint, 'utf8');
-
-    content_commitlint && fsExtra.outputFileSync(path.resolve('commitlint.config.js'), content_commitlint, 'utf8');
-
-    content_babel && fsExtra.outputFileSync(path.resolve('bable.config.js'), content_babel, 'utf8');
-
+    // tsconfig
     content_ts && fsExtra.outputFileSync(path.resolve('tsconfig.json'), content_ts, 'utf8');
 
+    // test files
+    content_mocha && fsExtra.outputFileSync(path.resolve('mocha.opts'), content_mocha, 'utf8');
+    content_karma && fsExtra.outputFileSync(path.resolve('karma.conf.js'), content_karma, 'utf8');
+    content_jest && fsExtra.outputFileSync(path.resolve('jest.conf.js'), content_jest, 'utf8');
+
+    // lint files
     content_eslintrc && fsExtra.outputFileSync(path.resolve('.eslintrc.js'), content_eslintrc, 'utf8');
-
     content_eslintignore && fsExtra.outputFileSync(path.resolve('.eslintignore'), content_eslintignore, 'utf8');
+    content_stylelint && fsExtra.outputFileSync(path.resolve('stylelint.config.js'), content_stylelint, 'utf8');
+    content_commitlint && fsExtra.outputFileSync(path.resolve('commitlint.config.js'), content_commitlint, 'utf8');
 
-    fsExtra.outputFileSync(path.resolve('.gitignore'), content_gitignore, 'utf8');
-
-    fsExtra.outputFileSync(path.resolve('.npmignore'), content_npmignore, 'utf8');
-
+    // build files
+    content_babel && fsExtra.outputFileSync(path.resolve('bable.config.js'), content_babel, 'utf8');
     content_webpack && fsExtra.outputFileSync(path.resolve('build/webpack.config.js'), content_webpack, 'utf8');
-
     content_rollup && fsExtra.outputFileSync(path.resolve('build/rollup.config.js'), content_rollup, 'utf8');
+
+    // server files
+    content_bisheng && fsExtra.outputFileSync(path.resolve('bisheng.config.js'), content_bisheng, 'utf8');
+    content_postReadMe && fsExtra.outputFileSync(path.resolve('posts/ReadMe.md'), content_postReadMe, 'utf8');
+    content_serverTpl && fsExtra.outputFileSync(path.resolve('server/index.js'), content_serverTpl, 'utf8');
+    content_webpackDev && fsExtra.outputFileSync(path.resolve('server/webpack.config.dev.js'), content_webpackDev, 'utf8');
   }
 
   function generateInstallDenpendencies ({
@@ -159,24 +189,41 @@ export default function ({
     commitlint,
     style,
     stylelint,
-    testFrame
+    testFrame,
+    devServer
   }: GInstallCli) {
     const installCliPrefix = pkgtool === 'yarn' ? `${pkgtool} add` : `${pkgtool} install --save`;
     const installCli = `${installCliPrefix} ${dependencies().join(' ')}`;
     const installDevCliPrefix = pkgtool === 'yarn' ? `${pkgtool} add -D` : `${pkgtool} install --save-dev`;
-    const installDevCli = `${installDevCliPrefix} ${devDependencies({
+    const { defaultDep, buildDep, tsDep, testDep, eslintDep, commitlintDep, stylelintDep, devServerDep } = devDependencies({
       build,
       ts,
       eslint,
       commitlint,
       style,
       stylelint,
-      testFrame
-    }).join(' ')}`;
+      testFrame,
+      devServer
+    });
+    const installDevCli = `${installDevCliPrefix} ${defaultDep.join(' ')}`;
+    const installBuildDevCli = buildDep.length > 0 ? `${installDevCliPrefix} ${buildDep.join(' ')}` : '';
+    const installTsDevCli = tsDep.length > 0 ? `${installDevCliPrefix} ${tsDep.join(' ')}` : '';
+    const installTestDevCli = testDep.length > 0 ? `${installDevCliPrefix} ${testDep.join(' ')}` : '';
+    const installEslintDevCli = eslintDep.length > 0 ? `${installDevCliPrefix} ${eslintDep.join(' ')}` : '';
+    const installCommitlintDevCli = commitlintDep.length > 0 ? `${installDevCliPrefix} ${commitlintDep.join(' ')}` : '';
+    const installStylelintDevCli = stylelintDep.length > 0 ? `${installDevCliPrefix} ${stylelintDep.join(' ')}` : '';
+    const installServerDevCli = devServerDep.length > 0 ? `${installDevCliPrefix} ${devServerDep.join(' ')}` : '';
 
     return {
       installCli,
-      installDevCli
+      installDevCli,
+      installBuildDevCli,
+      installTsDevCli,
+      installTestDevCli,
+      installEslintDevCli,
+      installCommitlintDevCli,
+      installStylelintDevCli,
+      installServerDevCli
     };
   }
 
@@ -243,9 +290,27 @@ export default function ({
     try {
       generateTpls(Object.assign(tpl, { name: defaultName }));
 
-      const { installCli, installDevCli } = generateInstallDenpendencies(cli as GInstallCli);
+      const {
+        installCli,
+        installDevCli,
+        installBuildDevCli,
+        installTsDevCli,
+        installTestDevCli,
+        installEslintDevCli,
+        installCommitlintDevCli,
+        installStylelintDevCli
+      } = generateInstallDenpendencies(cli as GInstallCli);
     
-      generateFiglet((done) => execShell([installCli, installDevCli], done));
+      generateFiglet((done) => execShell([
+        installCli,
+        installDevCli,
+        installBuildDevCli,
+        installTsDevCli,
+        installTestDevCli,
+        installEslintDevCli,
+        installCommitlintDevCli,
+        installStylelintDevCli
+      ], done));
     } catch (err) {
       spinner.fail();
       logErr(JSON.stringify(err));
@@ -356,6 +421,12 @@ export default function ({
           return true;
         }
       },{
+        name: 'dev_server',
+        type: 'rawlist',
+        choices: [ 'express', 'bisheng', 'none' ],
+        message: '请选择开发服务 (please chioce the development server)',
+        default: 'express'
+      },{
         name: 'pkgtool',
         type: 'rawlist',
         choices: [ 'npm', 'yarn', 'cnpm' ],
@@ -374,7 +445,7 @@ export default function ({
 
     inquirer.prompt(questions)
       .then(answers => {
-        const { name, ts, eslint, commitlint, style, stylelint, test, build, git, npm, npm_custom, cdn, cdn_custom, pkgtool } = answers;
+        const { name, ts, eslint, commitlint, style, stylelint, test, build, git, npm, npm_custom, cdn, cdn_custom, dev_server, pkgtool } = answers;
 
         const testFrame: TESTFRAME = test === 'none' ? '' : test;
         const stylesheet = style === 'none' ? '' : style;
@@ -394,10 +465,21 @@ export default function ({
           stylelint,
           git,
           npm: npm_custom || npm === 'none' ? '' : npm,
-          cdn: cdn_custom || cdn === 'none' ? '' : cdn
+          cdn: cdn_custom || cdn === 'none' ? '' : cdn,
+          devServer: dev_server === 'none' ? '' : dev_server
         });
 
-        const { installCli, installDevCli } = generateInstallDenpendencies({
+        const {
+          installCli,
+          installDevCli,
+          installBuildDevCli,
+          installTsDevCli,
+          installTestDevCli,
+          installEslintDevCli,
+          installCommitlintDevCli,
+          installStylelintDevCli,
+          installServerDevCli
+        } = generateInstallDenpendencies({
           pkgtool,
           build,
           ts,
@@ -405,10 +487,21 @@ export default function ({
           commitlint,
           style: stylesheet,
           stylelint,
-          testFrame
+          testFrame,
+          devServer: dev_server === 'none' ? '' : dev_server
         });
       
-        generateFiglet((done) => execShell([installCli, installDevCli], done));
+        generateFiglet((done) => execShell([
+          installCli,
+          installDevCli,
+          installBuildDevCli,
+          installTsDevCli,
+          installTestDevCli,
+          installEslintDevCli,
+          installCommitlintDevCli,
+          installStylelintDevCli,
+          installServerDevCli
+        ], done));
       })
       .catch(err => {
         spinner.fail();

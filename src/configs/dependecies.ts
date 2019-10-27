@@ -1,4 +1,4 @@
-import { BUILD, TESTFRAME, STYLE } from '../index.d';
+import { BUILD, TESTFRAME, STYLE, DevServer } from '../index.d';
 
 interface Config {
   build: BUILD;
@@ -8,6 +8,7 @@ interface Config {
   commitlint: boolean;
   style: STYLE;
   stylelint: boolean;
+  devServer: DevServer;
 }
 
 export function dependencies () {
@@ -25,7 +26,8 @@ export function devDependencies (config: Config) {
     eslint,
     commitlint,
     style,
-    stylelint
+    stylelint,
+    devServer
   } = config;
 
   const babelDependencies = [
@@ -122,16 +124,32 @@ export function devDependencies (config: Config) {
     'stylelint'
   ] : [];
 
-  return [
+  const bishengDependencies = [
     'bisheng',
-    'omni-door',
-    'del',
-    ...buildDependencies,
-    ...tsDependencies,
-    ...testDependencies,
-    ...eslintDependencies,
-    ...commitlintDependencies,
-    ...stylelintDependencies
+    'bisheng-theme-one'
   ];
+
+  const expressDependencies = [
+    'express',
+    'webpack',
+    'webpack-dev-middleware',
+    'html-webpack-plugin'
+  ];
+
+  const devServerDependencies = devServer ? (devServer === 'express' ? expressDependencies : bishengDependencies) : [];
+
+  return {
+    defaultDep: [
+      'omni-door',
+      'del'
+    ],
+    buildDep: buildDependencies,
+    tsDep: tsDependencies,
+    testDep: testDependencies,
+    eslintDep: eslintDependencies,
+    commitlintDep: commitlintDependencies,
+    stylelintDep: stylelintDependencies,
+    devServerDep: devServerDependencies
+  };
 }
 

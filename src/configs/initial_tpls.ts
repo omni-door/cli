@@ -13,7 +13,8 @@ export const tpl_simple: TPL = {
   stylelint: false,
   git: '',
   npm: '',
-  cdn: 'w1'
+  cdn: 'w1',
+  devServer: 'express'
 };
 
 export const tpl_standard: TPL = {
@@ -27,7 +28,8 @@ export const tpl_standard: TPL = {
   stylelint: true,
   git: '',
   npm: '',
-  cdn: 'w1'
+  cdn: 'w1',
+  devServer: 'express'
 };
 
 export const tpl_entire: TPL = {
@@ -41,7 +43,8 @@ export const tpl_entire: TPL = {
   stylelint: true,
   git: '',
   npm: 'hnpm',
-  cdn: 'w1'
+  cdn: 'w1',
+  devServer: 'express'
 };
 
 export const tpl_lib_utils: TPL = {
@@ -55,7 +58,8 @@ export const tpl_lib_utils: TPL = {
   stylelint: false,
   git: '',
   npm: 'npm',
-  cdn: ''
+  cdn: '',
+  devServer: 'express'
 };
 
 export const tpl_lib_components: TPL = {
@@ -69,7 +73,8 @@ export const tpl_lib_components: TPL = {
   stylelint: true,
   git: '',
   npm: 'hnpm',
-  cdn: ''
+  cdn: '',
+  devServer: 'bisheng'
 };
 
 export default {
