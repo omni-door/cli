@@ -30,7 +30,7 @@ import rollupConfigJs from '../templates/build/rollup';
 import { dependencies, devDependencies } from '../configs/dependecies';
 import templates from '../configs/initial_tpls';
 import installClis from '../configs/initial_clis';
-import { BUILD, NPM, CDN, TESTFRAME, PKJTOOL, STYLE, DevServer } from '../index.d';
+import { BUILD, NPM, CDN, TESTFRAME, PKJTOOL, STYLE, DEVSERVER } from '../index.d';
 import { logErr, logInfo } from '../utils/logger';
 
 export type GTpls = {
@@ -38,7 +38,7 @@ export type GTpls = {
   build: BUILD;
   ts: boolean;
   test: boolean;
-  testFrame: TESTFRAME | '';
+  testFrame: TESTFRAME;
   eslint: boolean;
   commitlint: boolean;
   style: STYLE;
@@ -46,19 +46,19 @@ export type GTpls = {
   git: string;
   npm: NPM | '';
   cdn: CDN | '';
-  devServer: DevServer;
+  devServer: DEVSERVER;
 };
 
 export type GInstallCli = {
   pkgtool: PKJTOOL;
   build: BUILD;
   ts: boolean;
-  testFrame: TESTFRAME | '';
+  testFrame: TESTFRAME;
   eslint: boolean;
   commitlint: boolean;
   style: STYLE;
   stylelint: boolean;
-  devServer: DevServer;
+  devServer: DEVSERVER;
 };
 
 const spinner = ora('🐸  [OMNI-DOOR]: Initialize in processing, please wait patiently  💤  \n');
@@ -111,7 +111,15 @@ export default function ({
       npm,
       cdn
     });
-    const content_pkg = packageJson({ name, devServer });
+    const content_pkg = packageJson({
+      name,
+      ts,
+      devServer,
+      testFrame,
+      eslint,
+      commitlint,
+      stylelint
+    });
     const content_gitignore = gitignore();
     const content_npmignore = npmignore();
     const content_indexTpl = indexTpl();

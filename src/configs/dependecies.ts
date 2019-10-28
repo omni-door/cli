@@ -1,4 +1,4 @@
-import { BUILD, TESTFRAME, STYLE, DevServer } from '../index.d';
+import { BUILD, TESTFRAME, STYLE, DEVSERVER } from '../index.d';
 
 interface Config {
   build: BUILD;
@@ -8,7 +8,7 @@ interface Config {
   commitlint: boolean;
   style: STYLE;
   stylelint: boolean;
-  devServer: DevServer;
+  devServer: DEVSERVER;
 }
 
 export function dependencies () {
@@ -123,7 +123,14 @@ export function devDependencies (config: Config) {
   ] : [];
 
   const stylelintDependencies = stylelint ? [
-    'stylelint'
+    'stylelint',
+    'stylelint-config-standard',
+    'stylelint-config-standard',
+    'stylelint-config-css-modules',
+    'stylelint-config-rational-order',
+    'stylelint-config-prettier',
+    'stylelint-order',
+    'stylelint-declaration-block-no-ignored-properties'
   ] : [];
 
   const bishengDependencies = [

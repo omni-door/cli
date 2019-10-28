@@ -105,34 +105,6 @@ Options:
   -h, --help              output usage information
 ```
 
-## omni test
-
-### options
-```sh
-Usage: omni test [options]
-
-test your project by unit test frame
-
-Options:
-  --snapshot  update test snapshot
-  -h, --help  output usage information
-```
-
-## omni lint
-
-### options
-```sh
-Usage: omni lint [options]
-
-check your project by lint-tools
-
-Options:
-  --commit    commitlint check
-  --style     stylelint check
-  --fix       eslint and stylelint fix
-  -h, --help  output usage information
-```
-
 ## License
 
 Copyright (c) 2019-2019 Bobby.li

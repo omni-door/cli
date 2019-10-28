@@ -46,20 +46,6 @@ program
   .description('publish your project according to [omni.config.js]')
   .action(initial);
 
-program
-  .command('test')
-  .option('--snapshot', 'update test snapshot')
-  .description('test your project by unit test frame')
-  .action(initial);
-
-program
-  .command('lint')
-  .option('--commit', 'commitlint check')
-  .option('--style', 'stylelint check')
-  .option('--fix', 'eslint and stylelint fix')
-  .description('check your project by lint-tools')
-  .action(initial);
-
 program.parse(process.argv);
 if (!program.args[0]) {
   program.help();
