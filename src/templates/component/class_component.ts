@@ -1,19 +1,31 @@
+import { STYLE } from './../../index.d';
+
 export default function (config: {
   ts: boolean;
   componentName: string;
+  style: STYLE;
 }) {
-  const { ts, componentName } = config;
+  const { ts, componentName, style } = config;
 
-  return `import React${ts ? ', { SFC }' : ''} from 'react';
+  return `import React, { PureComponent } from 'react';
+${style ? `import './style/${componentName}.${style}';` : ''}
 
-${ts ? `export interface ${componentName}Props {};` : ''}
+${ts ? `export interface ${componentName}Props {};
 
-const ${componentName}${ts ? `: SFC<${componentName}Props>` : ''} = props => {
-  return (
-    <div>
-      { children }
-    </div>
-  );
+export interface ${componentName}States {};` : ''}
+
+class ${componentName} extends PureComponent${ts ? `<${componentName}Props, ${componentName}States>` : ''} {
+  render() {
+    const { children } = this.props;
+
+    return (
+      <div
+        className='${componentName}'
+      >
+        { children }
+      </div>
+    );
+  };
 };
 
 export default ${componentName};`;

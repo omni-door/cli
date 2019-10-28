@@ -1,17 +1,17 @@
 import chalk from 'chalk';
 
 export function logErr (err: string) {
-  console.error(chalk.red('[OMNI-DOOR] ERROR:', err));
+  console.error(chalk.red('🐸  [OMNI-DOOR] ❌  ERROR:', err));
 }
 
 export function logWarn (warn: string) {
-  console.warn(chalk.yellow('[OMNI-DOOR] WARN:', warn));
+  console.warn(chalk.yellow('🐸  [OMNI-DOOR] ❗  WARN:', warn));
 }
 
 export function logInfo (info: string) {
-  console.info(chalk.white('[OMNI-DOOR] INFO:', info));
+  console.info(chalk.white('🐸  [OMNI-DOOR] 🌷  INFO:', info));
 }
 
 export function logSuc (msg: string) {
-  console.info(chalk.green('[OMNI-DOOR]:', msg));
+  console.info(chalk.green('🐸  [OMNI-DOOR] ✅  :', msg));
 }

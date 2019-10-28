@@ -1,7 +1,7 @@
 
-import { NPM, CDN, OmniConfig } from '../index.d';
+import { NPM, CDN, GenerateOmniConfigParams } from '../index.d';
 
-export default (config: OmniConfig) => {
+export default (config: GenerateOmniConfigParams) => {
   const { ts, test, testFrame, eslint, commitlint, style, stylelint, git, npm, cdn } = config;
 
   const npmMap = {

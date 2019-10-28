@@ -7,7 +7,7 @@ export type PKJTOOL = 'yarn' | 'npm' | 'cnpm';
 export type STYLE = 'less' | 'scss' | 'css' | '';
 export type DevServer = 'bisheng' | 'express' | '';
 
-export type OmniConfig = {
+export type GenerateOmniConfigParams = {
   ts: boolean;
   test: boolean;
   testFrame: string;
@@ -18,4 +18,28 @@ export type OmniConfig = {
   git?: string;
   npm: NPM | string;
   cdn: CDN | string;
+};
+
+export type OmniConfig = {
+  build: {
+    test: boolean;
+    eslint: boolean;
+    commitlint: boolean;
+    stylelint: boolean;
+    root: string;
+    esmRoot: string;
+    autoRelease: boolean;
+  };
+  release: {
+    git: string;
+    npm: NPM | string;
+    cdn: CDN | string;
+  };
+  template: {
+    root: string;
+    test: TESTFRAME;
+    typescript: boolean;
+    stylesheet: STYLE;
+    readme: boolean;
+  };
 };

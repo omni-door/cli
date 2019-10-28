@@ -61,7 +61,7 @@ export type GInstallCli = {
   devServer: DevServer;
 };
 
-const spinner = ora('[OMNI-DOOR] Initialize in processing, please wait patiently\n');
+const spinner = ora('🐸  [OMNI-DOOR]: Initialize in processing, please wait patiently  💤  \n');
 
 /**
  * todo 1. gulp config
@@ -228,7 +228,7 @@ export default function ({
 
   function generateFiglet (fn: (done: () => void) => any) {
     function done () {
-      spinner.succeed(chalk.green('Initialize project success \n'));
+      spinner.succeed(chalk.green('🐸  [OMNI-DOOR]: ✅  Initialize project success \n'));
       process.exit(0);
     }
 
