@@ -20,7 +20,6 @@ export async function execShell (clis: string[], done?: () => any, handleErr?: (
       logErr(JSON.stringify(err));
       return handleErr && handleErr(err);
     }
-    
   }
   return done && done();
 }

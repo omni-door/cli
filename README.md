@@ -1,4 +1,4 @@
-# omni-door (The CLI Tool for set up standard JS prject)
+# 🐸 omni-door (The CLI Tool for set up standard JS prject)
 
 [![NPM downloads](http://img.shields.io/npm/dm/omni-door.svg?style=flat-square)](https://www.npmjs.com/package/omni-door)
 [![npm version](https://badge.fury.io/js/omni-door.svg)](https://badge.fury.io/js/omni-door)

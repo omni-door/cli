@@ -4,6 +4,7 @@ export default function () {
 *~
 ~*
 
+.omni_cache
 node_modules
 lib
 es

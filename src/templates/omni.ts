@@ -31,15 +31,13 @@ module.exports = {
       return config;
     },
     // whether or not output multiple files
-    mult_output: false,
+    multi_output: false,
     // whether or not process the ts files
     typescript: ${ts},
     // whether or not process unit or ui test
     test: ${test},
     // whether or not process eslint fix and check
     eslint: ${eslint},
-    // whether or not process commit lint check
-    commitlint: ${commitlint},
     // whether or not process style lint check
     stylelint: ${stylelint},
     // the build source directory
@@ -61,7 +59,9 @@ module.exports = {
     // npm depository url
     npm: '${npmMap[npm as NPM] || npm}',
     // cdn url
-    cdn: '${cdnMap[cdn as CDN] || cdn}'
+    cdn: '${cdnMap[cdn as CDN] || cdn}',
+    // whether or not process commit lint check
+    commitlint: ${commitlint}
   },
 
   // new template config

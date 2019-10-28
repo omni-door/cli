@@ -8,6 +8,7 @@ build
 src
 *test*
 node_modules
+.omni_cache
 
 # config files
 .eslintignore

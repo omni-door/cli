@@ -2,11 +2,12 @@ import { ANYOBJECT } from '../../index.d';
 
 export default function (config: {
   ts: boolean;
+  multi_output: boolean;
   src_dir: string;
   out_dir: string;
   custom_exports?: ANYOBJECT;
 }) {
-  const { ts, src_dir = 'src', out_dir = 'lib', custom_exports } = config;
+  const { ts, multi_output, src_dir = 'src', out_dir = 'lib', custom_exports } = config;
 
   return `'use strict';
 
@@ -29,17 +30,21 @@ const entry = {
   index: path.resolve(__dirname, '../${src_dir}/index.${ts ? 'ts' : 'js'}')
 };
 
-entriesList.forEach(v => {
-  if (v !== 'style' && v !== 'styles') {
-    entry[v] = path.resolve(__dirname, \`../${src_dir}/\${v}/index.${ts ? 'ts' : 'js'}\`)
-  }
-})
+${
+  multi_output
+    ? `entriesList.forEach(v => {
+      if (v !== 'style' && v !== 'styles') {
+        entry[v] = path.resolve(__dirname, \`../${src_dir}/\${v}/index.${ts ? 'ts' : 'js'}\`)
+      }
+    })`
+    : ''
+}
 
 module.exports = ${
   custom_exports
     ? custom_exports
     : `{
-      entry: path.resolve(__dirname, '../${src_dir}/index.${ts ? 'ts' : 'js'}'),
+      entry,
       output: {
         filename: '[name].js',
         path: path.resolve(__dirname, '../${out_dir}')

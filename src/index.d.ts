@@ -26,11 +26,10 @@ export type OmniConfig = {
   build: {
     tool: BUILD;
     configuration: (config: ANYOBJECT) => ANYOBJECT;
-    mult_output: boolean;
+    multi_output: boolean;
     typescript: boolean;
     test: boolean;
     eslint: boolean;
-    commitlint: boolean;
     stylelint: boolean;
     src_dir: string;
     out_dir: string;
@@ -41,6 +40,7 @@ export type OmniConfig = {
     git: string;
     npm: NPM | string;
     cdn: CDN | string;
+    commitlint: boolean;
   };
   template: {
     root: string;

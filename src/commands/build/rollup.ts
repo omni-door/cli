@@ -2,12 +2,13 @@ import { ANYOBJECT } from '../../index.d';
 
 export default function (config: {
   ts: boolean;
+  multi_output: boolean;
   src_dir: string;
   out_dir: string;
   esm_dir: string;
   custom_exports?: ANYOBJECT;
 }) {
-  const { ts, src_dir = 'src', out_dir = 'lib', esm_dir, custom_exports } = config;
+  const { ts, multi_output, src_dir = 'src', out_dir = 'lib', esm_dir, custom_exports } = config;
 
   return `const resolve = require('rollup-plugin-node-resolve');
 const commonjs = require('rollup-plugin-commonjs');
@@ -36,7 +37,7 @@ function flatten (arr) {
 async function createConfig () {
   const extensions = ['.ts', '.js'];
   const filesPaths = [];
-  const files = await readdir('${src_dir}');
+  ${multi_output ? `const files = await readdir('${src_dir}');
   const len = files.length;
   for (let i = 0; i < len; i++) {
     const file = files[i];
@@ -48,7 +49,7 @@ async function createConfig () {
         file: path.join(file, 'index.js')
       });
     }
-  }
+  }` : ''}
 
   return [{
     input: '${src_dir}/index.${ts ? 'ts' : 'js'}',
