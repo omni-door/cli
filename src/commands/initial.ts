@@ -493,7 +493,10 @@ export default function ({
           testFrame,
           devServer: dev_server === 'none' ? '' : dev_server
         });
-      
+
+        // init git
+        const gitCli = git ? `git init && git git remote add origin ${git}` : '';
+
         generateFiglet((done) => execShell([
           installCli,
           installDevCli,
@@ -503,7 +506,8 @@ export default function ({
           installEslintDevCli,
           installCommitlintDevCli,
           installStylelintDevCli,
-          installServerDevCli
+          installServerDevCli,
+          gitCli
         ], done));
       })
       .catch(err => {
