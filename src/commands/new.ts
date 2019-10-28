@@ -49,12 +49,12 @@ export default function (config: OmniConfig | {}, componentName?: string, option
   const content_style = styleTpl({ componentName });
   const content_test = testTpl({ testFrame: test, componentName });
 
-  fsExtra.outputFileSync(path.resolve(root, `index.${typescript ? 'ts' : 'js'}`), content_index, 'utf8');
-  cc && fsExtra.outputFileSync(path.resolve(root, `${componentName}.${typescript ? 'tsx' : 'jsx'}`), content_cc, 'utf8');
-  fc && fsExtra.outputFileSync(path.resolve(root, `${componentName}.${typescript ? 'tsx' : 'jsx'}`), content_fc, 'utf8');
-  readme && fsExtra.outputFileSync(path.resolve(root, 'README.md'), content_readme, 'utf8');
-  content_style && fsExtra.outputFileSync(path.resolve(root, `style/${componentName}.${stylesheet}`), content_style, 'utf8');
-  test && fsExtra.outputFileSync(path.resolve(root, `__test__/index.test.${typescript ? 'ts' : 'js'}`), content_test, 'utf8');
+  fsExtra.outputFileSync(path.resolve(root, componentName, `index.${typescript ? 'ts' : 'js'}`), content_index, 'utf8');
+  cc && fsExtra.outputFileSync(path.resolve(root, componentName, `${componentName}.${typescript ? 'tsx' : 'jsx'}`), content_cc, 'utf8');
+  fc && fsExtra.outputFileSync(path.resolve(root, componentName, `${componentName}.${typescript ? 'tsx' : 'jsx'}`), content_fc, 'utf8');
+  readme && fsExtra.outputFileSync(path.resolve(root, componentName, 'README.md'), content_readme, 'utf8');
+  content_style && fsExtra.outputFileSync(path.resolve(root, componentName, `style/${componentName}.${stylesheet}`), content_style, 'utf8');
+  test && fsExtra.outputFileSync(path.resolve(root, componentName, `__test__/index.test.${typescript ? 'ts' : 'js'}`), content_test, 'utf8');
 
   logSuc(`The ${componentName} component construction completed!`);
 }
