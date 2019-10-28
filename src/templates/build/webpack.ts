@@ -8,10 +8,10 @@ export default function (config: {
 
   return `'use strict';
 
-const path = require('path')
+const path = require('path');
 
 module.exports = {
-  entry: path.join(__dirname, '../src/index.${ts ? 'tsx' : 'jsx'}'),
+  entry: path.join(__dirname, '../src/index.${ts ? 'ts' : 'js'}'),
   output: {
     filename: '[name]/index.js',
     path: path.resolve(__dirname, '../lib')

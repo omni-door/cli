@@ -2,7 +2,7 @@
 import { NPM, CDN, GenerateOmniConfigParams } from '../index.d';
 
 export default (config: GenerateOmniConfigParams) => {
-  const { ts, test, testFrame, eslint, commitlint, style, stylelint, git, npm, cdn } = config;
+  const { build, ts, test, testFrame, eslint, commitlint, style, stylelint, git, npm, cdn } = config;
 
   const npmMap = {
     npm: 'https://registry.npmjs.org/',
@@ -22,6 +22,18 @@ const path = require('path');
 module.exports = {
   // build relative config
   build: {
+    // the build tool
+    tool: ${build},
+    // The callback will be call when the build process
+    // You can return your custom build configuration
+    configuration: config => {
+      console.info('build config: ', config)
+      return config;
+    },
+    // whether or not output multiple files
+    mult_output: false,
+    // whether or not process the ts files
+    typescript: ${ts},
     // whether or not process unit or ui test
     test: ${test},
     // whether or not process eslint fix and check
@@ -30,12 +42,16 @@ module.exports = {
     commitlint: ${commitlint},
     // whether or not process style lint check
     stylelint: ${stylelint},
-    // the root directory for compiled project
-    root: path.resolve('lib'),
-    // es6 module compiled directory, set to empty string to make this invalid
-    esmRoot: path.resolve('es'),
+    // the build source directory
+    src_dir: path.resolve('src'),
+    // the directory for compiled project
+    out_dir: path.resolve('lib'),
+    // es6 module compiled directory
+    // set to empty string to make this invalid
+    // webpack compiler not support this featrue
+    esm_dir: path.resolve('es'),
     // auto release project after build success
-    autoRelease: false
+    auto_release: false
   },
 
   // project release address config

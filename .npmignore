@@ -2,6 +2,7 @@
 ./node_modules
 ./build
 ./src
+./.omni_cache
 
 .eslintignore
 .eslintrc.js

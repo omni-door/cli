@@ -23,29 +23,29 @@ async function clearDir () {
 
 function flatten (arr) {
   return arr.reduce(function(prev, next){
-    return prev.concat(Array.isArray(next) ? flatten(next) : next)
-  }, [])
+    return prev.concat(Array.isArray(next) ? flatten(next) : next);
+  }, []);
 }
 
 async function createConfig () {
-  const extensions = ['.ts', '.js']
-  const filesPaths = []
-  const files = await readdir('src')
-  const len = files.length
+  const extensions = ['.ts', '.js'];
+  const filesPaths = [];
+  const files = await readdir('src');
+  const len = files.length;
   for (let i = 0; i < len; i++) {
     const file = files[i];
-    const filePath = path.resolve(__dirname, '../src', file)
-    const stats = await stat(filePath)
+    const filePath = path.resolve(__dirname, '../src', file);
+    const stats = await stat(filePath);
     if (stats.isDirectory()) {
       filesPaths.push({
         entry: filePath + '/index.ts',
         file: path.join(file, 'index.js')
-      })
+      });
     }
   }
 
   return [{
-    input: 'src/index.ts',
+    input: 'src/index.${ts ? 'ts' : 'js'}',
     output: {
       file: 'lib/index.js',
       format: 'cjs',
@@ -61,7 +61,7 @@ async function createConfig () {
             module: 'es2015'
           }
         },
-        exclude: [ "**/__test__/*.test.ts" ]
+        exclude: [ "**/__test__/*.test.${ts ? 'ts' : 'js'}" ]
       }),` : ''}
       babel({
         exclude: 'node_modules/**',
@@ -70,7 +70,7 @@ async function createConfig () {
       }),
       uglify()
     ]}, {
-      input: 'src/index.ts',
+      input: 'src/index.${ts ? 'ts' : 'js'}',
       output: {
         file: 'es/index.js',
         format: 'esm',
@@ -86,7 +86,7 @@ async function createConfig () {
               module: 'es2015'
             }
           },
-          exclude: [ "**/__test__/*.test.ts" ]
+          exclude: [ "**/__test__/*.test.${ts ? 'ts' : 'js'}" ]
         })` : ''}
       ]
     }, ...flatten(filesPaths.map(fileParams => {

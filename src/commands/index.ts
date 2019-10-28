@@ -3,10 +3,8 @@ import fs from 'fs';
 import path from 'path';
 import initial from './initial';
 import newTpl from './new';
-// import build from './build';
+import build from './build';
 // import release from './release';
-// import test from './test';
-// import lint from './lint';
 import { OmniConfig } from '../index.d';
 const pkj = require('../../package.json');
 
@@ -37,7 +35,7 @@ program
 program
   .command('build')
   .description('build your project according to [omni.config.js]')
-  .action(initial);
+  .action(() => build(config));
 
 program
   .command('release')

@@ -4,34 +4,34 @@ import fsExtra from 'fs-extra';
 import chalk from 'chalk';
 import figlet from 'figlet';
 import inquirer from 'inquirer';
-import shelljs from 'shelljs';
 import ora from 'ora';
-import omniConfigJs from '../templates/omni';
-import packageJson from '../templates/package';
-import stylelintConfigJs from '../templates/stylelint';
-import commitlintConfigJs from '../templates/commitlint';
-import babelConfigJs from '../templates/babel';
-import bishengConfigJs from '../templates/bisheng';
-import mochaOpts from '../templates/mocha';
-import karmaConfigJs from '../templates/karma';
-import jestConfigJs from '../templates/jest';
-import tsConfigJson from '../templates/tsconfig';
-import eslintrcJS from '../templates/eslint';
-import eslintignore from '../templates/eslintignore';
-import gitignore from '../templates/gitignore';
-import npmignore from '../templates/npmignore';
-import webpackConfigJs from '../templates/build/webpack';
-import serverTpl from '../templates/server';
-import webpackDevConfigJs from '../templates/server/webpack_dev';
-import indexTpl from '../templates/src/index';
-import indexHtml from '../templates/src/html';
-import postReadMe from '../templates/posts/readme';
-import rollupConfigJs from '../templates/build/rollup';
-import { dependencies, devDependencies } from '../configs/dependecies';
-import templates from '../configs/initial_tpls';
-import installClis from '../configs/initial_clis';
-import { BUILD, NPM, CDN, TESTFRAME, PKJTOOL, STYLE, DEVSERVER } from '../index.d';
-import { logErr, logInfo } from '../utils/logger';
+import omniConfigJs from '../../templates/omni';
+import packageJson from '../../templates/package';
+import stylelintConfigJs from '../../templates/stylelint';
+import commitlintConfigJs from '../../templates/commitlint';
+import babelConfigJs from '../../templates/babel';
+import bishengConfigJs from '../../templates/bisheng';
+import mochaOpts from '../../templates/mocha';
+import karmaConfigJs from '../../templates/karma';
+import jestConfigJs from '../../templates/jest';
+import tsConfigJson from '../../templates/tsconfig';
+import eslintrcJS from '../../templates/eslint';
+import eslintignore from '../../templates/eslintignore';
+import gitignore from '../../templates/gitignore';
+import npmignore from '../../templates/npmignore';
+import serverTpl from '../../templates/server';
+import webpackDevConfigJs from '../../templates/server/webpack_dev';
+import indexTpl from '../../templates/src/index';
+import indexHtml from '../../templates/src/html';
+import postReadMe from '../../templates/posts/readme';
+// import webpackConfigJs from '../templates/build/webpack';
+// import rollupConfigJs from '../templates/build/rollup';
+import { dependencies, devDependencies } from '../../configs/dependecies';
+import templates from '../../configs/initial_tpls';
+import installClis from '../../configs/initial_clis';
+import { BUILD, NPM, CDN, TESTFRAME, PKJTOOL, STYLE, DEVSERVER } from '../../index.d';
+import { logErr } from '../../utils/logger';
+import { execShell } from '../../utils/exec';
 
 export type GTpls = {
   name: string;
@@ -100,6 +100,7 @@ export default function ({
   }: GTpls) {
     // default files
     const content_omni = omniConfigJs({
+      build,
       ts,
       test,
       testFrame,
@@ -141,8 +142,8 @@ export default function ({
 
     // build files
     const content_babel = build && build !== 'tsc' && babelConfigJs({ ts });
-    const content_webpack = build && build === 'webpack' && webpackConfigJs({ ts, style });
-    const content_rollup = build && build === 'rollup' && rollupConfigJs({ ts });
+    // const content_webpack = build && build === 'webpack' && webpackConfigJs({ ts, style });
+    // const content_rollup = build && build === 'rollup' && rollupConfigJs({ ts });
 
     // server files
     const content_bisheng = devServer === 'bisheng' && bishengConfigJs({ name, git });
@@ -178,8 +179,8 @@ export default function ({
 
     // build files
     content_babel && fsExtra.outputFileSync(path.resolve('bable.config.js'), content_babel, 'utf8');
-    content_webpack && fsExtra.outputFileSync(path.resolve('build/webpack.config.js'), content_webpack, 'utf8');
-    content_rollup && fsExtra.outputFileSync(path.resolve('build/rollup.config.js'), content_rollup, 'utf8');
+    // content_webpack && fsExtra.outputFileSync(path.resolve('build/webpack.config.js'), content_webpack, 'utf8');
+    // content_rollup && fsExtra.outputFileSync(path.resolve('build/rollup.config.js'), content_rollup, 'utf8');
 
     // server files
     content_bisheng && fsExtra.outputFileSync(path.resolve('bisheng.config.js'), content_bisheng, 'utf8');
@@ -242,36 +243,12 @@ export default function ({
 
     return figlet('omni cli', function (err, data) {
       if (err) {
-        spinner.fail();
+        spinner.fail(chalk.red(`🐸  [OMNI-DOOR]: ❌  ${JSON.stringify(err)} \n`));
         logErr('Some thing about figlet is wrong!');
       }
       console.info(chalk.yellow(data || 'OMNI CLI'));
       fn(done);
     });
-  }
-
-  async function execShell (clis: string[], done?: () => void) {
-    for (let i = 0; i < clis.length; i++) {
-      const cli = clis[i];
-      if (!cli) continue;
-
-      try {
-        await new Promise((resolve, reject) => {
-          shelljs.exec(cli, {
-            async: true
-          }, function (code, stdout, stderr) {
-            resolve(stdout);
-          });
-        })
-          .then(res => logInfo(`${i}-shelljs.exec.then ` +  res))
-          .catch(err => logErr(`${i}-shelljs.exec.catch ` + err));
-      } catch (err) {
-        spinner.warn();
-        logErr(JSON.stringify(err));
-      }
-      
-    }
-    done && done();
   }
 
   if (simple || standard || entire || utils || components) {
@@ -321,9 +298,9 @@ export default function ({
         installCommitlintDevCli,
         installStylelintDevCli,
         installServerDevCli
-      ], done));
+      ], done, err => spinner.warn(chalk.yellow(`🐸  [OMNI-DOOR]: ❗️  ${JSON.stringify(err)} \n`))));
     } catch (err) {
-      spinner.fail();
+      spinner.fail(chalk.red(`🐸  [OMNI-DOOR]: ❌  ${JSON.stringify(err)} \n`));
       logErr(JSON.stringify(err));
     }
 
@@ -450,7 +427,7 @@ export default function ({
     try {
       !fs.existsSync(omniConfigPath) && questions.shift();
     } catch (err) {
-      spinner.warn();
+      spinner.warn(chalk.yellow(`🐸  [OMNI-DOOR]: ❗️  ${JSON.stringify(err)} \n`));
       logErr(JSON.stringify(err));
     }
 
@@ -516,10 +493,10 @@ export default function ({
           installStylelintDevCli,
           installServerDevCli,
           gitCli
-        ], done));
+        ], done, err => spinner.warn(chalk.yellow(`🐸  [OMNI-DOOR]: ❗️  ${JSON.stringify(err)} \n`))));
       })
       .catch(err => {
-        spinner.fail();
+        spinner.fail(chalk.red(`🐸  [OMNI-DOOR]: ❌  ${JSON.stringify(err)} \n`));
         logErr(JSON.stringify(err));
         process.exit(1);
       });

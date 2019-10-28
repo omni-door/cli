@@ -6,8 +6,10 @@ export type TESTFRAME = 'mocha' | 'jest' | 'karma' | '';
 export type PKJTOOL = 'yarn' | 'npm' | 'cnpm';
 export type STYLE = 'less' | 'scss' | 'css' | '';
 export type DEVSERVER = 'bisheng' | 'express' | '';
+export type ANYOBJECT = { [propName: string]: any };
 
 export type GenerateOmniConfigParams = {
+  build: BUILD;
   ts: boolean;
   test: boolean;
   testFrame: string;
@@ -22,13 +24,18 @@ export type GenerateOmniConfigParams = {
 
 export type OmniConfig = {
   build: {
+    tool: BUILD;
+    configuration: (config: ANYOBJECT) => ANYOBJECT;
+    mult_output: boolean;
+    typescript: boolean;
     test: boolean;
     eslint: boolean;
     commitlint: boolean;
     stylelint: boolean;
-    root: string;
-    esmRoot: string;
-    autoRelease: boolean;
+    src_dir: string;
+    out_dir: string;
+    esm_dir: string;
+    auto_release: boolean;
   };
   release: {
     git: string;
