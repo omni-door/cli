@@ -14,7 +14,7 @@ ${ts ? `export interface ${componentName}Props {};
 
 export interface ${componentName}States {};` : ''}
 
-class ${componentName} extends PureComponent${ts ? `<${componentName}Props, ${componentName}States>` : ''} {
+export class ${componentName} extends PureComponent${ts ? `<${componentName}Props, ${componentName}States>` : ''} {
   render() {
     const { children } = this.props;
 

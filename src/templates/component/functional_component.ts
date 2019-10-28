@@ -12,9 +12,13 @@ ${style ? `import './style/${componentName}.${style}';` : ''}
 
 ${ts ? `export interface ${componentName}Props {};` : ''}
 
-const ${componentName}${ts ? `: SFC<${componentName}Props>` : ''} = props => {
+export const ${componentName}${ts ? `: SFC<${componentName}Props>` : ''} = props => {
+  const { children } = props;
+
   return (
-    <div>
+    <div
+      className='${componentName}'
+    >
       { children }
     </div>
   );
