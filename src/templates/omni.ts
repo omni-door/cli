@@ -27,7 +27,7 @@ module.exports = {
     // The callback will be call when the build process
     // You can return your custom build configuration
     configuration: config => {
-      console.info('build config: ', config)
+      console.info('build config: ', config);
       return config;
     },
     // whether or not output multiple files

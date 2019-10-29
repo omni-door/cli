@@ -4,8 +4,9 @@ import rollupConfig from './rollup';
 import webpackConfig from './webpack';
 import { logErr, logInfo, logWarn, logSuc, logEmph } from '../../utils/logger';
 import { execShell } from '../../utils/exec';
-import { OmniConfig } from '../../index.d';
+import { OmniConfig, ANYOBJECT } from '../../index.d';
 
+export let custom_config: ANYOBJECT | null = null;
 export default async function (config: OmniConfig | {}) {
   if (JSON.stringify(config) === '{}') {
     logWarn('Please Initialize project first');
@@ -34,20 +35,20 @@ export default async function (config: OmniConfig | {}) {
   }
 
   function buildErr (err: any) {
-    logErr(`Building failed because that ${JSON.stringify(err)} occured!`);
+    logErr(`Building failed! 👉  ${JSON.stringify(err)}`);
   }
 
   try {
     if (test) {
-      await execShell(['npm test'], () => logEmph('unit test passed!'), err => logWarn(`unit test because that ${JSON.stringify(err)} occured!`));
+      await execShell(['npm test'], () => logEmph('unit test passed!'), err => logWarn(`unit test failed! 👉  ${JSON.stringify(err)}`));
     }
 
     if (eslint) {
-      await execShell(['npm run lint:es'], () => logEmph('eslint passed!'), err => logWarn(`eslint failed because that ${JSON.stringify(err)} occured!`));
+      await execShell(['npm run lint:es'], () => logEmph('eslint passed!'), err => logWarn(`eslint checking failed! 👉  ${JSON.stringify(err)}`));
     }
 
     if (stylelint) {
-      await execShell(['npm run lint:style'], () => logEmph('stylelint passed!'), err => logWarn(`stylelint failed because that ${JSON.stringify(err)} occured!`));
+      await execShell(['npm run lint:style'], () => logEmph('stylelint passed!'), err => logWarn(`stylelint checking failed! 👉  ${JSON.stringify(err)}`));
     }
 
     const content_rollup = tool === 'rollup' && rollupConfig({ ts: typescript, multi_output, src_dir, out_dir, esm_dir });
@@ -56,18 +57,16 @@ export default async function (config: OmniConfig | {}) {
 
     // put temporary file for build process
     if (content_config) {
-      const buildConfigPath = path.resolve(process.cwd(), '.omni_cache/build.config.js');
+      const buildConfigPath = path.resolve(__dirname, '../../../', '.omni_cache/build.config.js');
       fsExtra.outputFileSync(buildConfigPath, content_config, 'utf8');
+
       let configs = require(buildConfigPath);
       if (tool === 'rollup') {
         configs = await configs;
       }
-      configs = configuration ? configuration(configs) : configs;
-
-      const content_rollup_custom = tool === 'rollup' && rollupConfig({ ts: typescript, multi_output, src_dir, out_dir, esm_dir, custom_exports: configs });
-      const content_webpack_custom = tool === 'webpack' && webpackConfig({ ts: typescript, multi_output, src_dir, out_dir, custom_exports: configs });
-      const content_config_custom = content_rollup_custom || content_webpack_custom;
-      fsExtra.outputFileSync(buildConfigPath, content_config_custom, 'utf8');
+      if (typeof configuration === 'function') {
+        custom_config = configuration(configs);
+      }
 
       const webpackPath = path.resolve(__dirname, '../../../node_modules', 'webpack-cli/bin/cli.js');
       const rollupPath = path.resolve(__dirname, '../../../node_modules', 'rollup/dist/bin/rollup');
@@ -87,9 +86,9 @@ export default async function (config: OmniConfig | {}) {
     }
 
     if (auto_release) {
-      await execShell(['omni release'], () => logEmph('release success!'), err => logWarn(`release failed because that ${JSON.stringify(err)} occured!`));
+      await execShell(['omni release'], () => logEmph('release success!'), err => logWarn(`release failed! 👉  ${JSON.stringify(err)}`));
     }
   } catch (err) {
-    logErr(`Oops! some accident occured ${JSON.stringify(err)}`);
+    logErr(`Oops! some accident occured 👉  ${JSON.stringify(err)}`);
   }
 }

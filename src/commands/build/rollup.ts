@@ -1,14 +1,11 @@
-import { ANYOBJECT } from '../../index.d';
-
 export default function (config: {
   ts: boolean;
   multi_output: boolean;
   src_dir: string;
   out_dir: string;
   esm_dir: string;
-  custom_exports?: ANYOBJECT;
 }) {
-  const { ts, multi_output, src_dir = 'src', out_dir = 'lib', esm_dir, custom_exports } = config;
+  const { ts, multi_output, src_dir = 'src', out_dir = 'lib', esm_dir } = config;
 
   return `const resolve = require('rollup-plugin-node-resolve');
 const commonjs = require('rollup-plugin-commonjs');
@@ -20,6 +17,7 @@ const { promisify } = require('util');
 const fs = require('fs');
 const path = require('path');
 const del = require('del');
+const { custom_config } = require(path.resolve(__dirname, '../src/commands/build'));
 
 const stat = promisify(fs.stat);
 const readdir = promisify(fs.readdir);
@@ -148,10 +146,6 @@ async function createConfig () {
 };
 
 clearDir();
-module.exports = ${
-  custom_exports
-    ? custom_exports
-    : 'createConfig();'
-}
+module.exports = custom_config || createConfig();
 `;
 }
