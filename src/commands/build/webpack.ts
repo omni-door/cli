@@ -1,3 +1,4 @@
+import path from 'path';
 import { ANYOBJECT } from '../../index.d';
 
 export default function (config: {
@@ -7,34 +8,38 @@ export default function (config: {
   out_dir: string;
   custom_exports?: ANYOBJECT;
 }) {
-  const { ts, multi_output, src_dir = 'src', out_dir = 'lib', custom_exports } = config;
+  const { ts, multi_output, src_dir = path.resolve(__dirname, '../src/'), out_dir = path.resolve(__dirname, '../lib/'), custom_exports } = config;
 
   return `'use strict';
 
 const path = require('path');
-const fs = require('fs');
+${
+  multi_output
+    ? `const fs = require('fs');
 
-const entriesPath = path.resolve(__dirname, '../${src_dir}/');
-const entriesList = getFolders(entriesPath);
+    const entriesPath = ${src_dir};
+    const entriesList = getFolders(entriesPath);
 
-function getFolders (folderPath) {
-  const list = fs.readdirSync(folderPath)
-  const folderList = list.filter((v, k) => {
-    const stats = fs.statSync(\`\${folderPath}/\${v}\`);
-    return stats.isDirectory();
-  })
-  return folderList;
+    function getFolders (folderPath) {
+      const list = fs.readdirSync(folderPath)
+      const folderList = list.filter((v, k) => {
+        const stats = fs.statSync(\`\${folderPath}/\${v}\`);
+        return stats.isDirectory();
+      })
+      return folderList;
+    }`
+    : ''
 }
 
 const entry = {
-  index: path.resolve(__dirname, '../${src_dir}/index.${ts ? 'ts' : 'js'}')
+  index: path.resolve(${src_dir}, 'index.${ts ? 'ts' : 'js'}')
 };
 
 ${
   multi_output
     ? `entriesList.forEach(v => {
       if (v !== 'style' && v !== 'styles') {
-        entry[v] = path.resolve(__dirname, \`../${src_dir}/\${v}/index.${ts ? 'ts' : 'js'}\`)
+        entry[v] = path.resolve(${src_dir}, \`\${v}/index.${ts ? 'ts' : 'js'}\`)
       }
     })`
     : ''
@@ -47,13 +52,13 @@ module.exports = ${
       entry,
       output: {
         filename: '[name].js',
-        path: path.resolve(__dirname, '../${out_dir}')
+        path: ${out_dir}
       },
       module: {
         rules: [
           {
             test: /\.(js|jsx)$/,
-            include: path.resolve(__dirname, "..", "${src_dir}/"),
+            include: ${src_dir},
             exclude: /node_modules/,
             use: [
               {loader: 'babel-loader'}
@@ -61,7 +66,7 @@ module.exports = ${
           },
           {
             test: /\.(ts|tsx)$/,
-            include: path.resolve(__dirname, "..", "${src_dir}/"),
+            include: ${src_dir},
             exclude: /node_modules/,
             use: [
               {
@@ -72,17 +77,17 @@ module.exports = ${
           {
             test: /\.css$/,
             use:  ['style-loader', 'css-loader'],
-            include: path.resolve(__dirname, "..", "${src_dir}/")
+            include: ${src_dir}
           },
           {
             test: /\.scss$/,
             use: ['style-loader', 'css-loader', 'sass-loader'],
-            include: path.resolve(__dirname, "..", "${src_dir}/")
+            include: ${src_dir}
           },
           {
             test: /\.less$/,
             use: ['style-loader', 'css-loader', 'less-loader'],
-            include: path.resolve(__dirname, "..", "${src_dir}/")
+            include: ${src_dir}
           }
         ],
       },

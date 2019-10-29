@@ -52,24 +52,28 @@ export default async function (config: OmniConfig | {}) {
 
     // put temporary file for build process
     if (content_config) {
-      const cachePath = path.resolve(process.cwd(), '.omni_cache/build.config.js');
-      fsExtra.outputFileSync(cachePath, content_config, 'utf8');
-      let configs = require(cachePath);
+      const buildConfigPath = path.resolve(process.cwd(), '.omni_cache/build.config.js');
+      fsExtra.outputFileSync(buildConfigPath, content_config, 'utf8');
+      let configs = require(buildConfigPath);
       if (tool === 'rollup') {
         configs = await configs;
       }
       configs = configuration ? configuration(configs) : configs;
-      fsExtra.outputFileSync(cachePath, configs, 'utf8');
+
+      const content_rollup_custom = tool === 'rollup' && rollupConfig({ ts: typescript, multi_output, src_dir, out_dir, esm_dir, custom_exports: configs });
+      const content_webpack_custom = tool === 'webpack' && webpackConfig({ ts: typescript, multi_output, src_dir, out_dir, custom_exports: configs });
+      const content_config_custom = content_rollup_custom || content_webpack_custom;
+      fsExtra.outputFileSync(buildConfigPath, content_config_custom, 'utf8');
 
       const webpackPath = path.resolve(__dirname, '../../../node_modules', 'webpack-cli/bin/cli.js');
-      const rollupPath = path.resolve(__dirname, '../../../node_modules', 'webpack-cli/dist/bin/rollup');
+      const rollupPath = path.resolve(__dirname, '../../../node_modules', 'rollup/dist/bin/rollup');
       const tscPath = path.resolve(__dirname, '../../../node_modules', 'typescript/bin/tsc');
 
       const buildCliArr = [];
       if (tool === 'rollup') {
-        buildCliArr.push(`${rollupPath} -c ${cachePath}`);
+        buildCliArr.push(`${rollupPath} -c ${buildConfigPath}`);
       } else if (tool === 'webpack') {
-        buildCliArr.push(`${webpackPath} --config ${cachePath}`);
+        buildCliArr.push(`${webpackPath} --config ${buildConfigPath}`);
       } else if (tool === 'tsc') {
         buildCliArr.push(`${tscPath} --build ${path.resolve(process.cwd(), 'tsconfig.json')} --outDir ${out_dir}`);
         esm_dir && buildCliArr.push(`${tscPath} --build ${path.resolve(process.cwd(), 'tsconfig.json')} --module ES6 --target ES6 --outDir ${esm_dir}`);
