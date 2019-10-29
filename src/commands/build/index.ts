@@ -29,13 +29,21 @@ export default async function (config: OmniConfig | {}) {
     auto_release
   } } = config as OmniConfig;
 
+  function buildSuc () {
+    logSuc('Building completed!');
+  }
+
+  function buildErr (err: any) {
+    logErr(`Building failed because that ${JSON.stringify(err)} occured!`);
+  }
+
   try {
     if (test) {
-      await execShell(['npm test'], () => logEmph('unit test passed!'), err => logErr(`unit test because that ${JSON.stringify(err)}`));
+      await execShell(['npm test'], () => logEmph('unit test passed!'), err => logWarn(`unit test because that ${JSON.stringify(err)} occured!`));
     }
 
     if (eslint || stylelint) {
-      await execShell(['npm run lint'], () => logEmph('lint passed!'), err => logErr(`lint failed because that ${JSON.stringify(err)}`));
+      await execShell(['npm run lint'], () => logEmph('lint passed!'), err => logWarn(`lint failed because that ${JSON.stringify(err)} occured!`));
     }
 
     const content_rollup = tool === 'rollup' && rollupConfig({ ts: typescript, multi_output, src_dir, out_dir, esm_dir });
@@ -44,7 +52,7 @@ export default async function (config: OmniConfig | {}) {
 
     // put temporary file for build process
     if (content_config) {
-      const cachePath = path.resolve('./.omni_cache/build.config.js');
+      const cachePath = path.resolve(process.cwd(), '.omni_cache/build.config.js');
       fsExtra.outputFileSync(cachePath, content_config, 'utf8');
       let configs = require(cachePath);
       if (tool === 'rollup') {
@@ -57,28 +65,23 @@ export default async function (config: OmniConfig | {}) {
       const rollupPath = path.resolve(__dirname, '../../../node_modules', 'webpack-cli/dist/bin/rollup');
       const tscPath = path.resolve(__dirname, '../../../node_modules', 'typescript/bin/tsc');
 
+      const buildCliArr = [];
       if (tool === 'rollup') {
-        await execShell([
-          `${rollupPath} -c ${cachePath}`
-        ]);
+        buildCliArr.push(`${rollupPath} -c ${cachePath}`);
       } else if (tool === 'webpack') {
-        await execShell([
-          `${webpackPath} --config ${cachePath}`
-        ]);
+        buildCliArr.push(`${webpackPath} --config ${cachePath}`);
       } else if (tool === 'tsc') {
-        await execShell([
-          `${tscPath} --build --outDir ${out_dir}`,
-          esm_dir ? `${tscPath} --module ES6 --target ES6 --outDir ${esm_dir}` : ''
-        ]);
+        buildCliArr.push(`${tscPath} --build ${path.resolve(process.cwd(), 'tsconfig.json')} --outDir ${out_dir}`);
+        esm_dir && buildCliArr.push(`${tscPath} --build ${path.resolve(process.cwd(), 'tsconfig.json')} --module ES6 --target ES6 --outDir ${esm_dir}`);
       }
-    }
 
-    logSuc('Building completed!');
+      await execShell(buildCliArr, buildSuc, buildErr);
+    }
 
     if (auto_release) {
-      await execShell(['omni release'], () => logEmph('release success!'), err => logErr(`release failed because that ${JSON.stringify(err)}`));
+      await execShell(['omni release'], () => logEmph('release success!'), err => logWarn(`release failed because that ${JSON.stringify(err)} occured!`));
     }
   } catch (err) {
-    logErr(`Oops! some error occured ${JSON.stringify(err)}`);
+    logErr(`Oops! some accident occured ${JSON.stringify(err)}`);
   }
 }

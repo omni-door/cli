@@ -23,7 +23,7 @@ module.exports = {
   // build relative config
   build: {
     // the build tool
-    tool: ${build},
+    tool: '${build}',
     // The callback will be call when the build process
     // You can return your custom build configuration
     configuration: config => {
