@@ -17,8 +17,18 @@ const { promisify } = require('util');
 const fs = require('fs');
 const path = require('path');
 const del = require('del');
-const { custom_config } = require(path.resolve(__dirname, '../src/commands/build'));
+const omni_config = require(path.resolve(process.cwd(), 'omni.config.js'));
 
+const { build } = omni_config || {};
+const { configuration = config => config } = build || {};
+
+let indexPath = '';
+const exts = ['ts', 'tsx', 'js', 'jsx'];
+for (let i = 0, len = exts.length; i < len; i++) {
+  indexPath = path.resolve('${src_dir}', \`index.\${exts[i]}\`);
+  if (fs.existsSync(indexPath)) break;
+}
+console.log('indexPath', indexPath)
 const stat = promisify(fs.stat);
 const readdir = promisify(fs.readdir);
 async function clearDir () {
@@ -42,15 +52,20 @@ async function createConfig () {
     const filePath = path.resolve('${src_dir}', file);
     const stats = await stat(filePath);
     if (stats.isDirectory()) {
+      let entryPath = '';
+      for (let i = 0, len = exts.length; i < len; i++) {
+        entryPath = path.resolve(filePath, \`index.\${exts[i]}\`);
+        if (fs.existsSync(entryPath)) break;
+      }
       filesPaths.push({
-        entry: filePath + '/index.ts',
+        entry: entryPath,
         file: path.join(file, 'index.js')
       });
     }
   }` : ''}
 
   return [{
-    input: path.resolve('${src_dir}', 'index.${ts ? 'ts' : 'js'}'),
+    input: indexPath,
     output: {
       file: '${out_dir}/index.js',
       format: 'cjs',
@@ -66,7 +81,7 @@ async function createConfig () {
             module: 'es2015'
           }
         },
-        exclude: [ "**/__test__/*.test.${ts ? 'ts' : 'js'}" ]
+        exclude: [ "**/__test__/*" ]
       }),` : ''}
       babel({
         exclude: 'node_modules/**',
@@ -77,7 +92,7 @@ async function createConfig () {
     ]}, ${
   esm_dir
     ? `{
-          input: path.resolve('${src_dir}', 'index.${ts ? 'ts' : 'js'}'),
+          input: indexPath,
           output: {
             file: '${esm_dir}/index.js',
             format: 'esm',
@@ -93,7 +108,7 @@ async function createConfig () {
                   module: 'es2015'
                 }
               },
-              exclude: [ "**/__test__/*.test.${ts ? 'ts' : 'js'}" ]
+              exclude: [ "**/__test__/*" ]
             })` : ''}
           ]
         },`
@@ -146,6 +161,6 @@ async function createConfig () {
 };
 
 clearDir();
-module.exports = custom_config || createConfig();
+module.exports = configuration(createConfig());
 `;
 }

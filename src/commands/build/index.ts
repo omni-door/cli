@@ -4,9 +4,8 @@ import rollupConfig from './rollup';
 import webpackConfig from './webpack';
 import { logErr, logInfo, logWarn, logSuc, logEmph } from '../../utils/logger';
 import { execShell } from '../../utils/exec';
-import { OmniConfig, ANYOBJECT } from '../../index.d';
+import { OmniConfig } from '../../index.d';
 
-export let custom_config: ANYOBJECT | null = null;
 export default async function (config: OmniConfig | {}) {
   if (JSON.stringify(config) === '{}') {
     logWarn('Please Initialize project first');
@@ -65,12 +64,12 @@ export default async function (config: OmniConfig | {}) {
         configs = await configs;
       }
       if (typeof configuration === 'function') {
-        custom_config = configuration(configs);
+        configuration(configs);
       }
 
-      const webpackPath = path.resolve(__dirname, '../../../node_modules', 'webpack-cli/bin/cli.js');
-      const rollupPath = path.resolve(__dirname, '../../../node_modules', 'rollup/dist/bin/rollup');
-      const tscPath = path.resolve(__dirname, '../../../node_modules', 'typescript/bin/tsc');
+      const webpackPath = path.resolve(process.cwd(), 'node_modules/webpack-cli/bin/cli.js');
+      const rollupPath = path.resolve(process.cwd(), 'node_modules/rollup/dist/bin/rollup');
+      const tscPath = path.resolve(process.cwd(), 'node_modules/typescript/bin/tsc');
 
       const buildCliArr = [];
       if (tool === 'rollup') {
