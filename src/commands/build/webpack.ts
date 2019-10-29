@@ -32,14 +32,14 @@ ${
 }
 
 const entry = {
-  index: path.resolve(${src_dir}, 'index.${ts ? 'ts' : 'js'}')
+  index: path.resolve(‘${src_dir}’, 'index.${ts ? 'ts' : 'js'}')
 };
 
 ${
   multi_output
     ? `entriesList.forEach(v => {
       if (v !== 'style' && v !== 'styles') {
-        entry[v] = path.resolve(${src_dir}, \`\${v}/index.${ts ? 'ts' : 'js'}\`)
+        entry[v] = path.resolve(‘${src_dir}’, \`\${v}/index.${ts ? 'ts' : 'js'}\`)
       }
     })`
     : ''

@@ -42,8 +42,12 @@ export default async function (config: OmniConfig | {}) {
       await execShell(['npm test'], () => logEmph('unit test passed!'), err => logWarn(`unit test because that ${JSON.stringify(err)} occured!`));
     }
 
-    if (eslint || stylelint) {
-      await execShell(['npm run lint'], () => logEmph('lint passed!'), err => logWarn(`lint failed because that ${JSON.stringify(err)} occured!`));
+    if (eslint) {
+      await execShell(['npm run lint:es'], () => logEmph('eslint passed!'), err => logWarn(`eslint failed because that ${JSON.stringify(err)} occured!`));
+    }
+
+    if (stylelint) {
+      await execShell(['npm run lint:style'], () => logEmph('stylelint passed!'), err => logWarn(`stylelint failed because that ${JSON.stringify(err)} occured!`));
     }
 
     const content_rollup = tool === 'rollup' && rollupConfig({ ts: typescript, multi_output, src_dir, out_dir, esm_dir });

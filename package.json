@@ -1,6 +1,6 @@
 {
   "name": "omni-door",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "A tool set for set up the standard JS project",
   "bin": {
     "omni": "./bin/omni-door.js"

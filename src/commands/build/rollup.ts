@@ -41,7 +41,7 @@ async function createConfig () {
   const len = files.length;
   for (let i = 0; i < len; i++) {
     const file = files[i];
-    const filePath = path.resolve(${src_dir}, file);
+    const filePath = path.resolve('${src_dir}', file);
     const stats = await stat(filePath);
     if (stats.isDirectory()) {
       filesPaths.push({
@@ -52,7 +52,7 @@ async function createConfig () {
   }` : ''}
 
   return [{
-    input: path.resolve(${src_dir}, index.${ts ? 'ts' : 'js'}),
+    input: path.resolve('${src_dir}', 'index.${ts ? 'ts' : 'js'}'),
     output: {
       file: '${out_dir}/index.js',
       format: 'cjs',
@@ -79,7 +79,7 @@ async function createConfig () {
     ]}, ${
   esm_dir
     ? `{
-          input: path.resolve(${src_dir}, index.${ts ? 'ts' : 'js'}),
+          input: path.resolve('${src_dir}', 'index.${ts ? 'ts' : 'js'}'),
           output: {
             file: '${esm_dir}/index.js',
             format: 'esm',
@@ -105,7 +105,7 @@ async function createConfig () {
       return [{
         input: entry,
         output: {
-          file: path.resolve(${out_dir}, file),
+          file: path.resolve('${out_dir}', file),
           format: 'cjs',
           exports: 'named',
           compact: true
@@ -128,7 +128,7 @@ async function createConfig () {
     ? `{
             input: entry,
             output: {
-              file: path.resolve(${esm_dir}, file),
+              file: path.resolve('${esm_dir}', file),
               format: 'esm',
               compact: true
             },
