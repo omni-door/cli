@@ -31,27 +31,34 @@ export function devDependencies (config: Config) {
   } = config;
 
   const babelDependencies = [
+    'babel-loader',
+    style ? 'style-loader' : '',
+    style ? 'css-loader' : '',
+    style === 'less' ? 'less' : '',
+    style === 'less' ? 'less-loader' : '',
+    style === 'scss' ? 'sass-loader' : '',
+    style === 'scss' ? 'node-sass' : '',
     '@babel/core',
     '@babel/preset-env',
     '@babel/preset-react',
     ts ? '@babel/plugin-transform-typescript' : ''
   ];
 
-  // const buildDependencies = build === 'webpack' ? [
-  //   'webpack',
-  //   'webpack-cli',
-  //   ...babelDependencies
-  // ] : build === 'rollup' ? [
-  //   'rollup',
-  //   'rollup-plugin-node-resolve',
-  //   'rollup-plugin-babel',
-  //   'rollup-plugin-commonjs',
-  //   'rollup-plugin-node-resolve',
-  //   'rollup-plugin-uglify',
-  //   ts ? 'rollup-plugin-typescript' : '',
-  //   ts ? 'rollup-plugin-typescript2' : '',
-  //   ...babelDependencies
-  // ] : [];
+  const buildDependencies = build === 'webpack' ? [
+    'webpack',
+    'webpack-cli',
+    ...babelDependencies
+  ] : build === 'rollup' ? [
+    'rollup',
+    'rollup-plugin-node-resolve',
+    'rollup-plugin-babel',
+    'rollup-plugin-commonjs',
+    'rollup-plugin-node-resolve',
+    'rollup-plugin-uglify',
+    ts ? 'rollup-plugin-typescript' : '',
+    ts ? 'rollup-plugin-typescript2' : '',
+    ...babelDependencies
+  ] : [];
 
   const tsTypesDependencies = testFrame ? testFrame === 'jest' ? [
     '@types/jest',
@@ -143,10 +150,10 @@ export function devDependencies (config: Config) {
 
   return {
     defaultDep: [
-      'omni-door',
+      '@omni-door/cli',
       'del'
     ],
-    buildDep: babelDependencies,
+    buildDep: buildDependencies,
     tsDep: tsDependencies,
     testDep: testDependencies,
     eslintDep: eslintDependencies,

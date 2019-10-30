@@ -34,3 +34,5 @@ updateVersion () {
 }
 
 updateVersion
+
+exec "./.build/publish.sh"

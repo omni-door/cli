@@ -40,7 +40,11 @@ export type OmniConfig = {
     git: string;
     npm: NPM | string;
     cdn: CDN | string;
+    test: boolean;
+    eslint: boolean;
+    stylelint: boolean;
     commitlint: boolean;
+    branch: string;
   };
   template: {
     root: string;

@@ -27,7 +27,7 @@ import indexHtml from '../../templates/source/html';
 import postReadMe from '../../templates/posts/readme';
 // import webpackConfigJs from '../templates/build/webpack';
 // import rollupConfigJs from '../templates/build/rollup';
-import { dependencies, devDependencies } from '../../configs/dependecies';
+import { dependencies, devDependencies } from '../../configs/dependencies';
 import templates from '../../configs/initial_tpls';
 import installClis from '../../configs/initial_clis';
 import { BUILD, NPM, CDN, TESTFRAME, PKJTOOL, STYLE, DEVSERVER } from '../../index.d';

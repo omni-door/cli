@@ -1,10 +1,13 @@
+import fs from 'fs';
 import path from 'path';
 import fsExtra from 'fs-extra';
+import inquirer from 'inquirer';
 import rollupConfig from './rollup';
 import webpackConfig from './webpack';
 import { logErr, logInfo, logWarn, logSuc, logEmph } from '../../utils/logger';
 import { execShell } from '../../utils/exec';
-import { OmniConfig } from '../../index.d';
+import { OmniConfig, BUILD } from '../../index.d';
+import dependencies_build from '../../configs/dependencies_build';
 
 /**
  * todo 1. gulp
@@ -40,6 +43,35 @@ export default async function (config: OmniConfig | {}) {
     logErr(`Building failed! 👉  ${JSON.stringify(err)}`);
   }
 
+  function installDenpendencies (build: BUILD) {
+    return inquirer.prompt([
+      {
+        name: 'install',
+        type: 'confirm',
+        message: '自动安装所需要的依赖? (Automatic install dependencies?)',
+        default: true
+      }
+    ]).then(answers => {
+      const { install } = answers;
+      if (install) {
+        const dependencies = dependencies_build({ build }).join(' ');
+        return execShell([
+          `yarn add -D ${dependencies}`
+        ],
+        () => {
+          logEmph('dependencies install completed!');
+          return true;
+        },
+        err => {
+          logWarn(`dependencies install occured some accidents 👉  ${JSON.stringify(err)}`);
+          return false;
+        });
+      } else {
+        return false;
+      }
+    });
+  }
+
   try {
     if (test) {
       await execShell(['npm test'], () => logEmph('🔈  unit test passed!'), err => logWarn(`unit test failed! 👉  ${JSON.stringify(err)}`));
@@ -62,6 +94,12 @@ export default async function (config: OmniConfig | {}) {
       const tscPath = path.resolve(process.cwd(), 'node_modules/typescript/bin/tsc');
       buildCliArr.push(`${tscPath} --outDir ${out_dir} --project ${path.resolve(process.cwd(), 'tsconfig.json')}`);
       esm_dir && buildCliArr.push(`${tscPath} --module ES6 --target ES6 --outDir ${esm_dir} --project ${path.resolve(process.cwd(), 'tsconfig.json')}`);
+
+      if (!fs.existsSync(tscPath)) {
+        logWarn('Please install typescript first!');
+        const is_go_on = await installDenpendencies('tsc');
+        if (!is_go_on) return;
+      }
     } else {
       const content_rollup = tool === 'rollup' && rollupConfig({ ts: typescript, multi_output, src_dir, out_dir, esm_dir });
       const content_webpack = tool === 'webpack' && webpackConfig({ ts: typescript, multi_output, src_dir, out_dir });
@@ -79,14 +117,25 @@ export default async function (config: OmniConfig | {}) {
         // if (typeof configuration === 'function') {
         //   configuration(configs);
         // }
-  
-        const webpackPath = path.resolve(process.cwd(), 'node_modules/webpack-cli/bin/cli.js');
-        const rollupPath = path.resolve(process.cwd(), 'node_modules/rollup/dist/bin/rollup');
 
         if (tool === 'rollup') {
+          const rollupPath = path.resolve(process.cwd(), 'node_modules/rollup/dist/bin/rollup');
           buildCliArr.push(`${rollupPath} -c ${buildConfigPath}`);
+
+          if (!fs.existsSync(rollupPath)) {
+            logWarn('Please install rollup first!');
+            const is_go_on = await installDenpendencies('rollup');
+            if (!is_go_on) return;
+          }
         } else if (tool === 'webpack') {
+          const webpackPath = path.resolve(process.cwd(), 'node_modules/webpack-cli/bin/cli.js');
           buildCliArr.push(`${webpackPath} --config ${buildConfigPath}`);
+
+          if (!fs.existsSync(webpackPath)) {
+            logWarn('Please install webpack-cli first!');
+            const is_go_on = await installDenpendencies('webpack');
+            if (!is_go_on) return;
+          }
         }
       }
     }

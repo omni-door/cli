@@ -1,7 +1,7 @@
 #! /bin/bash
 
-name=$1
-iterate=$2
+iterate=$1
+name="[OMNI-DOOR]"
 dot="."
 
 updateVersion () {

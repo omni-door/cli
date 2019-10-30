@@ -1,6 +1,6 @@
 {
   "name": "@omni-door/cli",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A tool set for set up the standard JS project",
   "bin": {
     "omni": "./bin/omni-door.js"
@@ -9,13 +9,12 @@
     "test": "nyc mocha --opts mocha.opts",
     "lint": "eslint src/ --ext .ts --ext .tsx",
     "lint:fix": "eslint src/ --ext .ts --ext .tsx --fix",
-    "build": "npm run build:rm && npm run build:tsc && npm run build:publish",
+    "build": "npm run build:rm && npm run build:tsc",
     "build:rm": "rm -rf lib/*",
     "build:tsc": "tsc --build",
     "build:branch": "./.build/branch.sh",
-    "build:publish": "./.build/publish.sh",
     "build:version": "./.build/version.sh",
-    "release": "npm run build:branch master && npm run build:version && npm run build"
+    "release": "npm run build:branch master && npm run build && npm run build:version"
   },
   "repository": {
     "type": "git",
@@ -45,6 +44,7 @@
   },
   "homepage": "https://github.com/BobbyLH/omni-door#readme",
   "devDependencies": {
+    "@babel/core": "^7.6.4",
     "@types/chai": "^4.2.3",
     "@types/clui": "^0.3.0",
     "@types/figlet": "^1.2.0",
@@ -57,30 +57,18 @@
     "@types/shelljs": "^0.8.5",
     "@typescript-eslint/eslint-plugin": "^2.4.0",
     "@typescript-eslint/parser": "^2.4.0",
+    "babel-loader": "^8.0.6",
     "chai": "^4.2.0",
     "commitlint": "^8.2.0",
+    "css-loader": "^3.2.0",
     "eslint": "^6.5.1",
     "husky": "^3.0.9",
-    "lint-staged": "^9.4.2",
-    "mocha": "^6.2.2",
-    "nyc": "^14.1.1",
-    "ts-node": "^8.4.1"
-  },
-  "dependencies": {
-    "@babel/core": "^7.6.4",
-    "babel-loader": "^8.0.6",
-    "chalk": "^2.4.2",
-    "commander": "^3.0.2",
-    "css-loader": "^3.2.0",
-    "del": "^5.1.0",
-    "figlet": "^1.2.4",
-    "fs-extra": "^8.1.0",
-    "inquirer": "^7.0.0",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
+    "lint-staged": "^9.4.2",
+    "mocha": "^6.2.2",
     "node-sass": "^4.13.0",
-    "ora": "^4.0.2",
-    "progress": "^2.0.3",
+    "nyc": "^14.1.1",
     "rollup": "^1.26.0",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
@@ -89,11 +77,22 @@
     "rollup-plugin-typescript2": "^0.24.3",
     "rollup-plugin-uglify": "^6.0.3",
     "sass-loader": "^8.0.0",
-    "shelljs": "^0.8.3",
     "style-loader": "^1.0.0",
     "ts-loader": "^6.2.1",
+    "ts-node": "^8.4.1",
     "typescript": "^3.6.4",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.9"
+  },
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "commander": "^3.0.2",
+    "del": "^5.1.0",
+    "figlet": "^1.2.4",
+    "fs-extra": "^8.1.0",
+    "inquirer": "^7.0.0",
+    "ora": "^4.0.2",
+    "progress": "^2.0.3",
+    "shelljs": "^0.8.3"
   }
 }
