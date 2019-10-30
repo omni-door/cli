@@ -28,7 +28,7 @@ for (let i = 0, len = exts.length; i < len; i++) {
   indexPath = path.resolve('${src_dir}', \`index.\${exts[i]}\`);
   if (fs.existsSync(indexPath)) break;
 }
-console.log('indexPath', indexPath)
+
 const stat = promisify(fs.stat);
 const readdir = promisify(fs.readdir);
 async function clearDir () {
@@ -73,7 +73,31 @@ async function createConfig () {
     },
     plugins: [
       resolve({ extensions }),
-      commonjs(),
+      commonjs({
+        namedExports: {
+          'node_modules/react/react.js': [
+            'Children',
+            'Component',
+            'PropTypes',
+            'createElement',
+            'createRef',
+            'createContext',
+            'PureComponent',
+            'SFC',
+            'useState',
+            'useEffect',
+            'useLayoutEffect',
+            'useCallback',
+            'useContext',
+            'useMemo',
+            'useReducer',
+            'useRef',
+            'useDebugValue,
+            'useImperativeHandle'
+          ],
+          'node_modules/react-dom/index.js': ['render', 'createPortal']
+        }
+      }),
       ${ts ? `typescript2({
         tsconfigOverride: {
           compilerOptions: {
@@ -100,7 +124,31 @@ async function createConfig () {
           },
           plugins: [
             resolve({ extensions }),
-            commonjs(),
+            commonjs({
+              namedExports: {
+                'node_modules/react/react.js': [
+                  'Children',
+                  'Component',
+                  'PropTypes',
+                  'createElement',
+                  'createRef',
+                  'createContext',
+                  'PureComponent',
+                  'SFC',
+                  'useState',
+                  'useEffect',
+                  'useLayoutEffect',
+                  'useCallback',
+                  'useContext',
+                  'useMemo',
+                  'useReducer',
+                  'useRef',
+                  'useDebugValue,
+                  'useImperativeHandle'
+                ],
+                'node_modules/react-dom/index.js': ['render', 'createPortal']
+              }
+            }),
             ${ts ? `typescript2({
               tsconfigOverride: {
                 compilerOptions: {
@@ -125,7 +173,31 @@ async function createConfig () {
         },
         plugins: [
           resolve({ extensions }),
-          commonjs(),
+          commonjs({
+            namedExports: {
+              'node_modules/react/react.js': [
+                'Children',
+                'Component',
+                'PropTypes',
+                'createElement',
+                'createRef',
+                'createContext',
+                'PureComponent',
+                'SFC',
+                'useState',
+                'useEffect',
+                'useLayoutEffect',
+                'useCallback',
+                'useContext',
+                'useMemo',
+                'useReducer',
+                'useRef',
+                'useDebugValue,
+                'useImperativeHandle'
+              ],
+              'node_modules/react-dom/index.js': ['render', 'createPortal']
+            }
+          }),
           ${ts ? `typescript({
             target: 'es5'
           }),` : ''}
@@ -147,7 +219,31 @@ async function createConfig () {
             },
             plugins: [
               resolve({ extensions }),
-              commonjs(),
+              commonjs({
+                namedExports: {
+                  'node_modules/react/react.js': [
+                    'Children',
+                    'Component',
+                    'PropTypes',
+                    'createElement',
+                    'createRef',
+                    'createContext',
+                    'PureComponent',
+                    'SFC',
+                    'useState',
+                    'useEffect',
+                    'useLayoutEffect',
+                    'useCallback',
+                    'useContext',
+                    'useMemo',
+                    'useReducer',
+                    'useRef',
+                    'useDebugValue,
+                    'useImperativeHandle'
+                  ],
+                  'node_modules/react-dom/index.js': ['render', 'createPortal']
+                }
+              }),
               ${ts ? `typescript({
                 target: 'es5',
                 module: 'es2015'

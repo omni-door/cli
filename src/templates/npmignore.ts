@@ -14,12 +14,8 @@ node_modules
 .eslintignore
 .eslintrc.js
 .gitignore
-babel.config.js
-commitlint.config.js
-jest.config.js
-stylelint.config.js
-bisheng.config.js
-karma.conf.js
+*.config.js
+*.conf.js
 tsconfig.json
 
 _config.yml

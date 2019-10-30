@@ -1,8 +1,6 @@
 .DS_Store
-./node_modules
-./build
-./src
-./.omni_cache
+build
+src
 
 .eslintignore
 .eslintrc.js

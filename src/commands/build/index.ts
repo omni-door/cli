@@ -38,51 +38,57 @@ export default async function (config: OmniConfig | {}) {
   }
 
   try {
-    if (test) {
-      await execShell(['npm test'], () => logEmph('unit test passed!'), err => logWarn(`unit test failed! 👉  ${JSON.stringify(err)}`));
+    // if (test) {
+    //   await execShell(['npm test'], () => logEmph('unit test passed!'), err => logWarn(`unit test failed! 👉  ${JSON.stringify(err)}`));
+    // }
+
+    // if (eslint) {
+    //   await execShell(['npm run lint:es'], () => logEmph('eslint passed!'), err => logWarn(`eslint checking failed! 👉  ${JSON.stringify(err)}`));
+    // }
+
+    // if (stylelint) {
+    //   await execShell(['npm run lint:style'], () => logEmph('stylelint passed!'), err => logWarn(`stylelint checking failed! 👉  ${JSON.stringify(err)}`));
+    // }
+
+    if (!tool) {
+      logSuc('Building completed but without any build tool process!');
     }
 
-    if (eslint) {
-      await execShell(['npm run lint:es'], () => logEmph('eslint passed!'), err => logWarn(`eslint checking failed! 👉  ${JSON.stringify(err)}`));
-    }
-
-    if (stylelint) {
-      await execShell(['npm run lint:style'], () => logEmph('stylelint passed!'), err => logWarn(`stylelint checking failed! 👉  ${JSON.stringify(err)}`));
-    }
-
-    const content_rollup = tool === 'rollup' && rollupConfig({ ts: typescript, multi_output, src_dir, out_dir, esm_dir });
-    const content_webpack = tool === 'webpack' && webpackConfig({ ts: typescript, multi_output, src_dir, out_dir });
-    const content_config = content_rollup || content_webpack;
-
-    // put temporary file for build process
-    if (content_config) {
-      const buildConfigPath = path.resolve(__dirname, '../../../', '.omni_cache/build.config.js');
-      fsExtra.outputFileSync(buildConfigPath, content_config, 'utf8');
-
-      let configs = require(buildConfigPath);
-      if (tool === 'rollup') {
-        configs = await configs;
-      }
-      if (typeof configuration === 'function') {
-        configuration(configs);
-      }
-
-      const webpackPath = path.resolve(process.cwd(), 'node_modules/webpack-cli/bin/cli.js');
-      const rollupPath = path.resolve(process.cwd(), 'node_modules/rollup/dist/bin/rollup');
+    const buildCliArr = [];
+    if (tool === 'tsc') {
       const tscPath = path.resolve(process.cwd(), 'node_modules/typescript/bin/tsc');
+      buildCliArr.push(`${tscPath} --outDir ${out_dir} --project ${path.resolve(process.cwd(), 'tsconfig.json')}`);
+      esm_dir && buildCliArr.push(`${tscPath} --module ES6 --target ES6 --outDir ${esm_dir} --project ${path.resolve(process.cwd(), 'tsconfig.json')}`);
+    } else {
+      const content_rollup = tool === 'rollup' && rollupConfig({ ts: typescript, multi_output, src_dir, out_dir, esm_dir });
+      const content_webpack = tool === 'webpack' && webpackConfig({ ts: typescript, multi_output, src_dir, out_dir });
+      const content_config = content_rollup || content_webpack;
+  
+      // put temporary file for build process
+      if (content_config) {
+        const buildConfigPath = path.resolve(__dirname, '../../../', '.omni_cache/build.config.js');
+        fsExtra.outputFileSync(buildConfigPath, content_config, 'utf8');
+  
+        let configs = require(buildConfigPath);
+        if (tool === 'rollup') {
+          configs = await configs;
+        }
+        // if (typeof configuration === 'function') {
+        //   configuration(configs);
+        // }
+  
+        const webpackPath = path.resolve(process.cwd(), 'node_modules/webpack-cli/bin/cli.js');
+        const rollupPath = path.resolve(process.cwd(), 'node_modules/rollup/dist/bin/rollup');
 
-      const buildCliArr = [];
-      if (tool === 'rollup') {
-        buildCliArr.push(`${rollupPath} -c ${buildConfigPath}`);
-      } else if (tool === 'webpack') {
-        buildCliArr.push(`${webpackPath} --config ${buildConfigPath}`);
-      } else if (tool === 'tsc') {
-        buildCliArr.push(`${tscPath} --build ${path.resolve(process.cwd(), 'tsconfig.json')} --outDir ${out_dir}`);
-        esm_dir && buildCliArr.push(`${tscPath} --build ${path.resolve(process.cwd(), 'tsconfig.json')} --module ES6 --target ES6 --outDir ${esm_dir}`);
+        if (tool === 'rollup') {
+          buildCliArr.push(`${rollupPath} -c ${buildConfigPath}`);
+        } else if (tool === 'webpack') {
+          buildCliArr.push(`${webpackPath} --config ${buildConfigPath}`);
+        }
       }
-
-      await execShell(buildCliArr, buildSuc, buildErr);
     }
+
+    await execShell(buildCliArr, buildSuc, buildErr);
 
     if (auto_release) {
       await execShell(['omni release'], () => logEmph('release success!'), err => logWarn(`release failed! 👉  ${JSON.stringify(err)}`));

@@ -19,6 +19,7 @@ import eslintrcJS from '../../templates/eslint';
 import eslintignore from '../../templates/eslintignore';
 import gitignore from '../../templates/gitignore';
 import npmignore from '../../templates/npmignore';
+import readMe from '../../templates/readme';
 import serverTpl from '../../templates/server';
 import webpackDevConfigJs from '../../templates/server/webpack_dev';
 import indexTpl from '../../templates/src/index';
@@ -151,6 +152,9 @@ export default function ({
     const content_serverTpl = devServer === 'express' && serverTpl();
     const content_webpackDev = devServer === 'express' && webpackDevConfigJs({ name, ts, style });
 
+    // ReadMe
+    const content_readMe = readMe({ name });
+
     /**
      * create files
      */
@@ -184,9 +188,12 @@ export default function ({
 
     // server files
     content_bisheng && fsExtra.outputFileSync(path.resolve('bisheng.config.js'), content_bisheng, 'utf8');
-    content_postReadMe && fsExtra.outputFileSync(path.resolve('posts/ReadMe.md'), content_postReadMe, 'utf8');
+    content_postReadMe && fsExtra.outputFileSync(path.resolve('posts/README.md'), content_postReadMe, 'utf8');
     content_serverTpl && fsExtra.outputFileSync(path.resolve('server/index.js'), content_serverTpl, 'utf8');
     content_webpackDev && fsExtra.outputFileSync(path.resolve('server/webpack.config.dev.js'), content_webpackDev, 'utf8');
+
+    // ReadMe
+    fsExtra.outputFileSync(path.resolve('README.md'), content_readMe, 'utf8');
   }
 
   function generateInstallDenpendencies ({
