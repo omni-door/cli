@@ -1,19 +1,19 @@
 # 🐸 @omni-door/cli (The CLI Tool for set up standard JS prject)
 
-[![NPM downloads](http://img.shields.io/npm/dm/omni-door.svg?style=flat-square)](https://www.npmjs.com/package/omni-door)
-[![npm version](https://badge.fury.io/js/omni-door.svg)](https://badge.fury.io/js/omni-door)
-[![Build Status](https://travis-ci.com/BobbyLH/omni-door.svg?branch=master)](https://travis-ci.com/BobbyLH/omni-door)
-[![codecov](https://codecov.io/gh/BobbyLH/omni-door/branch/master/graph/badge.svg)](https://codecov.io/gh/BobbyLH/omni-door)
-[![install size](https://packagephobia.now.sh/badge?p=omni-door)](https://packagephobia.now.sh/result?p=omni-door)
-[![license](http://img.shields.io/npm/l/omni-door.svg)](https://github.com/BobbyLH/omni-door/blob/master/LICENSE)
+[![NPM downloads](http://img.shields.io/npm/dm/%40omni-door%2Fcli.svg?style=flat-square)](https://www.npmjs.com/package/@omni-door/cli)
+[![npm version](https://badge.fury.io/js/%40omni-door%2Fcli.svg)](https://badge.fury.io/js/%40omni-door%2Fcli)
+[![Build Status](https://travis-ci.com/BobbyLH/%40omni-door%2Fcli.svg?branch=master)](https://travis-ci.com/BobbyLH/omni-door/cli)
+[![codecov](https://codecov.io/gh/BobbyLH/%40omni-door%2Fcli/branch/master/graph/badge.svg)](https://codecov.io/gh/BobbyLH/omni-door/cli)
+[![install size](https://packagephobia.now.sh/badge?p=%40omni-door%2Fcli)](https://packagephobia.now.sh/result?p=%40omni-door%2Fcli)
+[![license](http://img.shields.io/npm/l/%40omni-door%2Fcli.svg)](https://github.com/omni-door/cli/blob/master/LICENSE)
 
 
 ## install
 Several options to get up and running:
 
 * Clone the repo: `git@github.com:omni-door/cli.git`
-* Install with [npm](https://www.npmjs.com/package/omni-door): `npm install @omni-door/cli -g`
-* Install with [Yarn](https://yarnpkg.com/en/package/omni-door): `yarn global add @omni-door/cli`
+* Install with [npm](https://www.npmjs.com/package/@omni-door/cli): `npm install @omni-door/cli -g`
+* Install with [Yarn](https://yarnpkg.com/en/package/@omni-door/cli): `yarn global add @omni-door/cli`
 
 ## omni --help
 ```sh
