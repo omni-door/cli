@@ -4,7 +4,7 @@ import path from 'path';
 import initial from './initial';
 import newTpl from './new';
 import build from './build';
-// import release from './release';
+import release from './release';
 import { OmniConfig } from '../index.d';
 const pkj = require('../../package.json');
 
@@ -42,7 +42,7 @@ program
   .option('-i, --ignore', 'ignore automatic iteration version')
   .option('-m, --manual <version>', 'manual iteration version')
   .description('publish your project according to [omni.config.js]')
-  .action(initial);
+  .action((iterTactic) => release(config, iterTactic));
 
 program.parse(process.argv);
 if (!program.args[0]) {

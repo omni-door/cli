@@ -24,7 +24,7 @@ export default (config: {
     ${
   testFrame
     ? testFrame === 'jest' ? `"test": "jest",
-      "test:snapshot": "jest --snapshot",`
+      "test:snapshot": "jest --updateSnapshot",`
       : testFrame === 'karma'
         ? `"test": "karma start --single-run && npm run test:mocha",
           "test:mocha": "nyc mocha --opts mocha.opts",
@@ -53,6 +53,11 @@ export default (config: {
         "lint:es_fix": "eslint src/ --ext .${ts ? 'ts' : 'js'} --ext .${ts ? 'tsx' : 'jsx'} --fix",`}
         ${stylelint && `"lint:style": "stylelint src/**/*.{css,less,scss}",
         "lint:style_fix": "stylelint src/**/*.{css,less,scss} --fix",`}`
+    : ''
+}
+    ${
+  commitlint
+    ? '"lint:commit": "commitlint -e $HUSKY_GIT_PARAMS",'
     : ''
 }
     "new": "omni new",

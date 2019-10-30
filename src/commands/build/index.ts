@@ -6,13 +6,16 @@ import { logErr, logInfo, logWarn, logSuc, logEmph } from '../../utils/logger';
 import { execShell } from '../../utils/exec';
 import { OmniConfig } from '../../index.d';
 
+/**
+ * todo 1. gulp
+ */
 export default async function (config: OmniConfig | {}) {
   if (JSON.stringify(config) === '{}') {
     logWarn('Please Initialize project first');
     return;
   }
 
-  const message = '🕜  Build process start!';
+  const message = '⏱  Build process start!';
   logInfo(message);
 
   const { build: {
@@ -30,7 +33,7 @@ export default async function (config: OmniConfig | {}) {
   } } = config as OmniConfig;
 
   function buildSuc () {
-    logSuc('Building completed!');
+    logSuc('📣  Building completed!');
   }
 
   function buildErr (err: any) {
@@ -38,17 +41,17 @@ export default async function (config: OmniConfig | {}) {
   }
 
   try {
-    // if (test) {
-    //   await execShell(['npm test'], () => logEmph('unit test passed!'), err => logWarn(`unit test failed! 👉  ${JSON.stringify(err)}`));
-    // }
+    if (test) {
+      await execShell(['npm test'], () => logEmph('🔈  unit test passed!'), err => logWarn(`unit test failed! 👉  ${JSON.stringify(err)}`));
+    }
 
-    // if (eslint) {
-    //   await execShell(['npm run lint:es'], () => logEmph('eslint passed!'), err => logWarn(`eslint checking failed! 👉  ${JSON.stringify(err)}`));
-    // }
+    if (eslint) {
+      await execShell(['npm run lint:es'], () => logEmph('🔈  eslint passed!'), err => logWarn(`eslint checking failed! 👉  ${JSON.stringify(err)}`));
+    }
 
-    // if (stylelint) {
-    //   await execShell(['npm run lint:style'], () => logEmph('stylelint passed!'), err => logWarn(`stylelint checking failed! 👉  ${JSON.stringify(err)}`));
-    // }
+    if (stylelint) {
+      await execShell(['npm run lint:style'], () => logEmph('🔈  stylelint passed!'), err => logWarn(`stylelint checking failed! 👉  ${JSON.stringify(err)}`));
+    }
 
     if (!tool) {
       logSuc('Building completed but without any build tool process!');
@@ -94,6 +97,6 @@ export default async function (config: OmniConfig | {}) {
       await execShell(['omni release'], () => logEmph('release success!'), err => logWarn(`release failed! 👉  ${JSON.stringify(err)}`));
     }
   } catch (err) {
-    logErr(`Oops! some accident occured 👉  ${JSON.stringify(err)}`);
+    logErr(`Oops! build process occured some accidents 👉  ${JSON.stringify(err)}`);
   }
 }

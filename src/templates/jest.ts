@@ -23,11 +23,15 @@ module.exports = {
     "<rootDir>/src"
   ],
 
-  testRegex: "src\/(components|utils)\/.*\/__test__\/.*\.test\.${ts ? 'tsx' : 'jsx'}?$",
+  testRegex: "(test|__test__)/.*.test.(tsx|ts|jsx|js)?$",
 
   ${ts ? `transform: {
-    "^.+\\.tsx?$": "ts-jest"
+    "^.+\\.(tsx|ts)?$": "ts-jest"
   },` : ''}
+
+  moduleNameMapper: {
+    "^.+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$": "jest-transform-stub"
+  }
 };`;
 }
 

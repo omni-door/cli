@@ -67,6 +67,7 @@ const spinner = ora('🐸  [OMNI-DOOR]: Initialize in processing, please wait pa
 /**
  * todo 1. gulp config
  * todo 2. rollup config stylesheet
+ * todo 3. 
  */
 export default function ({
   simple,
@@ -173,7 +174,7 @@ export default function ({
     // test files
     content_mocha && fsExtra.outputFileSync(path.resolve('mocha.opts'), content_mocha, 'utf8');
     content_karma && fsExtra.outputFileSync(path.resolve('karma.conf.js'), content_karma, 'utf8');
-    content_jest && fsExtra.outputFileSync(path.resolve('jest.conf.js'), content_jest, 'utf8');
+    content_jest && fsExtra.outputFileSync(path.resolve('jest.config.js'), content_jest, 'utf8');
 
     // lint files
     content_eslintrc && fsExtra.outputFileSync(path.resolve('.eslintrc.js'), content_eslintrc, 'utf8');

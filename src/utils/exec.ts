@@ -7,15 +7,18 @@ export async function execShell (clis: string[], done?: () => any, handleErr?: (
     if (!cli) continue;
 
     try {
-      await new Promise((resolve, reject) => {
+      return await new Promise((resolve, reject) => {
         shelljs.exec(cli, {
           async: true
         }, function (code, stdout, stderr) {
           resolve(stdout);
         });
       })
-        .then(res => logInfo(`${i}-shelljs.exec.then ` +  res))
-        .catch(err => logErr(`${i}-shelljs.exec.catch ` + err));
+        .then(res => {
+          logInfo(`${i}-shelljs.exec.then.result~~~ ` +  res);
+          return res;
+        })
+        .catch(err => logErr(`${i}-shelljs.exec.catch.error~~~ ` + err));
     } catch (err) {
       logErr(JSON.stringify(err));
       return handleErr && handleErr(err);

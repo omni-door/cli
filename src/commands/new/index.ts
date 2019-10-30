@@ -9,6 +9,9 @@ import styleTpl from '../../templates/component/stylesheet';
 import testTpl from '../../templates/component/test';
 import { OmniConfig } from '../../index.d';
 
+/**
+ * todo 1. support custom tpl
+ */
 export default function (config: OmniConfig | {}, componentName?: string, options?: {
   fc?: boolean;
   cc?: boolean;

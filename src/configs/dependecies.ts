@@ -77,7 +77,8 @@ export function devDependencies (config: Config) {
       ? [
         'enzyme',
         'enzyme-adapter-react-16',
-        'jest'
+        'jest',
+        'jest-transform-stub'
       ]
       : testFrame === 'karma'
         ? [
