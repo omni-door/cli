@@ -45,7 +45,7 @@ omni init
 
 ### Initial your project according to some template
 ```sh
-omni init --t
+omni init -t
 ```
 or
 ```sh

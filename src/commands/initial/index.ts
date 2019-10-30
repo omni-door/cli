@@ -67,7 +67,7 @@ const spinner = ora('🐸  [OMNI-DOOR]: Initialize in processing, please wait pa
 /**
  * todo 1. gulp config
  * todo 2. rollup config stylesheet
- * todo 3. 
+ * todo 3. custom tpl
  */
 export default function ({
   simple,
