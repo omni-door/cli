@@ -1,4 +1,4 @@
-# 🐸 omni-door (The CLI Tool for set up standard JS prject)
+# 🐸 @omni-door/cli (The CLI Tool for set up standard JS prject)
 
 [![NPM downloads](http://img.shields.io/npm/dm/omni-door.svg?style=flat-square)](https://www.npmjs.com/package/omni-door)
 [![npm version](https://badge.fury.io/js/omni-door.svg)](https://badge.fury.io/js/omni-door)
@@ -11,9 +11,9 @@
 ## install
 Several options to get up and running:
 
-* Clone the repo: `git clone git@github.com:BobbyLH/omni-door.git`
-* Install with [npm](https://www.npmjs.com/package/omni-door): `npm install omni-door -g`
-* Install with [Yarn](https://yarnpkg.com/en/package/omni-door): `yarn global add omni-door`
+* Clone the repo: `git@github.com:omni-door/cli.git`
+* Install with [npm](https://www.npmjs.com/package/omni-door): `npm install @omni-door/cli -g`
+* Install with [Yarn](https://yarnpkg.com/en/package/omni-door): `yarn global add @omni-door/cli`
 
 ## omni --help
 ```sh
