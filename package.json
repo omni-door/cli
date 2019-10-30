@@ -1,6 +1,6 @@
 {
   "name": "omni-door",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "description": "A tool set for set up the standard JS project",
   "bin": {
     "omni": "./bin/omni-door.js"
@@ -12,9 +12,9 @@
     "build": "npm run build:rm && npm run build:tsc && npm run build:publish",
     "build:rm": "rm -rf lib/*",
     "build:tsc": "tsc --build",
-    "build:branch": "./build/branch.sh",
-    "build:publish": "./build/publish.sh",
-    "build:version": "./build/version.sh",
+    "build:branch": "./.build/branch.sh",
+    "build:publish": "./.build/publish.sh",
+    "build:version": "./.build/version.sh",
     "release": "npm run build:branch master && npm run build:version && npm run build"
   },
   "repository": {

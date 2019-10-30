@@ -1,12 +1,12 @@
 .DS_Store
-build
+.build
 src
 
 .eslintignore
 .eslintrc.js
 tsconfig.json
-babel.config.js
-omni.config.js
+*.config.js
+*.conf.js
 .gitignore
 
 _config.yml
