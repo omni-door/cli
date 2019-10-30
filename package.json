@@ -1,5 +1,5 @@
 {
-  "name": "omni-door",
+  "name": "@omni-door/cli",
   "version": "0.0.22",
   "description": "A tool set for set up the standard JS project",
   "bin": {
