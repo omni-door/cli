@@ -63,7 +63,7 @@ export type GInstallCli = {
   devServer: DEVSERVER;
 };
 
-const spinner = ora('🐸  [OMNI-DOOR] 📡  : Initialize in processing, please wait patiently  💤  \n');
+const spinner = ora('🐸  [OMNI-DOOR] 📡  : Initializing, please wait patiently  💤  \n');
 
 /**
  * todo 1. gulp config
@@ -232,6 +232,11 @@ export default function ({
     testFrame,
     devServer
   }: GInstallCli) {
+    if (pkgtool === 'cnpm' && initPath !== process.cwd()) {
+      // fix cnpm cannot set prefix bug
+      pkgtool = 'npm';
+    }
+
     const installCliPrefix = pkgtool === 'yarn' ? `${pkgtool} add --cwd ${initPath}` : `${pkgtool} install --save --prefix ${initPath}`;
     const installCli = `${installCliPrefix} ${dependencies().join(' ')}`;
 

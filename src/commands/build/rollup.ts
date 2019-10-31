@@ -91,9 +91,7 @@ async function createConfig () {
             'useContext',
             'useMemo',
             'useReducer',
-            'useRef',
-            'useDebugValue,
-            'useImperativeHandle'
+            'useRef'
           ],
           'node_modules/react-dom/index.js': ['render', 'createPortal']
         }
@@ -142,9 +140,7 @@ async function createConfig () {
                   'useContext',
                   'useMemo',
                   'useReducer',
-                  'useRef',
-                  'useDebugValue,
-                  'useImperativeHandle'
+                  'useRef'
                 ],
                 'node_modules/react-dom/index.js': ['render', 'createPortal']
               }
@@ -191,9 +187,7 @@ async function createConfig () {
                 'useContext',
                 'useMemo',
                 'useReducer',
-                'useRef',
-                'useDebugValue,
-                'useImperativeHandle'
+                'useRef'
               ],
               'node_modules/react-dom/index.js': ['render', 'createPortal']
             }
@@ -237,9 +231,7 @@ async function createConfig () {
                     'useContext',
                     'useMemo',
                     'useReducer',
-                    'useRef',
-                    'useDebugValue,
-                    'useImperativeHandle'
+                    'useRef'
                   ],
                   'node_modules/react-dom/index.js': ['render', 'createPortal']
                 }
