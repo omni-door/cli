@@ -9,6 +9,9 @@ tsconfig.json
 *.conf.js
 .gitignore
 
+test
+__test__
+
 _config.yml
 .nyc_output
 .travis.yml

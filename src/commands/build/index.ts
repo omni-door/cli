@@ -109,7 +109,6 @@ export default async function (config: OmniConfig | {}) {
       // put temporary file for build process
       if (content_config) {
         const buildConfigPath = path.resolve(__dirname, '../../../', '.omni_cache/build.config.js');
-        fsExtra.outputFileSync(buildConfigPath, content_config, 'utf8');
 
         let is_go_on = true;
         if (tool === 'rollup') {
@@ -134,6 +133,8 @@ export default async function (config: OmniConfig | {}) {
           process.exit(0);
           return;
         };
+
+        fsExtra.outputFileSync(buildConfigPath, content_config, 'utf8');
       } else {
         logWarn(`your build tool ${tool} has not been support yet, please build the project by yourself! \n contact us: omni.door.official@gmail.com`);
       }
