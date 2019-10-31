@@ -145,7 +145,7 @@ export default async function (config: OmniConfig | {}) {
         if (!is_go_on) {
           process.exit(0);
           return;
-        };
+        }
 
         fsExtra.outputFileSync(buildConfigPath, content_config, 'utf8');
       } else {
