@@ -12,15 +12,10 @@ import { OmniConfig } from '../../index.d';
 /**
  * todo 1. support custom tpl
  */
-export default function (config: OmniConfig | {}, componentName?: string, options?: {
+export default function (config: OmniConfig | {}, componentName: string, options?: {
   fc?: boolean;
   cc?: boolean;
 }) {
-  if (!componentName) {
-    logErr('Please input your component name!');
-    return;
-  }
-
   if (JSON.stringify(config) === '{}') {
     logWarn('Please Initialize project first');
     return;

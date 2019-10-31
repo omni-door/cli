@@ -10,8 +10,7 @@ import { OmniConfig, BUILD } from '../../index.d';
 import dependencies_build from '../../configs/dependencies_build';
 
 /**
- * todo 1. gulp
- * todo 2. 排查 webpack 改成 rollup 打包的错误
+ * todo 1. gulp grunt 打包支持
  */
 export default async function (config: OmniConfig | {}) {
   if (JSON.stringify(config) === '{}') {
@@ -24,7 +23,6 @@ export default async function (config: OmniConfig | {}) {
 
   const { build: {
     tool,
-    configuration,
     multi_output,
     typescript,
     test,
@@ -75,19 +73,21 @@ export default async function (config: OmniConfig | {}) {
 
   try {
     if (test) {
-      await execShell(['npm test'], () => logEmph('🔈  unit test passed!'), err => logWarn(`unit test failed! 👉  ${JSON.stringify(err)}`));
+      await execShell(['npm test'], () => logEmph('unit test passed! 🔈'), err => logWarn(`unit test failed! 👉  ${JSON.stringify(err)}`));
     }
 
     if (eslint) {
-      await execShell(['npm run lint:es'], () => logEmph('🔈  eslint passed!'), err => logWarn(`eslint checking failed! 👉  ${JSON.stringify(err)}`));
+      await execShell(['npm run lint:es'], () => logEmph('eslint passed! 🔈'), err => logWarn(`eslint checking failed! 👉  ${JSON.stringify(err)}`));
     }
 
     if (stylelint) {
-      await execShell(['npm run lint:style'], () => logEmph('🔈  stylelint passed!'), err => logWarn(`stylelint checking failed! 👉  ${JSON.stringify(err)}`));
+      await execShell(['npm run lint:style'], () => logEmph('stylelint passed! 🔈'), err => logWarn(`stylelint checking failed! 👉  ${JSON.stringify(err)}`));
     }
 
     if (!tool) {
       logSuc('Building completed but without any build tool process!');
+      process.exit(0);
+      return;
     }
 
     const buildCliArr = [];
@@ -110,23 +110,15 @@ export default async function (config: OmniConfig | {}) {
       if (content_config) {
         const buildConfigPath = path.resolve(__dirname, '../../../', '.omni_cache/build.config.js');
         fsExtra.outputFileSync(buildConfigPath, content_config, 'utf8');
-  
-        let configs = require(buildConfigPath);
-        if (tool === 'rollup') {
-          configs = await configs;
-        }
-        // if (typeof configuration === 'function') {
-        //   configuration(configs);
-        // }
 
+        let is_go_on = true;
         if (tool === 'rollup') {
           const rollupPath = path.resolve(process.cwd(), 'node_modules/rollup/dist/bin/rollup');
           buildCliArr.push(`${rollupPath} -c ${buildConfigPath}`);
 
           if (!fs.existsSync(rollupPath)) {
             logWarn('Please install rollup first!');
-            const is_go_on = await installDenpendencies('rollup');
-            if (!is_go_on) return;
+            is_go_on = await installDenpendencies('rollup');
           }
         } else if (tool === 'webpack') {
           const webpackPath = path.resolve(process.cwd(), 'node_modules/webpack-cli/bin/cli.js');
@@ -134,10 +126,16 @@ export default async function (config: OmniConfig | {}) {
 
           if (!fs.existsSync(webpackPath)) {
             logWarn('Please install webpack-cli first!');
-            const is_go_on = await installDenpendencies('webpack');
-            if (!is_go_on) return;
+            is_go_on = await installDenpendencies('webpack');
           }
         }
+
+        if (!is_go_on) {
+          process.exit(0);
+          return;
+        };
+      } else {
+        logWarn(`your build tool ${tool} has not been support yet, please build the project by yourself! \n contact us: omni.door.official@gmail.com`);
       }
     }
 

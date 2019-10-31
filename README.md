@@ -59,12 +59,12 @@ Usage: omni init [options]
 initialize your project
 
 Options:
-  -s --simple      create a simple project
-  -t --standard    create a standard project
-  -e --entire      create a most versatile project
-  -u --utils       create a utils library
-  -c --components  create a component library
-  -h, --help       output usage information
+  -s --simple [name]      create a simple project
+  -t --standard [name]    create a standard project
+  -e --entire [name]      create a most versatile project
+  -u --utils [name]       create a utils library
+  -c --components [name]  create a component library
+  -h, --help              output usage information
 ```
 
 ## omni new

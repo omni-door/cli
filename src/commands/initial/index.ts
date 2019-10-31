@@ -5,7 +5,6 @@ import chalk from 'chalk';
 import figlet from 'figlet';
 import inquirer from 'inquirer';
 import ora from 'ora';
-import shelljs from 'shelljs';
 import omniConfigJs from '../../templates/omni';
 import packageJson from '../../templates/package';
 import stylelintConfigJs from '../../templates/stylelint';
@@ -64,7 +63,7 @@ export type GInstallCli = {
   devServer: DEVSERVER;
 };
 
-const spinner = ora('🐸  [OMNI-DOOR]: Initialize in processing, please wait patiently  💤  \n');
+const spinner = ora('🐸  [OMNI-DOOR] 📡  : Initialize in processing, please wait patiently  💤  \n');
 
 /**
  * todo 1. gulp config
@@ -78,14 +77,28 @@ export default function ({
   utils,
   components
 }: {
-  simple?: boolean;
-  standard?: boolean;
-  entire?: boolean;
-  utils?: boolean;
-  components?: boolean;
+  simple?: boolean | string;
+  standard?: boolean | string;
+  entire?: boolean | string;
+  utils?: boolean | string;
+  components?: boolean | string;
 }) {
   const { name: defaultName } = parse(process.cwd());
+  const projectName =
+    typeof simple === 'string'
+      ? simple
+      : typeof standard === 'string'
+        ? standard
+        : typeof entire === 'string'
+          ? entire
+          : typeof utils === 'string'
+            ? utils
+            : typeof components === 'string'
+              ? components
+              : defaultName;
+
   const omniConfigPath = path.resolve('omni.config.js');
+  let initPath = process.cwd();
 
   function generateTpls ({
     name,
@@ -105,10 +118,9 @@ export default function ({
   }: GTpls) {
     if (createDir) {
       // mkdir
-      const rootPath = path.resolve(process.cwd(), createDir ? name : '');
-      fsExtra.ensureDirSync(rootPath);
-      shelljs.exec(`cd ${rootPath}`, {
-        async: false
+      initPath = path.resolve(process.cwd(), name);
+      fsExtra.ensureDirSync(initPath, {
+        mode: 0o2777
       });
     }
 
@@ -173,40 +185,40 @@ export default function ({
      */
 
     // default files
-    fsExtra.outputFileSync(omniConfigPath, content_omni, 'utf8');
-    fsExtra.outputFileSync(path.resolve('package.json'), content_pkg, 'utf8');
-    fsExtra.outputFileSync(path.resolve('.gitignore'), content_gitignore, 'utf8');
-    fsExtra.outputFileSync(path.resolve('.npmignore'), content_npmignore, 'utf8');
-    fsExtra.outputFileSync(path.resolve(`src/index.${ts ? 'tsx' : 'jsx'}`), content_indexTpl, 'utf8');
-    fsExtra.outputFileSync(path.resolve('src/index.html'), content_indexHtml, 'utf8');
+    fsExtra.outputFileSync(path.resolve(initPath, 'omni.config.js'), content_omni, 'utf8');
+    fsExtra.outputFileSync(path.resolve(initPath, 'package.json'), content_pkg, 'utf8');
+    fsExtra.outputFileSync(path.resolve(initPath, '.gitignore'), content_gitignore, 'utf8');
+    fsExtra.outputFileSync(path.resolve(initPath, '.npmignore'), content_npmignore, 'utf8');
+    fsExtra.outputFileSync(path.resolve(initPath, `src/index.${ts ? 'tsx' : 'jsx'}`), content_indexTpl, 'utf8');
+    fsExtra.outputFileSync(path.resolve(initPath, 'src/index.html'), content_indexHtml, 'utf8');
 
     // tsconfig
-    content_ts && fsExtra.outputFileSync(path.resolve('tsconfig.json'), content_ts, 'utf8');
+    content_ts && fsExtra.outputFileSync(path.resolve(initPath, 'tsconfig.json'), content_ts, 'utf8');
 
     // test files
-    content_mocha && fsExtra.outputFileSync(path.resolve('mocha.opts'), content_mocha, 'utf8');
-    content_karma && fsExtra.outputFileSync(path.resolve('karma.conf.js'), content_karma, 'utf8');
-    content_jest && fsExtra.outputFileSync(path.resolve('jest.config.js'), content_jest, 'utf8');
+    content_mocha && fsExtra.outputFileSync(path.resolve(initPath, 'mocha.opts'), content_mocha, 'utf8');
+    content_karma && fsExtra.outputFileSync(path.resolve(initPath, 'karma.conf.js'), content_karma, 'utf8');
+    content_jest && fsExtra.outputFileSync(path.resolve(initPath, 'jest.config.js'), content_jest, 'utf8');
 
     // lint files
-    content_eslintrc && fsExtra.outputFileSync(path.resolve('.eslintrc.js'), content_eslintrc, 'utf8');
-    content_eslintignore && fsExtra.outputFileSync(path.resolve('.eslintignore'), content_eslintignore, 'utf8');
-    content_stylelint && fsExtra.outputFileSync(path.resolve('stylelint.config.js'), content_stylelint, 'utf8');
-    content_commitlint && fsExtra.outputFileSync(path.resolve('commitlint.config.js'), content_commitlint, 'utf8');
+    content_eslintrc && fsExtra.outputFileSync(path.resolve(initPath, '.eslintrc.js'), content_eslintrc, 'utf8');
+    content_eslintignore && fsExtra.outputFileSync(path.resolve(initPath, '.eslintignore'), content_eslintignore, 'utf8');
+    content_stylelint && fsExtra.outputFileSync(path.resolve(initPath, 'stylelint.config.js'), content_stylelint, 'utf8');
+    content_commitlint && fsExtra.outputFileSync(path.resolve(initPath, 'commitlint.config.js'), content_commitlint, 'utf8');
 
     // build files
-    content_babel && fsExtra.outputFileSync(path.resolve('bable.config.js'), content_babel, 'utf8');
+    content_babel && fsExtra.outputFileSync(path.resolve(initPath, 'bable.config.js'), content_babel, 'utf8');
     // content_webpack && fsExtra.outputFileSync(path.resolve('build/webpack.config.js'), content_webpack, 'utf8');
     // content_rollup && fsExtra.outputFileSync(path.resolve('build/rollup.config.js'), content_rollup, 'utf8');
 
     // server files
-    content_bisheng && fsExtra.outputFileSync(path.resolve('bisheng.config.js'), content_bisheng, 'utf8');
-    content_postReadMe && fsExtra.outputFileSync(path.resolve('posts/README.md'), content_postReadMe, 'utf8');
-    content_serverTpl && fsExtra.outputFileSync(path.resolve('server/index.js'), content_serverTpl, 'utf8');
-    content_webpackDev && fsExtra.outputFileSync(path.resolve('server/webpack.config.dev.js'), content_webpackDev, 'utf8');
+    content_bisheng && fsExtra.outputFileSync(path.resolve(initPath, 'bisheng.config.js'), content_bisheng, 'utf8');
+    content_postReadMe && fsExtra.outputFileSync(path.resolve(initPath, 'posts/README.md'), content_postReadMe, 'utf8');
+    content_serverTpl && fsExtra.outputFileSync(path.resolve(initPath, 'server/index.js'), content_serverTpl, 'utf8');
+    content_webpackDev && fsExtra.outputFileSync(path.resolve(initPath, 'server/webpack.config.dev.js'), content_webpackDev, 'utf8');
 
     // ReadMe
-    fsExtra.outputFileSync(path.resolve('README.md'), content_readMe, 'utf8');
+    fsExtra.outputFileSync(path.resolve(initPath, 'README.md'), content_readMe, 'utf8');
   }
 
   function generateInstallDenpendencies ({
@@ -220,9 +232,10 @@ export default function ({
     testFrame,
     devServer
   }: GInstallCli) {
-    const installCliPrefix = pkgtool === 'yarn' ? `${pkgtool} add` : `${pkgtool} install --save`;
+    const installCliPrefix = pkgtool === 'yarn' ? `${pkgtool} add --cwd ${initPath}` : `${pkgtool} install --save --prefix ${initPath}`;
     const installCli = `${installCliPrefix} ${dependencies().join(' ')}`;
-    const installDevCliPrefix = pkgtool === 'yarn' ? `${pkgtool} add -D` : `${pkgtool} install --save-dev`;
+
+    const installDevCliPrefix = pkgtool === 'yarn' ? `${pkgtool} add -D --cwd ${initPath}` : `${pkgtool} install --save-dev --prefix ${initPath}`;
     const { defaultDep, buildDep, tsDep, testDep, eslintDep, commitlintDep, stylelintDep, devServerDep } = devDependencies({
       build,
       ts,
@@ -257,13 +270,13 @@ export default function ({
 
   function generateFiglet (fn: (done: () => void) => any) {
     function done () {
-      spinner.succeed(chalk.green('🐸  [OMNI-DOOR]: ✅  Initialize project success \n'));
+      spinner.succeed(chalk.green('🐸  [OMNI-DOOR] ✅  : Initialize project success \n'));
       process.exit(0);
     }
 
     return figlet('omni cli', function (err, data) {
       if (err) {
-        spinner.fail(chalk.red(`🐸  [OMNI-DOOR]: ❌  ${JSON.stringify(err)} \n`));
+        spinner.fail(chalk.red(`🐸  [OMNI-DOOR] ❌  : ${JSON.stringify(err)} \n`));
         logErr('Some thing about figlet is wrong!');
       }
       console.info(chalk.yellow(data || 'OMNI CLI'));
@@ -294,7 +307,7 @@ export default function ({
     }
 
     try {
-      generateTpls(Object.assign(tpl, { name: defaultName, createDir }));
+      generateTpls(Object.assign(tpl, { name: projectName, createDir }));
 
       const {
         installCli,
@@ -318,9 +331,9 @@ export default function ({
         installCommitlintDevCli,
         installStylelintDevCli,
         installServerDevCli
-      ], done, err => spinner.warn(chalk.yellow(`🐸  [OMNI-DOOR]: ❗️  ${JSON.stringify(err)} \n`))));
+      ], done, err => spinner.warn(chalk.yellow(`🐸  [OMNI-DOOR] ❗️ : ${JSON.stringify(err)} \n`))));
     } catch (err) {
-      spinner.fail(chalk.red(`🐸  [OMNI-DOOR]: ❌  ${JSON.stringify(err)} \n`));
+      spinner.fail(chalk.red(`🐸  [OMNI-DOOR] ❌  : ${JSON.stringify(err)} \n`));
       logErr(JSON.stringify(err));
     }
   }
@@ -472,7 +485,7 @@ export default function ({
         createDir = true;
       }
     } catch (err) {
-      spinner.warn(chalk.yellow(`🐸  [OMNI-DOOR]: ❗️  ${JSON.stringify(err)} \n`));
+      spinner.warn(chalk.yellow(`🐸  [OMNI-DOOR] ❗️ : ${JSON.stringify(err)} \n`));
     }
 
     inquirer.prompt(questions)
@@ -538,10 +551,10 @@ export default function ({
           installStylelintDevCli,
           installServerDevCli,
           gitCli
-        ], done, err => spinner.warn(chalk.yellow(`🐸  [OMNI-DOOR]: ❗️  ${JSON.stringify(err)} \n`))));
+        ], done, err => spinner.warn(chalk.yellow(`🐸  [OMNI-DOOR] ❗  : ${JSON.stringify(err)} \n`))));
       })
       .catch(err => {
-        spinner.fail(chalk.red(`🐸  [OMNI-DOOR]: ❌  ${JSON.stringify(err)} \n`));
+        spinner.fail(chalk.red(`🐸  [OMNI-DOOR] ❌  : ${JSON.stringify(err)} \n`));
         logErr(JSON.stringify(err));
         process.exit(1);
       });

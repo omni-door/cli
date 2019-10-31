@@ -17,19 +17,19 @@ program.version(pkj.version, '-v, --version');
 
 program
   .command('init')
-  .option('-s --simple', 'create a simple project')
-  .option('-t --standard', 'create a standard project')
-  .option('-e --entire', 'create a most versatile project')
-  .option('-u --utils', 'create a utils library')
-  .option('-c --components', 'create a component library')
+  .option('-s, --simple [name]', 'create a simple project')
+  .option('-t, --standard [name]', 'create a standard project')
+  .option('-e, --entire [name]', 'create a most versatile project')
+  .option('-u, --utils [name]', 'create a utils library')
+  .option('-c, --components [name]', 'create a component library')
   .description('initialize your project')
   .action(initial);
 
 program
-  .command('new [module]')
+  .command('new <module>')
   .option('-f, --fc', 'create a functional component')
   .option('-c, --cc', 'create a class component')
-  .description('omni new [module] [-f | -c]')
+  .description('omni new <module> [-f | -c]')
   .action((componentName, options) => newTpl(config, componentName, options));
 
 program
