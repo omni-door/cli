@@ -42,20 +42,20 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
     }
   }
 
-  const message = '🕰  starting release process!';
+  const message = 'starting release process! 🕰';
   logInfo(message);
 
   try {
     if (test) {
-      await execShell(['npm test'], () => logEmph('🔈  unit test passed!'), err => logWarn(`unit test failed! 👉  ${JSON.stringify(err)}`));
+      await execShell(['npm test'], () => logEmph('unit test passed! 🔈'), err => logWarn(`unit test failed! 👉  ${JSON.stringify(err)}`));
     }
 
     if (eslint) {
-      await execShell(['npm run lint:es'], () => logEmph('🔈  eslint passed!'), err => logWarn(`eslint checking failed! 👉  ${JSON.stringify(err)}`));
+      await execShell(['npm run lint:es'], () => logEmph('eslint passed! 🔈'), err => logWarn(`eslint checking failed! 👉  ${JSON.stringify(err)}`));
     }
 
     if (stylelint) {
-      await execShell(['npm run lint:style'], () => logEmph('🔈  stylelint passed!'), err => logWarn(`stylelint checking failed! 👉  ${JSON.stringify(err)}`));
+      await execShell(['npm run lint:style'], () => logEmph('stylelint passed! 🔈'), err => logWarn(`stylelint checking failed! 👉  ${JSON.stringify(err)}`));
     }
 
     const { ignore, manual } = iterTactic || {};
@@ -124,7 +124,7 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
       );
     }
 
-    logSuc('📣  release success!');
+    logSuc('release success! 📣');
   } catch (err) {
     logErr(`Oops! release process occured some accidents 👉  ${JSON.stringify(err)}`);
   }

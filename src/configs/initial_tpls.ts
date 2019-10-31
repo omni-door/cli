@@ -1,6 +1,6 @@
 import { GTpls } from '../commands/initial';
 
-type TPL = Omit<GTpls, 'name'>;
+type TPL = Omit<GTpls, 'name' | 'createDir'>;
 
 export const tpl_simple: TPL = {
   build: 'webpack',
@@ -14,7 +14,7 @@ export const tpl_simple: TPL = {
   git: '',
   npm: '',
   cdn: 'w1',
-  devServer: 'express'
+  devServer: 'basic'
 };
 
 export const tpl_standard: TPL = {
@@ -29,7 +29,7 @@ export const tpl_standard: TPL = {
   git: '',
   npm: '',
   cdn: 'w1',
-  devServer: 'express'
+  devServer: 'basic'
 };
 
 export const tpl_entire: TPL = {
@@ -44,7 +44,7 @@ export const tpl_entire: TPL = {
   git: '',
   npm: 'hnpm',
   cdn: 'w1',
-  devServer: 'express'
+  devServer: 'basic'
 };
 
 export const tpl_lib_utils: TPL = {
@@ -59,7 +59,7 @@ export const tpl_lib_utils: TPL = {
   git: '',
   npm: 'npm',
   cdn: '',
-  devServer: 'express'
+  devServer: 'basic'
 };
 
 export const tpl_lib_components: TPL = {

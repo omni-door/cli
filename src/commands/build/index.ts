@@ -11,6 +11,7 @@ import dependencies_build from '../../configs/dependencies_build';
 
 /**
  * todo 1. gulp
+ * todo 2. 排查 webpack 改成 rollup 打包的错误
  */
 export default async function (config: OmniConfig | {}) {
   if (JSON.stringify(config) === '{}') {
@@ -18,7 +19,7 @@ export default async function (config: OmniConfig | {}) {
     return;
   }
 
-  const message = '⏱  Build process start!';
+  const message = 'Build process start! ⏱';
   logInfo(message);
 
   const { build: {
@@ -36,7 +37,7 @@ export default async function (config: OmniConfig | {}) {
   } } = config as OmniConfig;
 
   function buildSuc () {
-    logSuc('📣  Building completed!');
+    logSuc('Building completed! 📣');
   }
 
   function buildErr (err: any) {
@@ -143,7 +144,7 @@ export default async function (config: OmniConfig | {}) {
     await execShell(buildCliArr, buildSuc, buildErr);
 
     if (auto_release) {
-      await execShell(['omni release'], () => logEmph('release success!'), err => logWarn(`release failed! 👉  ${JSON.stringify(err)}`));
+      await execShell(['omni release'], () => logEmph('auto release success! 📣'), err => logWarn(`release failed! 👉  ${JSON.stringify(err)}`));
     }
   } catch (err) {
     logErr(`Oops! build process occured some accidents 👉  ${JSON.stringify(err)}`);

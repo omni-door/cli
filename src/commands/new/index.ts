@@ -34,7 +34,7 @@ export default function (config: OmniConfig | {}, componentName?: string, option
   // default create class component
   if (!fc && !cc) cc = true;
 
-  const message = `🕐  Start create ${cc ? 'class' : 'functional'} component - ${componentName}`;
+  const message = `Start create ${cc ? 'class' : 'functional'} component - ${componentName} 🕐`;
   logInfo(message);
 
   const { template: {
@@ -70,6 +70,6 @@ export default function (config: OmniConfig | {}, componentName?: string, option
     logSuc(`The ${componentName} component construction completed!`);
   } catch (err) {
     // error logger
-    logErr(`Oops! Some error occured: ${JSON.stringify(err)}`);
+    logErr(`Oops! Some error occured 👉  ${JSON.stringify(err)}`);
   }
 }

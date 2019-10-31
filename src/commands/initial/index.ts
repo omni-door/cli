@@ -5,6 +5,7 @@ import chalk from 'chalk';
 import figlet from 'figlet';
 import inquirer from 'inquirer';
 import ora from 'ora';
+import shelljs from 'shelljs';
 import omniConfigJs from '../../templates/omni';
 import packageJson from '../../templates/package';
 import stylelintConfigJs from '../../templates/stylelint';
@@ -48,6 +49,7 @@ export type GTpls = {
   npm: NPM | '';
   cdn: CDN | '';
   devServer: DEVSERVER;
+  createDir: boolean;
 };
 
 export type GInstallCli = {
@@ -98,8 +100,18 @@ export default function ({
     git,
     npm,
     cdn,
-    devServer
+    devServer,
+    createDir
   }: GTpls) {
+    if (createDir) {
+      // mkdir
+      const rootPath = path.resolve(process.cwd(), createDir ? name : '');
+      fsExtra.ensureDirSync(rootPath);
+      shelljs.exec(`cd ${rootPath}`, {
+        async: false
+      });
+    }
+
     // default files
     const content_omni = omniConfigJs({
       build,
@@ -150,8 +162,8 @@ export default function ({
     // server files
     const content_bisheng = devServer === 'bisheng' && bishengConfigJs({ name, git });
     const content_postReadMe = devServer === 'bisheng' && postReadMe();
-    const content_serverTpl = devServer === 'express' && serverTpl();
-    const content_webpackDev = devServer === 'express' && webpackDevConfigJs({ name, ts, style });
+    const content_serverTpl = devServer === 'basic' && serverTpl();
+    const content_webpackDev = devServer === 'basic' && webpackDevConfigJs({ name, ts, style });
 
     // ReadMe
     const content_readMe = readMe({ name });
@@ -259,7 +271,7 @@ export default function ({
     });
   }
 
-  if (simple || standard || entire || utils || components) {
+  function presetTpl (createDir: boolean) {
     // loading start display
     spinner.start();
 
@@ -282,7 +294,7 @@ export default function ({
     }
 
     try {
-      generateTpls(Object.assign(tpl, { name: defaultName }));
+      generateTpls(Object.assign(tpl, { name: defaultName, createDir }));
 
       const {
         installCli,
@@ -311,7 +323,28 @@ export default function ({
       spinner.fail(chalk.red(`🐸  [OMNI-DOOR]: ❌  ${JSON.stringify(err)} \n`));
       logErr(JSON.stringify(err));
     }
+  }
 
+  if (simple || standard || entire || utils || components) {
+
+    if (fs.existsSync(omniConfigPath)) {
+      // double confirmation
+      inquirer.prompt([{
+        name: 'overwrite',
+        type: 'confirm',
+        message: '确定要覆盖已经存在的 [omni.config.js] 文件? (Are you sure to overwrite [omni.config.js]?)',
+        default: false
+      }]).then(answers => {
+        const { overwrite } = answers;
+        if (!overwrite) {
+          process.exit(0);
+          return;
+        }
+        presetTpl(false);
+      });
+    } else {
+      presetTpl(true);
+    }
   } else {
     const questions = [
       {
@@ -419,9 +452,9 @@ export default function ({
       },{
         name: 'dev_server',
         type: 'rawlist',
-        choices: [ 'express', 'bisheng', 'none' ],
+        choices: [ 'basic', 'bisheng', 'none' ],
         message: '请选择开发服务 (please chioce the development server)',
-        default: 'express'
+        default: 'basic'
       },{
         name: 'pkgtool',
         type: 'rawlist',
@@ -431,12 +464,15 @@ export default function ({
       }
     ];
 
-    // 如果不存在config文件，取消二次确认的选项
+    let createDir = false;
     try {
-      !fs.existsSync(omniConfigPath) && questions.shift();
+      // if the config file non-existence，cancel double confirmation
+      if (!fs.existsSync(omniConfigPath)) {
+        questions.shift();
+        createDir = true;
+      }
     } catch (err) {
       spinner.warn(chalk.yellow(`🐸  [OMNI-DOOR]: ❗️  ${JSON.stringify(err)} \n`));
-      logErr(JSON.stringify(err));
     }
 
     inquirer.prompt(questions)
@@ -450,6 +486,7 @@ export default function ({
         spinner.start();
 
         generateTpls({
+          createDir,
           name,
           build,
           ts,

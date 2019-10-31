@@ -139,14 +139,14 @@ export function devDependencies (config: Config) {
     'bisheng-theme-one'
   ];
 
-  const expressDependencies = [
+  const basicServerDependencies = [
     'express',
     'webpack',
     'webpack-dev-middleware',
     'html-webpack-plugin'
   ];
 
-  const devServerDependencies = devServer ? (devServer === 'express' ? expressDependencies : bishengDependencies) : [];
+  const devServerDependencies = devServer ? (devServer === 'basic' ? basicServerDependencies : bishengDependencies) : [];
 
   return {
     defaultDep: [

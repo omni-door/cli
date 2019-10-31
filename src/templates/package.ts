@@ -19,8 +19,8 @@ export default (config: {
   "module": "es/index.js",
   "typings": "lib/index.d.ts",
   "scripts": {
-    ${devServer ? `"start": "${devServer === 'express' ? 'node server/index.js' : 'bisheng start'}",
-    "dev": "${devServer === 'express' ? 'node server/index.js' : 'bisheng start'}",` : ''}
+    ${devServer ? `"start": "${devServer === 'basic' ? 'node server/index.js' : 'bisheng start'}",
+    "dev": "${devServer === 'basic' ? 'node server/index.js' : 'bisheng start'}",` : ''}
     ${
   testFrame
     ? testFrame === 'jest' ? `"test": "jest",

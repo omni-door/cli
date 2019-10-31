@@ -1,6 +1,6 @@
 #! /bin/bash
 
-name="[OMNI-DOOR]"
+name="🐸  [OMNI-DOOR]"
 branch=$1
 
 checkBranch () {

@@ -5,7 +5,7 @@ export type CDN = 'w1' | 'w4' | 'w11';
 export type TESTFRAME = 'mocha' | 'jest' | 'karma' | '';
 export type PKJTOOL = 'yarn' | 'npm' | 'cnpm';
 export type STYLE = 'less' | 'scss' | 'css' | '';
-export type DEVSERVER = 'bisheng' | 'express' | '';
+export type DEVSERVER = 'basic' | 'bisheng' | '';
 export type ANYOBJECT = { [propName: string]: any };
 
 export type GenerateOmniConfigParams = {
