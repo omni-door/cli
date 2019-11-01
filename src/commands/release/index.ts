@@ -1,8 +1,17 @@
+import fs from 'fs';
 import path from 'path';
 import { logErr, logInfo, logWarn, logSuc, logEmph } from '../../utils/logger';
 import { execShell } from '../../utils/exec';
 import { OmniConfig } from '../../index.d';
-const pkj = require(path.resolve(process.cwd(), 'package.json'));
+
+const pkjPath = path.resolve(process.cwd(), 'package.json');
+let pkj = {
+  name: 'OMNI-PROJECT',
+  version: '0.0.1'
+};
+if (fs.existsSync(pkjPath)) {
+  pkj = require(pkjPath);
+}
 
 /**
  * todo 1. cdn release
@@ -87,8 +96,8 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
       }
 
       const commit = commitlint
-        ? `git commit -m'[${pkj.name.toUppercase()}]: ${pkj.version}'`
-        : `git commit -m'[${pkj.name.toUppercase()}]: ${pkj.version}' --no-verify`;
+        ? `git commit -m'[${pkj.name.toUpperCase()}]: ${pkj.version}'`
+        : `git commit -m'[${pkj.name.toUpperCase()}]: ${pkj.version}' --no-verify`;
 
       const push = commitlint
         ? 'git push origin master'
