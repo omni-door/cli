@@ -4,15 +4,6 @@ import { logErr, logInfo, logWarn, logSuc, logEmph } from '../../utils/logger';
 import { execShell } from '../../utils/exec';
 import { OmniConfig } from '../../index.d';
 
-const pkjPath = path.resolve(process.cwd(), 'package.json');
-let pkj = {
-  name: 'OMNI-PROJECT',
-  version: '0.0.1'
-};
-if (fs.existsSync(pkjPath)) {
-  pkj = require(pkjPath);
-}
-
 /**
  * todo 1. cdn release
  */
@@ -23,6 +14,15 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
   if (JSON.stringify(config) === '{}') {
     logWarn('Please Initialize project first');
     return;
+  }
+
+  const pkjPath = path.resolve(process.cwd(), 'package.json');
+  let pkj = {
+    name: 'OMNI-PROJECT',
+    version: '0.0.1'
+  };
+  if (fs.existsSync(pkjPath)) {
+    pkj = require(pkjPath);
   }
 
   const { release: {
