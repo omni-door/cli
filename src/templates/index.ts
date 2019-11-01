@@ -13,6 +13,7 @@ import pkj from './package';
 import readme from './readme';
 import stylelint from './stylelint';
 import tsconfig from './tsconfig';
+import doczrc from './doczrc';
 import build_rollup from './build/rollup';
 import build_webpack from './build/webpack';
 import component_class from './component/class_component';
@@ -48,6 +49,7 @@ export {
   readme,
   stylelint,
   tsconfig,
+  doczrc,
   build_rollup,
   build_webpack,
   component_class,

@@ -21,6 +21,7 @@ import {
   readme as readMe,
   stylelint as stylelintConfigJs,
   tsconfig as tsConfigJson,
+  doczrc,
   posts_readme as postReadMe,
   server_index as serverTpl,
   server_webpack as webpackDevConfigJs,
@@ -183,6 +184,7 @@ export default function ({
     const content_storybook_config = devServer === 'storybook' && storybook_config({ name });
     const content_storybook_mhead = devServer === 'storybook' && storybook_mhead({ name });
     const content_storybook_webpack = devServer === 'storybook' && storybook_webpack({ ts, style });
+    const content_doczrc = devServer === 'docz' && doczrc({ name, ts, style });
 
     // ReadMe
     const content_readMe = readMe({ name });
@@ -225,6 +227,7 @@ export default function ({
     content_storybook_config && fsExtra.outputFileSync(path.resolve(initPath, '.storybook/config.js'), content_storybook_config, 'utf8');
     content_storybook_mhead && fsExtra.outputFileSync(path.resolve(initPath, '.storybook/manager-head.html'), content_storybook_mhead, 'utf8');
     content_storybook_webpack && fsExtra.outputFileSync(path.resolve(initPath, '.storybook/webpack.config.js'), content_storybook_webpack, 'utf8');
+    content_doczrc && fsExtra.outputFileSync(path.resolve(initPath, 'doczrc.js'), content_doczrc, 'utf8');
 
     // ReadMe
     fsExtra.outputFileSync(path.resolve(initPath, 'README.md'), content_readMe, 'utf8');

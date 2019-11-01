@@ -12,5 +12,12 @@ addDecorator(withInfo);
 addDecorator(addReadme);
 setOptions({
   name: '${name}',
-});`;
+});
+
+const req = require.context('../src/', true, /\.stories\.(tsx|jsx)$/);
+function loadStories() {
+  const keys = req.keys();
+  keys.forEach(filename => req(filename));
+};
+configure(loadStories, module);`;
 }

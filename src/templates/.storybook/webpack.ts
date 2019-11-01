@@ -35,12 +35,12 @@ module.exports = {
       ${style ? (style === 'css' ? `{
         test: /\.css$/,
         use:  ['style-loader', 'css-loader'],
-        exclude: /node_modules(?!\/@storybook\/addon-info)/
+        exclude: /node_modules(?!\\/@storybook\\/addon-info)/
       }
       ` : style === 'less' ? `{
         test: /\.css$/,
         use:  ['style-loader', 'css-loader'],
-        exclude: /node_modules(?!\/@storybook\/addon-info)/
+        exclude: /node_modules(?!\\/@storybook\\/addon-info)/
       },
       {
         test: /\.less$/,
@@ -48,7 +48,7 @@ module.exports = {
       }` : `{
         test: /\.css$/,
         use:  ['style-loader', 'css-loader'],
-        exclude: /node_modules(?!\/@storybook\/addon-info)/
+        exclude: /node_modules(?!\\/@storybook\\/addon-info)/
       },
       {
         test: /\.scss$/,

@@ -9,6 +9,7 @@ src
 *test*
 node_modules
 .omni_cache
+.storybook
 
 # config files
 .eslintignore
@@ -24,6 +25,7 @@ _config.yml
 coverage
 .nycrc
 mocha.opts
+doczrc.js
 
 yarn.lock
 package-lock.json

@@ -153,7 +153,8 @@ export function devDependencies (config: Config) {
     '@storybook/addon-links',
     '@storybook/addon-notes',
     'awesome-typescript-loader',
-    'react-docgen-typescript-loader'
+    'react-docgen-typescript-loader',
+    'storybook-readme'
   ];
 
   const bishengDependencies = [
