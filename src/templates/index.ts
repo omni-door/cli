@@ -23,6 +23,7 @@ import component_readme from './component/readme';
 import component_stylesheet from './component/stylesheet';
 import component_test from './component/test';
 import component_mdx from './component/mdx';
+import component_stories from './component/stories';
 import posts_readme from './posts/readme';
 import server_index from './server/index';
 import server_webpack from './server/webpack_dev';
@@ -59,6 +60,7 @@ export {
   component_stylesheet,
   component_test,
   component_mdx,
+  component_stories,
   posts_readme,
   server_index,
   server_webpack,

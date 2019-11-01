@@ -1,3 +1,4 @@
+import fs from 'fs';
 import path from 'path';
 import fsExtra from 'fs-extra';
 import { logErr, logInfo, logWarn, logSuc } from '../../utils/logger';
@@ -9,6 +10,7 @@ import {
   component_stylesheet as styleTpl,
   component_test as testTpl,
   component_mdx as mdxTpl,
+  component_stories as storiesTpl,
 } from '../../templates';
 import { OmniConfig } from '../../index.d';
 
@@ -49,7 +51,8 @@ export default function (config: OmniConfig | {}, componentName: string, options
     const content_cc = class_component({ ts: typescript, componentName, style: stylesheet });
     const content_fc = functional_component({ ts: typescript, componentName, style: stylesheet });
     const content_readme = readmeTpl({ componentName });
-    const content_mdx = mdxTpl({ ts: typescript, componentName });
+    const content_mdx = mdxTpl({ componentName });
+    const content_stories = storiesTpl({ componentName });
     const content_style = styleTpl({ componentName });
     const content_test = testTpl({ testFrame: test, componentName });
   
@@ -58,6 +61,11 @@ export default function (config: OmniConfig | {}, componentName: string, options
     fc && fsExtra.outputFileSync(path.resolve(root, componentName, `${componentName}.${typescript ? 'tsx' : 'jsx'}`), content_fc, 'utf8');
     readme && !mdx && fsExtra.outputFileSync(path.resolve(root, componentName, 'README.md'), content_readme, 'utf8');
     readme && mdx && fsExtra.outputFileSync(path.resolve(root, componentName, 'README.mdx'), content_mdx, 'utf8');
+    fs.existsSync(path.resolve(process.cwd(), '.storybook')) && fsExtra.outputFileSync(path.resolve(root, componentName, `__stories__/index.stories.${
+      typescript
+        ? 'tsx'
+        : 'jsx'
+    }`), content_stories, 'utf8');
     content_style && fsExtra.outputFileSync(path.resolve(root, componentName, `style/${componentName}.${stylesheet}`), content_style, 'utf8');
     test && fsExtra.outputFileSync(path.resolve(root, componentName, `__test__/index.test.${
       typescript

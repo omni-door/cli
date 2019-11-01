@@ -1,15 +1,14 @@
 export default function (config: {
-  ts: boolean;
   componentName: string;
 }) {
-  const { ts, componentName } = config;
+  const { componentName } = config;
 
   return `---
 name: ${componentName}
 route: /${componentName}
 ---
 import { Playground, Props } from 'docz'
-import ${componentName} from './index.${ts ? 'tsx' : 'jsx'}'
+import ${componentName} from './'
 
 # ${componentName} 组件
 

@@ -93,6 +93,9 @@ module.exports = {
     readme: true,
     // if generate mdx file instead of md
     mdx: ${mdx}
-  }
+  },
+
+  // plugins for omni cli work flow
+  plugins: []
 };`;
 };

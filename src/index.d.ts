@@ -55,4 +55,5 @@ export type OmniConfig = {
     readme: boolean;
     mdx: boolean;
   };
+  plugins: (obj: ANYOBJECT) => any[];
 };
