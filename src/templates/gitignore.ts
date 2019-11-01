@@ -4,6 +4,7 @@ export default function () {
 *~
 ~*
 
+.docz
 .omni_cache
 node_modules
 lib

@@ -10,6 +10,7 @@ src
 node_modules
 .omni_cache
 .storybook
+.docz
 
 # config files
 .eslintignore
