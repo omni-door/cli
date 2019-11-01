@@ -5,7 +5,7 @@ export type CDN = 'w1' | 'w4' | 'w11';
 export type TESTFRAME = 'mocha' | 'jest' | 'karma' | '';
 export type PKJTOOL = 'yarn' | 'npm' | 'cnpm';
 export type STYLE = 'less' | 'scss' | 'css' | '';
-export type DEVSERVER = 'basic' | 'bisheng' | '';
+export type DEVSERVER = 'basic' | 'docz' | 'storybook' | 'bisheng' | '';
 export type ANYOBJECT = { [propName: string]: any };
 
 export type GenerateOmniConfigParams = {
@@ -20,6 +20,7 @@ export type GenerateOmniConfigParams = {
   git?: string;
   npm: NPM | string;
   cdn: CDN | string;
+  mdx: boolean;
 };
 
 export type OmniConfig = {
@@ -52,5 +53,6 @@ export type OmniConfig = {
     typescript: boolean;
     stylesheet: STYLE;
     readme: boolean;
+    mdx: boolean;
   };
 };

@@ -2,7 +2,7 @@
 import { NPM, CDN, GenerateOmniConfigParams } from '../index.d';
 
 export default (config: GenerateOmniConfigParams) => {
-  const { build, ts, test, testFrame, eslint, commitlint, style, stylelint, git, npm, cdn } = config;
+  const { build, ts, test, testFrame, eslint, commitlint, style, stylelint, git, npm, cdn, mdx } = config;
 
   const npmMap = {
     npm: 'https://registry.npmjs.org/',
@@ -90,7 +90,9 @@ module.exports = {
     // stylesheet type
     stylesheet: '${style}',
     // whether or not README.md
-    readme: true
+    readme: true,
+    // if generate mdx file instead of md
+    mdx: ${mdx}
   }
 };`;
 };

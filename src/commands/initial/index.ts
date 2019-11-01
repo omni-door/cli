@@ -5,26 +5,53 @@ import chalk from 'chalk';
 import figlet from 'figlet';
 import inquirer from 'inquirer';
 import ora from 'ora';
-import omniConfigJs from '../../templates/omni';
-import packageJson from '../../templates/package';
-import stylelintConfigJs from '../../templates/stylelint';
-import commitlintConfigJs from '../../templates/commitlint';
-import babelConfigJs from '../../templates/babel';
-import bishengConfigJs from '../../templates/bisheng';
-import mochaOpts from '../../templates/mocha';
-import karmaConfigJs from '../../templates/karma';
-import jestConfigJs from '../../templates/jest';
-import tsConfigJson from '../../templates/tsconfig';
-import eslintrcJS from '../../templates/eslint';
-import eslintignore from '../../templates/eslintignore';
-import gitignore from '../../templates/gitignore';
-import npmignore from '../../templates/npmignore';
-import readMe from '../../templates/readme';
-import serverTpl from '../../templates/server';
-import webpackDevConfigJs from '../../templates/server/webpack_dev';
-import indexTpl from '../../templates/source/index';
-import indexHtml from '../../templates/source/html';
-import postReadMe from '../../templates/posts/readme';
+import {
+  babel as babelConfigJs,
+  bisheng as bishengConfigJs,
+  commitlint as commitlintConfigJs,
+  eslint as eslintrcJS,
+  eslintignore,
+  gitignore,
+  jest as jestConfigJs,
+  karma as karmaConfigJs,
+  mocha as mochaOpts,
+  npmignore,
+  omni as omniConfigJs,
+  pkj as packageJson,
+  readme as readMe,
+  stylelint as stylelintConfigJs,
+  tsconfig as tsConfigJson,
+  posts_readme as postReadMe,
+  server_index as serverTpl,
+  server_webpack as webpackDevConfigJs,
+  source_index as indexTpl,
+  source_html as indexHtml,
+  storybook_addons,
+  storybook_config,
+  storybook_mhead,
+  storybook_webpack
+} from '../../templates';
+
+// import omniConfigJs from '../../templates/omni';
+// import packageJson from '../../templates/package';
+// import stylelintConfigJs from '../../templates/stylelint';
+// import commitlintConfigJs from '../../templates/commitlint';
+// import babelConfigJs from '../../templates/babel';
+// import bishengConfigJs from '../../templates/bisheng';
+// import mochaOpts from '../../templates/mocha';
+// import karmaConfigJs from '../../templates/karma';
+// import jestConfigJs from '../../templates/jest';
+// import tsConfigJson from '../../templates/tsconfig';
+// import eslintrcJS from '../../templates/eslint';
+// import eslintignore from '../../templates/eslintignore';
+// import gitignore from '../../templates/gitignore';
+// import npmignore from '../../templates/npmignore';
+// import readMe from '../../templates/readme';
+// import serverTpl from '../../templates/server';
+// import webpackDevConfigJs from '../../templates/server/webpack_dev';
+// import indexTpl from '../../templates/source/index';
+// import indexHtml from '../../templates/source/html';
+// import postReadMe from '../../templates/posts/readme';
 // import webpackConfigJs from '../templates/build/webpack';
 // import rollupConfigJs from '../templates/build/rollup';
 import { dependencies, devDependencies } from '../../configs/dependencies';
@@ -136,7 +163,8 @@ export default function ({
       stylelint,
       git,
       npm,
-      cdn
+      cdn,
+      mdx: devServer === 'docz'
     });
     const content_pkg = packageJson({
       name,
@@ -168,14 +196,16 @@ export default function ({
 
     // build files
     const content_babel = build && build !== 'tsc' && babelConfigJs({ ts });
-    // const content_webpack = build && build === 'webpack' && webpackConfigJs({ ts, style });
-    // const content_rollup = build && build === 'rollup' && rollupConfigJs({ ts });
 
     // server files
     const content_bisheng = devServer === 'bisheng' && bishengConfigJs({ name, git });
     const content_postReadMe = devServer === 'bisheng' && postReadMe();
     const content_serverTpl = devServer === 'basic' && serverTpl();
     const content_webpackDev = devServer === 'basic' && webpackDevConfigJs({ name, ts, style });
+    const content_storybook_addons = devServer === 'storybook' && storybook_addons();
+    const content_storybook_config = devServer === 'storybook' && storybook_config({ name });
+    const content_storybook_mhead = devServer === 'storybook' && storybook_mhead({ name });
+    const content_storybook_webpack = devServer === 'storybook' && storybook_webpack({ ts, style });
 
     // ReadMe
     const content_readMe = readMe({ name });
@@ -208,14 +238,16 @@ export default function ({
 
     // build files
     content_babel && fsExtra.outputFileSync(path.resolve(initPath, 'bable.config.js'), content_babel, 'utf8');
-    // content_webpack && fsExtra.outputFileSync(path.resolve('build/webpack.config.js'), content_webpack, 'utf8');
-    // content_rollup && fsExtra.outputFileSync(path.resolve('build/rollup.config.js'), content_rollup, 'utf8');
 
     // server files
     content_bisheng && fsExtra.outputFileSync(path.resolve(initPath, 'bisheng.config.js'), content_bisheng, 'utf8');
     content_postReadMe && fsExtra.outputFileSync(path.resolve(initPath, 'posts/README.md'), content_postReadMe, 'utf8');
     content_serverTpl && fsExtra.outputFileSync(path.resolve(initPath, 'server/index.js'), content_serverTpl, 'utf8');
     content_webpackDev && fsExtra.outputFileSync(path.resolve(initPath, 'server/webpack.config.dev.js'), content_webpackDev, 'utf8');
+    content_storybook_addons && fsExtra.outputFileSync(path.resolve(initPath, '.storybook/addons.js'), content_storybook_addons, 'utf8');
+    content_storybook_config && fsExtra.outputFileSync(path.resolve(initPath, '.storybook/config.js'), content_storybook_config, 'utf8');
+    content_storybook_mhead && fsExtra.outputFileSync(path.resolve(initPath, '.storybook/manager-head.html'), content_storybook_mhead, 'utf8');
+    content_storybook_webpack && fsExtra.outputFileSync(path.resolve(initPath, '.storybook/webpack.config.js'), content_storybook_webpack, 'utf8');
 
     // ReadMe
     fsExtra.outputFileSync(path.resolve(initPath, 'README.md'), content_readMe, 'utf8');

@@ -16,7 +16,8 @@ module.exports = {
     sitename: '${name}',
     tagline: 'THE OMNI PROJECT',
     github: '${git}',
-  }
+  },
+  plugins: ['bisheng-plugin-react?lang=jsx']
 };`;
 }
 
