@@ -5,21 +5,21 @@ export default function (config: {
   const { ts, componentName } = config;
 
   return `---
-  name: ${componentName}
-  route: /${componentName}
-  ---
-  import { Playground, Props } from 'docz'
-  import ${componentName} from './index.${ts ? 'tsx' : 'jsx'}'
-  
-  # ${componentName} 组件
-  
-  <Props of={${componentName}} />
-  
-  ## Demo
-  
-  <Playground>
+name: ${componentName}
+route: /${componentName}
+---
+import { Playground, Props } from 'docz'
+import ${componentName} from './index.${ts ? 'tsx' : 'jsx'}'
 
-    <${componentName} />
+# ${componentName} 组件
 
-  </Playground>`;
+<Props of={${componentName}} />
+
+## Demo
+
+<Playground>
+
+  <${componentName} />
+
+</Playground>`;
 }

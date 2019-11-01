@@ -136,7 +136,9 @@ export function devDependencies (config: Config) {
 
   const doczDependencies= [
     'docz',
-    'docz-theme-default'
+    'docz-theme-default',
+    'docz-plugin-css',
+    'react-hot-loader'
   ];
 
   const storybookDependencies= [
