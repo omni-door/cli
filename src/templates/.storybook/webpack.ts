@@ -11,11 +11,6 @@ export default function (config: {
 const path = require('path');
 
 module.exports = {
-  entry: path.join(__dirname, '../src/index.${ts ? 'ts' : 'js'}'),
-  output: {
-    filename: '[name]/index.js',
-    path: path.resolve(__dirname, '../lib')
-  },
   module: {
     rules: [
       {
@@ -28,44 +23,43 @@ module.exports = {
       },
       ${ts ? `{
         test: /\.(ts|tsx)$/,
-        include: path.resolve(__dirname, "..", "src/"),
-        exclude: /node_modules/,
         use: [
           {
-            loader: 'ts-loader'
-          }
+            loader: require.resolve('awesome-typescript-loader'),
+          },
+          {
+            loader: require.resolve('react-docgen-typescript-loader'),
+          },
         ]
       },` : ''}
       ${style ? (style === 'css' ? `{
         test: /\.css$/,
         use:  ['style-loader', 'css-loader'],
-        include: path.resolve(__dirname, "..", "src/")
+        exclude: /node_modules(?!\/@storybook\/addon-info)/
       }
       ` : style === 'less' ? `{
         test: /\.css$/,
         use:  ['style-loader', 'css-loader'],
-        include: path.resolve(__dirname, "..", "src/")
+        exclude: /node_modules(?!\/@storybook\/addon-info)/
       },
       {
         test: /\.less$/,
-        use: ['style-loader', 'css-loader', 'less-loader'],
-        include: path.resolve(__dirname, "..", "src/")
+        use: ['style-loader', 'css-loader', 'less-loader']
       }` : `{
         test: /\.css$/,
         use:  ['style-loader', 'css-loader'],
-        include: path.resolve(__dirname, "..", "src/")
+        exclude: /node_modules(?!\/@storybook\/addon-info)/
       },
       {
         test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
-        include: path.resolve(__dirname, "..", "src/")
+        use: ['style-loader', 'css-loader', 'sass-loader']
       }`) : ''}
     ],
   },
   plugins: [],
-  mode: 'production',
+  mode: 'development',
   resolve: {
-    extensions: [${ts ? '".ts", ".tsx", ' : ''}".js", ".jsx", ${style ? (style === 'css' ? '".css"' : (style === 'less' ? '".less", ".css"' : '".scss", ".css"')) : ''}]
+    extensions: [${ts ? '".ts", ".tsx", ' : ''}".js", ".jsx", ".md", ${style ? (style === 'css' ? '".css"' : (style === 'less' ? '".less", ".css"' : '".scss", ".css"')) : ''}]
   }
 };`;
 }

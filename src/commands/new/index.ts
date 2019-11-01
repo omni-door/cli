@@ -1,12 +1,15 @@
 import path from 'path';
 import fsExtra from 'fs-extra';
 import { logErr, logInfo, logWarn, logSuc } from '../../utils/logger';
-import indexTpl from '../../templates/component/index';
-import class_component from '../../templates/component/class_component';
-import functional_component from '../../templates/component/functional_component';
-import readmeTpl from '../../templates/component/readme';
-import styleTpl from '../../templates/component/stylesheet';
-import testTpl from '../../templates/component/test';
+import {
+  component_class as class_component,
+  component_functional as functional_component,
+  component_index as indexTpl,
+  component_readme as readmeTpl,
+  component_stylesheet as styleTpl,
+  component_test as testTpl,
+  component_mdx as mdxTpl,
+} from '../../templates';
 import { OmniConfig } from '../../index.d';
 
 /**
@@ -37,7 +40,8 @@ export default function (config: OmniConfig | {}, componentName: string, options
     test,
     typescript,
     stylesheet,
-    readme
+    readme,
+    mdx
   } } = config as OmniConfig;
   
   try {
@@ -45,13 +49,15 @@ export default function (config: OmniConfig | {}, componentName: string, options
     const content_cc = class_component({ ts: typescript, componentName, style: stylesheet });
     const content_fc = functional_component({ ts: typescript, componentName, style: stylesheet });
     const content_readme = readmeTpl({ componentName });
+    const content_mdx = mdxTpl({ ts: typescript, componentName });
     const content_style = styleTpl({ componentName });
     const content_test = testTpl({ testFrame: test, componentName });
   
     fsExtra.outputFileSync(path.resolve(root, componentName, `index.${typescript ? 'ts' : 'js'}`), content_index, 'utf8');
     cc && fsExtra.outputFileSync(path.resolve(root, componentName, `${componentName}.${typescript ? 'tsx' : 'jsx'}`), content_cc, 'utf8');
     fc && fsExtra.outputFileSync(path.resolve(root, componentName, `${componentName}.${typescript ? 'tsx' : 'jsx'}`), content_fc, 'utf8');
-    readme && fsExtra.outputFileSync(path.resolve(root, componentName, 'README.md'), content_readme, 'utf8');
+    readme && !mdx && fsExtra.outputFileSync(path.resolve(root, componentName, 'README.md'), content_readme, 'utf8');
+    readme && mdx && fsExtra.outputFileSync(path.resolve(root, componentName, 'README.mdx'), content_mdx, 'utf8');
     content_style && fsExtra.outputFileSync(path.resolve(root, componentName, `style/${componentName}.${stylesheet}`), content_style, 'utf8');
     test && fsExtra.outputFileSync(path.resolve(root, componentName, `__test__/index.test.${
       typescript

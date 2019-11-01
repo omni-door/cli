@@ -11,6 +11,22 @@ export default (config: {
 }) => {
   const { name, ts, devServer, testFrame, eslint, commitlint, stylelint } = config;
 
+  let devScript = '';
+  switch(devServer) {
+    case 'docz':
+      devScript = 'docz dev';
+      break;
+    case 'storybook':
+      devScript = 'start-storybook -p 6200';
+      break;
+    case 'bisheng':
+      devScript = 'bisheng start';
+      break;
+    case 'basic':
+      devScript = 'node server/index.js';
+      break;
+  }
+
   return `{
   "name": "${name}",
   "version": "0.0.1",
@@ -19,8 +35,8 @@ export default (config: {
   "module": "es/index.js",
   "typings": "lib/index.d.ts",
   "scripts": {
-    ${devServer ? `"start": "${devServer === 'basic' ? 'node server/index.js' : 'bisheng start'}",
-    "dev": "${devServer === 'basic' ? 'node server/index.js' : 'bisheng start'}",` : ''}
+    ${devScript ? `"start": "${devScript}",
+    "dev": "${devScript}",` : ''}
     ${
   testFrame
     ? testFrame === 'jest' ? `"test": "jest",

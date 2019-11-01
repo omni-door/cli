@@ -133,6 +133,5 @@ async function createConfig () {
 };
 
 clearDir();
-module.exports = createConfig();
-`;
+module.exports = createConfig();`;
 }

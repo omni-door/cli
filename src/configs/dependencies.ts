@@ -134,9 +134,30 @@ export function devDependencies (config: Config) {
     'stylelint-declaration-block-no-ignored-properties'
   ] : [];
 
+  const doczDependencies= [
+    'docz',
+    'docz-theme-default'
+  ];
+
+  const storybookDependencies= [
+    '@storybook/react',
+    '@storybook/addons',
+    '@storybook/addon-options',
+    '@storybook/addon-actions',
+    '@storybook/addon-actions',
+    '@storybook/addon-docs',
+    '@storybook/addon-info',
+    '@storybook/addon-knobs',
+    '@storybook/addon-links',
+    '@storybook/addon-notes',
+    'awesome-typescript-loader',
+    'react-docgen-typescript-loader'
+  ];
+
   const bishengDependencies = [
     'bisheng',
-    'bisheng-theme-one'
+    'bisheng-theme-one',
+    'bisheng-plugin-react'
   ];
 
   const basicServerDependencies = [

@@ -1,5 +1,5 @@
 # 🐸 @omni-door/cli
-The CLI Tool for set up standard JS prject
+The CLI Tool for set up standard React project.
 
 [![NPM downloads](http://img.shields.io/npm/dm/%40omni-door%2Fcli.svg?style=flat-square)](https://www.npmjs.com/package/@omni-door/cli)
 [![npm version](https://badge.fury.io/js/%40omni-door%2Fcli.svg)](https://badge.fury.io/js/%40omni-door%2Fcli)

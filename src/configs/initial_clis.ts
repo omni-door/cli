@@ -57,7 +57,7 @@ export const cli_lib_components: GInstallCli = {
   commitlint: true,
   style: 'less',
   stylelint: true,
-  devServer: 'bisheng'
+  devServer: 'docz'
 };
 
 export default {
