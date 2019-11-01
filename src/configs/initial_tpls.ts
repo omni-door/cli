@@ -74,7 +74,7 @@ export const tpl_lib_components: TPL = {
   git: '',
   npm: 'hnpm',
   cdn: '',
-  devServer: 'bisheng'
+  devServer: 'docz'
 };
 
 export default {

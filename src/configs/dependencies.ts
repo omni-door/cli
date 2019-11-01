@@ -167,7 +167,21 @@ export function devDependencies (config: Config) {
     'html-webpack-plugin'
   ];
 
-  const devServerDependencies = devServer ? (devServer === 'basic' ? basicServerDependencies : bishengDependencies) : [];
+  let devServerDependencies: string[] = [];
+  switch(devServer) {
+    case 'docz':
+      devServerDependencies = doczDependencies;
+      break;
+    case 'storybook':
+      devServerDependencies = storybookDependencies;
+      break;
+    case 'bisheng':
+      devServerDependencies = bishengDependencies;
+      break;
+    case 'basic':
+      devServerDependencies = basicServerDependencies;
+      break;
+  }
 
   return {
     defaultDep: [

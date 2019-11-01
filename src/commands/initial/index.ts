@@ -31,29 +31,6 @@ import {
   storybook_mhead,
   storybook_webpack
 } from '../../templates';
-
-// import omniConfigJs from '../../templates/omni';
-// import packageJson from '../../templates/package';
-// import stylelintConfigJs from '../../templates/stylelint';
-// import commitlintConfigJs from '../../templates/commitlint';
-// import babelConfigJs from '../../templates/babel';
-// import bishengConfigJs from '../../templates/bisheng';
-// import mochaOpts from '../../templates/mocha';
-// import karmaConfigJs from '../../templates/karma';
-// import jestConfigJs from '../../templates/jest';
-// import tsConfigJson from '../../templates/tsconfig';
-// import eslintrcJS from '../../templates/eslint';
-// import eslintignore from '../../templates/eslintignore';
-// import gitignore from '../../templates/gitignore';
-// import npmignore from '../../templates/npmignore';
-// import readMe from '../../templates/readme';
-// import serverTpl from '../../templates/server';
-// import webpackDevConfigJs from '../../templates/server/webpack_dev';
-// import indexTpl from '../../templates/source/index';
-// import indexHtml from '../../templates/source/html';
-// import postReadMe from '../../templates/posts/readme';
-// import webpackConfigJs from '../templates/build/webpack';
-// import rollupConfigJs from '../templates/build/rollup';
 import { dependencies, devDependencies } from '../../configs/dependencies';
 import templates from '../../configs/initial_tpls';
 import installClis from '../../configs/initial_clis';
@@ -502,7 +479,7 @@ export default function ({
       },{
         name: 'dev_server',
         type: 'rawlist',
-        choices: [ 'basic', 'bisheng', 'none' ],
+        choices: [ 'basic', 'docz', 'storybook', 'bisheng', 'none' ],
         message: '请选择开发服务 (please chioce the development server)',
         default: 'basic'
       },{
