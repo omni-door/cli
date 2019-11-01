@@ -66,4 +66,4 @@ export {
   storybook_config,
   storybook_mhead,
   storybook_webpack
-}
+};
