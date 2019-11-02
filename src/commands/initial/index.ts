@@ -27,6 +27,7 @@ import {
   server_webpack as webpackDevConfigJs,
   source_index as indexTpl,
   source_html as indexHtml,
+  source_md_d as md_d,
   storybook_addons,
   storybook_config,
   storybook_mhead,
@@ -161,6 +162,9 @@ export default function ({
     // tsconfig
     const content_ts = ts && tsConfigJson();
 
+    // d.ts files
+    const content_md_d = ts && md_d();
+
     // test files
     const content_mocha = testFrame === 'mocha' && mochaOpts({ ts });
     const content_karma = testFrame === 'karma' && karmaConfigJs({ ts });
@@ -203,6 +207,9 @@ export default function ({
 
     // tsconfig
     content_ts && fsExtra.outputFileSync(path.resolve(initPath, 'tsconfig.json'), content_ts, 'utf8');
+
+    // d.ts files
+    content_md_d && fsExtra.outputFileSync(path.resolve(initPath, 'src/@types/md.d.ts'), content_md_d, 'utf8');
 
     // test files
     content_mocha && fsExtra.outputFileSync(path.resolve(initPath, 'mocha.opts'), content_mocha, 'utf8');

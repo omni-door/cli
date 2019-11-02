@@ -29,6 +29,7 @@ import server_index from './server/index';
 import server_webpack from './server/webpack_dev';
 import source_index from './source/index';
 import source_html from './source/html';
+import source_md_d from './source/md_d';
 import storybook_addons from './.storybook/addons';
 import storybook_config from './.storybook/config';
 import storybook_mhead from './.storybook/manager-head';
@@ -66,6 +67,7 @@ export {
   server_webpack,
   source_index,
   source_html,
+  source_md_d,
   storybook_addons,
   storybook_config,
   storybook_mhead,
