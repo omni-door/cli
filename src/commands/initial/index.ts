@@ -251,15 +251,9 @@ export default function ({
     testFrame,
     devServer
   }: GInstallCli) {
-    if (pkgtool === 'cnpm' && initPath !== process.cwd()) {
-      // fix cnpm cannot set prefix bug
-      pkgtool = 'npm';
-    }
+    let installCliPrefix = pkgtool === 'yarn' ? `${pkgtool} add --cwd ${initPath}` : `${pkgtool} install --save --prefix ${initPath}`;
 
-    const installCliPrefix = pkgtool === 'yarn' ? `${pkgtool} add --cwd ${initPath}` : `${pkgtool} install --save --prefix ${initPath}`;
-    const installCli = `${installCliPrefix} ${dependencies().join(' ')}`;
-
-    const installDevCliPrefix = pkgtool === 'yarn' ? `${pkgtool} add -D --cwd ${initPath}` : `${pkgtool} install --save-dev --prefix ${initPath}`;
+    let installDevCliPrefix = pkgtool === 'yarn' ? `${pkgtool} add -D --cwd ${initPath}` : `${pkgtool} install --save-dev --prefix ${initPath}`;
     const { defaultDep, buildDep, tsDep, testDep, eslintDep, commitlintDep, stylelintDep, devServerDep } = devDependencies({
       build,
       ts,
@@ -270,6 +264,15 @@ export default function ({
       testFrame,
       devServer
     });
+
+    if (pkgtool === 'cnpm' && initPath !== process.cwd()) {
+      // fix cnpm cannot set prefix bug
+      // pkgtool = 'npm';
+      installCliPrefix = `cd ${initPath} && ${installCliPrefix}`;
+      installDevCliPrefix = `cd ${initPath} && ${installDevCliPrefix}`;
+    }
+
+    const installCli = `${installCliPrefix} ${dependencies().join(' ')}`;
     const installDevCli = defaultDep.length > 0 ? `${installDevCliPrefix} ${defaultDep.join(' ')}` : '';
     const installBuildDevCli = buildDep.length > 0 ? `${installDevCliPrefix} ${buildDep.join(' ')}` : '';
     const installTsDevCli = tsDep.length > 0 ? `${installDevCliPrefix} ${tsDep.join(' ')}` : '';
@@ -562,7 +565,7 @@ export default function ({
         });
 
         // init git
-        const gitCli = git ? `git init && git git remote add origin ${git}` : '';
+        const gitCli = git ? `cd ${initPath} && git init && git remote add origin ${git}` : '';
 
         generateFiglet((done) => execShell([
           installCli,
