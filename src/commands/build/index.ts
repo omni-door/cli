@@ -99,11 +99,11 @@ export default async function (config: OmniConfig | {}) {
     }
 
     if (eslint) {
-      await execShell(['npm run lint:es'], () => logEmph('eslint passed! 🚩'), handleBuildErr('eslint checking failed!'));
+      await execShell(['npm run lint:es'], () => logEmph('eslint passed! 🚩'), handleBuildErr('eslint checking failed!try to exec: npm run lint:es_fix'));
     }
 
     if (stylelint) {
-      await execShell(['npm run lint:style'], () => logEmph('stylelint passed! 🚩'), handleBuildErr('stylelint checking failed!'));
+      await execShell(['npm run lint:style'], () => logEmph('stylelint passed! 🚩'), handleBuildErr('stylelint checking failed!try to exec: npm run lint:style_fix'));
     }
 
     if (!tool) {
