@@ -47,8 +47,8 @@ export default async function (config: OmniConfig | {}) {
     msg = msg || 'Building failed!';
 
     return function (err: any) {
-      logErr(`${msg} 👉  ${JSON.stringify(err)}`);
-      process.exit(1);
+      logErr(msg!);
+      process.exit(0);
     };
   }
 
@@ -95,15 +95,15 @@ export default async function (config: OmniConfig | {}) {
 
   try {
     if (test) {
-      await execShell(['npm test'], () => logEmph('unit test passed! 🚩'), handleBuildErr('unit test failed!'), true);
+      await execShell(['npm test'], () => logEmph('unit test passed! 🚩'), handleBuildErr('unit test failed!'));
     }
 
     if (eslint) {
-      await execShell(['npm run lint:es'], () => logEmph('eslint passed! 🚩'), handleBuildErr('eslint checking failed!'), true);
+      await execShell(['npm run lint:es'], () => logEmph('eslint passed! 🚩'), handleBuildErr('eslint checking failed!'));
     }
 
     if (stylelint) {
-      await execShell(['npm run lint:style'], () => logEmph('stylelint passed! 🚩'), handleBuildErr('stylelint checking failed!'), true);
+      await execShell(['npm run lint:style'], () => logEmph('stylelint passed! 🚩'), handleBuildErr('stylelint checking failed!'));
     }
 
     if (!tool) {
@@ -165,9 +165,9 @@ export default async function (config: OmniConfig | {}) {
     await execShell(buildCliArr, handleBuildSuc(), handleBuildErr());
 
     if (auto_release) {
-      await execShell(['omni release'], () => logEmph('auto release success! 📣'), handleBuildErr('release failed!'));
+      await execShell(['omni release'], handleBuildSuc('auto release success!'), handleBuildErr('release failed!'));
     }
   } catch (err) {
-    handleBuildErr('Oops! build process occured some accidents!')(err);
+    logErr(`Oops! build process occured some accidents! 👉  ${JSON.stringify(err)}`);
   }
 }
