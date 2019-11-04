@@ -141,27 +141,20 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
         }
       );
 
-      let canPublish = true;
       if (npm !== npmUrl) {
         logInfo(`set npm registry to: ${npm}`);
         await execShell(
           [`npm set registry ${npm}`],
-          async () => {
-            await execShell([path.resolve(__dirname, 'publish.sh')]);
-            canPublish = false;
-          },
-          () => {
-            logWarn('set npm registry failed!');
-            canPublish = false;
-          }
+          () => logEmph('npm set registry success, please run { npm publish } by yourself!'),
+          () => logWarn('set npm registry failed!')
+        );
+      } else {
+        await execShell(
+          ['npm publish'],
+          () => logEmph('npm publish success!'),
+          () => logWarn('npm publish failed!')
         );
       }
-
-      canPublish && await execShell(
-        ['npm publish'],
-        () => logEmph('npm publish success!'),
-        () => logWarn('npm publish failed!')
-      );
     }
 
     handleReleaseSuc()();
