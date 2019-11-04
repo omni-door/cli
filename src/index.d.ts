@@ -4,7 +4,7 @@ export type NPM = 'npm' | 'hnpm';
 export type CDN = 'w1' | 'w4' | 'w11';
 export type TESTFRAME = 'mocha' | 'jest' | 'karma' | '';
 export type PKJTOOL = 'yarn' | 'npm' | 'cnpm';
-export type STYLE = 'less' | 'scss' | 'css' | '';
+export type STYLE = 'less' | 'scss' | 'css' | 'all' | '';
 export type DEVSERVER = 'basic' | 'docz' | 'storybook' | 'bisheng' | '';
 export type ANYOBJECT = { [propName: string]: any };
 

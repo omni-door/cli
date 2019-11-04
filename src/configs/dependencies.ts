@@ -34,10 +34,10 @@ export function devDependencies (config: Config) {
     'babel-loader',
     style ? 'style-loader' : '',
     style ? 'css-loader' : '',
-    style === 'less' ? 'less' : '',
-    style === 'less' ? 'less-loader' : '',
-    style === 'scss' ? 'sass-loader' : '',
-    style === 'scss' ? 'node-sass' : '',
+    style === 'all' || style === 'less' ? 'less' : '',
+    style === 'all' || style === 'less' ? 'less-loader' : '',
+    style === 'all' || style === 'scss' ? 'sass-loader' : '',
+    style === 'all' || style === 'scss' ? 'node-sass' : '',
     '@babel/core',
     '@babel/preset-env',
     '@babel/preset-react',
@@ -132,7 +132,7 @@ export function devDependencies (config: Config) {
     'stylelint-config-prettier',
     'stylelint-order',
     'stylelint-declaration-block-no-ignored-properties',
-    style === 'scss' ? 'stylelint-scss' : ''
+    style === 'all' || style === 'scss' ? 'stylelint-scss' : ''
   ] : [];
 
   const doczDependencies= [

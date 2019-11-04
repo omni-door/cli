@@ -418,7 +418,7 @@ export default function ({
       },{
         name: 'style',
         type: 'rawlist',
-        choices: [ 'less', 'scss', 'css', 'none' ],
+        choices: [ 'less', 'scss', 'css', 'all', 'none' ],
         message: '应用那种样式文件? (which the stylesheet type you like apllying?)',
         default: 'less'
       },{

@@ -50,9 +50,23 @@ module.exports = {
         test: /\.less$/,
         use: ['style-loader', 'css-loader', 'less-loader'],
         include: path.resolve(__dirname, "..", "src/")
+      }` : style === 'scss' ? `{
+        test: /\.css$/,
+        use:  ['style-loader', 'css-loader'],
+        include: path.resolve(__dirname, "..", "src/")
+      },
+      {
+        test: /\.scss$/,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
+        include: path.resolve(__dirname, "..", "src/")
       }` : `{
         test: /\.css$/,
         use:  ['style-loader', 'css-loader'],
+        include: path.resolve(__dirname, "..", "src/")
+      },
+      {
+        test: /\.less$/,
+        use: ['style-loader', 'css-loader', 'less-loader'],
         include: path.resolve(__dirname, "..", "src/")
       },
       {

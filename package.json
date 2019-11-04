@@ -9,11 +9,12 @@
     "test": "nyc mocha --opts mocha.opts",
     "lint": "eslint src/ --ext .ts --ext .tsx",
     "lint:fix": "eslint src/ --ext .ts --ext .tsx --fix",
-    "build": "npm run build:rm && npm run build:tsc",
+    "build": "npm run build:rm && npm run build:tsc && npm run build:copy",
     "build:rm": "rm -rf lib/*",
     "build:tsc": "tsc --build",
     "build:branch": "./.build/branch.sh",
     "build:version": "./.build/version.sh",
+    "build:copy": "./.build/copy.sh",
     "release": "npm run build:branch master && npm run build && npm run build:version"
   },
   "repository": {

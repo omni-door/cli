@@ -60,9 +60,23 @@ module.exports = {
         test: /\.less$/,
         use: ['style-loader', 'css-loader', 'less-loader'],
         include: path.resolve(__dirname, "..", "src/")
+      }` : style === 'scss' ? `{
+        test: /\.css$/,
+        use:  ['style-loader', 'css-loader'],
+        include: path.resolve(__dirname, "..", "src/")
+      },
+      {
+        test: /\.scss$/,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
+        include: path.resolve(__dirname, "..", "src/")
       }` : `{
         test: /\.css$/,
         use:  ['style-loader', 'css-loader'],
+        include: path.resolve(__dirname, "..", "src/")
+      },
+      {
+        test: /\.less$/,
+        use: ['style-loader', 'css-loader', 'less-loader'],
         include: path.resolve(__dirname, "..", "src/")
       },
       {
@@ -78,7 +92,7 @@ module.exports = {
   ],
   mode: 'development',
   resolve: {
-    extensions: [${ts ? '".ts", ".tsx", ' : ''}".js", ".jsx", ${style ? (style === 'css' ? '".css"' : (style === 'less' ? '".less", ".css"' : '".scss", ".css"')) : ''}]
+    extensions: [${ts ? '".ts", ".tsx", ' : ''}".js", ".jsx", ${style ? (style === 'css' ? '".css"' : (style === 'less' ? '".less", ".css"' : style === 'scss' ? '".scss", ".css"' : '".scss", ".less", ".css"')) : ''}]
   }
 };`;
 }

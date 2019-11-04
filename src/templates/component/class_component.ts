@@ -8,7 +8,7 @@ export default function (config: {
   const { ts, componentName, style } = config;
 
   return `import React, { PureComponent } from 'react';
-${style ? `import './style/${componentName}.${style}';` : ''}
+${style ? `import './style/${componentName}.${style === 'all' ? 'less' : style}';` : ''}
 
 ${ts ? `export interface ${componentName}Props {};
 

@@ -88,7 +88,7 @@ module.exports = {
     // whether or not apply typescript
     typescript: ${ts},
     // stylesheet type
-    stylesheet: '${style}',
+    stylesheet: '${style === 'all' ? 'less' : style}',
     // whether or not README.md
     readme: true,
     // if generate mdx file instead of md

@@ -45,10 +45,22 @@ module.exports = {
       {
         test: /\.less$/,
         use: ['style-loader', 'css-loader', 'less-loader']
+      }` : style === 'scss' ? `{
+        test: /\.css$/,
+        use:  ['style-loader', 'css-loader'],
+        exclude: /node_modules(?!\\/@storybook\\/addon-info)/
+      },
+      {
+        test: /\.scss$/,
+        use: ['style-loader', 'css-loader', 'sass-loader']
       }` : `{
         test: /\.css$/,
         use:  ['style-loader', 'css-loader'],
         exclude: /node_modules(?!\\/@storybook\\/addon-info)/
+      },
+      {
+        test: /\.less$/,
+        use: ['style-loader', 'css-loader', 'less-loader']
       },
       {
         test: /\.scss$/,
