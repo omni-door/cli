@@ -173,7 +173,7 @@ export default function ({
     // lint files
     const content_eslintrc = eslint && eslintrcJS({ ts });
     const content_eslintignore = eslint && eslintignore();
-    const content_stylelint = stylelint && stylelintConfigJs();
+    const content_stylelint = stylelint && stylelintConfigJs({ style });
     const content_commitlint = commitlint && commitlintConfigJs({ name });
 
     // build files
