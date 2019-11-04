@@ -27,7 +27,7 @@ import {
   server_webpack as webpackDevConfigJs,
   source_index as indexTpl,
   source_html as indexHtml,
-  source_md_d as md_d,
+  source_d,
   storybook_addons,
   storybook_config,
   storybook_mhead,
@@ -163,7 +163,7 @@ export default function ({
     const content_ts = ts && tsConfigJson();
 
     // d.ts files
-    const content_md_d = ts && md_d();
+    const content_d = ts && source_d();
 
     // test files
     const content_mocha = testFrame === 'mocha' && mochaOpts({ ts });
@@ -209,7 +209,7 @@ export default function ({
     content_ts && fsExtra.outputFileSync(path.resolve(initPath, 'tsconfig.json'), content_ts, 'utf8');
 
     // d.ts files
-    content_md_d && fsExtra.outputFileSync(path.resolve(initPath, 'src/@types/md.d.ts'), content_md_d, 'utf8');
+    content_d && fsExtra.outputFileSync(path.resolve(initPath, 'src/@types/global.d.ts'), content_d, 'utf8');
 
     // test files
     content_mocha && fsExtra.outputFileSync(path.resolve(initPath, 'mocha.opts'), content_mocha, 'utf8');
