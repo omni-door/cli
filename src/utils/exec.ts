@@ -26,12 +26,16 @@ export async function execShell (clis: string[], done?: (results: any[]) => any,
         })
         .catch(err => {
           !silent && logErr(`${i}-shelljs.exec.catch.error~~~ ` + err);
-          return err;
+          handleErr && handleErr(err);
+          return 'OMNI-DOOR-EXEC-ERROR';
         });
       
+      // catch error will direct return the exec process
+      if (result === 'OMNI-DOOR-EXEC-ERROR') return;
+
       results.push(result);
     } catch (err) {
-      logErr(JSON.stringify(err));
+      logErr(`exec shell happened some accident 👉  ${JSON.stringify(err)}`);
       return handleErr && handleErr(err);
     }
   }

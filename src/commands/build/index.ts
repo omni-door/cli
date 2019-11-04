@@ -35,12 +35,21 @@ export default async function (config: OmniConfig | {}) {
     auto_release
   } } = config as OmniConfig;
 
-  function buildSuc () {
-    logSuc('Building completed! 📣');
+  function handleBuildSuc (msg?: string) {
+    msg = msg || 'Building completed!';
+
+    return function () {
+      logSuc(`${msg} 📣`);
+    };
   }
 
-  function buildErr (err: any) {
-    logErr(`Building failed! 👉  ${JSON.stringify(err)}`);
+  function handleBuildErr (msg?: string) {
+    msg = msg || 'Building failed!';
+
+    return function (err: any) {
+      logErr(`${msg} 👉  ${JSON.stringify(err)}`);
+      process.exit(1);
+    };
   }
 
   function installDenpendencies (build: BUILD) {
@@ -86,15 +95,15 @@ export default async function (config: OmniConfig | {}) {
 
   try {
     if (test) {
-      await execShell(['npm test'], () => logEmph('unit test passed! 🔈'), err => logWarn(`unit test failed! 👉  ${JSON.stringify(err)}`));
+      await execShell(['npm test'], () => logEmph('unit test passed! 🚩'), handleBuildErr('unit test failed!'), true);
     }
 
     if (eslint) {
-      await execShell(['npm run lint:es'], () => logEmph('eslint passed! 🔈'), err => logWarn(`eslint checking failed! 👉  ${JSON.stringify(err)}`));
+      await execShell(['npm run lint:es'], () => logEmph('eslint passed! 🚩'), handleBuildErr('eslint checking failed!'), true);
     }
 
     if (stylelint) {
-      await execShell(['npm run lint:style'], () => logEmph('stylelint passed! 🔈'), err => logWarn(`stylelint checking failed! 👉  ${JSON.stringify(err)}`));
+      await execShell(['npm run lint:style'], () => logEmph('stylelint passed! 🚩'), handleBuildErr('stylelint checking failed!'), true);
     }
 
     if (!tool) {
@@ -153,12 +162,12 @@ export default async function (config: OmniConfig | {}) {
       }
     }
 
-    await execShell(buildCliArr, buildSuc, buildErr);
+    await execShell(buildCliArr, handleBuildSuc(), handleBuildErr());
 
     if (auto_release) {
-      await execShell(['omni release'], () => logEmph('auto release success! 📣'), err => logWarn(`release failed! 👉  ${JSON.stringify(err)}`));
+      await execShell(['omni release'], () => logEmph('auto release success! 📣'), handleBuildErr('release failed!'));
     }
   } catch (err) {
-    logErr(`Oops! build process occured some accidents 👉  ${JSON.stringify(err)}`);
+    handleBuildErr('Oops! build process occured some accidents!')(err);
   }
 }
