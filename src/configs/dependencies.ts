@@ -131,7 +131,8 @@ export function devDependencies (config: Config) {
     'stylelint-config-rational-order',
     'stylelint-config-prettier',
     'stylelint-order',
-    'stylelint-declaration-block-no-ignored-properties'
+    'stylelint-declaration-block-no-ignored-properties',
+    style === 'scss' ? 'stylelint-scss' : ''
   ] : [];
 
   const doczDependencies= [

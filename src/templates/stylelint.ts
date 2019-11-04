@@ -1,4 +1,10 @@
-export default function () {
+import { STYLE } from './../index.d';
+
+export default function (config: {
+  style: STYLE;
+}) {
+  const { style } = config;
+
   return `'use strict';
 
 module.exports = {
@@ -10,10 +16,13 @@ module.exports = {
 	],
 	plugins: [
 		"stylelint-order",
+		${style === 'scss' ? '"stylelint-scss",' : ''}
 		"stylelint-declaration-block-no-ignored-properties"
 	],
 	rules: {
 		"no-descending-specificity": null,
+		${style === 'scss' ? `"at-rule-no-unknown": null,
+    "scss/selector-no-redundant-nesting-selector": true,` : ''}
 		"plugin/declaration-block-no-ignored-properties": true
 	}
 };`;
