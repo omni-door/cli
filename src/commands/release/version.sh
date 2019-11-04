@@ -28,7 +28,7 @@ updateVersion () {
     newVersionLine=$(echo "${versionLine/${version}/${newVersion}}")
     sed -i "" "s/${versionLine}/${newVersionLine}/g" "package.json"
   else
-    echo -e "\033[41;37m${name}: please input correct version number\033[0m"
+    echo -e "\033[31m${name}: please input correct version number\033[0m"
     exit 1
   fi
 }

@@ -54,7 +54,7 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
   logInfo(message);
 
   function handleReleaseSuc (msg?: string) {
-    msg = msg || 'release success!';
+    msg = msg || 'release process completed!';
 
     return function () {
       logSuc(`${msg} 📣`);
@@ -84,7 +84,7 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
     }
 
     const { ignore, manual } = iterTactic || {};
-    const versionShellSuffix = ignore ? 'i' : manual;
+    const versionShellSuffix = ignore ? 'i' : manual ? manual : '';
 
     await execShell(
       [`${path.resolve(__dirname, 'version.sh')} ${versionShellSuffix}`],
