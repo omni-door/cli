@@ -100,7 +100,7 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
         gitUrl = results[0];
       });
 
-      let setUrl = true;
+      let canPush = true;
       if (git !== gitUrl) {
         logInfo(`set git remote origin to: ${git}`);
         await execShell(
@@ -108,7 +108,7 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
           () => logEmph(`git remote/origin is: ${git}!`),
           () => {
             logWarn('git set remote failed!');
-            setUrl = false;
+            canPush = false;
           }
         );
       }
@@ -121,7 +121,7 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
         ? `git push origin ${branch || 'master'}`
         : `git push origin ${branch || 'master'} --no-verify`;
 
-      setUrl && await execShell(
+      canPush && await execShell(
         [
           'git add -A',
           `${commit}`,
@@ -141,23 +141,23 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
         }
       );
 
-      let setUrl = true;
+      let canPublish = true;
       if (npm !== npmUrl) {
         logInfo(`set npm registry to: ${npm}`);
         await execShell(
           [`npm set registry ${npm}`],
-          () => {
-            execShell(['./branch.sh']);
-            process.exit(0);
+          async () => {
+            await execShell([path.resolve(__dirname, 'publish.sh')]);
+            canPublish = false;
           },
           () => {
             logWarn('set npm registry failed!');
-            setUrl = false;
+            canPublish = false;
           }
         );
       }
 
-      setUrl && await execShell(
+      canPublish && await execShell(
         ['npm publish'],
         () => logEmph('npm publish success!'),
         () => logWarn('npm publish failed!')
