@@ -42,8 +42,7 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
     await execShell(
       [`${path.resolve(__dirname, 'branch.sh')} ${branch}`],
       function (results) { branchInfo = results[0]; },
-      function () {},
-      true
+      function () { process.exit(0); }
     );
     if (!~branchInfo.indexOf('current branch is')) {
       // branch check failed!
@@ -54,17 +53,34 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
   const message = 'starting release process! 🕰';
   logInfo(message);
 
+  function handleReleaseSuc (msg?: string) {
+    msg = msg || 'release success!';
+
+    return function () {
+      logSuc(`${msg} 📣`);
+    };
+  }
+
+  function handleReleaseErr (msg?: string) {
+    msg = msg || 'release failed!';
+
+    return function (err: any) {
+      logErr(msg!);
+      process.exit(0);
+    };
+  }
+
   try {
     if (test) {
-      await execShell(['npm test'], () => logEmph('unit test passed! 🔈'), err => logWarn(`unit test failed! 👉  ${JSON.stringify(err)}`));
+      await execShell(['npm test'], () => logEmph('unit test passed! 🚩'), handleReleaseErr('unit test failed!'));
     }
 
     if (eslint) {
-      await execShell(['npm run lint:es'], () => logEmph('eslint passed! 🔈'), err => logWarn(`eslint checking failed! 👉  ${JSON.stringify(err)}`));
+      await execShell(['npm run lint:es'], () => logEmph('eslint passed! 🚩'), handleReleaseErr('eslint checking failed!'));
     }
 
     if (stylelint) {
-      await execShell(['npm run lint:style'], () => logEmph('stylelint passed! 🔈'), err => logWarn(`stylelint checking failed! 👉  ${JSON.stringify(err)}`));
+      await execShell(['npm run lint:style'], () => logEmph('stylelint passed! 🚩'), handleReleaseErr('stylelint checking failed!'));
     }
 
     const { ignore, manual } = iterTactic || {};
@@ -73,8 +89,7 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
     await execShell(
       [`${path.resolve(__dirname, 'version.sh')} ${versionShellSuffix}`],
       function () {},
-      function () {},
-      true
+      function () {}
     );
 
     if (git) {
@@ -85,13 +100,16 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
         gitUrl = results[0];
       });
 
+      let setUrl = true;
       if (git !== gitUrl) {
+        logInfo(`set git remote origin to: ${git}`);
         await execShell(
-          [
-            `git remote add origin ${gitUrl}`
-          ],
-          () => logEmph(`git set remote to ${gitUrl}!`),
-          err => logWarn(`git set remote failed! 👉  ${JSON.stringify(err)}`)
+          [`git remote add origin ${git}`],
+          () => logEmph(`git remote/origin is: ${git}!`),
+          () => {
+            logWarn('git set remote failed!');
+            setUrl = false;
+          }
         );
       }
 
@@ -103,37 +121,47 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
         ? 'git push origin master'
         : 'git push origin master --no-verify';
 
-      await execShell(
+      setUrl && await execShell(
         [
           'git add -A',
           `${commit}`,
           `${push}`
         ],
         () => logEmph('git push success!'),
-        err => logWarn(`git push failed! 👉  ${JSON.stringify(err)}`)
+        () => logWarn('git push failed!')
       );
     }
 
     if (npm) {
+      let npmUrl = '';
       await execShell(
-        [
-          `npm set registry ${npm}`,
-          'npm publish'
-        ],
-        (results) => {
-          if (~results[1].indexOf('npm ERR!')) {
-            logInfo(results[1]);
-            logWarn('npm publish failed!');
-          } else {
-            logEmph('npm publish success!');
+        ['npm get registry'],
+        function (results) {
+          npmUrl = results[0];
+        }
+      );
+
+      let setUrl = true;
+      if (npm !== npmUrl) {
+        logInfo(`set npm registry to: ${npm}`);
+        await execShell(
+          [`npm set registry ${npm}`],
+          () => logEmph(`npm registry now is: ${npm}!`),
+          () => {
+            logWarn('set npm registry failed!');
+            setUrl = false;
           }
-        },
-        err => logWarn(`npm publish failed! 👉  ${JSON.stringify(err)}`),
-        true
+        );
+      }
+
+      setUrl && await execShell(
+        ['npm publish'],
+        () => logEmph('npm publish success!'),
+        () => logWarn('npm publish failed!')
       );
     }
 
-    logSuc('release success! 📣');
+    handleReleaseSuc()();
   } catch (err) {
     logErr(`Oops! release process occured some accidents 👉  ${JSON.stringify(err)}`);
   }
