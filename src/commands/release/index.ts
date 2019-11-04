@@ -16,15 +16,6 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
     return;
   }
 
-  const pkjPath = path.resolve(process.cwd(), 'package.json');
-  let pkj = {
-    name: 'OMNI-PROJECT',
-    version: '0.0.1'
-  };
-  if (fs.existsSync(pkjPath)) {
-    pkj = require(pkjPath);
-  }
-
   const { release: {
     git,
     npm,
@@ -111,6 +102,15 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
             canPush = false;
           }
         );
+      }
+
+      const pkjPath = path.resolve(process.cwd(), 'package.json');
+      let pkj = {
+        name: 'OMNI-PROJECT',
+        version: '0.0.1'
+      };
+      if (fs.existsSync(pkjPath)) {
+        pkj = require(pkjPath);
       }
 
       const commit = commitlint
