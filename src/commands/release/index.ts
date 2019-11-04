@@ -118,8 +118,8 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
         : `git commit -m'[${pkj.name.toUpperCase()}]: ${pkj.version}' --no-verify`;
 
       const push = commitlint
-        ? 'git push origin master'
-        : 'git push origin master --no-verify';
+        ? `git push origin ${branch || 'master'}`
+        : `git push origin ${branch || 'master'} --no-verify`;
 
       setUrl && await execShell(
         [
@@ -146,7 +146,10 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
         logInfo(`set npm registry to: ${npm}`);
         await execShell(
           [`npm set registry ${npm}`],
-          () => logEmph(`npm registry now is: ${npm}!`),
+          () => {
+            execShell(['./branch.sh']);
+            process.exit(0);
+          },
           () => {
             logWarn('set npm registry failed!');
             setUrl = false;

@@ -1,6 +1,6 @@
 #! /bin/bash
 
-name="[OMNI-DOOR]"
+name="🐸  [OMNI-DOOR]"
 
 if [ $? -eq 0 ]
 then
