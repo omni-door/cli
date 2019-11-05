@@ -17,8 +17,8 @@ module.exports = {
   port: 6200,
   plugins: [
     css({
-      preprocessor: '${style === 'all' ? 'less' : (style === 'scss' ? 'sass' : style)}',
-      cssmodules: true
+      preprocessor: '${style === 'all' ? 'less' : (style === 'scss' ? 'sass' : style === 'css' ? 'postcss' : style)}',
+      cssmodules: false
     })
   ]
 };`;
