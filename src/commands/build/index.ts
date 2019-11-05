@@ -112,11 +112,11 @@ export default async function (config: OmniConfig | {}) {
         const relativePath = path.relative(originDir || dir, filePath);
         const destPath = path.resolve(out_dir, relativePath);
         const emsPath = esm_dir && path.resolve(esm_dir, relativePath);
-        fsExtra.ensureFileSync(path.resolve(destPath, '..'));
-        fsExtra.copyFileSync(filePath, destPath);
+        fsExtra.ensureDirSync(path.resolve(destPath, '..'));
+        fsExtra.copySync(filePath, destPath);
         if (emsPath) {
-          fsExtra.ensureFileSync(path.resolve(emsPath, '..'));
-          fsExtra.copyFileSync(filePath, emsPath);
+          fsExtra.ensureDirSync(path.resolve(emsPath, '..'));
+          fsExtra.copySync(filePath, emsPath);
         }
       }
     });
@@ -133,11 +133,11 @@ export default async function (config: OmniConfig | {}) {
         fsExtra.ensureDirSync(destPath);
         emsPath && fsExtra.ensureDirSync(emsPath);
       } else {
-        fsExtra.ensureFileSync(destPath);
-        emsPath && fsExtra.ensureFileSync(emsPath);
+        fsExtra.ensureDirSync(path.resolve(destPath, '..'));
+        emsPath && fsExtra.ensureDirSync(path.resolve(emsPath, '..'));
       }
-      fsExtra.copyFileSync(reserveItem, destPath);
-      emsPath && fsExtra.copyFileSync(reserveItem, emsPath);
+      fsExtra.copySync(reserveItem, destPath);
+      emsPath && fsExtra.copySync(reserveItem, emsPath);
     }
   }
 
