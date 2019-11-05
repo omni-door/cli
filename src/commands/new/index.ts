@@ -39,11 +39,11 @@ export default function (config: OmniConfig | {}, componentName: string, options
 
   const { template: {
     root,
-    test,
-    typescript,
-    stylesheet,
-    readme,
-    mdx
+    test = '',
+    typescript = false,
+    stylesheet = '',
+    readme = false,
+    mdx = false
   } } = config as OmniConfig;
   
   try {

@@ -41,6 +41,8 @@ module.exports = {
     eslint: ${eslint},
     // whether or not process style lint check
     stylelint: ${stylelint},
+    // whether or not reserve the stylesheet files
+    reserve_style: ${style && build !== 'webpack' ? true : false},
     // the build source directory
     // must be a absolute path
     src_dir: path.resolve('src'),

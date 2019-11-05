@@ -3,6 +3,7 @@ import path from 'path';
 import fsExtra from 'fs-extra';
 import shelljs from 'shelljs';
 import inquirer from 'inquirer';
+import del from 'del';
 import rollupConfig from './rollup';
 import webpackConfig from './webpack';
 import { logErr, logInfo, logWarn, logSuc, logEmph } from '../../utils/logger';
@@ -24,16 +25,21 @@ export default async function (config: OmniConfig | {}) {
 
   const { build: {
     tool,
-    multi_output,
-    typescript,
-    test,
-    eslint,
-    stylelint,
+    multi_output = false,
+    typescript = false,
+    test = false,
+    eslint = false,
+    stylelint = false,
+    reserve_style = false,
     src_dir,
     out_dir,
-    esm_dir,
+    esm_dir = '',
     auto_release
   } } = config as OmniConfig;
+
+  if (!out_dir || !src_dir) {
+    handleBuildErr('The {src_dir} or {out_dir} missed in [omni.config.js]')();
+  }
 
   function handleBuildSuc (msg?: string) {
     msg = msg || 'Building completed!';
@@ -46,7 +52,7 @@ export default async function (config: OmniConfig | {}) {
   function handleBuildErr (msg?: string) {
     msg = msg || 'Building failed!';
 
-    return function (err: any) {
+    return function (err?: any) {
       logErr(msg!);
       process.exit(0);
     };
@@ -89,6 +95,25 @@ export default async function (config: OmniConfig | {}) {
         });
       } else {
         return false;
+      }
+    });
+  }
+
+  function copyStylesheet (dir: string, originDir?: string) {
+    const list = fs.readdirSync(dir);
+    list.map((v, k) => {
+      const filePath = path.resolve(dir, v);
+      const stats = fs.statSync(filePath);
+      if (stats.isDirectory()) {
+        if (!/^.*(test|stories).*$/.test(v)) {
+          copyStylesheet(filePath, originDir || dir);
+        }
+      } else if (/.(css|scss|less)$/.test(v)) {
+        const relativePath = path.relative(originDir || dir, filePath);
+        const distPath = path.resolve(out_dir, relativePath);
+        const emsPath = esm_dir && path.resolve(esm_dir, relativePath);
+        fs.copyFileSync(filePath, distPath);
+        emsPath && fs.copyFileSync(filePath, emsPath);
       }
     });
   }
@@ -162,7 +187,13 @@ export default async function (config: OmniConfig | {}) {
       }
     }
 
-    await execShell(buildCliArr, handleBuildSuc(), handleBuildErr());
+    del.sync(out_dir);
+    esm_dir && del.sync(esm_dir);
+
+    await execShell(buildCliArr, function () {
+      reserve_style && copyStylesheet(src_dir);
+      handleBuildSuc()();
+    }, handleBuildErr());
 
     if (auto_release) {
       await execShell(['omni release'], handleBuildSuc('auto release success!'), handleBuildErr('release failed!'));

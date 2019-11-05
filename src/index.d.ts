@@ -23,37 +23,43 @@ export type GenerateOmniConfigParams = {
   mdx: boolean;
 };
 
+export type OmniPlugin = {
+  stage: 'new' | 'build' | 'release';
+  handler: (config: Omit<OmniConfig, 'plugins'>) => Promise<any>;
+};
+
 export type OmniConfig = {
   build: {
     tool: BUILD;
-    configuration: (config: ANYOBJECT) => ANYOBJECT;
-    multi_output: boolean;
-    typescript: boolean;
-    test: boolean;
-    eslint: boolean;
-    stylelint: boolean;
+    configuration?: (config: ANYOBJECT) => ANYOBJECT;
+    multi_output?: boolean;
+    typescript?: boolean;
+    test?: boolean;
+    eslint?: boolean;
+    stylelint?: boolean;
+    reserve_style?: boolean;
     src_dir: string;
     out_dir: string;
-    esm_dir: string;
-    auto_release: boolean;
+    esm_dir?: string;
+    auto_release?: boolean;
   };
   release: {
-    git: string;
-    npm: NPM | string;
-    cdn: CDN | string;
-    test: boolean;
-    eslint: boolean;
-    stylelint: boolean;
-    commitlint: boolean;
-    branch: string;
+    git?: string;
+    npm?: NPM | string;
+    cdn?: CDN | string;
+    test?: boolean;
+    eslint?: boolean;
+    stylelint?: boolean;
+    commitlint?: boolean;
+    branch?: string;
   };
   template: {
     root: string;
-    test: TESTFRAME;
-    typescript: boolean;
-    stylesheet: STYLE;
-    readme: boolean;
-    mdx: boolean;
+    test?: TESTFRAME;
+    typescript?: boolean;
+    stylesheet?: STYLE;
+    readme?: boolean;
+    mdx?: boolean;
   };
-  plugins: (obj: ANYOBJECT) => any[];
+  plugins?: OmniPlugin[];
 };

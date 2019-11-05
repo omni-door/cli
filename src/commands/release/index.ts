@@ -20,10 +20,10 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
     git,
     npm,
     cdn,
-    test,
-    eslint,
-    stylelint,
-    commitlint,
+    test = false,
+    eslint = false,
+    stylelint = false,
+    commitlint = false,
     branch
   } } = config as OmniConfig;
 
