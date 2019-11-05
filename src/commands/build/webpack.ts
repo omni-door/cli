@@ -69,36 +69,27 @@ module.exports = configuration({
     rules: [
       {
         test: /\.(js|jsx)$/,
-        include: '${src_dir}',
-        exclude: /node_modules/,
         use: [
           {loader: 'babel-loader'}
         ]
       },
       {
         test: /\.(ts|tsx)$/,
-        include: '${src_dir}',
-        exclude: /node_modules/,
         use: [
-          {
-            loader: 'ts-loader'
-          }
+          {loader: 'ts-loader'}
         ]
       },
       {
         test: /\.css$/,
-        use:  ['style-loader', 'css-loader'],
-        include: '${src_dir}'
+        use:  ['style-loader', 'css-loader']
       },
       {
         test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
-        include: '${src_dir}'
+        use: ['style-loader', 'css-loader', 'sass-loader']
       },
       {
         test: /\.less$/,
-        use: ['style-loader', 'css-loader', 'less-loader'],
-        include: '${src_dir}'
+        use: ['style-loader', 'css-loader', 'less-loader']
       }
     ],
   },
