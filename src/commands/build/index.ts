@@ -112,8 +112,12 @@ export default async function (config: OmniConfig | {}) {
         const relativePath = path.relative(originDir || dir, filePath);
         const distPath = path.resolve(out_dir, relativePath);
         const emsPath = esm_dir && path.resolve(esm_dir, relativePath);
-        fs.copyFileSync(filePath, distPath);
-        emsPath && fs.copyFileSync(filePath, emsPath);
+        fsExtra.ensureFileSync(path.resolve(distPath, '..'));
+        fsExtra.copyFileSync(filePath, distPath);
+        if (emsPath) {
+          fsExtra.ensureFileSync(path.resolve(emsPath, '..'));
+          fsExtra.copyFileSync(filePath, emsPath);
+        }
       }
     });
   }
