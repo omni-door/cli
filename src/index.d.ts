@@ -37,7 +37,10 @@ export type OmniConfig = {
     test?: boolean;
     eslint?: boolean;
     stylelint?: boolean;
-    reserve_style?: boolean;
+    reserve?: {
+      style?: boolean;
+      assets?: string[];
+    }
     src_dir: string;
     out_dir: string;
     esm_dir?: string;

@@ -30,7 +30,7 @@ export default async function (config: OmniConfig | {}) {
     test = false,
     eslint = false,
     stylelint = false,
-    reserve_style = false,
+    reserve = {},
     src_dir,
     out_dir,
     esm_dir = '',
@@ -110,16 +110,35 @@ export default async function (config: OmniConfig | {}) {
         }
       } else if (/.(css|scss|less)$/.test(v)) {
         const relativePath = path.relative(originDir || dir, filePath);
-        const distPath = path.resolve(out_dir, relativePath);
+        const destPath = path.resolve(out_dir, relativePath);
         const emsPath = esm_dir && path.resolve(esm_dir, relativePath);
-        fsExtra.ensureFileSync(path.resolve(distPath, '..'));
-        fsExtra.copyFileSync(filePath, distPath);
+        fsExtra.ensureFileSync(path.resolve(destPath, '..'));
+        fsExtra.copyFileSync(filePath, destPath);
         if (emsPath) {
           fsExtra.ensureFileSync(path.resolve(emsPath, '..'));
           fsExtra.copyFileSync(filePath, emsPath);
         }
       }
     });
+  }
+
+  function copyReserves (reserves: string[]) {
+    for (let i = 0, len = reserves.length; i < len; i++) {
+      const reserveItem = reserves[i];
+      const stats = fs.statSync(reserveItem);
+      const relativePath = path.relative(src_dir, reserveItem);
+      const destPath = path.resolve(out_dir, relativePath);
+      const emsPath = esm_dir && path.resolve(esm_dir, relativePath);
+      if (stats.isDirectory()) {
+        fsExtra.ensureDirSync(destPath);
+        emsPath && fsExtra.ensureDirSync(emsPath);
+      } else {
+        fsExtra.ensureFileSync(destPath);
+        emsPath && fsExtra.ensureFileSync(emsPath);
+      }
+      fsExtra.copyFileSync(reserveItem, destPath);
+      emsPath && fsExtra.copyFileSync(reserveItem, emsPath);
+    }
   }
 
   try {
@@ -195,7 +214,9 @@ export default async function (config: OmniConfig | {}) {
     esm_dir && del.sync(esm_dir);
 
     await execShell(buildCliArr, function () {
-      reserve_style && copyStylesheet(src_dir);
+      const { style, assets = [] } = reserve;
+      style && copyStylesheet(src_dir);
+      copyReserves(assets);
       handleBuildSuc()();
     }, handleBuildErr());
 

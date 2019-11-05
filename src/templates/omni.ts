@@ -42,7 +42,12 @@ module.exports = {
     // whether or not process style lint check
     stylelint: ${stylelint},
     // whether or not reserve the stylesheet files
-    reserve_style: ${style && build !== 'webpack' ? true : false},
+    reserve: {
+      // whether or not reserve the stylesheet files
+      style: ${style && build !== 'webpack' ? true : false},
+      // reserve other asset paths
+      assets: []
+    },
     // the build source directory
     // must be a absolute path
     src_dir: path.resolve('src'),
