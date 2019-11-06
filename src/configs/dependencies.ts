@@ -168,6 +168,7 @@ export function devDependencies (config: Config) {
     'express',
     'webpack',
     'webpack-dev-middleware',
+    'http-proxy-middleware',
     'html-webpack-plugin'
   ];
 

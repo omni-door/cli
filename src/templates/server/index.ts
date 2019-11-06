@@ -3,6 +3,7 @@ export default function () {
 
 const path = require('path');
 const express = require('express');
+const proxy = require('http-proxy-middleware');
 const { exec } = require('child_process');
 const webpack = require('webpack');
 const middleware = require('webpack-dev-middleware');
@@ -15,6 +16,14 @@ app.use(middleware(compiler, {
   publicPath: '/',
   logLevel: 'debug'
 }));
+
+// app.use(
+//   '/api',
+//   proxy({
+//     target: 'http://www.hupu.com/api',
+//     changeOrigin: true
+//   })
+// );
 
 app.use('*', function (req, res, next) {
   const filename = path.join(compiler.outputPath, 'index.html');
