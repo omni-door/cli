@@ -68,28 +68,40 @@ module.exports = configuration({
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\\.(js|jsx)$/,
         use: [
           {loader: 'babel-loader'}
         ]
       },
       {
-        test: /\.(ts|tsx)$/,
+        test: /\\.(ts|tsx)$/,
         use: [
           {loader: 'ts-loader'}
         ]
       },
       {
-        test: /\.css$/,
+        test: /\\.css$/,
         use:  ['style-loader', 'css-loader']
       },
       {
-        test: /\.scss$/,
+        test: /\\.scss$/,
         use: ['style-loader', 'css-loader', 'sass-loader']
       },
       {
-        test: /\.less$/,
+        test: /\\.less$/,
         use: ['style-loader', 'css-loader', 'less-loader']
+      },
+      {
+        test: /\\.(woff|woff2|eot|ttf|svg|jpg|png|gif)$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 8192,
+              name: 'assets/[name].[hash:8].[ext]'
+            }
+          }
+        ]
       }
     ],
   },

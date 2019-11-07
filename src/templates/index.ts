@@ -15,8 +15,6 @@ import readme from './readme';
 import stylelint from './stylelint';
 import tsconfig from './tsconfig';
 import doczrc from './doczrc';
-import build_rollup from './build/rollup';
-import build_webpack from './build/webpack';
 import component_class from './component/class_component';
 import component_functional from './component/functional_component';
 import component_index from './component/index';
@@ -54,8 +52,6 @@ export {
   stylelint,
   tsconfig,
   doczrc,
-  build_rollup,
-  build_webpack,
   component_class,
   component_functional,
   component_index,

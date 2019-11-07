@@ -6,8 +6,12 @@ export default function (config: {
   return `'use strict';
 
 module.exports = function (api) {
-  api.cache(true);
-  const presets = ['@babel/preset-env', '@babel/preset-react', '${ts ? '@babel/preset-typescript' : ''}'];
+  api.cache(false);
+  const presets = ${
+  ts
+    ? '[\'@babel/preset-env\', \'@babel/preset-react\', \'@babel/preset-typescript\'];'
+    : '[\'@babel/preset-env\', \'@babel/preset-react\'];'
+}
 
   const plugins = [];
 
