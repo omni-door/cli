@@ -164,7 +164,7 @@ export default function ({
     const content_ts = ts && tsConfigJson();
 
     // d.ts files
-    const content_d = ts && source_d();
+    const content_d = ts && source_d({ style });
 
     // test files
     const content_mocha = testFrame === 'mocha' && mochaOpts({ ts });
