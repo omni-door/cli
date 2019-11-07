@@ -21,7 +21,10 @@ const htmlWebpackPlugin = new HtmlWebpackPlugin({
 });
 
 module.exports = {
-  entry: path.join(__dirname, '../src/index.${ts ? 'tsx' : 'jsx'}'),
+  entry: [
+    'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true',
+    path.join(__dirname, '../src/index.${ts ? 'tsx' : 'jsx'}')
+  ],
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'server')
@@ -29,17 +32,17 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
-        include: path.resolve(__dirname, "..", "src/"),
-        exclude: /node_modules/,
+        test: /\\.(js|jsx)$/,
+        include: path.resolve(__dirname, '..', 'src/'),
         use: [
-          {loader: 'babel-loader'}
+          {
+            loader: 'babel-loader'
+          }
         ]
       },
       ${ts ? `{
-        test: /\.(ts|tsx)$/,
-        include: path.resolve(__dirname, "..", "src/"),
-        exclude: /node_modules/,
+        test: /\\.(ts|tsx)$/,
+        include: path.resolve(__dirname, '..', 'src/'),
         use: [
           {
             loader: 'ts-loader'
@@ -47,43 +50,54 @@ module.exports = {
         ]
       },` : ''}
       ${style ? (style === 'css' ? `{
-        test: /\.css$/,
+        test: /\\.css$/,
         use:  ['style-loader', 'css-loader'],
-        include: path.resolve(__dirname, "..", "src/")
-      }
+        include: path.resolve(__dirname, '..', 'src/')
+      },
       ` : style === 'less' ? `{
-        test: /\.css$/,
+        test: /\\.css$/,
         use:  ['style-loader', 'css-loader'],
-        include: path.resolve(__dirname, "..", "src/")
+        include: path.resolve(__dirname, '..', 'src/')
       },
       {
-        test: /\.less$/,
+        test: /\\.less$/,
         use: ['style-loader', 'css-loader', 'less-loader'],
-        include: path.resolve(__dirname, "..", "src/")
-      }` : style === 'scss' ? `{
-        test: /\.css$/,
+        include: path.resolve(__dirname, '..', 'src/')
+      },` : style === 'scss' ? `{
+        test: /\\.css$/,
         use:  ['style-loader', 'css-loader'],
-        include: path.resolve(__dirname, "..", "src/")
+        include: path.resolve(__dirname, '..', 'src/')
+      },
+      {
+        test: /\\.scss$/,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
+        include: path.resolve(__dirname, '..', 'src/')
+      },` : `{
+        test: /\\.css$/,
+        use:  ['style-loader', 'css-loader'],
+        include: path.resolve(__dirname, '..', 'src/')
+      },
+      {
+        test: /\\.less$/,
+        use: ['style-loader', 'css-loader', 'less-loader'],
+        include: path.resolve(__dirname, '..', 'src/')
       },
       {
         test: /\.scss$/,
         use: ['style-loader', 'css-loader', 'sass-loader'],
-        include: path.resolve(__dirname, "..", "src/")
-      }` : `{
-        test: /\.css$/,
-        use:  ['style-loader', 'css-loader'],
-        include: path.resolve(__dirname, "..", "src/")
-      },
+        include: path.resolve(__dirname, '..', 'src/')
+      },`) : ''}
       {
-        test: /\.less$/,
-        use: ['style-loader', 'css-loader', 'less-loader'],
-        include: path.resolve(__dirname, "..", "src/")
-      },
-      {
-        test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
-        include: path.resolve(__dirname, "..", "src/")
-      }`) : ''}
+        test: /\\.(woff|woff2|eot|ttf|svg|jpg|png|gif)$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 8192
+            }
+          }
+        ]
+      }
     ],
   },
   plugins: [

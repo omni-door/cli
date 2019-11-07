@@ -18,6 +18,8 @@ export default function (config: {
     'less-loader',
     'sass-loader',
     'node-sass',
+    'url-loader',
+    'file-loader',
     '@babel/core',
     '@babel/preset-env',
     '@babel/preset-react',

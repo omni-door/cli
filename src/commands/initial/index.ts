@@ -225,7 +225,7 @@ export default function ({
     content_commitlint && fsExtra.outputFileSync(path.resolve(initPath, 'commitlint.config.js'), content_commitlint, 'utf8');
 
     // build files
-    content_babel && fsExtra.outputFileSync(path.resolve(initPath, 'bable.config.js'), content_babel, 'utf8');
+    content_babel && fsExtra.outputFileSync(path.resolve(initPath, 'babel.config.js'), content_babel, 'utf8');
 
     // server files
     content_bisheng && fsExtra.outputFileSync(path.resolve(initPath, 'bisheng.config.js'), content_bisheng, 'utf8');

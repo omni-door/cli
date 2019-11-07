@@ -30,7 +30,7 @@ export function devDependencies (config: Config) {
     devServer
   } = config;
 
-  const babelDependencies = [
+  const loaderDependencies = [
     'babel-loader',
     style ? 'style-loader' : '',
     style ? 'css-loader' : '',
@@ -38,6 +38,11 @@ export function devDependencies (config: Config) {
     style === 'all' || style === 'less' ? 'less-loader' : '',
     style === 'all' || style === 'scss' ? 'sass-loader' : '',
     style === 'all' || style === 'scss' ? 'node-sass' : '',
+    'url-loader',
+    'file-loader'
+  ];
+
+  const babelDependencies = [
     '@babel/core',
     '@babel/preset-env',
     '@babel/preset-react',
@@ -47,6 +52,7 @@ export function devDependencies (config: Config) {
   const buildDependencies = build === 'webpack' ? [
     'webpack',
     'webpack-cli',
+    ...loaderDependencies,
     ...babelDependencies
   ] : build === 'rollup' ? [
     'rollup',
@@ -168,6 +174,7 @@ export function devDependencies (config: Config) {
     'express',
     'webpack',
     'webpack-dev-middleware',
+    'webpack-hot-middleware',
     'http-proxy-middleware',
     'html-webpack-plugin'
   ];

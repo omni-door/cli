@@ -40,7 +40,7 @@ module.exports = {
         test: /\.css$/,
         use:  ['style-loader', 'css-loader'],
         include: path.resolve(__dirname, "..", "src/")
-      }
+      },
       ` : style === 'less' ? `{
         test: /\.css$/,
         use:  ['style-loader', 'css-loader'],
@@ -50,7 +50,7 @@ module.exports = {
         test: /\.less$/,
         use: ['style-loader', 'css-loader', 'less-loader'],
         include: path.resolve(__dirname, "..", "src/")
-      }` : style === 'scss' ? `{
+      },` : style === 'scss' ? `{
         test: /\.css$/,
         use:  ['style-loader', 'css-loader'],
         include: path.resolve(__dirname, "..", "src/")
@@ -59,7 +59,7 @@ module.exports = {
         test: /\.scss$/,
         use: ['style-loader', 'css-loader', 'sass-loader'],
         include: path.resolve(__dirname, "..", "src/")
-      }` : `{
+      },` : `{
         test: /\.css$/,
         use:  ['style-loader', 'css-loader'],
         include: path.resolve(__dirname, "..", "src/")
@@ -73,7 +73,19 @@ module.exports = {
         test: /\.scss$/,
         use: ['style-loader', 'css-loader', 'sass-loader'],
         include: path.resolve(__dirname, "..", "src/")
-      }`) : ''}
+      },`) : ''}
+      {
+        test: /\\.(woff|woff2|eot|ttf|svg|jpg|png|gif)$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 8192,
+              name: 'assets/[name].[hash:8].[ext]'
+            }
+          }
+        ]
+      }
     ],
   },
   plugins: [],
