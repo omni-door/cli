@@ -34,13 +34,13 @@ module.exports = {
     // whether or not output multiple files
     multi_output: false,
     // whether or not process the ts files
-    typescript: ${ts},
+    typescript: ${!!ts},
     // whether or not process unit or ui test
-    test: ${test},
+    test: ${!!test},
     // whether or not process eslint fix and check
-    eslint: ${eslint},
+    eslint: ${!!eslint},
     // whether or not process style lint check
-    stylelint: ${stylelint},
+    stylelint: ${!!stylelint},
     // whether or not reserve the stylesheet files
     reserve: {
       // whether or not reserve the stylesheet files
@@ -72,13 +72,13 @@ module.exports = {
     // cdn url
     cdn: '${cdnMap[cdn as CDN] || cdn}',
     // whether or not process unit or ui test
-    test: ${test},
+    test: ${!!test},
     // whether or not process eslint fix and check
-    eslint: ${eslint},
+    eslint: ${!!eslint},
     // whether or not process style lint check
-    stylelint: ${stylelint},
+    stylelint: ${!!stylelint},
     // whether or not process commit lint check
-    commitlint: ${commitlint},
+    commitlint: ${!!commitlint},
     // release branch
     // only can release in this branch
     // set empty string to ignore this check
@@ -93,13 +93,13 @@ module.exports = {
     // the unit test frame
     test: '${testFrame}',
     // whether or not apply typescript
-    typescript: ${ts},
+    typescript: ${!!ts},
     // stylesheet type
     stylesheet: '${style === 'all' ? 'less' : style}',
     // whether or not README.md
     readme: true,
     // if generate mdx file instead of md
-    mdx: ${mdx}
+    mdx: ${!!mdx}
   },
 
   // plugins for omni cli work flow
