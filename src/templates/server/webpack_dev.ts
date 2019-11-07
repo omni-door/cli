@@ -18,7 +18,7 @@ const htmlWebpackPlugin = new HtmlWebpackPlugin({
   path: path.resolve(__dirname, 'server'),
   template: path.join(__dirname, '../src/index.html'),
   filename: 'index.html'
-})
+});
 
 module.exports = {
   entry: path.join(__dirname, '../src/index.${ts ? 'tsx' : 'jsx'}'),

@@ -12,15 +12,19 @@ export default (config: {
   const { name, ts, devServer, testFrame, eslint, commitlint, stylelint } = config;
 
   let devScript = '';
+  let demoScript = '';
   switch(devServer) {
     case 'docz':
       devScript = 'docz dev';
+      demoScript = `docz build --base /.${name}`;
       break;
     case 'storybook':
       devScript = 'start-storybook -p 6200';
+      demoScript = `build-storybook -c .storybook -o .${name}`;
       break;
     case 'bisheng':
       devScript = 'bisheng start';
+      demoScript = 'bisheng build';
       break;
     case 'basic':
       devScript = 'node server/index.js';
@@ -78,6 +82,11 @@ export default (config: {
 }
     "new": "omni new",
     "build": "omni build",
+    ${
+  demoScript
+    ? `"build:demo": "${demoScript}",`
+    : ''
+}
     "release": "omni release"
   },
   ${
