@@ -14,6 +14,7 @@ import {
   gitignore,
   jest as jestConfigJs,
   karma as karmaConfigJs,
+  mdx,
   mocha as mochaOpts,
   npmignore,
   omni as omniConfigJs,
@@ -189,6 +190,7 @@ export default function ({
     const content_storybook_mhead = devServer === 'storybook' && storybook_mhead({ name });
     const content_storybook_webpack = devServer === 'storybook' && storybook_webpack({ ts, style });
     const content_doczrc = devServer === 'docz' && doczrc({ name, ts, style });
+    const content_doczmdx = devServer === 'docz' && mdx({ name });
 
     // ReadMe
     const content_readMe = readMe({ name });
@@ -235,6 +237,7 @@ export default function ({
     content_storybook_mhead && fsExtra.outputFileSync(path.resolve(initPath, '.storybook/manager-head.html'), content_storybook_mhead, 'utf8');
     content_storybook_webpack && fsExtra.outputFileSync(path.resolve(initPath, '.storybook/webpack.config.js'), content_storybook_webpack, 'utf8');
     content_doczrc && fsExtra.outputFileSync(path.resolve(initPath, 'doczrc.js'), content_doczrc, 'utf8');
+    content_doczmdx && fsExtra.outputFileSync(path.resolve(initPath, 'src/index.mdx'), content_doczmdx, 'utf8');
 
     // ReadMe
     fsExtra.outputFileSync(path.resolve(initPath, 'README.md'), content_readMe, 'utf8');

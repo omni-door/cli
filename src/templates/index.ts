@@ -6,6 +6,7 @@ import eslintignore from './eslintignore';
 import gitignore from './gitignore';
 import jest from './jest';
 import karma from './karma';
+import mdx from './mdx';
 import mocha from './mocha';
 import npmignore from './npmignore';
 import omni from './omni';
@@ -44,6 +45,7 @@ export {
   gitignore,
   jest,
   karma,
+  mdx,
   mocha,
   npmignore,
   omni,

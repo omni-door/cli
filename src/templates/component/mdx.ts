@@ -7,8 +7,8 @@ export default function (config: {
 name: ${componentName}
 route: /${componentName}
 ---
-import { Playground, Props } from 'docz'
-import ${componentName} from './'
+import { Playground, Props } from 'docz';
+import ${componentName} from './';
 
 # ${componentName} 组件
 
