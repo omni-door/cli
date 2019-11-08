@@ -4,6 +4,7 @@ export default function () {
 *~
 ~*
 
+.nyc_output
 .docz
 .omni_cache
 node_modules
