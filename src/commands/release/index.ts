@@ -137,11 +137,11 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
       await execShell(
         ['npm get registry'],
         function (results) {
-          npmUrl = results[0];
+          npmUrl = results[0] && results[0].trim();
         }
       );
 
-      if (npm !== npmUrl) {
+      if (npm.trim() !== npmUrl) {
         logInfo(`set npm registry to: ${npm}`);
         await execShell(
           [`npm set registry ${npm}`],
