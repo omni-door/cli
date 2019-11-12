@@ -99,7 +99,7 @@ export default (config: {
         }
       },
       "lint-staged": {
-        "src/**/*.{js,jsx,ts,tsx,css,scss,sass,less}": [
+        "src/**/*.{js,jsx,ts,tsx,css,scss,less}": [
           "npm run lint:fix",
           "git add"
         ]
