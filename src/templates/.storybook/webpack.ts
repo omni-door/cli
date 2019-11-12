@@ -36,42 +36,29 @@ module.exports = {
         test: /\.css$/,
         use:  ['style-loader', 'css-loader'],
         exclude: /node_modules(?!\\/@storybook\\/addon-info)/
-      }
-      ` : style === 'less' ? `{
-        test: /\.css$/,
-        use:  ['style-loader', 'css-loader'],
+      }` : style === 'less' ? `{
+        test: /\.(css|less)$/,
+        use: ['style-loader', 'css-loader', 'less-loader'],
         exclude: /node_modules(?!\\/@storybook\\/addon-info)/
-      },
-      {
-        test: /\.less$/,
-        use: ['style-loader', 'css-loader', 'less-loader']
       }` : style === 'scss' ? `{
-        test: /\.css$/,
-        use:  ['style-loader', 'css-loader'],
+        test: /\.(css|scss|sass)$/,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
         exclude: /node_modules(?!\\/@storybook\\/addon-info)/
-      },
-      {
-        test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader']
       }` : `{
-        test: /\.css$/,
-        use:  ['style-loader', 'css-loader'],
-        exclude: /node_modules(?!\\/@storybook\\/addon-info)/
-      },
-      {
         test: /\.less$/,
         use: ['style-loader', 'css-loader', 'less-loader']
       },
       {
-        test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader']
+        test: /\.(css|scss|sass)$/,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
+        exclude: /node_modules(?!\\/@storybook\\/addon-info)/
       }`) : ''}
     ],
   },
   plugins: [],
   mode: 'development',
   resolve: {
-    extensions: [${ts ? '".ts", ".tsx", ' : ''}".js", ".jsx", ".md", ${style ? (style === 'css' ? '".css"' : (style === 'less' ? '".less", ".css"' : '".scss", ".css"')) : ''}]
+    extensions: [${ts ? '".ts", ".tsx", ' : ''}".js", ".jsx", ".md", ${style ? (style === 'css' ? '".css"' : (style === 'less' ? '".less", ".css"' : '".scss", ".css", ".sass"')) : ''}]
   }
 };`;
 }

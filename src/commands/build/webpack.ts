@@ -80,16 +80,12 @@ module.exports = configuration({
         ]
       },
       {
-        test: /\\.css$/,
-        use:  ['style-loader', 'css-loader']
-      },
-      {
-        test: /\\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader']
-      },
-      {
         test: /\\.less$/,
         use: ['style-loader', 'css-loader', 'less-loader']
+      },
+      {
+        test: /\\.(css|scss|sass)$/,
+        use: ['style-loader', 'css-loader', 'sass-loader']
       },
       {
         test: /\\.(woff|woff2|eot|ttf|svg|jpg|png|gif)$/,
@@ -108,7 +104,7 @@ module.exports = configuration({
   plugins: [],
   mode: 'production',
   resolve: {
-    extensions: [".ts", ".tsx", ".js", ".jsx", ".css", ".less", ".scss"]
+    extensions: [".ts", ".tsx", ".js", ".jsx", ".css", ".less", ".scss", ".sass"]
   }
 });`;
 }

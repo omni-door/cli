@@ -71,8 +71,8 @@ export default (config: {
 }",
         ${eslint ? `"lint:es": "eslint src/ --ext .${ts ? 'ts' : 'js'} --ext .${ts ? 'tsx' : 'jsx'}",
         "lint:es_fix": "eslint src/ --ext .${ts ? 'ts' : 'js'} --ext .${ts ? 'tsx' : 'jsx'} --fix",` : ''}
-        ${stylelint ? `"lint:style": "stylelint src/**/*.{css,less,scss}",
-        "lint:style_fix": "stylelint src/**/*.{css,less,scss} --fix",` : ''}`
+        ${stylelint ? `"lint:style": "stylelint src/**/*.{css,less,scss,sass}",
+        "lint:style_fix": "stylelint src/**/*.{css,less,scss,sass} --fix",` : ''}`
     : ''
 }
     ${
@@ -99,7 +99,7 @@ export default (config: {
         }
       },
       "lint-staged": {
-        "src/**/*.{js,jsx,ts,tsx,css,scss,less}": [
+        "src/**/*.{js,jsx,ts,tsx,css,scss,sass,less}": [
           "npm run lint:fix",
           "git add"
         ]
