@@ -129,7 +129,7 @@ export default async function (config: OmniConfig | {}) {
       try {
         stats = fs.statSync(reserveItem);
       } catch (error) {
-        logWarn(`The path [${reserveItem}] is invaild!`);
+        logWarn(`The path "${reserveItem}" is invaild!`);
         continue;
       }
       const relativePath = path.relative(src_dir, reserveItem);
