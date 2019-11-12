@@ -132,9 +132,12 @@ export default async function (config: OmniConfig | {}) {
       if (stats.isDirectory()) {
         fsExtra.ensureDirSync(destPath);
         emsPath && fsExtra.ensureDirSync(emsPath);
-      } else {
+      } else if (stats.isFile()) {
         fsExtra.ensureDirSync(path.resolve(destPath, '..'));
         emsPath && fsExtra.ensureDirSync(path.resolve(emsPath, '..'));
+      } else {
+        logWarn(`The file or directory path which is [${reserveItem}] cannot be found!`);
+        continue;
       }
       fsExtra.copySync(reserveItem, destPath);
       emsPath && fsExtra.copySync(reserveItem, emsPath);
