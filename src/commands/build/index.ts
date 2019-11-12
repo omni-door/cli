@@ -125,7 +125,13 @@ export default async function (config: OmniConfig | {}) {
   function copyReserves (reserves: string[]) {
     for (let i = 0, len = reserves.length; i < len; i++) {
       const reserveItem = reserves[i];
-      const stats = fs.statSync(reserveItem);
+      let stats;
+      try {
+        stats = fs.statSync(reserveItem);
+      } catch (error) {
+        logWarn(`The path [${reserveItem}] is invaild!`);
+        continue;
+      }
       const relativePath = path.relative(src_dir, reserveItem);
       const destPath = path.resolve(out_dir, relativePath);
       const emsPath = esm_dir && path.resolve(esm_dir, relativePath);
