@@ -17,9 +17,9 @@ export const cli_standard: GInstallCli = {
   build: 'webpack',
   ts: true,
   testFrame: '',
-  eslint: true,
+  eslint: false,
   commitlint: false,
-  style: 'less',
+  style: 'scss',
   stylelint: true,
   devServer: 'basic'
 };
@@ -31,7 +31,7 @@ export const cli_entire: GInstallCli = {
   testFrame: '',
   eslint: true,
   commitlint: true,
-  style: 'less',
+  style: 'all',
   stylelint: true,
   devServer: 'basic'
 };

@@ -1,6 +1,7 @@
 import path, { parse } from 'path';
 import fs from 'fs';
 import fsExtra from 'fs-extra';
+import shelljs from 'shelljs';
 import chalk from 'chalk';
 import figlet from 'figlet';
 import inquirer from 'inquirer';
@@ -38,8 +39,9 @@ import { dependencies, devDependencies } from '../../configs/dependencies';
 import templates from '../../configs/initial_tpls';
 import installClis from '../../configs/initial_clis';
 import { BUILD, NPM, CDN, TESTFRAME, PKJTOOL, STYLE, DEVSERVER } from '../../index.d';
-import { logErr } from '../../utils/logger';
+import { logErr, logWarn } from '../../utils/logger';
 import { execShell } from '../../utils/exec';
+import { async } from 'rxjs/internal/scheduler/async';
 
 export type GTpls = {
   name: string;
@@ -243,7 +245,7 @@ export default function ({
     fsExtra.outputFileSync(path.resolve(initPath, 'README.md'), content_readMe, 'utf8');
   }
 
-  function generateInstallDenpendencies ({
+  async function generateInstallDenpendencies ({
     pkgtool,
     build,
     ts,
@@ -254,6 +256,8 @@ export default function ({
     testFrame,
     devServer
   }: GInstallCli) {
+    await checkPkgTool(pkgtool);
+
     let installCliPrefix = pkgtool === 'yarn' ? `${pkgtool} add --cwd ${initPath}` : `${pkgtool} install --save --prefix ${initPath}`;
 
     let installDevCliPrefix = pkgtool === 'yarn' ? `${pkgtool} add -D --cwd ${initPath}` : `${pkgtool} install --save-dev --prefix ${initPath}`;
@@ -314,7 +318,7 @@ export default function ({
     });
   }
 
-  function presetTpl (createDir: boolean) {
+  async function presetTpl (createDir: boolean) {
     // loading start display
     spinner.start();
 
@@ -349,7 +353,7 @@ export default function ({
         installCommitlintDevCli,
         installStylelintDevCli,
         installServerDevCli
-      } = generateInstallDenpendencies(cli as GInstallCli);
+      } = await generateInstallDenpendencies(cli as GInstallCli);
     
       generateFiglet((done) => execShell([
         installCli,
@@ -366,6 +370,35 @@ export default function ({
       spinner.fail(chalk.red(`🐸  [OMNI-DOOR] ❌  : ${JSON.stringify(err)} \n`));
       logErr(JSON.stringify(err));
     }
+  }
+
+  async function checkPkgTool (pkgtool: PKJTOOL) {
+    // install tool precheck
+    return new Promise((resolve, reject) => {
+      let iToolCheck = shelljs.exec(`${pkgtool} -v`, { async: false });
+
+      if (iToolCheck.stderr.indexOf('command not found')) {
+        if (pkgtool === 'npm') {
+          logWarn('cannot found the npm package management tool!');
+          process.exit(0);
+        } else {
+          inquirer.prompt([{
+            name: 'install',
+            type: 'confirm',
+            message: `自动安装 ${pkgtool} 到全局环境? (Automatic install the ${pkgtool} in global environment?)`,
+            default: true
+          }]).then(answers => {
+            const { install } = answers;
+            if (!install) {
+              process.exit(0);
+              return;
+            }
+            shelljs.exec(`npm i -g ${pkgtool}`, { async: false });
+            resolve(true);
+          });
+        }
+      }
+    });
   }
 
   if (simple || standard || entire || utils || components) {
@@ -519,7 +552,7 @@ export default function ({
     }
 
     inquirer.prompt(questions)
-      .then(answers => {
+      .then(async (answers) => {
         const { name, ts, eslint, commitlint, style, stylelint, test, build, git, npm, npm_custom, cdn, cdn_custom, dev_server, pkgtool } = answers;
 
         const testFrame: TESTFRAME = test === 'none' ? '' : test;
@@ -555,7 +588,7 @@ export default function ({
           installCommitlintDevCli,
           installStylelintDevCli,
           installServerDevCli
-        } = generateInstallDenpendencies({
+        } = await generateInstallDenpendencies({
           pkgtool,
           build,
           ts,
