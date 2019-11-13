@@ -34,24 +34,20 @@ module.exports = {
       },` : ''}
       ${style ? (style === 'css' ? `{
         test: /\.css$/,
-        use:  ['style-loader', 'css-loader'],
-        exclude: /node_modules(?!\\/@storybook\\/addon-info)/
+        use:  ['style-loader', 'css-loader']
       }` : style === 'less' ? `{
         test: /\.(css|less)$/,
-        use: ['style-loader', 'css-loader', 'less-loader'],
-        exclude: /node_modules(?!\\/@storybook\\/addon-info)/
+        use: ['style-loader', 'css-loader', 'less-loader']
       }` : style === 'scss' ? `{
         test: /\.(css|scss|sass)$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
-        exclude: /node_modules(?!\\/@storybook\\/addon-info)/
+        use: ['style-loader', 'css-loader', 'sass-loader']
       }` : `{
         test: /\.less$/,
         use: ['style-loader', 'css-loader', 'less-loader']
       },
       {
         test: /\.(css|scss|sass)$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
-        exclude: /node_modules(?!\\/@storybook\\/addon-info)/
+        use: ['style-loader', 'css-loader', 'sass-loader']
       }`) : ''}
     ],
   },

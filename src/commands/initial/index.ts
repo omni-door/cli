@@ -502,7 +502,7 @@ export default function ({
         name: 'pkgtool',
         type: 'rawlist',
         choices: [ 'npm', 'yarn', 'cnpm' ],
-        message: '请选择包安装工具 (please chioce the package install tool)',
+        message: '请选择包安装工具，推荐使用yarn (please chioce the package install tool, recommended use yarn)',
         default: 'yarn'
       }
     ];

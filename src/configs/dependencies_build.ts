@@ -23,7 +23,7 @@ export default function (config: {
     '@babel/core',
     '@babel/preset-env',
     '@babel/preset-react',
-    '@babel/plugin-transform-typescript'
+    '@babel/preset-typescript'
   ] : build === 'rollup' ? [
     'rollup',
     'rollup-plugin-node-resolve',

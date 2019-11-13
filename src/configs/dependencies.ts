@@ -46,7 +46,7 @@ export function devDependencies (config: Config) {
     '@babel/core',
     '@babel/preset-env',
     '@babel/preset-react',
-    ts ? '@babel/plugin-transform-typescript' : ''
+    ts ? '@babel/preset-typescript' : ''
   ];
 
   const buildDependencies = build === 'webpack' ? [
@@ -142,26 +142,26 @@ export function devDependencies (config: Config) {
   ] : [];
 
   const doczDependencies= [
-    'docz',
-    'docz-theme-default',
-    'docz-plugin-css',
-    'react-hot-loader'
+    'docz@1.3.2',
+    'docz-theme-default@1.2.0',
+    'docz-plugin-css@0.11.0',
+    'react-hot-loader@4.12.16'
   ];
 
   const storybookDependencies= [
-    '@storybook/react',
-    '@storybook/addons',
-    '@storybook/addon-options',
-    '@storybook/addon-actions',
-    '@storybook/addon-actions',
-    '@storybook/addon-docs',
-    '@storybook/addon-info',
-    '@storybook/addon-knobs',
-    '@storybook/addon-links',
-    '@storybook/addon-notes',
-    'awesome-typescript-loader',
-    'react-docgen-typescript-loader',
-    'storybook-readme'
+    '@storybook/react@5.2.5',
+    '@storybook/addons@5.2.5',
+    '@storybook/addon-options@5.2.5',
+    '@storybook/addon-actions@5.2.5',
+    '@storybook/addon-actions@5.2.5',
+    '@storybook/addon-docs@5.2.5',
+    '@storybook/addon-info@5.2.5',
+    '@storybook/addon-knobs@5.2.5',
+    '@storybook/addon-links@5.2.5',
+    '@storybook/addon-notes@5.2.5',
+    'awesome-typescript-loader@5.2.1',
+    'react-docgen-typescript-loader@3.3.0',
+    'storybook-readme@5.0.8'
   ];
 
   const bishengDependencies = [
