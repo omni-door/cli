@@ -206,15 +206,16 @@ export default function ({
     fsExtra.outputFileSync(path.resolve(initPath, 'package.json'), content_pkg, 'utf8');
     fsExtra.outputFileSync(path.resolve(initPath, '.gitignore'), content_gitignore, 'utf8');
     fsExtra.outputFileSync(path.resolve(initPath, '.npmignore'), content_npmignore, 'utf8');
+
+    // src dir files
     fsExtra.outputFileSync(path.resolve(initPath, `src/index.${ts ? 'tsx' : 'jsx'}`), content_indexTpl, 'utf8');
     fsExtra.outputFileSync(path.resolve(initPath, 'src/index.html'), content_indexHtml, 'utf8');
+    content_d && fsExtra.outputFileSync(path.resolve(initPath, 'src/@types/global.d.ts'), content_d, 'utf8');
+    content_doczmdx && fsExtra.outputFileSync(path.resolve(initPath, 'src/index.mdx'), content_doczmdx, 'utf8');
 
     // tsconfig
     content_ts && fsExtra.outputFileSync(path.resolve(initPath, 'tsconfig.json'), content_ts, 'utf8');
-
-    // d.ts files
-    content_d && fsExtra.outputFileSync(path.resolve(initPath, 'src/@types/global.d.ts'), content_d, 'utf8');
-
+    
     // test files
     content_mocha && fsExtra.outputFileSync(path.resolve(initPath, 'mocha.opts'), content_mocha, 'utf8');
     content_karma && fsExtra.outputFileSync(path.resolve(initPath, 'karma.conf.js'), content_karma, 'utf8');
@@ -229,7 +230,7 @@ export default function ({
     // build files
     content_babel && fsExtra.outputFileSync(path.resolve(initPath, 'babel.config.js'), content_babel, 'utf8');
 
-    // server files
+    // dev-server files
     content_bisheng && fsExtra.outputFileSync(path.resolve(initPath, 'bisheng.config.js'), content_bisheng, 'utf8');
     content_postReadMe && fsExtra.outputFileSync(path.resolve(initPath, 'posts/README.md'), content_postReadMe, 'utf8');
     content_serverTpl && fsExtra.outputFileSync(path.resolve(initPath, 'server/index.js'), content_serverTpl, 'utf8');
@@ -239,7 +240,6 @@ export default function ({
     content_storybook_mhead && fsExtra.outputFileSync(path.resolve(initPath, '.storybook/manager-head.html'), content_storybook_mhead, 'utf8');
     content_storybook_webpack && fsExtra.outputFileSync(path.resolve(initPath, '.storybook/webpack.config.js'), content_storybook_webpack, 'utf8');
     content_doczrc && fsExtra.outputFileSync(path.resolve(initPath, 'doczrc.js'), content_doczrc, 'utf8');
-    content_doczmdx && fsExtra.outputFileSync(path.resolve(initPath, 'src/index.mdx'), content_doczmdx, 'utf8');
 
     // ReadMe
     fsExtra.outputFileSync(path.resolve(initPath, 'README.md'), content_readMe, 'utf8');

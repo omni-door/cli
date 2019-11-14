@@ -38,7 +38,7 @@ export default async function (config: OmniConfig | {}) {
   } } = config as OmniConfig;
 
   if (!out_dir || !src_dir) {
-    handleBuildErr('The {src_dir} or {out_dir} missed in [omni.config.js]')();
+    handleBuildErr('The $src_dir or $out_dir were missed in [omni.config.js]')();
   }
 
   function handleBuildSuc (msg?: string) {
@@ -164,7 +164,7 @@ export default async function (config: OmniConfig | {}) {
     }
 
     if (!tool) {
-      logSuc('Building completed but without any build tool process!');
+      logWarn('Building completed but without any build tool process!');
       process.exit(0);
       return;
     }

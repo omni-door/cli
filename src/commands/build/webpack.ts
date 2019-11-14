@@ -11,8 +11,14 @@ export default function (config: {
 
 const fs = require('fs');
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const omni_config = require(path.resolve(process.cwd(), 'omni.config.js'));
 
+const htmlWebpackPlugin = new HtmlWebpackPlugin({
+  path: path.resolve('${out_dir}'),
+  template: path.join('${src_dir}', 'index.html'),
+  filename: 'index.html'
+});
 const { build } = omni_config || {};
 const { configuration = config => config } = build || {};
 
@@ -101,7 +107,9 @@ module.exports = configuration({
       }
     ],
   },
-  plugins: [],
+  plugins: [
+    htmlWebpackPlugin
+  ],
   mode: 'production',
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx", ".css", ".less", ".scss", ".sass"]

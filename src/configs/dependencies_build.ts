@@ -20,6 +20,7 @@ export default function (config: {
     'node-sass',
     'url-loader',
     'file-loader',
+    'html-webpack-plugin',
     '@babel/core',
     '@babel/preset-env',
     '@babel/preset-react',

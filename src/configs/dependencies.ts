@@ -49,9 +49,14 @@ export function devDependencies (config: Config) {
     ts ? '@babel/preset-typescript' : ''
   ];
 
+  const pluginDependencies = [
+    'html-webpack-plugin'
+  ];
+
   const buildDependencies = build === 'webpack' ? [
     'webpack',
     'webpack-cli',
+    ...pluginDependencies,
     ...loaderDependencies,
     ...babelDependencies
   ] : build === 'rollup' ? [
@@ -176,7 +181,7 @@ export function devDependencies (config: Config) {
     'webpack-dev-middleware',
     'webpack-hot-middleware',
     'http-proxy-middleware',
-    'html-webpack-plugin'
+    ...pluginDependencies
   ];
 
   let devServerDependencies: string[] = [];
