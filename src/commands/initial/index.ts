@@ -159,7 +159,7 @@ export default function ({
     });
     const content_gitignore = gitignore();
     const content_npmignore = npmignore();
-    const content_indexTpl = indexTpl();
+    const content_indexTpl = indexTpl({ devServer });
     const content_indexHtml = indexHtml({ name });
 
     // tsconfig

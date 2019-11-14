@@ -181,7 +181,8 @@ export function devDependencies (config: Config) {
     'webpack-dev-middleware',
     'webpack-hot-middleware',
     'http-proxy-middleware',
-    ...pluginDependencies
+    ...pluginDependencies,
+    ts ? '@types/webpack-env': ''
   ];
 
   let devServerDependencies: string[] = [];
