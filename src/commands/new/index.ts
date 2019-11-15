@@ -53,7 +53,7 @@ export default function (config: OmniConfig | {}, componentName: string, options
     const content_readme = readmeTpl({ componentName });
     const content_mdx = mdxTpl({ componentName });
     const content_stories = storiesTpl({ componentName });
-    const content_style = styleTpl({ componentName });
+    const content_style = stylesheet && styleTpl({ componentName });
     const content_test = testTpl({ testFrame: test, componentName });
   
     fsExtra.outputFileSync(path.resolve(root, componentName, `index.${typescript ? 'ts' : 'js'}`), content_index, 'utf8');
