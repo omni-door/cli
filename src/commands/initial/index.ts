@@ -78,6 +78,7 @@ const spinner = ora('🐸  [OMNI-DOOR] 📡  : Initializing, please wait patient
  * todo 1. gulp config
  * todo 2. rollup config stylesheet
  * todo 3. custom tpl
+ * todo 4. decoupling npm and cdn address
  */
 export default function ({
   simple,
@@ -453,7 +454,7 @@ export default function ({
         message: '是否使用commitlint? (whether or not apply commitlint?)'
       },{
         name: 'style',
-        type: 'rawlist',
+        type: 'list',
         choices: [ 'less', 'scss', 'css', 'all', 'none' ],
         message: '应用那种样式文件? (which the stylesheet type you like apllying?)',
         default: 'less'
@@ -469,12 +470,12 @@ export default function ({
         }
       },{
         name: 'test',
-        type: 'rawlist',
+        type: 'list',
         choices: [ 'mocha', 'jest', 'karma', 'none' ],
         message: '应用那种单测框架? (which unit test frame would you like apllying?)',
       },{
         name: 'build',
-        type: 'rawlist',
+        type: 'list',
         choices: [ 'webpack', 'rollup', 'tsc', 'none' ],
         message: '应用那种打包工具? (which build tool would you like apllying?)',
       },{
@@ -483,7 +484,7 @@ export default function ({
         message: '请输入你的git仓库地址 (please enter your git repo address)'
       },{
         name: 'npm',
-        type: 'rawlist',
+        type: 'list',
         choices: [ 'npm', 'hnpm', 'set by yourself', 'none' ],
         message: '请选择npm仓库地址 (please chioce the npm depository address)'
       },{
@@ -505,7 +506,7 @@ export default function ({
         }
       },{
         name: 'cdn',
-        type: 'rawlist',
+        type: 'list',
         choices: [ 'w1', 'w4', 'w11', 'set by yourself', 'none' ],
         message: '请选择cdn地址 (please chioce the cdn address)'
       },{
@@ -527,13 +528,13 @@ export default function ({
         }
       },{
         name: 'dev_server',
-        type: 'rawlist',
+        type: 'list',
         choices: [ 'basic', 'docz', 'storybook', 'bisheng', 'none' ],
         message: '请选择开发服务 (please chioce the development server)',
         default: 'basic'
       },{
         name: 'pkgtool',
-        type: 'rawlist',
+        type: 'list',
         choices: [ 'npm', 'yarn', 'cnpm' ],
         message: '请选择包安装工具，推荐使用yarn (please chioce the package install tool, recommended use yarn)',
         default: 'yarn'
