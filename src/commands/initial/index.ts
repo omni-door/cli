@@ -72,7 +72,7 @@ export type GInstallCli = {
   devServer: DEVSERVER;
 };
 
-const spinner = ora('🐸  [OMNI-DOOR] 📡  : Initializing, please wait patiently  💤  \n');
+const spinner = ora('🐸  [OMNI-DOOR] 📡  : 项目初始化中 (Initializing, please wait patiently)  💤  \n');
 
 /**
  * todo 1. gulp config
@@ -305,7 +305,7 @@ export default function ({
 
   function generateFiglet (fn: (done: () => void) => any) {
     function done () {
-      spinner.succeed(chalk.green('🐸  [OMNI-DOOR] ✅  : Initialize project success \n'));
+      spinner.succeed(chalk.green('🐸  [OMNI-DOOR] ✅  : 初始化项目完成 (Initialize project success) \n'));
       process.exit(0);
     }
 
@@ -380,13 +380,14 @@ export default function ({
 
       if (~iToolCheck.stderr.indexOf('command not found')) {
         if (pkgtool === 'npm') {
-          logWarn('cannot found the npm package management tool!');
+          logWarn('没有找到 npm 包管理工具！(Cannot found the npm package management tool!)');
           process.exit(0);
         } else {
+          spinner.info(chalk.yellowBright(`🐸  [OMNI-DOOR] 🔰  : 缺少包管理工具 ${pkgtool}！(Missing package management tool ${pkgtool}!)`));
           inquirer.prompt([{
             name: 'install',
             type: 'confirm',
-            message: `自动安装 ${pkgtool} 到全局环境? (Automatic install the ${pkgtool} in global environment?)`,
+            message: `自动安装 ${pkgtool} 到全局环境? (Automatic install the ${pkgtool} in the global environment?)`,
             default: true
           }]).then(answers => {
             const { install } = answers;
@@ -395,6 +396,7 @@ export default function ({
               return;
             }
             shelljs.exec(`npm i -g ${pkgtool}`, { async: false });
+            spinner.start();
             resolve(true);
           });
         }
