@@ -176,7 +176,7 @@ export default async function (config: OmniConfig | {}) {
       esm_dir && buildCliArr.push(`${tscPath} --module ES6 --target ES6 --outDir ${esm_dir} --project ${path.resolve(process.cwd(), 'tsconfig.json')}`);
 
       if (!fs.existsSync(tscPath)) {
-        logWarn('Please install typescript first!');
+        logWarn('请先安装 typescript! (Please install typescript first!)');
         const is_go_on = await installDenpendencies('tsc');
         if (!is_go_on) return;
       }
@@ -195,7 +195,7 @@ export default async function (config: OmniConfig | {}) {
           buildCliArr.push(`${rollupPath} -c ${buildConfigPath}`);
 
           if (!fs.existsSync(rollupPath)) {
-            logWarn('Please install rollup first!');
+            logWarn('请先安装 rollup! (Please install rollup first!)');
             is_go_on = await installDenpendencies('rollup');
           }
         } else if (tool === 'webpack') {
@@ -203,7 +203,7 @@ export default async function (config: OmniConfig | {}) {
           buildCliArr.push(`${webpackPath} --config ${buildConfigPath}`);
 
           if (!fs.existsSync(webpackPath)) {
-            logWarn('Please install webpack-cli first!');
+            logWarn('请先安装 webpack-cl! (Please install webpack-cli first!)');
             is_go_on = await installDenpendencies('webpack');
           }
         }
@@ -215,7 +215,7 @@ export default async function (config: OmniConfig | {}) {
 
         fsExtra.outputFileSync(buildConfigPath, content_config, 'utf8');
       } else {
-        logWarn(`your build tool ${tool} has not been support yet, please build the project by yourself! \n contact us: omni.door.official@gmail.com`);
+        logWarn(`你的构建工具 ${tool} 暂不支持，请自行构建你的项目，或联系我们：omni.door.official@gmail.com \n your build tool ${tool} has not been support yet, please build the project by yourself! \n contact us: omni.door.official@gmail.com`);
       }
     }
 
