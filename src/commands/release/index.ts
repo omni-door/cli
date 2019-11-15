@@ -12,7 +12,7 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
   manual?: string;
 }) {
   if (JSON.stringify(config) === '{}') {
-    logWarn('Please Initialize project first');
+    logWarn('请先初始化项目！(Please Initialize project first!)');
     return;
   }
 
@@ -41,11 +41,11 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
     }
   }
 
-  const message = 'starting release process! 🕰';
+  const message = '开始发布！(starting release process!) 🕰';
   logInfo(message);
 
   function handleReleaseSuc (msg?: string) {
-    msg = msg || 'release process completed!';
+    msg = msg || '恭喜！发布完成！(release process completed!)';
 
     return function () {
       logSuc(`${msg} 📣`);
@@ -53,7 +53,7 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
   }
 
   function handleReleaseErr (msg?: string) {
-    msg = msg || 'release failed!';
+    msg = msg || '发布失败！(release failed!)';
 
     return function (err: any) {
       logErr(msg!);
@@ -63,15 +63,15 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
 
   try {
     if (test) {
-      await execShell(['npm test'], () => logEmph('unit test passed! 🚩'), handleReleaseErr('unit test failed!'));
+      await execShell(['npm test'], () => logEmph('单元测试通过！(unit test passed!) 🚩'), handleReleaseErr('单元测试失败！(unit test failed!)'));
     }
 
     if (eslint) {
-      await execShell(['npm run lint:es'], () => logEmph('eslint passed! 🚩'), handleReleaseErr('eslint checking failed!'));
+      await execShell(['npm run lint:es'], () => logEmph('eslint校验通过！(eslint passed!) 🚩'), handleReleaseErr('eslint校验失败！(eslint checking failed!)'));
     }
 
     if (stylelint) {
-      await execShell(['npm run lint:style'], () => logEmph('stylelint passed! 🚩'), handleReleaseErr('stylelint checking failed!'));
+      await execShell(['npm run lint:style'], () => logEmph('stylelint校验通过！(stylelint passed!) 🚩'), handleReleaseErr('stylelint校验失败！(stylelint checking failed!)'));
     }
 
     const { ignore, manual } = iterTactic || {};
@@ -93,12 +93,12 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
 
       let canPush = true;
       if (git !== gitUrl) {
-        logInfo(`set git remote origin to: ${git}`);
+        logInfo(`自动设置git remote 的 origin 为 ${git} (auto set git remote origin to: ${git})`);
         await execShell(
           [`git remote add origin ${git}`],
-          () => logEmph(`git remote/origin is: ${git}!`),
+          () => logEmph(`git remote origin 为 ${git}！(git remote origin is: ${git}!)`),
           () => {
-            logWarn('git set remote failed!');
+            logWarn('git remote 设置失败！(git set remote failed!)');
             canPush = false;
           }
         );
@@ -142,11 +142,11 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
       );
 
       if (npm.trim() !== npmUrl) {
-        logInfo(`set npm registry to: ${npm}`);
+        logInfo(`自动设置 npm registry 地址为 ${npm} (auto set npm registry to: ${npm})`);
         await execShell(
           [`npm set registry ${npm}`],
-          () => logEmph('npm set registry success, please run { npm publish } by yourself!'),
-          () => logWarn('set npm registry failed!')
+          () => logEmph('npm registry 设置成功，请执行 npm publish 进行发布！(npm set registry success, please run { npm publish } by yourself!)'),
+          () => logWarn('npm registry 设置失败！(set npm registry failed!)')
         );
       } else {
         await execShell(
@@ -159,6 +159,6 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
 
     handleReleaseSuc()();
   } catch (err) {
-    logErr(`Oops! release process occured some accidents 👉  ${JSON.stringify(err)}`);
+    logErr(`糟糕！发布遇到了一点意外 (Oops! release process occured some accidents) 👉  ${JSON.stringify(err)}`);
   }
 }

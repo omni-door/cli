@@ -12,15 +12,15 @@ import { OmniConfig, BUILD } from '../../index.d';
 import dependencies_build from '../../configs/dependencies_build';
 
 /**
- * todo 1. gulp grunt 打包支持
+ * todo 1. gulp grunt 构建支持
  */
 export default async function (config: OmniConfig | {}) {
   if (JSON.stringify(config) === '{}') {
-    logWarn('Please Initialize project first');
+    logWarn('请先初始化项目！(Please Initialize project first!)');
     return;
   }
 
-  const message = 'Build process start! ⏱';
+  const message = '开始构建！(Build process start!) ⏱';
   logInfo(message);
 
   const { build: {
@@ -38,11 +38,11 @@ export default async function (config: OmniConfig | {}) {
   } } = config as OmniConfig;
 
   if (!out_dir || !src_dir) {
-    handleBuildErr('The $src_dir or $out_dir were missed in [omni.config.js]')();
+    handleBuildErr('[omni.config.js]文件中未定义$src_dir 或 $out_dir (The $src_dir or $out_dir were missed in [omni.config.js])')();
   }
 
   function handleBuildSuc (msg?: string) {
-    msg = msg || 'Building completed!';
+    msg = msg || '恭喜！项目构建成功！(Building completed!)';
 
     return function () {
       logSuc(`${msg} 📣`);
@@ -50,7 +50,7 @@ export default async function (config: OmniConfig | {}) {
   }
 
   function handleBuildErr (msg?: string) {
-    msg = msg || 'Building failed!';
+    msg = msg || '项目构建失败！(Building failed!)';
 
     return function (err?: any) {
       logErr(msg!);
@@ -86,11 +86,11 @@ export default async function (config: OmniConfig | {}) {
           `${iTool} ${dependencies}`
         ],
         () => {
-          logEmph('dependencies install completed!');
+          logEmph('构建依赖安装完毕！(dependencies install completed!)');
           return true;
         },
         err => {
-          logWarn(`dependencies install occured some accidents 👉  ${JSON.stringify(err)}`);
+          logWarn(`依赖安装发生了错误 (dependencies install occured some accidents) 👉  ${JSON.stringify(err)}`);
           return false;
         });
       } else {
@@ -129,7 +129,7 @@ export default async function (config: OmniConfig | {}) {
       try {
         stats = fs.statSync(reserveItem);
       } catch (error) {
-        logWarn(`The path "${reserveItem}" is invaild!`);
+        logWarn(`"${reserveItem}" 是一个无效的路径！(The path "${reserveItem}" is invaild!)`);
         continue;
       }
       const relativePath = path.relative(src_dir, reserveItem);
@@ -142,7 +142,7 @@ export default async function (config: OmniConfig | {}) {
         fsExtra.ensureDirSync(path.resolve(destPath, '..'));
         emsPath && fsExtra.ensureDirSync(path.resolve(emsPath, '..'));
       } else {
-        logWarn(`The file or directory path which is [${reserveItem}] cannot be found!`);
+        logWarn(`"${reserveItem}" 不是有效的文件或文件夹路径！(The file or directory path which is "${reserveItem}" cannot be found!)`);
         continue;
       }
       fsExtra.copySync(reserveItem, destPath);
@@ -152,19 +152,19 @@ export default async function (config: OmniConfig | {}) {
 
   try {
     if (test) {
-      await execShell(['npm test'], () => logEmph('unit test passed! 🚩'), handleBuildErr('unit test failed!'));
+      await execShell(['npm test'], () => logEmph('单元测试通过！(unit test passed!) 🚩'), handleBuildErr('单元测试失败！(unit test failed!)'));
     }
 
     if (eslint) {
-      await execShell(['npm run lint:es'], () => logEmph('eslint passed! 🚩'), handleBuildErr('eslint checking failed! \n try to exec: npm run lint:es_fix'));
+      await execShell(['npm run lint:es'], () => logEmph('eslint校验通过！(eslint passed!) 🚩'), handleBuildErr('eslint校验失败！(eslint checking failed!) \n 尝试执行 (try to exec): npm run lint:es_fix'));
     }
 
     if (stylelint) {
-      await execShell(['npm run lint:style'], () => logEmph('stylelint passed! 🚩'), handleBuildErr('stylelint checking failed! \n try to exec: npm run lint:style_fix'));
+      await execShell(['npm run lint:style'], () => logEmph('stylelint校验通过！(stylelint passed!) 🚩'), handleBuildErr('stylelint校验失败！(stylelint checking failed!) \n 尝试执行 (try to exec): npm run lint:style_fix'));
     }
 
     if (!tool) {
-      logWarn('Building completed but without any build tool process!');
+      logWarn('构建完毕，但是没有任何构建工具参与构建！(Building completed but without any build tool process!)');
       process.exit(0);
       return;
     }
@@ -230,9 +230,9 @@ export default async function (config: OmniConfig | {}) {
     }, handleBuildErr());
 
     if (auto_release) {
-      await execShell(['omni release'], handleBuildSuc('auto release success!'), handleBuildErr('release failed!'));
+      await execShell(['omni release'], handleBuildSuc('自动发布成功！(auto release success!)'), handleBuildErr('自动发布失败！(auto release failed!)'));
     }
   } catch (err) {
-    logErr(`Oops! build process occured some accidents! 👉  ${JSON.stringify(err)}`);
+    logErr(`糟糕！构建过程发生了点意外！(Oops! build process occured some accidents!) 👉  ${JSON.stringify(err)}`);
   }
 }

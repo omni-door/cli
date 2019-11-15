@@ -22,7 +22,7 @@ export default function (config: OmniConfig | {}, componentName: string, options
   cc?: boolean;
 }) {
   if (JSON.stringify(config) === '{}') {
-    logWarn('Please Initialize project first');
+    logWarn('请先初始化项目！(Please Initialize project first!)');
     return;
   }
 
@@ -34,7 +34,7 @@ export default function (config: OmniConfig | {}, componentName: string, options
   // default create class component
   if (!fc && !cc) cc = true;
 
-  const message = `Start create ${cc ? 'class' : 'functional'} component - ${componentName} 🕐`;
+  const message = `开始创建${cc ? '类' : '函数'}组件 (Start create ${cc ? 'class' : 'functional'} component) --- ${componentName} 🕐`;
   logInfo(message);
 
   const { template: {
@@ -76,9 +76,9 @@ export default function (config: OmniConfig | {}, componentName: string, options
     }`), content_test, 'utf8');
 
     // success logger
-    logSuc(`The ${componentName} component construction completed!`);
+    logSuc(`${componentName} 组件创建完成！(The ${componentName} component construction completed!)`);
   } catch (err) {
     // error logger
-    logErr(`Oops! Some error occured 👉  ${JSON.stringify(err)}`);
+    logErr(`糟糕！发生了点错误！(Oops! Some error occured) 👉  ${JSON.stringify(err)}`);
   }
 }
