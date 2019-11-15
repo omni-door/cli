@@ -74,10 +74,10 @@ export default async function (config: OmniConfig | {}) {
         // install tool precheck
         let iTool = 'yarn add -D';
         let iToolCheck = shelljs.exec('yarn -v', { async: false });
-        if (iToolCheck.stderr.indexOf('command not found')) {
+        if (~iToolCheck.stderr.indexOf('command not found')) {
           iTool = 'cnpm i --save-dev';
           iToolCheck = shelljs.exec('cnpm -v', { async: false });
-          if (iToolCheck.stderr.indexOf('command not found')) {
+          if (~iToolCheck.stderr.indexOf('command not found')) {
             iTool = 'npm i --save-dev';
           }
         }

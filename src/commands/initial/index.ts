@@ -378,7 +378,7 @@ export default function ({
     return new Promise((resolve, reject) => {
       let iToolCheck = shelljs.exec(`${pkgtool} -v`, { async: false });
 
-      if (iToolCheck.stderr.indexOf('command not found')) {
+      if (~iToolCheck.stderr.indexOf('command not found')) {
         if (pkgtool === 'npm') {
           logWarn('cannot found the npm package management tool!');
           process.exit(0);
@@ -398,6 +398,8 @@ export default function ({
             resolve(true);
           });
         }
+      } else {
+        resolve(true);
       }
     });
   }
