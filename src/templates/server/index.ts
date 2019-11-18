@@ -27,7 +27,7 @@ app.use(hotMiddleware(compiler, {
 // app.use(
 //   '/api',
 //   proxy({
-//     target: 'http://www.hupu.com/api',
+//     target: 'http://www.api.com/api',
 //     changeOrigin: true
 //   })
 // );

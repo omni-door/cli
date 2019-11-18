@@ -13,7 +13,7 @@ const babel = require('rollup-plugin-babel');
 ${ts ? `const typescript = require('rollup-plugin-typescript');
 const typescript2 = require('rollup-plugin-typescript2');` : ''}
 const { uglify } = require('rollup-plugin-uglify');
-const { promisify } = require('util');
+const json = require('rollup-plugin-json');
 const fs = require('fs');
 const path = require('path');
 const del = require('del');
@@ -29,11 +29,9 @@ for (let i = 0, len = exts.length; i < len; i++) {
   if (fs.existsSync(indexPath)) break;
 }
 
-const stat = promisify(fs.stat);
-const readdir = promisify(fs.readdir);
-async function clearDir () {
-  ${out_dir ? `await del.sync('${out_dir}/*');` : ''}
-  ${esm_dir ? `await del.sync('${esm_dir}/*');` : ''}
+function clearDir () {
+  ${out_dir ? `del.sync('${out_dir}/*');` : ''}
+  ${esm_dir ? `del.sync('${esm_dir}/*');` : ''}
 }
 
 function flatten (arr) {
@@ -42,15 +40,15 @@ function flatten (arr) {
   }, []);
 }
 
-async function createConfig () {
+function createConfig () {
   const extensions = ['.ts', '.js'];
   const filesPaths = [];
-  ${multi_output ? `const files = await readdir('${src_dir}');
+  ${multi_output ? `const files = fs.readdirSync('${src_dir}');
   const len = files.length;
   for (let i = 0; i < len; i++) {
     const file = files[i];
     const filePath = path.resolve('${src_dir}', file);
-    const stats = await stat(filePath);
+    const stats = fs.statSync(filePath);
     if (stats.isDirectory()) {
       let entryPath = '';
       for (let i = 0, len = exts.length; i < len; i++) {
@@ -110,7 +108,8 @@ async function createConfig () {
         runtimeHelpers: true,
         extensions
       }),
-      uglify()
+      uglify(),
+      json()
     ]}, ${
   esm_dir
     ? `{
@@ -145,6 +144,7 @@ async function createConfig () {
                 'node_modules/react-dom/index.js': ['render', 'createPortal']
               }
             }),
+            json(),
             ${ts ? `typescript2({
               tsconfigOverride: {
                 compilerOptions: {
@@ -200,7 +200,8 @@ async function createConfig () {
             runtimeHelpers: true,
             extensions
           }),
-          uglify()
+          uglify(),
+          json()
         ]
       }, ${
   esm_dir
@@ -236,6 +237,7 @@ async function createConfig () {
                   'node_modules/react-dom/index.js': ['render', 'createPortal']
                 }
               }),
+              json(),
               ${ts ? `typescript({
                 target: 'es5',
                 module: 'es2015'
