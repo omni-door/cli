@@ -15,7 +15,8 @@ import {
 import { OmniConfig } from '../../index.d';
 
 /**
- * todo 1. support custom tpl
+ * todo 1. support utils-tool tpl
+ * todo 2. support custom tpl
  */
 export default function (config: OmniConfig | {}, componentName: string, options?: {
   fc?: boolean;

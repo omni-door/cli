@@ -33,7 +33,6 @@ module.exports = {
     rules: [
       {
         test: /\\.(js|jsx)$/,
-        include: path.resolve(__dirname, '..', 'src/'),
         use: [
           {
             loader: 'babel-loader'
@@ -42,7 +41,6 @@ module.exports = {
       },
       ${ts ? `{
         test: /\\.(ts|tsx)$/,
-        include: path.resolve(__dirname, '..', 'src/'),
         use: [
           {
             loader: 'ts-loader'
@@ -51,26 +49,21 @@ module.exports = {
       },` : ''}
       ${style ? (style === 'css' ? `{
         test: /\\.css$/,
-        use:  ['style-loader', 'css-loader'],
-        include: path.resolve(__dirname, '..', 'src/')
+        use:  ['style-loader', 'css-loader']
       },
       ` : style === 'less' ? `{
         test: /\\.(css|less)$/,
-        use: ['style-loader', 'css-loader', 'less-loader'],
-        include: path.resolve(__dirname, '..', 'src/')
+        use: ['style-loader', 'css-loader', 'less-loader']
       },` : style === 'scss' ? `{
         test: /\\.(css|scss|sass)$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
-        include: path.resolve(__dirname, '..', 'src/')
+        use: ['style-loader', 'css-loader', 'sass-loader']
       },` : `{
         test: /\\.less$/,
-        use: ['style-loader', 'css-loader', 'less-loader'],
-        include: path.resolve(__dirname, '..', 'src/')
+        use: ['style-loader', 'css-loader', 'less-loader']
       },
       {
         test: /\.(css|scss|sass)$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
-        include: path.resolve(__dirname, '..', 'src/')
+        use: ['style-loader', 'css-loader', 'sass-loader']
       },`) : ''}
       {
         test: /\\.(woff|woff2|eot|ttf|svg|jpg|png|gif)$/,

@@ -166,7 +166,9 @@ export function devDependencies (config: Config) {
     '@storybook/addon-notes@5.2.5',
     'awesome-typescript-loader@5.2.1',
     'react-docgen-typescript-loader@3.3.0',
-    'storybook-readme@5.0.8'
+    'storybook-readme@5.0.8',
+    ...(build !== 'webpack' ? loaderDependencies : []),
+    ...(build !== 'webpack' && build !== 'rollup' ? babelDependencies : [])
   ];
 
   const bishengDependencies = [
@@ -177,11 +179,13 @@ export function devDependencies (config: Config) {
 
   const basicServerDependencies = [
     'express',
-    'webpack',
+    build !== 'webpack' ? 'webpack' : '',
     'webpack-dev-middleware',
     'webpack-hot-middleware',
     'http-proxy-middleware',
-    ...pluginDependencies,
+    ...(build !== 'webpack' ? loaderDependencies : []),
+    ...(build !== 'webpack' ? pluginDependencies : []),
+    ...(build !== 'webpack' && build !== 'rollup' ? babelDependencies : []),
     ts ? '@types/webpack-env': ''
   ];
 
