@@ -65,7 +65,6 @@ export function devDependencies (config: Config) {
     'rollup-plugin-babel',
     'rollup-plugin-commonjs',
     'rollup-plugin-node-resolve',
-    'rollup-plugin-uglify',
     ts ? 'rollup-plugin-typescript' : '',
     ts ? 'rollup-plugin-typescript2' : '',
     'rollup-plugin-json',

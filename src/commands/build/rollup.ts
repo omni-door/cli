@@ -12,7 +12,6 @@ const commonjs = require('rollup-plugin-commonjs');
 const babel = require('rollup-plugin-babel');
 ${ts ? `const typescript = require('rollup-plugin-typescript');
 const typescript2 = require('rollup-plugin-typescript2');` : ''}
-const { uglify } = require('rollup-plugin-uglify');
 const json = require('rollup-plugin-json');
 const fs = require('fs');
 const path = require('path');
@@ -108,7 +107,6 @@ function createConfig () {
         runtimeHelpers: true,
         extensions
       }),
-      uglify(),
       json()
     ]}, ${
   esm_dir
@@ -200,7 +198,6 @@ function createConfig () {
             runtimeHelpers: true,
             extensions
           }),
-          uglify(),
           json()
         ]
       }, ${

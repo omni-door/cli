@@ -31,7 +31,6 @@ export default function (config: {
     'rollup-plugin-babel',
     'rollup-plugin-commonjs',
     'rollup-plugin-node-resolve',
-    'rollup-plugin-uglify',
     'rollup-plugin-typescript',
     'rollup-plugin-typescript2',
     'rollup-plugin-json'
