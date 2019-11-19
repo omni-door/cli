@@ -93,10 +93,10 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
 
       let canPush = true;
       if (git.trim() !== gitUrl) {
-        logInfo(`自动设置git remote 的 origin_omni_release 为 ${git} (auto set git remote origin_omni_release to: ${git})`);
+        logInfo(`替换当前 ${git.trim()} (remote origin) 为 ${git} (replace ${git.trim()} to ${git})`);
         await execShell(
-          [`git remote add origin_omni_release ${git}`],
-          () => logEmph(`git remote origin_omni_release 为 ${git} (git remote origin_omni_release is: ${git})`),
+          ['git remote remove origin', `git remote add origin ${git}`],
+          () => logEmph(`git remote origin 为 ${git} (git remote origin is: ${git})`),
           () => {
             logWarn('git remote 设置失败！(setting git remote failed!)');
             canPush = false;
@@ -118,8 +118,8 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
         : `git commit -m'[${pkj.name.toUpperCase()}]: ${pkj.version}' --no-verify`;
 
       const push = commitlint
-        ? `git push origin_omni_release ${branch || 'master'}`
-        : `git push origin_omni_release ${branch || 'master'} --no-verify`;
+        ? `git push origin ${branch || 'master'}`
+        : `git push origin ${branch || 'master'} --no-verify`;
 
       canPush && await execShell(
         [
