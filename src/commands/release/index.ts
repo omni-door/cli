@@ -88,17 +88,17 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
       await execShell([
         'git remote get-url origin'
       ], function (results) {
-        gitUrl = results[0];
+        gitUrl = results[0] && results[0].trim();
       });
 
       let canPush = true;
-      if (git !== gitUrl) {
-        logInfo(`自动设置git remote 的 origin 为 ${git} (auto set git remote origin to: ${git})`);
+      if (git.trim() !== gitUrl) {
+        logInfo(`自动设置git remote 的 origin_omni_release 为 ${git} (auto set git remote origin_omni_release to: ${git})`);
         await execShell(
-          [`git remote add origin ${git}`],
-          () => logEmph(`git remote origin 为 ${git}！(git remote origin is: ${git}!)`),
+          [`git remote add origin_omni_release ${git}`],
+          () => logEmph(`git remote origin_omni_release 为 ${git} (git remote origin_omni_release is: ${git})`),
           () => {
-            logWarn('git remote 设置失败！(git set remote failed!)');
+            logWarn('git remote 设置失败！(setting git remote failed!)');
             canPush = false;
           }
         );
@@ -118,8 +118,8 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
         : `git commit -m'[${pkj.name.toUpperCase()}]: ${pkj.version}' --no-verify`;
 
       const push = commitlint
-        ? `git push origin ${branch || 'master'}`
-        : `git push origin ${branch || 'master'} --no-verify`;
+        ? `git push origin_omni_release ${branch || 'master'}`
+        : `git push origin_omni_release ${branch || 'master'} --no-verify`;
 
       canPush && await execShell(
         [
@@ -141,11 +141,11 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
         }
       );
 
-      if (npm.trim() !== npmUrl) {
+      if (npm.trim() !== npmUrl && npm.trim() + '/' !== npmUrl) {
         logInfo(`自动设置 npm registry 地址为 ${npm} (auto set npm registry to: ${npm})`);
         await execShell(
           [`npm set registry ${npm}`],
-          () => logEmph('npm registry 设置成功，请执行 npm publish 进行发布！(npm set registry success, please run { npm publish } by yourself!)'),
+          () => logEmph('npm registry 设置成功，请执行 $npm publish 进行发布！(npm set registry success, please run $npm publish by yourself!)'),
           () => logWarn('npm registry 设置失败！(set npm registry failed!)')
         );
       } else {

@@ -69,7 +69,10 @@ function createConfig () {
       compact: true
     },
     plugins: [
-      resolve({ extensions }),
+      resolve({
+        extensions,
+        preferBuiltins: true
+      }),
       commonjs({
         namedExports: {
           'node_modules/react/react.js': [
@@ -118,7 +121,10 @@ function createConfig () {
             compact: true
           },
           plugins: [
-            resolve({ extensions }),
+            resolve({
+              extensions,
+              preferBuiltins: true
+            }),
             commonjs({
               namedExports: {
                 'node_modules/react/react.js': [
@@ -166,7 +172,10 @@ function createConfig () {
           compact: true
         },
         plugins: [
-          resolve({ extensions }),
+          resolve({
+            extensions,
+            preferBuiltins: true
+          }),
           commonjs({
             namedExports: {
               'node_modules/react/react.js': [
@@ -210,7 +219,10 @@ function createConfig () {
               compact: true
             },
             plugins: [
-              resolve({ extensions }),
+              resolve({
+                extensions,
+                preferBuiltins: true
+              }),
               commonjs({
                 namedExports: {
                   'node_modules/react/react.js': [

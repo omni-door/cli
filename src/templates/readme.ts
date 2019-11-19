@@ -41,12 +41,12 @@ npm run release
 
 ### Ignore automatic iteration version
 \`\`\`sh
-npm run release -i
+npm run release -- -i
 \`\`\`
 
 ### manual iteration version
 \`\`\`sh
-npm run release -m 0.3.25
+npm run release -- -m 0.3.25
 \`\`\`
 
 ## More powerful customization is in [omni.config.js]
