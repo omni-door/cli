@@ -28,7 +28,8 @@
   "author": "bobby.li",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/BobbyLH/omni-door/issues"
+    "url": "https://github.com/BobbyLH/omni-door/issues",
+    "email": "omni.door.official@gmail.com"
   },
   "husky": {
     "hooks": {
