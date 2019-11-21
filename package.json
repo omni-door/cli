@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BobbyLH/omni-door.git"
+    "url": "git+https://github.com/omni-door/cli.git"
   },
   "keywords": [
     "omni",
