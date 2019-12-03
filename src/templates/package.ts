@@ -94,15 +94,26 @@ export default (config: {
     ? `"husky": {
         "hooks": {
           "pre-commit": "lint-staged",
-          "pre-push": "npm run lint && npm run test",
+          "pre-push": ${
+  (eslint || stylelint) && testFrame
+    ? 'npm run lint && npm run test'
+    : (eslint || stylelint)
+      ? 'npm run lint'
+      : testFrame
+        ? 'npm run test'
+        : ''},
           "commit-msg": "npm run lint:commit"
         }
       },
       "lint-staged": {
-        "src/**/*.{js,jsx,ts,tsx,css,scss,sass,less}": [
-          "npm run lint:fix",
+        ${eslint ? `"src/**/*.{js,jsx,ts,tsx,css}": [
+          "npm run lint:es_fix",
           "git add"
-        ]
+        ],` : ''}
+        ${stylelint ? `"src/**/*.{scss,sass,less}": [
+          "npm run lint:style_fix",
+          "git add"
+        ]` : ''}
       },`
     : ''
 }

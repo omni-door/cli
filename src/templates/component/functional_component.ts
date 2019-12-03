@@ -7,12 +7,12 @@ export default function (config: {
 }) {
   const { ts, componentName, style } = config;
 
-  return `import React${ts ? ', { SFC }' : ''} from 'react';
+  return `import React${ts ? ', { FC }' : ''} from 'react';
 ${style ? `import './style/${componentName}.${style === 'all' ? 'less' : style}';` : ''}
 
 ${ts ? `export interface ${componentName}Props {};` : ''}
 
-export const ${componentName}${ts ? `: SFC<${componentName}Props>` : ''} = props => {
+export const ${componentName}${ts ? `: FC<${componentName}Props>` : ''} = props => {
   const { children } = props;
 
   return (

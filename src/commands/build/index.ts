@@ -13,6 +13,9 @@ import dependencies_build from '../../configs/dependencies_build';
 
 /**
  * todo 1. gulp grunt 构建支持
+ * todo 2. 自动发布避免重复校验工具，即 release 命令支持不校验的逻辑
+ * todo 3. eslint 错误提示 run fix 换一种颜色呈现
+ * todo 4. 自动发布 eslint 未通过校验，提示发布成功的bug，且build阶段为通过校验，就不能进行自动发布
  */
 export default async function (config: OmniConfig | {}) {
   if (JSON.stringify(config) === '{}') {
