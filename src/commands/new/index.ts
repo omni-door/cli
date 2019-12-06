@@ -37,9 +37,6 @@ export default function (config: OmniConfig | {}, componentName: string, options
   // default create class component
   if (!fc && !cc) cc = true;
 
-  const message = `开始创建${cc ? '类' : '函数'}组件 (Start create ${cc ? 'class' : 'functional'} component) --- ${componentName} 🕐`;
-  logInfo(message);
-
   const { template: {
     root,
     type = 'spa_react',
@@ -51,6 +48,9 @@ export default function (config: OmniConfig | {}, componentName: string, options
   } } = config as OmniConfig;
   
   const isReactProject = type === 'spa_react' || type === 'component_library_react'; 
+
+  const message = `开始创建 ${componentName} ${isReactProject ? `${cc ? '类' : '函数'}组件` : ''} (Start create ${componentName} ${isReactProject ? `${cc ? 'class' : 'functional'} component` : ''})`;
+  logInfo(message);
 
   try {
     // component tpl
