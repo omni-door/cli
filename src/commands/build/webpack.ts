@@ -12,9 +12,11 @@ export default function (config: {
 const fs = require('fs');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const omni_config = require(path.resolve(process.cwd(), 'omni.config.js'));
 
-const htmlWebpackPlugin = new HtmlWebpackPlugin({
+const omni_config = require(path.resolve(process.cwd(), 'omni.config.js'));
+const htmlPath = path.join('${src_dir}', 'index.html');
+const isExistHtml = fs.existsSync(htmlPath);
+const htmlWebpackPlugin = isExistHtml && new HtmlWebpackPlugin({
   path: path.resolve('${out_dir}'),
   template: path.join('${src_dir}', 'index.html'),
   filename: 'index.html'
@@ -108,7 +110,7 @@ module.exports = configuration({
     ],
   },
   plugins: [
-    htmlWebpackPlugin
+    htmlWebpackPlugin ? htmlWebpackPlugin : null
   ],
   mode: 'production',
   resolve: {
