@@ -1,11 +1,13 @@
-import { STYLE } from '../../index.d';
+import { STYLE, PROJECT_TYPE } from '../../index.d';
 
 export default function (config: {
+  project_type: PROJECT_TYPE;
   name: string;
   ts: boolean;
   style: STYLE;
 }) {
-  const { name, ts, style } = config;
+  const { project_type, name, ts, style } = config;
+  const isReactSPAProject = project_type === 'spa_react';
 
   return `'use strict';
 
@@ -16,14 +18,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const htmlWebpackPlugin = new HtmlWebpackPlugin({
   title: '${name}',
   path: path.resolve(__dirname, 'server'),
-  template: path.join(__dirname, '../src/index.html'),
+  template: path.join(__dirname, ${isReactSPAProject ? '../src/index.html' : '../index.html'}),
   filename: 'index.html'
 });
 
 module.exports = {
   entry: [
     'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
-    path.join(__dirname, '../src/index.${ts ? 'tsx' : 'jsx'}')
+    path.join(__dirname, ${isReactSPAProject ? `../src/index.${ts ? 'tsx' : 'jsx'}` : `../index.${ts ? 'tsx' : 'jsx'}`})
   ],
   output: {
     filename: 'main.js',

@@ -3,6 +3,8 @@ import path from 'path';
 import fsExtra from 'fs-extra';
 import shelljs from 'shelljs';
 import inquirer from 'inquirer';
+import chalk from 'chalk';
+import ora from 'ora';
 import del from 'del';
 import rollupConfig from './rollup';
 import webpackConfig from './webpack';
@@ -11,12 +13,6 @@ import { execShell } from '../../utils/exec';
 import { OmniConfig, BUILD } from '../../index.d';
 import dependencies_build from '../../configs/dependencies_build';
 
-/**
- * todo 1. gulp grunt 构建支持
- * todo 2. 自动发布避免重复校验工具，即 release 命令支持不校验的逻辑
- * todo 3. eslint 错误提示 run fix 换一种颜色呈现
- * todo 4. 自动发布 eslint 未通过校验，提示发布成功的bug，且build阶段为通过校验，就不能进行自动发布
- */
 export default async function (config: OmniConfig | {}) {
   if (JSON.stringify(config) === '{}') {
     logWarn('请先初始化项目！(Please Initialize project first!)');
@@ -57,7 +53,7 @@ export default async function (config: OmniConfig | {}) {
 
     return function (err?: any) {
       logErr(msg!);
-      process.exit(0);
+      process.exit(1);
     };
   }
 
@@ -159,15 +155,15 @@ export default async function (config: OmniConfig | {}) {
     }
 
     if (eslint) {
-      await execShell(['npm run lint:es'], () => logEmph('eslint校验通过！(eslint passed!) 🚩'), handleBuildErr('eslint校验失败！(eslint checking failed!) \n 尝试执行 (try to exec): npm run lint:es_fix'));
+      await execShell(['npm run lint:es'], () => logEmph('eslint校验通过！(eslint passed!) 🚩'), handleBuildErr(`eslint校验失败！(eslint checking failed!) \n ${chalk.bgGreen('尝试执行 (try to exec): npm run lint:es_fix')}`));
     }
 
     if (stylelint) {
-      await execShell(['npm run lint:style'], () => logEmph('stylelint校验通过！(stylelint passed!) 🚩'), handleBuildErr('stylelint校验失败！(stylelint checking failed!) \n 尝试执行 (try to exec): npm run lint:style_fix'));
+      await execShell(['npm run lint:style'], () => logEmph('stylelint校验通过！(stylelint passed!) 🚩'), handleBuildErr(`stylelint校验失败！(stylelint checking failed!) \n ${chalk.bgGreen('尝试执行 (try to exec): npm run lint:style_fix')}`));
     }
 
     if (!tool) {
-      logWarn('构建完毕，但是没有任何构建工具参与构建！(Building completed but without any build tool process!)');
+      logWarn('构建完毕，但是没有指定任何构建工具参与构建！(Building completed but without any build tool process!)');
       process.exit(0);
       return;
     }
@@ -212,15 +208,20 @@ export default async function (config: OmniConfig | {}) {
         }
 
         if (!is_go_on) {
-          process.exit(0);
+          process.exit(1);
           return;
         }
 
         fsExtra.outputFileSync(buildConfigPath, content_config, 'utf8');
       } else {
         logWarn(`你的构建工具 ${tool} 暂不支持，请自行构建你的项目，或联系我们：omni.door.official@gmail.com \n your build tool ${tool} has not been support yet, please build the project by yourself! \n contact us: omni.door.official@gmail.com`);
+        process.exit(1);
+        return;
       }
     }
+
+    const spinner = tool !== 'rollup' && ora('🐸  [OMNI-DOOR] ⏱  : 项目构建中 (Building, please wait patiently)  💤  \n');
+    spinner && spinner.start();
 
     del.sync(out_dir);
     esm_dir && del.sync(esm_dir);
@@ -229,11 +230,15 @@ export default async function (config: OmniConfig | {}) {
       const { style, assets = [] } = reserve;
       style && copyStylesheet(src_dir);
       copyReserves(assets);
+      spinner && spinner.stop();
       handleBuildSuc()();
-    }, handleBuildErr());
+    }, function () {
+      spinner && spinner.stop();
+      handleBuildErr()();
+    });
 
     if (auto_release) {
-      await execShell(['omni release'], handleBuildSuc('自动发布成功！(auto release success!)'), handleBuildErr('自动发布失败！(auto release failed!)'));
+      await execShell(['omni release -n'], handleBuildSuc('自动发布成功！(auto release success!)'), handleBuildErr('自动发布失败！(auto release failed!)'));
     }
   } catch (err) {
     logErr(`糟糕！构建过程发生了点意外！(Oops! build process occured some accidents!) 👉  ${JSON.stringify(err)}`);

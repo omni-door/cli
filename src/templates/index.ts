@@ -23,10 +23,14 @@ import component_stylesheet from './component/stylesheet';
 import component_test from './component/test';
 import component_mdx from './component/mdx';
 import component_stories from './component/stories';
+import tool_index from './component/tool/index';
+import tool_readme from './component/tool/readme';
+import tool_test from './component/tool/test';
 import posts_readme from './posts/readme';
 import server_index from './server/index';
 import server_webpack from './server/webpack_dev';
 import source_index from './source/index';
+import source_index_react from './source/index_react';
 import source_html from './source/html';
 import source_d from './source/declaration';
 import storybook_addons from './.storybook/addons';
@@ -60,10 +64,14 @@ export {
   component_test,
   component_mdx,
   component_stories,
+  tool_index,
+  tool_readme,
+  tool_test,
   posts_readme,
   server_index,
   server_webpack,
   source_index,
+  source_index_react,
   source_html,
   source_d,
   storybook_addons,

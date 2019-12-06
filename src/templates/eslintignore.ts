@@ -3,6 +3,7 @@ export default function () {
 es/
 lib/
 server/
+demo/
 node_modules/
 .storybook/
 

@@ -28,6 +28,7 @@ import {
   server_index as serverTpl,
   server_webpack as webpackDevConfigJs,
   source_index as indexTpl,
+  source_index_react as indexReactTpl,
   source_html as indexHtml,
   source_d,
   storybook_addons,
@@ -38,13 +39,13 @@ import {
 import { dependencies, devDependencies } from '../../configs/dependencies';
 import templates from '../../configs/initial_tpls';
 import installClis from '../../configs/initial_clis';
-import { BUILD, NPM, CDN, TESTFRAME, PKJTOOL, STYLE, DEVSERVER } from '../../index.d';
+import { BUILD, NPM, TESTFRAME, PKJTOOL, STYLE, DEVSERVER, PROJECT_TYPE } from '../../index.d';
 import { logErr, logWarn } from '../../utils/logger';
 import { execShell } from '../../utils/exec';
-import { async } from 'rxjs/internal/scheduler/async';
 
 export type GTpls = {
   name: string;
+  project_type: PROJECT_TYPE;
   build: BUILD;
   ts: boolean;
   test: boolean;
@@ -55,12 +56,13 @@ export type GTpls = {
   stylelint: boolean;
   git: string;
   npm: NPM | '';
-  cdn: CDN | '';
+  cdn: string;
   devServer: DEVSERVER;
   createDir: boolean;
 };
 
 export type GInstallCli = {
+  project_type: PROJECT_TYPE;
   pkgtool: PKJTOOL;
   build: BUILD;
   ts: boolean;
@@ -72,14 +74,14 @@ export type GInstallCli = {
   devServer: DEVSERVER;
 };
 
+enum ProjectType {
+  'react-spa (React单页应用)' = 'spa_react',
+  'react-component-library (React组件库)' = 'component_library_react',
+  'toolkit (工具库)' = 'toolkit'
+}
+
 const spinner = ora('🐸  [OMNI-DOOR] 📡  : 项目初始化中 (Initializing, please wait patiently)  💤  \n');
 
-/**
- * todo 1. gulp config
- * todo 2. rollup config stylesheet
- * todo 3. custom tpl
- * todo 4. decoupling npm and cdn address
- */
 export default function ({
   simple,
   standard,
@@ -112,6 +114,7 @@ export default function ({
 
   function generateTpls ({
     name,
+    project_type,
     build,
     ts,
     test,
@@ -134,8 +137,12 @@ export default function ({
       });
     }
 
+    // whether or not react-spa project
+    const isReactSPAProject = project_type === 'spa_react';
+
     // default files
     const content_omni = omniConfigJs({
+      project_type,
       build,
       ts,
       test,
@@ -160,7 +167,8 @@ export default function ({
     });
     const content_gitignore = gitignore();
     const content_npmignore = npmignore();
-    const content_indexTpl = indexTpl({ devServer });
+    const content_indexTpl = indexTpl();
+    const content_indexReactTpl = indexReactTpl({ build, devServer, project_type });
     const content_indexHtml = indexHtml({ name });
 
     // tsconfig
@@ -181,13 +189,13 @@ export default function ({
     const content_commitlint = commitlint && commitlintConfigJs({ name });
 
     // build files
-    const content_babel = build && build !== 'tsc' && babelConfigJs({ ts });
+    const content_babel = build && build !== 'tsc' && babelConfigJs({ project_type, ts });
 
     // server files
     const content_bisheng = devServer === 'bisheng' && bishengConfigJs({ name, git });
     const content_postReadMe = devServer === 'bisheng' && postReadMe();
     const content_serverTpl = devServer === 'basic' && serverTpl();
-    const content_webpackDev = devServer === 'basic' && webpackDevConfigJs({ name, ts, style });
+    const content_webpackDev = devServer === 'basic' && webpackDevConfigJs({ project_type, name, ts, style });
     const content_storybook_addons = devServer === 'storybook' && storybook_addons();
     const content_storybook_config = devServer === 'storybook' && storybook_config({ name });
     const content_storybook_mhead = devServer === 'storybook' && storybook_mhead({ name });
@@ -209,10 +217,17 @@ export default function ({
     fsExtra.outputFileSync(path.resolve(initPath, '.npmignore'), content_npmignore, 'utf8');
 
     // src dir files
-    fsExtra.outputFileSync(path.resolve(initPath, `src/index.${ts ? 'tsx' : 'jsx'}`), content_indexTpl, 'utf8');
-    fsExtra.outputFileSync(path.resolve(initPath, 'src/index.html'), content_indexHtml, 'utf8');
+    !isReactSPAProject && fsExtra.outputFileSync(path.resolve(initPath, `src/index.${ts ? 'tsx' : 'jsx'}`), content_indexTpl, 'utf8');
+    isReactSPAProject && fsExtra.outputFileSync(path.resolve(initPath, `src/index.${ts ? 'tsx' : 'jsx'}`), content_indexReactTpl, 'utf8');
+    isReactSPAProject && fsExtra.outputFileSync(path.resolve(initPath, 'src/index.html'), content_indexHtml, 'utf8');
     content_d && fsExtra.outputFileSync(path.resolve(initPath, 'src/@types/global.d.ts'), content_d, 'utf8');
     content_doczmdx && fsExtra.outputFileSync(path.resolve(initPath, 'src/index.mdx'), content_doczmdx, 'utf8');
+
+    // demo dir files
+    !isReactSPAProject && fsExtra.outputFileSync(path.resolve(initPath, `demo/index.${ts ? 'tsx' : 'jsx'}`), content_indexReactTpl, 'utf8');
+    !isReactSPAProject && fsExtra.outputFileSync(path.resolve(initPath, 'demo/index.html'), content_indexHtml, 'utf8');
+    !isReactSPAProject && content_serverTpl && fsExtra.outputFileSync(path.resolve(initPath, 'demo/server/index.js'), content_serverTpl, 'utf8');
+    !isReactSPAProject && content_webpackDev && fsExtra.outputFileSync(path.resolve(initPath, 'demo/server/webpack.config.dev.js'), content_webpackDev, 'utf8');
 
     // tsconfig
     content_ts && fsExtra.outputFileSync(path.resolve(initPath, 'tsconfig.json'), content_ts, 'utf8');
@@ -234,8 +249,8 @@ export default function ({
     // dev-server files
     content_bisheng && fsExtra.outputFileSync(path.resolve(initPath, 'bisheng.config.js'), content_bisheng, 'utf8');
     content_postReadMe && fsExtra.outputFileSync(path.resolve(initPath, 'posts/README.md'), content_postReadMe, 'utf8');
-    content_serverTpl && fsExtra.outputFileSync(path.resolve(initPath, 'server/index.js'), content_serverTpl, 'utf8');
-    content_webpackDev && fsExtra.outputFileSync(path.resolve(initPath, 'server/webpack.config.dev.js'), content_webpackDev, 'utf8');
+    isReactSPAProject && content_serverTpl && fsExtra.outputFileSync(path.resolve(initPath, 'server/index.js'), content_serverTpl, 'utf8');
+    isReactSPAProject && content_webpackDev && fsExtra.outputFileSync(path.resolve(initPath, 'server/webpack.config.dev.js'), content_webpackDev, 'utf8');
     content_storybook_addons && fsExtra.outputFileSync(path.resolve(initPath, '.storybook/addons.js'), content_storybook_addons, 'utf8');
     content_storybook_config && fsExtra.outputFileSync(path.resolve(initPath, '.storybook/config.js'), content_storybook_config, 'utf8');
     content_storybook_mhead && fsExtra.outputFileSync(path.resolve(initPath, '.storybook/manager-head.html'), content_storybook_mhead, 'utf8');
@@ -247,6 +262,7 @@ export default function ({
   }
 
   async function generateInstallDenpendencies ({
+    project_type,
     pkgtool,
     build,
     ts,
@@ -263,6 +279,7 @@ export default function ({
 
     let installDevCliPrefix = pkgtool === 'yarn' ? `${pkgtool} add -D --cwd ${initPath}` : `${pkgtool} install --save-dev --prefix ${initPath}`;
     const { defaultDep, buildDep, tsDep, testDep, eslintDep, commitlintDep, stylelintDep, devServerDep } = devDependencies({
+      project_type,
       build,
       ts,
       eslint,
@@ -280,7 +297,17 @@ export default function ({
       installDevCliPrefix = `cd ${initPath} && ${installDevCliPrefix}`;
     }
 
-    const installCli = `${installCliPrefix} ${dependencies().join(' ')}`;
+    const installCli = `${installCliPrefix} ${dependencies({
+      project_type,
+      build,
+      ts,
+      eslint,
+      commitlint,
+      style,
+      stylelint,
+      testFrame,
+      devServer
+    }).join(' ')}`;
     const installDevCli = defaultDep.length > 0 ? `${installDevCliPrefix} ${defaultDep.join(' ')}` : '';
     const installBuildDevCli = buildDep.length > 0 ? `${installDevCliPrefix} ${buildDep.join(' ')}` : '';
     const installTsDevCli = tsDep.length > 0 ? `${installDevCliPrefix} ${tsDep.join(' ')}` : '';
@@ -311,10 +338,10 @@ export default function ({
 
     return figlet('omni cli', function (err, data) {
       if (err) {
+        logErr('figlet 出现了问题！(Some thing about figlet is wrong!)');
         spinner.fail(chalk.red(`🐸  [OMNI-DOOR] ❌  : ${JSON.stringify(err)} \n`));
-        logErr('Some thing about figlet is wrong!');
       }
-      console.info(chalk.yellow(data || 'OMNI CLI'));
+      console.info(chalk.yellow(data || 'OMNI-DOOR CLI'));
       fn(done);
     });
   }
@@ -368,8 +395,8 @@ export default function ({
         installServerDevCli
       ], done, err => spinner.warn(chalk.yellow(`🐸  [OMNI-DOOR] ❗️ : ${JSON.stringify(err)} \n`))));
     } catch (err) {
+      logErr('安装依赖出错了！(The installation of dependencies occurred some accidents!)');
       spinner.fail(chalk.red(`🐸  [OMNI-DOOR] ❌  : ${JSON.stringify(err)} \n`));
-      logErr(JSON.stringify(err));
     }
   }
 
@@ -436,7 +463,7 @@ export default function ({
       },{
         name: 'name',
         type: 'input',
-        message: '请输入项目名称 (please enter your project name)',
+        message: '请输入项目名称 (please enter your project name)：',
         when: function (answer: any) {
           if (answer.overwrite === false) {
             return process.exit(0);
@@ -444,6 +471,11 @@ export default function ({
           return true;
         },
         default: defaultName
+      },{
+        name: 'project_type',
+        type: 'list',
+        choices: [ 'react-spa (React单页应用)', 'react-component-library (React组件库)', 'toolkit (工具库)' ],
+        message: '请选择项目类型 (please choose the type of project)：'
       },{
         name: 'ts',
         type: 'confirm',
@@ -460,14 +492,20 @@ export default function ({
         name: 'style',
         type: 'list',
         choices: [ 'less', 'scss', 'css', 'all', 'none' ],
-        message: '应用那种样式文件? (which the stylesheet type you like apllying?)',
-        default: 'less'
+        message: '应用哪种样式文件? (which the stylesheet type you like applying?)',
+        default: 'less',
+        when: function (answer: any) {
+          if (answer.style === 'toolkit (工具库)') {
+            return false;
+          }
+          return true;
+        }
       },{
         name: 'stylelint',
         type: 'confirm',
         message: '是否使用stylelint? (whether or not apply stylelint?)',
         when: function (answer: any) {
-          if (answer.style === 'none') {
+          if (!answer.style || answer.style === 'none') {
             return false;
           }
           return true;
@@ -476,25 +514,25 @@ export default function ({
         name: 'test',
         type: 'list',
         choices: [ 'mocha', 'jest', 'karma', 'none' ],
-        message: '应用那种单测框架? (which unit test frame would you like apllying?)',
+        message: '应用哪种单测框架? (which unit test frame would you like applying?)'
       },{
         name: 'build',
         type: 'list',
         choices: [ 'webpack', 'rollup', 'tsc', 'none' ],
-        message: '应用那种打包工具? (which build tool would you like apllying?)',
+        message: '应用哪种打包工具? (which build tool would you like applying?)'
       },{
         name: 'git',
         type: 'input',
-        message: '请输入你的git仓库地址 (please enter your git repo address)'
+        message: '请输入你的git仓库地址 (please enter your git repo address)：'
       },{
         name: 'npm',
         type: 'list',
-        choices: [ 'npm', 'hnpm', 'set by yourself', 'none' ],
-        message: '请选择npm仓库地址 (please chioce the npm depository address)'
+        choices: [ 'none', 'npm', 'yarn', 'cnpm', 'taobao', 'set by yourself' ],
+        message: '请选择npm仓库地址 (please chioce the npm depository address)：'
       },{
         name: 'npm_custom',
         type: 'input',
-        message: '请输入npm仓库地址 (please input the npm depository address)',
+        message: '请输入npm仓库地址 (please input the npm depository address)：',
         when: function (answer: any) {
           if (answer.npm === 'set by yourself') {
             return true;
@@ -511,12 +549,12 @@ export default function ({
       },{
         name: 'cdn',
         type: 'list',
-        choices: [ 'w1', 'w4', 'w11', 'set by yourself', 'none' ],
-        message: '请选择cdn地址 (please chioce the cdn address)'
+        choices: [ 'none', 'set by yourself' ],
+        message: '请选择cdn地址 (please chioce the cdn address)：'
       },{
         name: 'cdn_custom',
         type: 'input',
-        message: '请输入cdn地址 (please input the cdn address)',
+        message: '请输入cdn地址 (please input the cdn address)：',
         when: function (answer: any) {
           if (answer.cdn === 'set by yourself') {
             return true;
@@ -534,13 +572,13 @@ export default function ({
         name: 'dev_server',
         type: 'list',
         choices: [ 'basic', 'docz', 'storybook', 'bisheng', 'none' ],
-        message: '请选择开发服务 (please chioce the development server)',
+        message: '请选择开发服务 (please chioce the development server)：',
         default: 'basic'
       },{
         name: 'pkgtool',
         type: 'list',
-        choices: [ 'npm', 'yarn', 'cnpm' ],
-        message: '请选择包安装工具，推荐使用yarn (please chioce the package install tool, recommended use yarn)',
+        choices: [ 'yarn', 'npm', 'cnpm' ],
+        message: '请选择包安装工具，推荐使用yarn (please chioce the package install tool, recommended use yarn)：',
         default: 'yarn'
       }
     ];
@@ -558,7 +596,7 @@ export default function ({
 
     inquirer.prompt(questions)
       .then(async (answers) => {
-        const { name, ts, eslint, commitlint, style, stylelint, test, build, git, npm, npm_custom, cdn, cdn_custom, dev_server, pkgtool } = answers;
+        const { name, project_type, ts, eslint, commitlint, style, stylelint, test, build, git, npm, npm_custom, cdn, cdn_custom, dev_server, pkgtool } = answers;
 
         const testFrame: TESTFRAME = test === 'none' ? '' : test;
         const stylesheet = style === 'none' ? '' : style;
@@ -568,6 +606,7 @@ export default function ({
 
         generateTpls({
           createDir,
+          project_type,
           name,
           build,
           ts,
@@ -578,8 +617,8 @@ export default function ({
           style: stylesheet,
           stylelint,
           git,
-          npm: npm_custom || npm === 'none' ? '' : npm,
-          cdn: cdn_custom || cdn === 'none' ? '' : cdn,
+          npm: npm_custom || (npm === 'none' ? '' : npm),
+          cdn: cdn_custom || (cdn === 'none' ? '' : cdn),
           devServer: dev_server === 'none' ? '' : dev_server
         });
 
@@ -594,6 +633,7 @@ export default function ({
           installStylelintDevCli,
           installServerDevCli
         } = await generateInstallDenpendencies({
+          project_type: ProjectType[project_type as keyof typeof ProjectType],
           pkgtool,
           build,
           ts,
@@ -622,8 +662,8 @@ export default function ({
         ], done, err => spinner.warn(chalk.yellow(`🐸  [OMNI-DOOR] ❗  : ${JSON.stringify(err)} \n`))));
       })
       .catch(err => {
+        logErr('安装依赖出错了！(The installation of dependencies occurred some accidents!)');
         spinner.fail(chalk.red(`🐸  [OMNI-DOOR] ❌  : ${JSON.stringify(err)} \n`));
-        logErr(JSON.stringify(err));
         process.exit(1);
       });
   }

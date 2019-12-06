@@ -1,7 +1,7 @@
 export type ENV = 'prod' | 'stg' | 'sit' | 'test' | 'dev';
 export type BUILD = 'webpack' | 'rollup' | 'tsc' | '';
-export type NPM = 'npm' | 'hnpm';
-export type CDN = 'w1' | 'w4' | 'w11';
+export type NPM = 'npm' | 'yarn' | 'cnpm' | 'taobao';
+export type PROJECT_TYPE = 'spa_react' | 'component_library_react' | 'toolkit';
 export type TESTFRAME = 'mocha' | 'jest' | 'karma' | '';
 export type PKJTOOL = 'yarn' | 'npm' | 'cnpm';
 export type STYLE = 'less' | 'scss' | 'css' | 'all' | '';
@@ -9,6 +9,7 @@ export type DEVSERVER = 'basic' | 'docz' | 'storybook' | 'bisheng' | '';
 export type ANYOBJECT = { [propName: string]: any };
 
 export type GenerateOmniConfigParams = {
+  project_type: PROJECT_TYPE;
   build: BUILD;
   ts: boolean;
   test: boolean;
@@ -19,7 +20,7 @@ export type GenerateOmniConfigParams = {
   stylelint: boolean;
   git?: string;
   npm: NPM | string;
-  cdn: CDN | string;
+  cdn: string;
   mdx: boolean;
 };
 
@@ -49,7 +50,7 @@ export type OmniConfig = {
   release: {
     git?: string;
     npm?: NPM | string;
-    cdn?: CDN | string;
+    cdn?: string;
     test?: boolean;
     eslint?: boolean;
     stylelint?: boolean;
@@ -58,6 +59,7 @@ export type OmniConfig = {
   };
   template: {
     root: string;
+    type?: PROJECT_TYPE;
     test?: TESTFRAME;
     typescript?: boolean;
     stylesheet?: STYLE;

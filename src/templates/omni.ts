@@ -1,18 +1,14 @@
 
-import { NPM, CDN, GenerateOmniConfigParams } from '../index.d';
+import { NPM, GenerateOmniConfigParams } from '../index.d';
 
 export default (config: GenerateOmniConfigParams) => {
-  const { build, ts, test, testFrame, eslint, commitlint, style, stylelint, git, npm, cdn, mdx } = config;
+  const { project_type, build, ts, test, testFrame, eslint, commitlint, style, stylelint, git, npm, cdn, mdx } = config;
 
   const npmMap = {
     npm: 'https://registry.npmjs.org/',
-    hnpm: 'http://hnpm.hupu.io/'
-  };
-
-  const cdnMap = {
-    w1: 'https://w1.hoopchina.com.cn/',
-    w4: 'https://w4.hoopchina.com.cn/',
-    w11: 'https://w11.hoopchina.com.cn/'
+    yarn: 'https://registry.yarnpkg.com/',
+    cnpm: 'https://registry.yarnpkg.com/',
+    taobao: 'https://registry.yarnpkg.com/'
   };
 
   return `'use strict';
@@ -70,7 +66,7 @@ module.exports = {
     // npm depository url
     npm: '${npmMap[npm as NPM] || npm}',
     // cdn url
-    cdn: '${cdnMap[cdn as CDN] || cdn}',
+    cdn: '${cdn}',
     // whether or not process unit or ui test
     test: ${!!test},
     // whether or not process eslint fix and check
@@ -90,6 +86,8 @@ module.exports = {
     // the root directory for generate template
     // must be a absolute path
     root: path.resolve('src'),
+    // the type for generate template
+    type: '${project_type}',
     // the unit test frame
     test: '${testFrame}',
     // whether or not apply typescript

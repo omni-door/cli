@@ -1,3 +1,6 @@
+/**
+ * todo 1. 支持 style 文件的打包
+ */
 export default function (config: {
   ts: boolean;
   multi_output: boolean;

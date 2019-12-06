@@ -64,7 +64,8 @@ export default function () {
     "lib/*",
     "es/*",
     "build/*",
-    "server/*"
+    "server/*",
+    "demo/*"
   ]
 }`;
 }

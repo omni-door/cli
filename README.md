@@ -1,5 +1,5 @@
 # 🐸 @omni-door/cli
-The CLI Tool for set up standard React project.
+The CLI Tool for set up standard javascript project.
 
 [![NPM downloads](http://img.shields.io/npm/dm/%40omni-door%2Fcli.svg?style=flat-square)](https://www.npmjs.com/package/@omni-door/cli)
 [![npm version](https://badge.fury.io/js/%40omni-door%2Fcli.svg)](https://badge.fury.io/js/%40omni-door%2Fcli)
@@ -59,12 +59,12 @@ Usage: omni init [options]
 initialize your project
 
 Options:
-  -s --simple [name]      create a simple project
-  -t --standard [name]    create a standard project
-  -e --entire [name]      create a most versatile project
-  -u --utils [name]       create a utils library
-  -c --components [name]  create a component library
-  -h, --help              output usage information
+  -s, --simple [name]     create a simple React SPA project
+  -d, --standard [name]   create a standard  React SPA project
+  -e, --entire [name]      create a most versatile  React SPA project
+  -t, --toolkit [name]     create a toolkit project
+  -c, --components [name]  create a React component library
+  -h, --help               output usage information
 ```
 
 ## omni new
@@ -103,6 +103,7 @@ publish your project according to [omni.config.js]
 Options:
   -i, --ignore            ignore automatic iteration version
   -m, --manual <version>  manual iteration version
+  -n, --no-verify         bypass unit-test eslint and stylelint check
   -h, --help              output usage information
 ```
 

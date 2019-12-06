@@ -17,11 +17,11 @@ program.version(pkj.version, '-v, --version');
 
 program
   .command('init')
-  .option('-s, --simple [name]', 'create a simple project')
-  .option('-t, --standard [name]', 'create a standard project')
-  .option('-e, --entire [name]', 'create a most versatile project')
-  .option('-u, --utils [name]', 'create a utils library')
-  .option('-c, --components [name]', 'create a component library')
+  .option('-s, --simple [name]', 'create a simple React SPA project')
+  .option('-d, --standard [name]', 'create a standard  React SPA project')
+  .option('-e, --entire [name]', 'create a most versatile  React SPA project')
+  .option('-t, --toolkit [name]', 'create a toolkit project')
+  .option('-c, --components [name]', 'create a React component library')
   .description('initialize your project')
   .action(initial);
 
@@ -41,6 +41,7 @@ program
   .command('release')
   .option('-i, --ignore', 'ignore automatic iteration version')
   .option('-m, --manual <version>', 'manual iteration version')
+  .option('-n, --no-verify', 'bypass unit-test eslint and stylelint check')
   .description('publish your project according to [omni.config.js]')
   .action((iterTactic) => release(config, iterTactic));
 

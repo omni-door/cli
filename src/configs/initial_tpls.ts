@@ -3,6 +3,7 @@ import { GTpls } from '../commands/initial';
 type TPL = Omit<GTpls, 'name' | 'createDir'>;
 
 export const tpl_simple: TPL = {
+  project_type: 'spa_react',
   build: 'webpack',
   ts: false,
   test: false,
@@ -18,6 +19,7 @@ export const tpl_simple: TPL = {
 };
 
 export const tpl_standard: TPL = {
+  project_type: 'spa_react',
   build: 'webpack',
   ts: true,
   test: false,
@@ -33,6 +35,7 @@ export const tpl_standard: TPL = {
 };
 
 export const tpl_entire: TPL = {
+  project_type: 'spa_react',
   build: 'webpack',
   ts: true,
   test: true,
@@ -48,6 +51,7 @@ export const tpl_entire: TPL = {
 };
 
 export const tpl_lib_utils: TPL = {
+  project_type: 'toolkit',
   build: 'rollup',
   ts: true,
   test: true,
@@ -63,6 +67,7 @@ export const tpl_lib_utils: TPL = {
 };
 
 export const tpl_lib_components: TPL = {
+  project_type: 'component_library_react',
   build: 'tsc',
   ts: true,
   test: true,

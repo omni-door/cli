@@ -11,6 +11,8 @@ node_modules
 .omni_cache
 .storybook
 .docz
+demo
+server
 
 # config files
 .eslintignore

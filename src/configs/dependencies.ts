@@ -1,6 +1,7 @@
-import { BUILD, TESTFRAME, STYLE, DEVSERVER } from '../index.d';
+import { BUILD, TESTFRAME, STYLE, DEVSERVER, PROJECT_TYPE } from '../index.d';
 
 interface Config {
+  project_type: PROJECT_TYPE;
   build: BUILD;
   ts: boolean;
   testFrame: TESTFRAME | '';
@@ -11,15 +12,20 @@ interface Config {
   devServer: DEVSERVER;
 }
 
-export function dependencies () {
+export function dependencies (config: Config) {
+  const { project_type, build } = config;
+  const isReactProject = project_type === 'spa_react' || project_type === 'component_library_react';
+
   return [
-    'react',
-    'react-dom'
+    isReactProject ? 'react' : '',
+    isReactProject ? 'react-dom' : '',
+    (build === 'webpack' || build === 'rollup') ? 'core-js@3' : ''
   ];
 }
 
 export function devDependencies (config: Config) {
   const {
+    project_type,
     build,
     ts,
     testFrame,
@@ -29,6 +35,7 @@ export function devDependencies (config: Config) {
     stylelint,
     devServer
   } = config;
+  const isReactProject = project_type === 'spa_react' || project_type === 'component_library_react';
 
   const loaderDependencies = [
     'babel-loader',
@@ -45,7 +52,7 @@ export function devDependencies (config: Config) {
   const babelDependencies = [
     '@babel/core',
     '@babel/preset-env',
-    '@babel/preset-react',
+    isReactProject ? '@babel/preset-react' : '',
     ts ? '@babel/preset-typescript' : ''
   ];
 
@@ -74,7 +81,7 @@ export function devDependencies (config: Config) {
   const tsTypesDependencies = testFrame ? testFrame === 'jest' ? [
     '@types/jest',
     '@types/enzyme',
-    '@types/enzyme-adapter-react-16',
+    isReactProject ? '@types/enzyme-adapter-react-16' : '',
     'ts-jest'
   ] : [
     '@types/chai',
@@ -82,8 +89,8 @@ export function devDependencies (config: Config) {
   ] : [];
 
   const tsDependencies = ts ? [
-    '@types/react',
-    '@types/react-dom',
+    isReactProject ? '@types/react' : '',
+    isReactProject ? '@types/react-dom' : '',
     'typescript',
     'ts-node',
     'ts-loader',
@@ -93,8 +100,8 @@ export function devDependencies (config: Config) {
   const testDependencies = testFrame
     ? testFrame === 'jest'
       ? [
-        'enzyme',
-        'enzyme-adapter-react-16',
+        isReactProject ? 'enzyme' : '',
+        isReactProject ? 'enzyme-adapter-react-16' : '',
         'jest',
         'jest-transform-stub'
       ]
@@ -123,7 +130,7 @@ export function devDependencies (config: Config) {
 
   const eslintDependencies = eslint ? [
     'eslint',
-    'eslint-plugin-react',
+    isReactProject ? 'eslint-plugin-react' : '',
     ts ? '@typescript-eslint/eslint-plugin' : '',
     ts ? '@typescript-eslint/parser' : ''
   ] : [];

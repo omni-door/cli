@@ -10,6 +10,7 @@ import { OmniConfig } from '../../index.d';
 export default async function (config: OmniConfig | {}, iterTactic?: {
   ignore?: boolean;
   manual?: string;
+  verify?: boolean;
 }) {
   if (JSON.stringify(config) === '{}') {
     logWarn('请先初始化项目！(Please Initialize project first!)');
@@ -33,7 +34,7 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
     await execShell(
       [`${path.resolve(__dirname, 'branch.sh')} ${branch}`],
       function (results) { branchInfo = results[0]; },
-      function () { process.exit(0); }
+      function () { process.exit(1); }
     );
     if (!~branchInfo.indexOf('current branch is')) {
       // branch check failed!
@@ -57,25 +58,25 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
 
     return function (err: any) {
       logErr(msg!);
-      process.exit(0);
+      process.exit(1);
     };
   }
 
   try {
-    if (test) {
+    const { ignore, manual, verify } = iterTactic || {};
+    const versionShellSuffix = ignore ? 'i' : manual ? manual : '';
+
+    if (verify && test) {
       await execShell(['npm test'], () => logEmph('单元测试通过！(unit test passed!) 🚩'), handleReleaseErr('单元测试失败！(unit test failed!)'));
     }
 
-    if (eslint) {
+    if (verify && eslint) {
       await execShell(['npm run lint:es'], () => logEmph('eslint校验通过！(eslint passed!) 🚩'), handleReleaseErr('eslint校验失败！(eslint checking failed!)'));
     }
 
-    if (stylelint) {
+    if (verify && stylelint) {
       await execShell(['npm run lint:style'], () => logEmph('stylelint校验通过！(stylelint passed!) 🚩'), handleReleaseErr('stylelint校验失败！(stylelint checking failed!)'));
     }
-
-    const { ignore, manual } = iterTactic || {};
-    const versionShellSuffix = ignore ? 'i' : manual ? manual : '';
 
     await execShell(
       [`${path.resolve(__dirname, 'version.sh')} ${versionShellSuffix}`],
@@ -159,6 +160,6 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
 
     handleReleaseSuc()();
   } catch (err) {
-    logErr(`糟糕！发布遇到了一点意外 (Oops! release process occured some accidents) 👉  ${JSON.stringify(err)}`);
+    logErr(`糟糕！发布过程发生了一点意外 (Oops! release process occured some accidents) 👉  ${JSON.stringify(err)}`);
   }
 }
