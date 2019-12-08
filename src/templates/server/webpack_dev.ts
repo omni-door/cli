@@ -18,7 +18,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const htmlWebpackPlugin = new HtmlWebpackPlugin({
   title: '${name}',
   path: path.resolve(__dirname, 'server'),
-  template: path.join(__dirname, ${isReactSPAProject ? '../src/index.html' : '../index.html'}),
+  template: path.join(__dirname, ${isReactSPAProject ? `'../src/index.html'` : `'../index.html'`}),
   filename: 'index.html'
 });
 

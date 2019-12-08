@@ -50,7 +50,7 @@ export const tpl_entire: TPL = {
   devServer: 'basic'
 };
 
-export const tpl_lib_utils: TPL = {
+export const tpl_lib_toolkit: TPL = {
   project_type: 'toolkit',
   build: 'rollup',
   ts: true,
@@ -86,6 +86,6 @@ export default {
   tpl_simple,
   tpl_standard,
   tpl_entire,
-  tpl_lib_utils,
+  tpl_lib_toolkit,
   tpl_lib_components
 };

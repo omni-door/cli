@@ -39,7 +39,7 @@ export const cli_entire: GInstallCli = {
   devServer: 'basic'
 };
 
-export const cli_lib_utils: GInstallCli = {
+export const cli_lib_toolkit: GInstallCli = {
   project_type: 'toolkit',
   pkgtool: 'yarn',
   build: 'rollup',
@@ -69,6 +69,6 @@ export default {
   cli_simple,
   cli_standard,
   cli_entire,
-  cli_lib_utils,
+  cli_lib_toolkit,
   cli_lib_components
 };

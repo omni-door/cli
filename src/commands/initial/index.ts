@@ -86,13 +86,13 @@ export default function ({
   simple,
   standard,
   entire,
-  utils,
+  toolkit,
   components
 }: {
   simple?: boolean | string;
   standard?: boolean | string;
   entire?: boolean | string;
-  utils?: boolean | string;
+  toolkit?: boolean | string;
   components?: boolean | string;
 }) {
   const { name: defaultName } = parse(process.cwd());
@@ -103,8 +103,8 @@ export default function ({
         ? standard
         : typeof entire === 'string'
           ? entire
-          : typeof utils === 'string'
-            ? utils
+          : typeof toolkit === 'string'
+            ? toolkit
             : typeof components === 'string'
               ? components
               : defaultName;
@@ -360,9 +360,9 @@ export default function ({
     } else if (entire) {
       cli = installClis.cli_entire;
       tpl = templates.tpl_entire;
-    } else if (utils) {
-      cli = installClis.cli_lib_utils;
-      tpl = templates.tpl_lib_utils;
+    } else if (toolkit) {
+      cli = installClis.cli_lib_toolkit;
+      tpl = templates.tpl_lib_toolkit;
     } else if (components) {
       cli = installClis.cli_lib_components;
       tpl = templates.tpl_lib_components;
@@ -433,7 +433,7 @@ export default function ({
     });
   }
 
-  if (simple || standard || entire || utils || components) {
+  if (simple || standard || entire || toolkit || components) {
 
     if (fs.existsSync(omniConfigPath)) {
       // double confirmation
@@ -495,7 +495,7 @@ export default function ({
         message: '应用哪种样式文件? (which the stylesheet type you like applying?)',
         default: 'less',
         when: function (answer: any) {
-          if (answer.style === 'toolkit (工具库)') {
+          if (answer.project_type === 'toolkit (工具库)') {
             return false;
           }
           return true;
