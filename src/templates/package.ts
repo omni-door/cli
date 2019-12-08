@@ -96,11 +96,11 @@ export default (config: {
           "pre-commit": "lint-staged",
           "pre-push": ${
   (eslint || stylelint) && testFrame
-    ? `"npm run lint && npm run test"`
+    ? '"npm run lint && npm run test"'
     : (eslint || stylelint)
-      ? `"npm run lint"`
+      ? '"npm run lint"'
       : testFrame
-        ? `"npm run test"`
+        ? '"npm run test"'
         : ''},
           "commit-msg": "npm run lint:commit"
         }
@@ -109,7 +109,7 @@ export default (config: {
         ${eslint ? `"src/**/*.{js,jsx,ts,tsx,css}": [
           "npm run lint:es_fix",
           "git add"
-        ]${eslint && stylelint ? `,` : ''}` : ''}
+        ]${eslint && stylelint ? ',' : ''}` : ''}
         ${stylelint ? `"src/**/*.{scss,sass,less}": [
           "npm run lint:style_fix",
           "git add"
