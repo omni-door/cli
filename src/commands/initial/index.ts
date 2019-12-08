@@ -600,13 +600,14 @@ export default function ({
 
         const testFrame: TESTFRAME = test === 'none' ? '' : test;
         const stylesheet = style === 'none' ? '' : style;
+        const projectType = ProjectType[project_type as keyof typeof ProjectType];
 
         // loading start display
         spinner.start();
 
         generateTpls({
           createDir,
-          project_type,
+          project_type: projectType,
           name,
           build,
           ts,
@@ -633,7 +634,7 @@ export default function ({
           installStylelintDevCli,
           installServerDevCli
         } = await generateInstallDenpendencies({
-          project_type: ProjectType[project_type as keyof typeof ProjectType],
+          project_type: projectType,
           pkgtool,
           build,
           ts,

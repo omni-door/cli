@@ -18,14 +18,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const htmlWebpackPlugin = new HtmlWebpackPlugin({
   title: '${name}',
   path: path.resolve(__dirname, 'server'),
-  template: path.join(__dirname, ${isReactSPAProject ? `'../src/index.html'` : `'../index.html'`}),
+  template: path.join(__dirname, ${isReactSPAProject ? '\'../src/index.html\'' : '\'../index.html\''}),
   filename: 'index.html'
 });
 
 module.exports = {
   entry: [
     'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
-    path.join(__dirname, ${isReactSPAProject ? `../src/index.${ts ? 'tsx' : 'jsx'}` : `../index.${ts ? 'tsx' : 'jsx'}`})
+    path.join(__dirname, ${isReactSPAProject ? `'../src/index.${ts ? 'tsx' : 'jsx'}'` : `'../index.${ts ? 'tsx' : 'jsx'}'`})
   ],
   output: {
     filename: 'main.js',

@@ -25,8 +25,8 @@ render(<App />, document.getElementById('root'));
 ${
   devServer === 'basic'
     ? `if (module.hot) {
-    module.hot.accept();
-  }`
+  module.hot.accept();
+}`
     : ''
 }`;
 }
