@@ -32,8 +32,9 @@ export default (config: {
       break;
   }
 
+  const lowerName = name.toLowerCase();
   return `{
-  "name": "${name.toLowerCase()}",
+  "name": "${lowerName}",
   "version": "0.0.1",
   "description": "",
   "main": "lib/index.js",
