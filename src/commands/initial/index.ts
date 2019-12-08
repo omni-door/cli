@@ -139,6 +139,7 @@ export default function ({
 
     // whether or not react-spa project
     const isReactSPAProject = project_type === 'spa_react';
+    const isToolkitProject = project_type === 'toolkit';
 
     // default files
     const content_omni = omniConfigJs({
@@ -157,6 +158,7 @@ export default function ({
       mdx: devServer === 'docz'
     });
     const content_pkg = packageJson({
+      project_type,
       name,
       ts,
       devServer,
@@ -217,7 +219,8 @@ export default function ({
     fsExtra.outputFileSync(path.resolve(initPath, '.npmignore'), content_npmignore, 'utf8');
 
     // src dir files
-    !isReactSPAProject && fsExtra.outputFileSync(path.resolve(initPath, `src/index.${ts ? 'tsx' : 'jsx'}`), content_indexTpl, 'utf8');
+    !isToolkitProject && !isReactSPAProject && fsExtra.outputFileSync(path.resolve(initPath, `src/index.${ts ? 'tsx' : 'jsx'}`), content_indexTpl, 'utf8');
+    isToolkitProject && fsExtra.outputFileSync(path.resolve(initPath, `src/toolkit/index.${ts ? 'tsx' : 'jsx'}`), content_indexTpl, 'utf8');
     isReactSPAProject && fsExtra.outputFileSync(path.resolve(initPath, `src/index.${ts ? 'tsx' : 'jsx'}`), content_indexReactTpl, 'utf8');
     isReactSPAProject && fsExtra.outputFileSync(path.resolve(initPath, 'src/index.html'), content_indexHtml, 'utf8');
     content_d && fsExtra.outputFileSync(path.resolve(initPath, 'src/@types/global.d.ts'), content_d, 'utf8');

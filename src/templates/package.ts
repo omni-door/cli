@@ -1,6 +1,7 @@
-import { TESTFRAME, DEVSERVER } from '../index.d';
+import { PROJECT_TYPE, TESTFRAME, DEVSERVER } from '../index.d';
 
 export default (config: {
+  project_type: PROJECT_TYPE;
   name: string;
   ts: boolean;
   devServer: DEVSERVER;
@@ -9,7 +10,7 @@ export default (config: {
   commitlint: boolean;
   stylelint: boolean;
 }) => {
-  const { name, ts, devServer, testFrame, eslint, commitlint, stylelint } = config;
+  const { project_type, name, ts, devServer, testFrame, eslint, commitlint, stylelint } = config;
 
   let devScript = '';
   let demoScript = '';
@@ -27,12 +28,12 @@ export default (config: {
       demoScript = 'bisheng build';
       break;
     case 'basic':
-      devScript = 'node server/index.js';
+      devScript = project_type !== 'toolkit' ? 'node server/index.js' : 'node demo/server/index.js';
       break;
   }
 
   return `{
-  "name": "${name}",
+  "name": "${name.toLowerCase()}",
   "version": "0.0.1",
   "description": "",
   "main": "lib/index.js",

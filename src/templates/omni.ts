@@ -28,7 +28,7 @@ module.exports = {
       return config;
     },
     // whether or not output multiple files
-    multi_output: false,
+    multi_output: ${project_type === 'spa_react' ? 'false' : 'true'},
     // whether or not process the ts files
     typescript: ${!!ts},
     // whether or not process unit or ui test
@@ -46,7 +46,7 @@ module.exports = {
     },
     // the build source directory
     // must be a absolute path
-    src_dir: path.resolve('src'),
+    src_dir: ${project_type === 'toolkit' ? 'path.resolve(\'src/toolkit\')' : 'path.resolve(\'src\')'},
     // the directory for compiled project
     // must be a absolute path
     out_dir: path.resolve('lib'),
@@ -85,7 +85,7 @@ module.exports = {
   template: {
     // the root directory for generate template
     // must be a absolute path
-    root: path.resolve('src'),
+    root: ${project_type === 'toolkit' ? 'path.resolve(\'src/toolkit\')' : 'path.resolve(\'src\')'},
     // the type for generate template
     type: '${project_type}',
     // the unit test frame

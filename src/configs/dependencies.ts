@@ -37,6 +37,14 @@ export function devDependencies (config: Config) {
   } = config;
   const isReactProject = project_type === 'spa_react' || project_type === 'component_library_react';
 
+  const reactDependencies = [
+    'react',
+    'react-dom',
+    '@babel/preset-react',
+    '@types/react',
+    '@types/react-dom'
+  ];
+
   const loaderDependencies = [
     'babel-loader',
     style ? 'style-loader' : '',
@@ -208,7 +216,7 @@ export function devDependencies (config: Config) {
       devServerDependencies = bishengDependencies;
       break;
     case 'basic':
-      devServerDependencies = basicServerDependencies;
+      devServerDependencies = !isReactProject ? [ ...basicServerDependencies, ...reactDependencies ] : basicServerDependencies;
       break;
   }
 
@@ -223,7 +231,7 @@ export function devDependencies (config: Config) {
     eslintDep: eslintDependencies,
     commitlintDep: commitlintDependencies,
     stylelintDep: stylelintDependencies,
-    devServerDep: devServerDependencies
+    devServerDep: devServerDependencies,
   };
 }
 
