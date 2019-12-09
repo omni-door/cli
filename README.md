@@ -31,8 +31,6 @@ Several options to get up and running:
     new [options] [module]  omni new [module] [-f | -c]
     build                   build your project according to [omni.config.js]
     release [options]       publish your project according to [omni.config.js]
-    test [options]          test your project by unit test frame
-    lint [options]          check your project by lint-tools
 
 ```
 
