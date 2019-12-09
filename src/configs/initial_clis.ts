@@ -31,7 +31,7 @@ export const cli_entire: GInstallCli = {
   pkgtool: 'yarn',
   build: 'webpack',
   ts: true,
-  testFrame: '',
+  testFrame: 'jest',
   eslint: true,
   commitlint: true,
   style: 'all',
