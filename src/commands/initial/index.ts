@@ -137,9 +137,13 @@ export default function ({
       });
     }
 
+    // switchers
     // whether or not react-spa project
     const isReactSPAProject = project_type === 'spa_react';
     const isToolkitProject = project_type === 'toolkit';
+    // whether or not basic server
+    const isBasicDevServer = devServer === 'basic';
+
 
     // default files
     const content_omni = omniConfigJs({
@@ -191,13 +195,13 @@ export default function ({
     const content_commitlint = commitlint && commitlintConfigJs({ name });
 
     // build files
-    const content_babel = build && build !== 'tsc' && babelConfigJs({ project_type, ts });
+    const content_babel = build && (build !== 'tsc' || devServer === 'storybook') && babelConfigJs({ project_type, ts });
 
     // server files
     const content_bisheng = devServer === 'bisheng' && bishengConfigJs({ name, git });
     const content_postReadMe = devServer === 'bisheng' && postReadMe();
-    const content_serverTpl = devServer === 'basic' && serverTpl();
-    const content_webpackDev = devServer === 'basic' && webpackDevConfigJs({ project_type, name, ts, style });
+    const content_serverTpl = isBasicDevServer && serverTpl();
+    const content_webpackDev = isBasicDevServer && webpackDevConfigJs({ project_type, name, ts, style });
     const content_storybook_addons = devServer === 'storybook' && storybook_addons();
     const content_storybook_config = devServer === 'storybook' && storybook_config({ name });
     const content_storybook_mhead = devServer === 'storybook' && storybook_mhead({ name });
@@ -227,10 +231,10 @@ export default function ({
     content_doczmdx && fsExtra.outputFileSync(path.resolve(initPath, 'src/index.mdx'), content_doczmdx, 'utf8');
 
     // demo dir files
-    !isReactSPAProject && fsExtra.outputFileSync(path.resolve(initPath, `demo/index.${ts ? 'tsx' : 'jsx'}`), content_indexReactTpl, 'utf8');
-    !isReactSPAProject && fsExtra.outputFileSync(path.resolve(initPath, 'demo/index.html'), content_indexHtml, 'utf8');
-    !isReactSPAProject && content_serverTpl && fsExtra.outputFileSync(path.resolve(initPath, 'demo/server/index.js'), content_serverTpl, 'utf8');
-    !isReactSPAProject && content_webpackDev && fsExtra.outputFileSync(path.resolve(initPath, 'demo/server/webpack.config.dev.js'), content_webpackDev, 'utf8');
+    isBasicDevServer && !isReactSPAProject && fsExtra.outputFileSync(path.resolve(initPath, `demo/index.${ts ? 'tsx' : 'jsx'}`), content_indexReactTpl, 'utf8');
+    isBasicDevServer && !isReactSPAProject && fsExtra.outputFileSync(path.resolve(initPath, 'demo/index.html'), content_indexHtml, 'utf8');
+    isBasicDevServer && !isReactSPAProject && content_serverTpl && fsExtra.outputFileSync(path.resolve(initPath, 'demo/server/index.js'), content_serverTpl, 'utf8');
+    isBasicDevServer && !isReactSPAProject && content_webpackDev && fsExtra.outputFileSync(path.resolve(initPath, 'demo/server/webpack.config.dev.js'), content_webpackDev, 'utf8');
 
     // tsconfig
     content_ts && fsExtra.outputFileSync(path.resolve(initPath, 'tsconfig.json'), content_ts, 'utf8');
