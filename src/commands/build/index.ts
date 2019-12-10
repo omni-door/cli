@@ -239,7 +239,7 @@ export default async function (config: OmniConfig | {}) {
 
     if (auto_release) {
       logInfo('开始自动发布！(beginning auto release!)');
-      await execShell(['omni release --no-verify'], handleBuildSuc('自动发布成功！(auto release success!)'), handleBuildErr('自动发布失败！(auto release failed!)'), true);
+      await execShell(['omni release --no-verify'], handleBuildSuc('自动发布成功！(auto release success!)'), handleBuildErr('自动发布失败！(auto release failed!)'));
     }
   } catch (err) {
     logErr(`糟糕！构建过程发生了点意外！(Oops! build process occured some accidents!) 👉  ${JSON.stringify(err)}`);
