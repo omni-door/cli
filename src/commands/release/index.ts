@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import chalk from 'chalk';
 import { logErr, logInfo, logWarn, logSuc, logEmph } from '../../utils/logger';
 import { execShell } from '../../utils/exec';
 import { OmniConfig } from '../../index.d';
@@ -146,7 +147,7 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
         logInfo(`自动设置 npm registry 地址为 ${npm} (auto set npm registry to: ${npm})`);
         await execShell(
           [`npm set registry ${npm}`],
-          () => logEmph('npm registry 设置成功，请执行 $npm publish 进行发布！(npm set registry success, please run $npm publish by yourself!)'),
+          () => logEmph(`npm registry 设置成功，请执行 ${chalk.yellow('npm publish')} 进行发布！(npm set registry success, please run ${chalk.yellow('npm publish')} by yourself!)`),
           () => logWarn('npm registry 设置失败！(set npm registry failed!)')
         );
       } else {
