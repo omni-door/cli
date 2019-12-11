@@ -354,9 +354,6 @@ export default function ({
   }
 
   async function presetTpl (createDir: boolean) {
-    // loading start display
-    spinner.start();
-
     let cli, tpl;
     if (simple) {
       cli = installClis.cli_simple;
@@ -389,7 +386,7 @@ export default function ({
         installStylelintDevCli,
         installServerDevCli
       } = await generateInstallDenpendencies(cli as GInstallCli);
-    
+
       generateFiglet((done) => execShell([
         installCli,
         installDevCli,
@@ -401,6 +398,9 @@ export default function ({
         installStylelintDevCli,
         installServerDevCli
       ], done, err => spinner.warn(chalk.yellow(`🐸  [OMNI-DOOR] ❗️ : ${JSON.stringify(err)} \n`))));
+
+      // loading start display
+      spinner.start();
     } catch (err) {
       logErr('安装依赖出错了！(The installation of dependencies occurred some accidents!)');
       spinner.fail(chalk.red(`🐸  [OMNI-DOOR] ❌  : ${JSON.stringify(err)} \n`));
@@ -609,9 +609,6 @@ export default function ({
         const stylesheet = style === 'none' ? '' : style;
         const projectType = ProjectType[project_type as keyof typeof ProjectType];
 
-        // loading start display
-        spinner.start();
-
         generateTpls({
           createDir,
           project_type: projectType,
@@ -668,6 +665,9 @@ export default function ({
           installServerDevCli,
           gitCli
         ], done, err => spinner.warn(chalk.yellow(`🐸  [OMNI-DOOR] ❗  : ${JSON.stringify(err)} \n`))));
+
+        // loading start display
+        spinner.start();
       })
       .catch(err => {
         logErr('安装依赖出错了！(The installation of dependencies occurred some accidents!)');

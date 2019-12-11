@@ -15,6 +15,7 @@ Several options to get up and running:
 * Clone the repo: `git@github.com:omni-door/cli.git`
 * Install with [npm](https://www.npmjs.com/package/@omni-door/cli): `npm install @omni-door/cli -g`
 * Install with [Yarn](https://yarnpkg.com/en/package/@omni-door/cli): `yarn global add @omni-door/cli`
+* Initial project with [npx](https://www.npmjs.com/package/@omni-door/cli): `npx @omni-door/cli init`
 
 ## omni --help
 ```sh

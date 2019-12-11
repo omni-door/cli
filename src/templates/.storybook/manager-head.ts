@@ -4,12 +4,13 @@ export default function (config: {
   const { name } = config;
 
   return `<script>
-  document.title = "${name}";
+  var title = '${name}';
+  document.title = title;
   var observer = new MutationObserver(function(mutations) {
-    if (document.title.match(/Storybook$/)) {
-      document.title = "${name}";
+    if (document.title.match(/Storybook$/) && title !== document.title) {
+      document.title = title;
     }
-  }).observe(document.querySelector("title"), {
+  }).observe(document.querySelector('title'), {
     childList: true,
     subtree: true,
     characterData: true
