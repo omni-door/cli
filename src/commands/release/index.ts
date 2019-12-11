@@ -43,14 +43,14 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
     }
   }
 
-  const message = '开始发布！(starting release process!) 🕰';
+  const message = '开始发布！(starting release process!)';
   logInfo(message);
 
   function handleReleaseSuc (msg?: string) {
     msg = msg || '恭喜！发布完成！(release process completed!)';
 
     return function () {
-      logSuc(`${msg} 📣`);
+      logSuc(msg!);
     };
   }
 
@@ -68,15 +68,15 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
     const versionShellSuffix = ignore ? 'i' : manual ? manual : '';
 
     if (verify && test) {
-      await execShell(['npm test'], () => logEmph('单元测试通过！(unit test passed!) 🚩'), handleReleaseErr('单元测试失败！(unit test failed!)'));
+      await execShell(['npm test'], () => logEmph('单元测试通过！(unit test passed!)'), handleReleaseErr('单元测试失败！(unit test failed!)'));
     }
 
     if (verify && eslint) {
-      await execShell(['npm run lint:es'], () => logEmph('eslint校验通过！(eslint passed!) 🚩'), handleReleaseErr('eslint校验失败！(eslint checking failed!)'));
+      await execShell(['npm run lint:es'], () => logEmph('eslint校验通过！(eslint passed!)'), handleReleaseErr('eslint校验失败！(eslint checking failed!)'));
     }
 
     if (verify && stylelint) {
-      await execShell(['npm run lint:style'], () => logEmph('stylelint校验通过！(stylelint passed!) 🚩'), handleReleaseErr('stylelint校验失败！(stylelint checking failed!)'));
+      await execShell(['npm run lint:style'], () => logEmph('stylelint校验通过！(stylelint passed!)'), handleReleaseErr('stylelint校验失败！(stylelint checking failed!)'));
     }
 
     await execShell(
@@ -147,7 +147,7 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
         logInfo(`自动设置 npm registry 地址为 ${npm} (auto set npm registry to: ${npm})`);
         await execShell(
           [`npm set registry ${npm}`],
-          () => logEmph(`npm registry 设置成功，请执行 ${chalk.yellow('npm publish')} 进行发布！(npm set registry success, please run ${chalk.yellow('npm publish')} by yourself!)`),
+          () => logEmph(`npm registry 设置成功，请执行 ${chalk.yellow('$npm publish')} 进行发布！(npm set registry success, please run ${chalk.yellow('$npm publish')} by yourself!)`),
           () => logWarn('npm registry 设置失败！(set npm registry failed!)')
         );
       } else {
@@ -161,6 +161,6 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
 
     handleReleaseSuc()();
   } catch (err) {
-    logErr(`糟糕！发布过程发生了一点意外 (Oops! release process occured some accidents) 👉  ${JSON.stringify(err)}`);
+    logErr(`糟糕！发布过程发生了一点意外 (Oops! release process occured some accidents) \n👉  ${JSON.stringify(err)}`);
   }
 }

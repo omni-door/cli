@@ -19,7 +19,7 @@ export default async function (config: OmniConfig | {}) {
     return;
   }
 
-  const message = '开始构建！(Build process start!) ⏱';
+  const message = '开始构建！(Build process start!)';
   logInfo(message);
 
   const { build: {
@@ -44,7 +44,7 @@ export default async function (config: OmniConfig | {}) {
     msg = msg || '恭喜！项目构建成功！(Building completed!)';
 
     return function () {
-      logSuc(`${msg} 📣`);
+      logSuc(msg!);
     };
   }
 
@@ -89,7 +89,7 @@ export default async function (config: OmniConfig | {}) {
           return true;
         },
         err => {
-          logWarn(`依赖安装发生了错误 (dependencies install occured some accidents) 👉  ${JSON.stringify(err)}`);
+          logWarn(`依赖安装发生了错误 (dependencies install occured some accidents) \n👉  ${JSON.stringify(err)}`);
           return false;
         });
       } else {
@@ -151,15 +151,15 @@ export default async function (config: OmniConfig | {}) {
 
   try {
     if (test) {
-      await execShell(['npm test'], () => logEmph('单元测试通过！(unit test passed!) 🚩'), handleBuildErr('单元测试失败！(unit test failed!)'));
+      await execShell(['npm test'], () => logEmph('单元测试通过！(unit test passed!)'), handleBuildErr('单元测试失败！(unit test failed!)'));
     }
 
     if (eslint) {
-      await execShell(['npm run lint:es'], () => logEmph('eslint校验通过！(eslint passed!) 🚩'), handleBuildErr(`eslint校验失败！(eslint checking failed!) \n ${chalk.bgGreen('尝试执行 (try to exec): npm run lint:es_fix')}`));
+      await execShell(['npm run lint:es'], () => logEmph('eslint校验通过！(eslint passed!)'), handleBuildErr(`eslint校验失败！(eslint checking failed!) \n ${chalk.bgGreen('尝试执行 (try to exec): npm run lint:es_fix')}`));
     }
 
     if (stylelint) {
-      await execShell(['npm run lint:style'], () => logEmph('stylelint校验通过！(stylelint passed!) 🚩'), handleBuildErr(`stylelint校验失败！(stylelint checking failed!) \n ${chalk.bgGreen('尝试执行 (try to exec): npm run lint:style_fix')}`));
+      await execShell(['npm run lint:style'], () => logEmph('stylelint校验通过！(stylelint passed!)'), handleBuildErr(`stylelint校验失败！(stylelint checking failed!) \n ${chalk.bgGreen('尝试执行 (try to exec): npm run lint:style_fix')}`));
     }
 
     if (!tool) {
@@ -242,6 +242,6 @@ export default async function (config: OmniConfig | {}) {
       await execShell(['omni release --no-verify'], handleBuildSuc('自动发布成功！(auto release success!)'), handleBuildErr('自动发布失败！(auto release failed!)'));
     }
   } catch (err) {
-    logErr(`糟糕！构建过程发生了点意外！(Oops! build process occured some accidents!) 👉  ${JSON.stringify(err)}`);
+    logErr(`糟糕！构建过程发生了点意外！(Oops! build process occured some accidents!) \n👉  ${JSON.stringify(err)}`);
   }
 }

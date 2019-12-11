@@ -101,6 +101,6 @@ export default function (config: OmniConfig | {}, componentName: string, options
     logSuc(`${componentName} ${isReactProject ? '组件创建完成' : '创建完成'}！(The ${componentName} ${isReactProject ? 'component construction completed' : 'construction completed'}!)`);
   } catch (err) {
     // error logger
-    logErr(`完蛋！好像有错误！(Oops! Some error occured) 👉  ${JSON.stringify(err)}`);
+    logErr(`完蛋！好像有错误！(Oops! Some error occured) \n👉  ${JSON.stringify(err)}`);
   }
 }
