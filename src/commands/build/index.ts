@@ -220,7 +220,7 @@ export default async function (config: OmniConfig | {}) {
       }
     }
 
-    const spinner = tool !== 'rollup' && ora('🐸  [OMNI-DOOR] ⏱  : 项目构建中 (Building, please wait patiently)  💤  \n');
+    const spinner = tool !== 'rollup' && ora('🐸  [OMNI-DOOR]: 项目构建中 (Building, please wait patiently)  ⏱  \n');
     spinner && spinner.start();
 
     del.sync(out_dir);
