@@ -1,5 +1,5 @@
 import shelljs from 'shelljs';
-import { logInfo, logErr } from './logger';
+import { logDetail, logErr } from './logger';
 
 export async function execShell (clis: string[], done?: (results: any[]) => any, handleErr?: (err: any) => any, silent?: boolean) {
   const results = [];
@@ -21,7 +21,7 @@ export async function execShell (clis: string[], done?: (results: any[]) => any,
         });
       })
         .then(res => {
-          !silent && logInfo(`${i}-shelljs.exec.then.result~~~ ` +  res);
+          !silent && logDetail(`${i}-shelljs.exec.then.result~~~ ` +  res);
           return res;
         })
         .catch(err => {

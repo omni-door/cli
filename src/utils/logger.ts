@@ -9,7 +9,11 @@ export function logWarn (warn: string) {
 }
 
 export function logInfo (info: string) {
-  console.info(chalk.white('🐸  [OMNI-DOOR]:', info, '  📣  \n'));
+  console.info(chalk.white('🐸  [OMNI-DOOR]:', info, '  🔊  \n'));
+}
+
+export function logDetail (info: string) {
+  console.info(chalk.gray('🐸  [OMNI-DOOR]:', info));
 }
 
 export function logEmph (info: string) {
