@@ -35,9 +35,8 @@ module.exports = {
   ts
     ? `"@typescript-eslint/indent": ["warn", 2],
         "@typescript-eslint/no-empty-interface": ["warn"],
-        "@typescript-eslint/restrict-plus-operands": ["error"],
         "@typescript-eslint/camelcase": ["off"],
-        "@typescript-eslint/restrict-plus-operands": ["off"],
+        "@typescript-eslint/restrict-plus-operands": ["warn"],
         "@typescript-eslint/array-type": ["off"],
         "@typescript-eslint/no-use-before-define": ["off"],
         "@typescript-eslint/no-angle-bracket-type-assertion": ["off"],

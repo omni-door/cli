@@ -31,7 +31,7 @@ module.exports = {
 		"@typescript-eslint/indent": ["warn", 2],
 		"quotes": ["error", "single"],
 		"semi": ["error", "always"],
-		"no-unused-vars": ["warn"],
-		"no-useless-escape": ["warn"]
+		"no-unused-vars": ["off"],
+		"no-useless-escape": ["off"]
 	}
 };
