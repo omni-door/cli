@@ -441,7 +441,6 @@ export default function ({
   }
 
   if (simple || standard || entire || toolkit || components) {
-
     if (fs.existsSync(omniConfigPath)) {
       // double confirmation
       inquirer.prompt([{
@@ -452,8 +451,7 @@ export default function ({
       }]).then(answers => {
         const { overwrite } = answers;
         if (!overwrite) {
-          process.exit(0);
-          return;
+          return process.exit(0);
         }
         presetTpl(false);
       });

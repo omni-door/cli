@@ -49,3 +49,10 @@ program.parse(process.argv);
 if (!program.args[0]) {
   program.help();
 }
+
+export default {
+  initial,
+  new: newTpl,
+  build,
+  release
+};
