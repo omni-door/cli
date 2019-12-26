@@ -1,12 +1,12 @@
 {
   "name": "@omni-door/cli",
-  "version": "0.1.69",
+  "version": "0.1.70",
   "description": "A tool set for set up the standard JS project",
   "bin": {
     "omni": "./bin/omni-door.js"
   },
   "main": "lib/commands/commands.js",
-  "typings": "lib/commands/index.d.ts",
+  "typings": "lib/commands/commands.d.ts",
   "scripts": {
     "test": "nyc mocha --opts mocha.opts",
     "lint": "eslint src/ --ext .ts --ext .tsx",
