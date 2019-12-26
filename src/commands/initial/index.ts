@@ -39,9 +39,18 @@ import {
 import { dependencies, devDependencies } from '../../configs/dependencies';
 import templates from '../../configs/initial_tpls';
 import installClis from '../../configs/initial_clis';
-import { BUILD, NPM, TESTFRAME, PKJTOOL, STYLE, DEVSERVER, PROJECT_TYPE } from '../../index.d';
 import { logErr, logWarn } from '../../utils/logger';
 import { execShell } from '../../utils/exec';
+import { 
+  TPLS_INITIAL,
+  TPLS_INITIAL_RETURE,BUILD,
+  NPM,
+  TESTFRAME,
+  PKJTOOL,
+  STYLE,
+  DEVSERVER,
+  PROJECT_TYPE
+} from '../../index.d';
 
 export type GTpls = {
   name: string;
@@ -82,19 +91,64 @@ enum ProjectType {
 
 const spinner = ora('🐸  [OMNI-DOOR]: 项目初始化中 (Initializing, please wait patiently)  💤  \n');
 
+const default_tpl_list = {
+  babel: babelConfigJs,
+  bisheng: bishengConfigJs,
+  commitlint: commitlintConfigJs,
+  eslint: eslintrcJS,
+  eslintignore,
+  gitignore,
+  jest: jestConfigJs,
+  karma: karmaConfigJs,
+  mdx,
+  mocha: mochaOpts,
+  npmignore,
+  omni: omniConfigJs,
+  pkj: packageJson,
+  readme: readMe,
+  stylelint: stylelintConfigJs,
+  tsconfig: tsConfigJson,
+  doczrc,
+  posts_readme: postReadMe,
+  server_index: serverTpl,
+  server_webpack: webpackDevConfigJs,
+  source_index: indexTpl,
+  source_index_react: indexReactTpl,
+  source_html: indexHtml,
+  source_d,
+  storybook_addons,
+  storybook_config,
+  storybook_mhead,
+  storybook_webpack
+};
+
 export default function ({
   simple,
   standard,
   entire,
   toolkit,
-  components
+  components,
+  custom
 }: {
   simple?: boolean | string;
   standard?: boolean | string;
   entire?: boolean | string;
   toolkit?: boolean | string;
   components?: boolean | string;
+  custom?: (tpls: TPLS_INITIAL) => any;
+}, option?: {
+  before?: (dirName: string) => {
+    create_dir?: boolean;
+    dir_name?: string;
+    stdout?: boolean;
+  };
+  tpls?: (tpls: TPLS_INITIAL) => TPLS_INITIAL_RETURE;
+  after?: () => {
+    success?: boolean;
+    msg?: string;
+  };
 }) {
+  const { before, tpls, after } = option || {};
   const { name: defaultName } = parse(process.cwd());
   const projectName =
     typeof simple === 'string'
@@ -111,6 +165,14 @@ export default function ({
 
   const omniConfigPath = path.resolve('omni.config.js');
   let initPath = process.cwd();
+
+  const beforeRes = typeof before === 'function' && before(projectName);
+  const {
+    create_dir,
+    dir_name,
+    stdout
+  } = beforeRes || {};
+  const isSilent = typeof stdout === 'boolean' ? stdout : false;
 
   function generateTpls ({
     name,
@@ -129,13 +191,18 @@ export default function ({
     devServer,
     createDir
   }: GTpls) {
-    if (createDir) {
+    if (typeof create_dir === 'boolean' ? create_dir : createDir) {
       // mkdir
-      initPath = path.resolve(process.cwd(), name);
+      initPath = path.resolve(process.cwd(), dir_name || name);
       fsExtra.ensureDirSync(initPath, {
         mode: 0o2777
       });
     }
+
+    const custom_tpl_list = typeof tpls === 'function'
+      ? tpls(default_tpl_list)
+      : {};
+    const tpl = { ...default_tpl_list, ...custom_tpl_list };
 
     // switchers
     // whether or not react-spa project
@@ -146,7 +213,7 @@ export default function ({
 
 
     // default files
-    const content_omni = omniConfigJs({
+    const content_omni = tpl.omni({
       project_type,
       build,
       ts,
@@ -161,7 +228,7 @@ export default function ({
       cdn,
       mdx: devServer === 'docz'
     });
-    const content_pkg = packageJson({
+    const content_pkg = tpl.pkj({
       project_type,
       name,
       ts,
@@ -171,46 +238,46 @@ export default function ({
       commitlint,
       stylelint
     });
-    const content_gitignore = gitignore();
-    const content_npmignore = npmignore();
-    const content_indexTpl = indexTpl();
-    const content_indexReactTpl = indexReactTpl({ build, devServer, project_type });
-    const content_indexHtml = indexHtml({ name });
+    const content_gitignore = tpl.gitignore();
+    const content_npmignore = tpl.npmignore();
+    const content_indexTpl = tpl.source_index();
+    const content_indexReactTpl = tpl.source_index_react({ build, devServer, project_type });
+    const content_indexHtml = tpl.source_html({ name });
 
     // tsconfig
-    const content_ts = ts && tsConfigJson();
+    const content_ts = ts && tpl.tsconfig();
 
     // d.ts files
-    const content_d = ts && source_d({ style });
+    const content_d = ts && tpl.source_d({ style });
 
     // test files
-    const content_mocha = testFrame === 'mocha' && mochaOpts({ ts });
-    const content_karma = testFrame === 'karma' && karmaConfigJs({ ts });
-    const content_jest = testFrame === 'jest' && jestConfigJs({ ts });
+    const content_mocha = testFrame === 'mocha' && tpl.mocha({ ts });
+    const content_karma = testFrame === 'karma' && tpl.karma({ ts });
+    const content_jest = testFrame === 'jest' && tpl.jest({ ts });
 
     // lint files
-    const content_eslintrc = eslint && eslintrcJS({ ts });
-    const content_eslintignore = eslint && eslintignore();
-    const content_stylelint = stylelint && stylelintConfigJs({ style });
-    const content_commitlint = commitlint && commitlintConfigJs({ name });
+    const content_eslintrc = eslint && tpl.eslint({ ts });
+    const content_eslintignore = eslint && tpl.eslintignore();
+    const content_stylelint = stylelint && tpl.stylelint({ style });
+    const content_commitlint = commitlint && tpl.commitlint({ name });
 
     // build files
-    const content_babel = build && (build !== 'tsc' || devServer === 'storybook') && babelConfigJs({ project_type, ts });
+    const content_babel = build && (build !== 'tsc' || devServer === 'storybook') && tpl.babel({ project_type, ts });
 
     // server files
-    const content_bisheng = devServer === 'bisheng' && bishengConfigJs({ name, git });
-    const content_postReadMe = devServer === 'bisheng' && postReadMe();
-    const content_serverTpl = isBasicDevServer && serverTpl();
-    const content_webpackDev = isBasicDevServer && webpackDevConfigJs({ project_type, name, ts, style });
-    const content_storybook_addons = devServer === 'storybook' && storybook_addons();
-    const content_storybook_config = devServer === 'storybook' && storybook_config({ name });
-    const content_storybook_mhead = devServer === 'storybook' && storybook_mhead({ name });
-    const content_storybook_webpack = devServer === 'storybook' && storybook_webpack({ ts, style });
-    const content_doczrc = devServer === 'docz' && doczrc({ name, ts, style });
-    const content_doczmdx = devServer === 'docz' && mdx({ name });
+    const content_bisheng = devServer === 'bisheng' && tpl.bisheng({ name, git });
+    const content_postReadMe = devServer === 'bisheng' && tpl.posts_readme();
+    const content_serverTpl = isBasicDevServer && tpl.server_index();
+    const content_webpackDev = isBasicDevServer && tpl.server_webpack({ project_type, name, ts, style });
+    const content_storybook_addons = devServer === 'storybook' && tpl.storybook_addons();
+    const content_storybook_config = devServer === 'storybook' && tpl.storybook_config({ name });
+    const content_storybook_mhead = devServer === 'storybook' && tpl.storybook_mhead({ name });
+    const content_storybook_webpack = devServer === 'storybook' && tpl.storybook_webpack({ ts, style });
+    const content_doczrc = devServer === 'docz' && tpl.doczrc({ name, ts, style });
+    const content_doczmdx = devServer === 'docz' && tpl.mdx({ name });
 
     // ReadMe
-    const content_readMe = readMe({ name });
+    const content_readMe = tpl.readme({ name });
 
     /**
      * create files
@@ -339,14 +406,22 @@ export default function ({
 
   function generateFiglet (fn: (done: () => void) => any) {
     function done () {
-      spinner.succeed(chalk.green('🐸  [OMNI-DOOR]: 初始化项目完成 (Initialize project success)  ✅  \n'));
+      const afterRes = typeof after === 'function' && after();
+      const { success, msg } = afterRes || {};
+
+      if (success === false) {
+        spinner.fail(chalk.red(`🐸  [OMNI-DOOR]: ${msg || '初始化项目失败 (Initialize project failed)'}  ❌  \n`));
+      } else {
+        spinner.succeed(chalk.green(`🐸  [OMNI-DOOR]: ${msg || '初始化项目完成 (Initialize project success)'}  ✅  \n`));
+      }
+
       process.exit(0);
     }
 
     return figlet('omni cli', function (err, data) {
       if (err) {
-        logErr('figlet 出现了问题！(Some thing about figlet is wrong!)');
-        spinner.fail(chalk.red(`🐸  [OMNI-DOOR]: ${JSON.stringify(err)}  ❌  \n`));
+        logErr(JSON.stringify(err));
+        spinner.fail(chalk.red('🐸  [OMNI-DOOR]: figlet 出现了问题！(Some thing about figlet is wrong!)  ❌  \n'));
       }
       console.info(chalk.yellow(data || 'OMNI-DOOR CLI'));
       fn(done);
@@ -397,13 +472,13 @@ export default function ({
         installCommitlintDevCli,
         installStylelintDevCli,
         installServerDevCli
-      ], done, err => spinner.warn(chalk.yellow(`🐸  [OMNI-DOOR]: ${JSON.stringify(err)}  ❗️  \n`))));
+      ], done, err => spinner.warn(chalk.yellow(`🐸  [OMNI-DOOR]: ${JSON.stringify(err)}  ❗️  \n`)), isSilent));
 
       // loading start display
       spinner.start();
     } catch (err) {
-      logErr('安装依赖出错了！(The installation of dependencies occurred some accidents!)');
-      spinner.fail(chalk.red(`🐸  [OMNI-DOOR]: ${JSON.stringify(err)}  ❌  \n`));
+      logErr(JSON.stringify(err));
+      spinner.fail(chalk.red('🐸  [OMNI-DOOR]: 安装依赖发生错误！(The installation of dependencies occurred some accidents!)  ❌  \n'));
     }
   }
 
@@ -426,8 +501,7 @@ export default function ({
           }]).then(answers => {
             const { install } = answers;
             if (!install) {
-              process.exit(0);
-              return;
+              return process.exit(0);
             }
             shelljs.exec(`npm i -g ${pkgtool}`, { async: false });
             spinner.start();
@@ -440,7 +514,9 @@ export default function ({
     });
   }
 
-  if (simple || standard || entire || toolkit || components) {
+  if (typeof custom === 'function') {
+    return custom(default_tpl_list);
+  } else if (simple || standard || entire || toolkit || components) {
     if (fs.existsSync(omniConfigPath)) {
       // double confirmation
       inquirer.prompt([{
@@ -662,14 +738,14 @@ export default function ({
           installStylelintDevCli,
           installServerDevCli,
           gitCli
-        ], done, err => spinner.warn(chalk.yellow(`🐸  [OMNI-DOOR]: ${JSON.stringify(err)}  ❗  \n`))));
+        ], done, err => spinner.warn(chalk.yellow(`🐸  [OMNI-DOOR]: ${JSON.stringify(err)}  ❗  \n`)), isSilent));
 
         // loading start display
         spinner.start();
       })
       .catch(err => {
-        logErr('安装依赖出错了！(The installation of dependencies occurred some accidents!)');
-        spinner.fail(chalk.red(`🐸  [OMNI-DOOR]: ${JSON.stringify(err)}  ❌  \n`));
+        logErr(JSON.stringify(err));
+        spinner.fail(chalk.red('🐸  [OMNI-DOOR]: 安装依赖发生错误！(The installation of dependencies occurred some accidents!)  ❌  \n'));
         process.exit(1);
       });
   }

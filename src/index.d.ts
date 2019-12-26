@@ -1,3 +1,5 @@
+import { TPLS_ALL, TPLS_RETURE, TPLS_INITIAL, TPLS_INITIAL_RETURE, TPLS_NEW, TPLS_NEW_RETURE } from './templates';
+export { TPLS_ALL, TPLS_RETURE, TPLS_INITIAL, TPLS_INITIAL_RETURE, TPLS_NEW, TPLS_NEW_RETURE } from './templates';
 export type ENV = 'prod' | 'stg' | 'sit' | 'test' | 'dev';
 export type BUILD = 'webpack' | 'rollup' | 'tsc' | '';
 export type NPM = 'npm' | 'yarn' | 'cnpm' | 'taobao';
@@ -24,9 +26,13 @@ export type GenerateOmniConfigParams = {
   mdx: boolean;
 };
 
+export type PluginStage = 'new' | 'build' | 'release';
+export interface PluginHandler {
+  <T extends TPLS_NEW>(config: Omit<OmniConfig, 'plugins'>, tpls?: T): T extends TPLS_NEW ? Promise<TPLS_NEW_RETURE> : Promise<any>;
+}
 export type OmniPlugin = {
-  stage: 'new' | 'build' | 'release';
-  handler: (config: Omit<OmniConfig, 'plugins'>) => Promise<any>;
+  stage: PluginStage;
+  handler: PluginHandler;
 };
 
 export type OmniConfig = {

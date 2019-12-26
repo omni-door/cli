@@ -3,6 +3,7 @@ import path from 'path';
 import chalk from 'chalk';
 import { logErr, logInfo, logWarn, logSuc, logEmph } from '../../utils/logger';
 import { execShell } from '../../utils/exec';
+import { getHandlers } from '../../utils/tackle_plugins';
 import { OmniConfig } from '../../index.d';
 
 /**
@@ -27,7 +28,7 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
     stylelint = false,
     commitlint = false,
     branch
-  } } = config as OmniConfig;
+  }, plugins } = config as OmniConfig;
 
   if (branch) {
     // branch check
@@ -159,8 +160,22 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
       }
     }
 
+    // handle release plugins
+    const plugin_handles = plugins && getHandlers(plugins, 'release');
+    if (plugin_handles) {
+      for (let i = 0; i < plugin_handles.length; i++) {
+        try {
+          const handler = plugin_handles[i];
+          await handler(config as OmniConfig);
+        } catch (err_plugin) {
+          throw new Error(`发布插件出错：${JSON.stringify(err_plugin)}`);
+        }
+      }
+    }
+
     handleReleaseSuc()();
   } catch (err) {
     logErr(`糟糕！发布过程发生了一点意外 (Oops! release process occured some accidents) \n👉  ${JSON.stringify(err)}`);
+    return process.exit(1);
   }
 }

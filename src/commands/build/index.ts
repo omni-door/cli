@@ -10,6 +10,7 @@ import rollupConfig from './rollup';
 import webpackConfig from './webpack';
 import { logErr, logInfo, logWarn, logSuc, logEmph } from '../../utils/logger';
 import { execShell } from '../../utils/exec';
+import { getHandlers } from '../../utils/tackle_plugins';
 import { OmniConfig, BUILD } from '../../index.d';
 import dependencies_build from '../../configs/dependencies_build';
 
@@ -34,7 +35,7 @@ export default async function (config: OmniConfig | {}) {
     out_dir,
     esm_dir = '',
     auto_release
-  } } = config as OmniConfig;
+  }, plugins } = config as OmniConfig;
 
   if (!out_dir || !src_dir) {
     handleBuildErr('[omni.config.js]文件中未定义$src_dir 或 $out_dir (The $src_dir or $out_dir were missed in [omni.config.js])')();
@@ -53,7 +54,7 @@ export default async function (config: OmniConfig | {}) {
 
     return function (err?: any) {
       logErr(msg!);
-      process.exit(1);
+      return process.exit(1);
     };
   }
 
@@ -164,8 +165,7 @@ export default async function (config: OmniConfig | {}) {
 
     if (!tool) {
       logWarn('构建完毕，但是没有指定任何构建工具参与构建！(Building completed but without any build tool process!)');
-      process.exit(0);
-      return;
+      return process.exit(0);
     }
 
     const buildCliArr = [];
@@ -208,15 +208,13 @@ export default async function (config: OmniConfig | {}) {
         }
 
         if (!is_go_on) {
-          process.exit(1);
-          return;
+          return process.exit(1);
         }
 
         fsExtra.outputFileSync(buildConfigPath, content_config, 'utf8');
       } else {
         logWarn(`你的构建工具 ${tool} 暂不支持，请自行构建你的项目，或联系我们：omni.door.official@gmail.com \n your build tool ${tool} has not been support yet, please build the project by yourself! \n contact us: omni.door.official@gmail.com`);
-        process.exit(1);
-        return;
+        return process.exit(1);
       }
     }
 
@@ -226,10 +224,24 @@ export default async function (config: OmniConfig | {}) {
     del.sync(out_dir);
     esm_dir && del.sync(esm_dir);
 
-    await execShell(buildCliArr, function () {
+    await execShell(buildCliArr, async function () {
       const { style, assets = [] } = reserve;
       style && copyStylesheet(src_dir);
       copyReserves(assets);
+
+      // handle build plugins
+      const plugin_handles = plugins && getHandlers(plugins, 'build');
+      if (plugin_handles) {
+        for (let i = 0; i < plugin_handles.length; i++) {
+          try {
+            const handler = plugin_handles[i];
+            await handler(config as OmniConfig);
+          } catch (err_plugin) {
+            throw new Error(`构建插件出错：${JSON.stringify(err_plugin)}`);
+          }
+        }
+      }
+
       spinner && spinner.stop();
       handleBuildSuc()();
     }, function () {

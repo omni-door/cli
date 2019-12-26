@@ -15,12 +15,24 @@ import {
   tool_readme,
   tool_test
 } from '../../templates';
+import { getHandlers } from '../../utils/tackle_plugins';
 import { OmniConfig } from '../../index.d';
 
-/**
- * todo 1. support custom tpl
- */
-export default function (config: OmniConfig | {}, componentName: string, options?: {
+const default_tpl_list = {
+  component_class: class_component,
+  component_functional: functional_component,
+  component_index: indexTpl,
+  component_readme: readmeTpl,
+  component_stylesheet: styleTpl,
+  component_test: testTpl,
+  component_mdx: mdxTpl,
+  component_stories: storiesTpl,
+  tool_index,
+  tool_readme,
+  tool_test
+};
+
+export default async function (config: OmniConfig | {}, componentName: string, options?: {
   fc?: boolean;
   cc?: boolean;
 }) {
@@ -45,8 +57,24 @@ export default function (config: OmniConfig | {}, componentName: string, options
     stylesheet = '',
     readme = false,
     mdx = false
-  } } = config as OmniConfig;
+  }, plugins } = config as OmniConfig;
   
+  // handle new plugins
+  let custom_tpl_list = {};
+  const plugin_handles = plugins && getHandlers(plugins, 'new');
+  if (plugin_handles) {
+    for (let i = 0; i < plugin_handles.length; i++) {
+      try {
+        const handler = plugin_handles[i];
+        const res = await handler(config as OmniConfig, default_tpl_list);
+        custom_tpl_list = { ...custom_tpl_list, ...res };
+      } catch (err_plugin) {
+        throw new Error(`模板插件出错：${JSON.stringify(err_plugin)}`);
+      }
+    }
+  }
+
+  const tpl = { ...default_tpl_list, ...custom_tpl_list };
   const isReactProject = type === 'spa_react' || type === 'component_library_react'; 
 
   const message = `开始创建 ${componentName} ${isReactProject ? `${cc ? '类' : '函数'}组件` : ''} (Start create ${componentName} ${isReactProject ? `${cc ? 'class' : 'functional'} component` : ''})`;
@@ -54,19 +82,19 @@ export default function (config: OmniConfig | {}, componentName: string, options
 
   try {
     // component tpl
-    const content_index = indexTpl({ ts: typescript, componentName });
-    const content_cc = class_component({ ts: typescript, componentName, style: stylesheet });
-    const content_fc = functional_component({ ts: typescript, componentName, style: stylesheet });
-    const content_readme = readmeTpl({ componentName });
-    const content_mdx = mdxTpl({ componentName });
-    const content_stories = storiesTpl({ componentName });
-    const content_style = stylesheet && styleTpl({ componentName });
-    const content_test = testTpl({ testFrame: test, componentName });
+    const content_index = tpl.component_index({ ts: typescript, componentName });
+    const content_cc = tpl.component_class({ ts: typescript, componentName, style: stylesheet });
+    const content_fc = tpl.component_functional({ ts: typescript, componentName, style: stylesheet });
+    const content_readme = tpl.component_readme({ componentName });
+    const content_mdx = tpl.component_mdx({ componentName });
+    const content_stories = tpl.component_stories({ componentName });
+    const content_style = stylesheet && tpl.component_stylesheet({ componentName });
+    const content_test = tpl.component_test({ testFrame: test, componentName });
   
     // tool tpl
-    const content_index_tool = tool_index({ toolName: componentName });
-    const content_readme_tool = tool_readme({ toolName: componentName });
-    const content_test_tool = tool_test({ testFrame: test, toolName: componentName }); 
+    const content_index_tool = tpl.tool_index({ toolName: componentName });
+    const content_readme_tool = tpl.tool_readme({ toolName: componentName });
+    const content_test_tool = tpl.tool_test({ testFrame: test, toolName: componentName }); 
 
     if (isReactProject) {
       fsExtra.outputFileSync(path.resolve(root, componentName, `index.${typescript ? 'ts' : 'js'}`), content_index, 'utf8');
