@@ -43,7 +43,8 @@ import { logErr, logWarn } from '../../utils/logger';
 import { execShell } from '../../utils/exec';
 import { 
   TPLS_INITIAL,
-  TPLS_INITIAL_RETURE,BUILD,
+  TPLS_INITIAL_RETURE,
+  BUILD,
   NPM,
   TESTFRAME,
   PKJTOOL,

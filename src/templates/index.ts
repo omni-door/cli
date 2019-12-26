@@ -120,10 +120,6 @@ const tpls = {
   storybook_webpack
 };
 
-export type TPLS_RETURE = {
-  [T in keyof typeof tpls]: (config?: any) => string;
-};
-
 export type TPLS_ALL = {
   [T in keyof typeof tpls]: typeof tpls[T];
 };
@@ -142,19 +138,7 @@ export type TPLS_INITIAL = Omit<TPLS_ALL,
 'tool_test'
 >;
 
-export type TPLS_INITIAL_RETURE = Partial<Omit<TPLS_RETURE,
-'component_class' |
-'component_functional' |
-'component_index' |
-'component_readme' |
-'component_stylesheet' |
-'component_test' |
-'component_mdx' |
-'component_stories' |
-'tool_index' |
-'tool_readme' |
-'tool_test'
->>;
+export type TPLS_INITIAL_RETURE = Partial<TPLS_INITIAL>;
 
 export type TPLS_NEW = Pick<TPLS_ALL,
 'component_class' |
@@ -170,18 +154,6 @@ export type TPLS_NEW = Pick<TPLS_ALL,
 'tool_test'
 >;
 
-export type TPLS_NEW_RETURE = Partial<Pick<TPLS_RETURE,
-'component_class' |
-'component_functional' |
-'component_index' |
-'component_readme' |
-'component_stylesheet' |
-'component_test' |
-'component_mdx' |
-'component_stories' |
-'tool_index' |
-'tool_readme' |
-'tool_test'
->>;
+export type TPLS_NEW_RETURE = Partial<TPLS_NEW>;
 
 export default tpls;

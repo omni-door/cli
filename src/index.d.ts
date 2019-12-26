@@ -1,5 +1,5 @@
-import { TPLS_ALL, TPLS_RETURE, TPLS_INITIAL, TPLS_INITIAL_RETURE, TPLS_NEW, TPLS_NEW_RETURE } from './templates';
-export { TPLS_ALL, TPLS_RETURE, TPLS_INITIAL, TPLS_INITIAL_RETURE, TPLS_NEW, TPLS_NEW_RETURE } from './templates';
+import { TPLS_ALL, TPLS_INITIAL, TPLS_INITIAL_RETURE, TPLS_NEW, TPLS_NEW_RETURE } from './templates';
+export { TPLS_ALL, TPLS_INITIAL, TPLS_INITIAL_RETURE, TPLS_NEW, TPLS_NEW_RETURE } from './templates';
 export type ENV = 'prod' | 'stg' | 'sit' | 'test' | 'dev';
 export type BUILD = 'webpack' | 'rollup' | 'tsc' | '';
 export type NPM = 'npm' | 'yarn' | 'cnpm' | 'taobao';
