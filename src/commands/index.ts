@@ -1,10 +1,7 @@
 import program from 'commander';
 import fs from 'fs';
 import path from 'path';
-import initial from './initial';
-import newTpl from './new';
-import build from './build';
-import release from './release';
+import { initial, newTpl, build, release } from './commands';
 import { OmniConfig } from '../index.d';
 const pkj = require('../../package.json');
 
