@@ -49,10 +49,10 @@ export function devDependencies (config: Config) {
     'babel-loader',
     style ? 'style-loader' : '',
     style ? 'css-loader' : '',
-    style === 'all' || style === 'less' ? 'less' : '',
-    style === 'all' || style === 'less' ? 'less-loader' : '',
-    style === 'all' || style === 'scss' ? 'sass-loader' : '',
-    style === 'all' || style === 'scss' ? 'node-sass' : '',
+    (style === 'all' || style === 'less') ? 'less' : '',
+    (style === 'all' || style === 'less') ? 'less-loader' : '',
+    (style === 'all' || style === 'scss') ? 'sass-loader' : '',
+    (style === 'all' || style === 'scss') ? 'node-sass' : '',
     'url-loader',
     'file-loader'
   ];

@@ -21,7 +21,7 @@ export const cli_standard: GInstallCli = {
   testFrame: '',
   eslint: true,
   commitlint: false,
-  style: 'scss',
+  style: 'all',
   stylelint: true,
   devServer: 'basic'
 };
