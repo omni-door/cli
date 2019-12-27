@@ -145,12 +145,14 @@ export default function ({
     stdout?: boolean;
   };
   tpls?: (tpls: TPLS_INITIAL) => TPLS_INITIAL_RETURE;
+  dependencies?: () => string[];
+  devDependencies?: () => string[];
   after?: () => {
     success?: boolean;
     msg?: string;
   };
 }) {
-  const { before, tpls, after } = option || {};
+  const { before, tpls, dependencies: dependencies_custom, devDependencies: devDependencies_custom, after } = option || {};
   const { name: defaultName } = parse(process.cwd());
   const projectName =
     typeof simple === 'string'
@@ -407,7 +409,11 @@ export default function ({
       stylelint,
       testFrame,
       devServer
-    }).join(' ')}`;
+    }).join(' ')} ${
+      typeof dependencies_custom === 'function'
+        ? dependencies_custom().join(' ')
+        : ''
+    }`;
     const installDevCli = defaultDep.length > 0 ? `${installDevCliPrefix} ${defaultDep.join(' ')}` : '';
     const installBuildDevCli = buildDep.length > 0 ? `${installDevCliPrefix} ${buildDep.join(' ')}` : '';
     const installTsDevCli = tsDep.length > 0 ? `${installDevCliPrefix} ${tsDep.join(' ')}` : '';
@@ -416,6 +422,7 @@ export default function ({
     const installCommitlintDevCli = commitlintDep.length > 0 ? `${installDevCliPrefix} ${commitlintDep.join(' ')}` : '';
     const installStylelintDevCli = stylelintDep.length > 0 ? `${installDevCliPrefix} ${stylelintDep.join(' ')}` : '';
     const installServerDevCli = devServerDep.length > 0 ? `${installDevCliPrefix} ${devServerDep.join(' ')}` : '';
+    const installCustomDevCli = typeof devDependencies_custom === 'function' ? `${installDevCliPrefix} ${devDependencies_custom().join(' ')}` : '';
 
     return {
       installCli,
@@ -426,7 +433,8 @@ export default function ({
       installEslintDevCli,
       installCommitlintDevCli,
       installStylelintDevCli,
-      installServerDevCli
+      installServerDevCli,
+      installCustomDevCli
     };
   }
 

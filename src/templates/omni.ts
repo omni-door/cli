@@ -19,9 +19,9 @@ module.exports = {
   // build relative config
   build: {
     // the build tool set by your initialize
-    // if you want to change the tool, please make sure your install all the devDependices
+    // if you want to change the build-tool, please make sure had been installed all the devDependices
     tool: '${build}',
-    // The callback will be call when the build process
+    // The callback will be call in the build-process
     // You can return your custom build configuration
     configuration: config => {
       console.info('build config: ', config);
