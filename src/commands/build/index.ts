@@ -232,13 +232,9 @@ export default async function (config: OmniConfig | {}) {
       // handle build plugins
       const plugin_handles = plugins && getHandlers(plugins, 'build');
       if (plugin_handles) {
-        for (let i = 0; i < plugin_handles.length; i++) {
-          try {
-            const handler = plugin_handles[i];
-            await handler(config as OmniConfig);
-          } catch (err_plugin) {
-            throw new Error(`构建插件出错：${JSON.stringify(err_plugin)}`);
-          }
+        for (const name in plugin_handles) {
+          const handler = plugin_handles[name];
+          await handler(config as OmniConfig);
         }
       }
 

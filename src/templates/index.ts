@@ -138,6 +138,8 @@ export type TPLS_INITIAL = Omit<TPLS_ALL,
 'tool_test'
 >;
 
+export type TPLS_INITIAL_FN = TPLS_INITIAL[keyof TPLS_INITIAL];
+
 export type TPLS_INITIAL_RETURE = Partial<TPLS_INITIAL>;
 
 export type TPLS_NEW = Pick<TPLS_ALL,
@@ -153,6 +155,8 @@ export type TPLS_NEW = Pick<TPLS_ALL,
 'tool_readme' |
 'tool_test'
 >;
+
+export type TPLS_NEW_FN = TPLS_NEW[keyof TPLS_NEW];
 
 export type TPLS_NEW_RETURE = Partial<TPLS_NEW>;
 

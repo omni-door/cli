@@ -43,6 +43,7 @@ import { logErr, logWarn } from '../../utils/logger';
 import { execShell } from '../../utils/exec';
 import { 
   TPLS_INITIAL,
+  TPLS_INITIAL_FN,
   TPLS_INITIAL_RETURE,
   BUILD,
   NPM,
@@ -200,9 +201,35 @@ export default function ({
       });
     }
 
-    const custom_tpl_list = typeof tpls === 'function'
-      ? tpls(default_tpl_list)
-      : {};
+    let custom_tpl_list = {};
+    try {
+      custom_tpl_list = typeof tpls === 'function'
+        ? tpls(default_tpl_list)
+        : custom_tpl_list;
+
+      if (JSON.stringify(custom_tpl_list) !== '{}') {
+        for (const tpl_name in custom_tpl_list) {
+          const name = tpl_name as keyof TPLS_INITIAL_RETURE;
+          const list = custom_tpl_list as TPLS_INITIAL_RETURE;
+          const tpl = list[name];
+          const tplFactory = (config: any) => {
+            try {
+              return tpl && tpl(config);
+            } catch (err) {
+              logWarn(JSON.stringify(err));
+              logWarn(`自定义模板 [${name}] 解析出错，将使用默认模板进行初始化！(The custom template [${name}] parsing occured error, the default template will be used for initialization!)`);    
+            }
+
+            return default_tpl_list[name](config);
+          };
+
+          (list[name] as TPLS_INITIAL_FN) = tplFactory as TPLS_INITIAL_FN;
+        }
+      }
+    } catch (err_tpls) {
+      logWarn(JSON.stringify(err_tpls));
+      logWarn('生成自定义模板出错，将全部使用默认模板进行初始化！(The custom template generating occured error, all will be initializated with the default template!)');
+    }
     const tpl = { ...default_tpl_list, ...custom_tpl_list };
 
     // switchers
@@ -242,7 +269,7 @@ export default function ({
     const content_gitignore = tpl.gitignore();
     const content_npmignore = tpl.npmignore();
     const content_indexTpl = tpl.source_index();
-    const content_indexReactTpl = tpl.source_index_react({ build, devServer, project_type });
+    const content_indexReactTpl = tpl.source_index_react({ build, devServer, project_type, ts });
     const content_indexHtml = tpl.source_html({ name });
 
     // tsconfig

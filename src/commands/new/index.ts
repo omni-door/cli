@@ -63,14 +63,10 @@ export default async function (config: OmniConfig | {}, componentName: string, o
   let custom_tpl_list = {};
   const plugin_handles = plugins && getHandlers(plugins, 'new');
   if (plugin_handles) {
-    for (let i = 0; i < plugin_handles.length; i++) {
-      try {
-        const handler = plugin_handles[i];
-        const res = await handler(config as OmniConfig, default_tpl_list);
-        custom_tpl_list = { ...custom_tpl_list, ...res };
-      } catch (err_plugin) {
-        throw new Error(`模板插件出错：${JSON.stringify(err_plugin)}`);
-      }
+    for (const name in plugin_handles) {
+      const handler = plugin_handles[name];
+      const res = await handler(config as OmniConfig, default_tpl_list);
+      custom_tpl_list = { ...custom_tpl_list, ...res };
     }
   }
 

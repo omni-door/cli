@@ -1,5 +1,5 @@
-import { TPLS_ALL, TPLS_INITIAL, TPLS_INITIAL_RETURE, TPLS_NEW, TPLS_NEW_RETURE } from './templates';
-export { TPLS_ALL, TPLS_INITIAL, TPLS_INITIAL_RETURE, TPLS_NEW, TPLS_NEW_RETURE } from './templates';
+import { TPLS_ALL, TPLS_INITIAL, TPLS_INITIAL_FN, TPLS_INITIAL_RETURE, TPLS_NEW, TPLS_NEW_FN, TPLS_NEW_RETURE } from './templates';
+export { TPLS_ALL, TPLS_INITIAL, TPLS_INITIAL_FN, TPLS_INITIAL_RETURE, TPLS_NEW, TPLS_NEW_FN, TPLS_NEW_RETURE } from './templates';
 export type ENV = 'prod' | 'stg' | 'sit' | 'test' | 'dev';
 export type BUILD = 'webpack' | 'rollup' | 'tsc' | '';
 export type NPM = 'npm' | 'yarn' | 'cnpm' | 'taobao';
@@ -30,7 +30,17 @@ export type PluginStage = 'new' | 'build' | 'release';
 export interface PluginHandler {
   <T extends TPLS_NEW>(config: Omit<OmniConfig, 'plugins'>, tpls?: T): T extends TPLS_NEW ? Promise<TPLS_NEW_RETURE> : Promise<any>;
 }
+
+export interface HandlerFactoryRet {
+  <T extends TPLS_NEW>(config: Omit<OmniConfig, 'plugins'>, tpls?: T): (T extends TPLS_NEW ? Promise<TPLS_NEW_RETURE> : Promise<any>) | Promise<{}>;
+}
+
+export interface HandlerFactory {
+  (handler: PluginHandler, errMsg?: string): HandlerFactoryRet;
+}
+
 export type OmniPlugin = {
+  name: string;
   stage: PluginStage;
   handler: PluginHandler;
 };

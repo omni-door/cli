@@ -163,13 +163,9 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
     // handle release plugins
     const plugin_handles = plugins && getHandlers(plugins, 'release');
     if (plugin_handles) {
-      for (let i = 0; i < plugin_handles.length; i++) {
-        try {
-          const handler = plugin_handles[i];
-          await handler(config as OmniConfig);
-        } catch (err_plugin) {
-          throw new Error(`发布插件出错：${JSON.stringify(err_plugin)}`);
-        }
+      for (const name in plugin_handles) {
+        const handler = plugin_handles[name];
+        await handler(config as OmniConfig);
       }
     }
 
