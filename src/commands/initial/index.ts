@@ -207,24 +207,22 @@ export default function ({
         ? tpls(default_tpl_list)
         : custom_tpl_list;
 
-      if (JSON.stringify(custom_tpl_list) !== '{}') {
-        for (const tpl_name in custom_tpl_list) {
-          const name = tpl_name as keyof TPLS_INITIAL_RETURE;
-          const list = custom_tpl_list as TPLS_INITIAL_RETURE;
-          const tpl = list[name];
-          const tplFactory = (config: any) => {
-            try {
-              return tpl && tpl(config);
-            } catch (err) {
-              logWarn(JSON.stringify(err));
-              logWarn(`自定义模板 [${name}] 解析出错，将使用默认模板进行初始化！(The custom template [${name}] parsing occured error, the default template will be used for initialization!)`);    
-            }
+      for (const tpl_name in custom_tpl_list) {
+        const name = tpl_name as keyof TPLS_INITIAL_RETURE;
+        const list = custom_tpl_list as TPLS_INITIAL_RETURE;
+        const tpl = list[name];
+        const tplFactory = (config: any) => {
+          try {
+            return tpl && tpl(config);
+          } catch (err) {
+            logWarn(JSON.stringify(err));
+            logWarn(`自定义模板 [${name}] 解析出错，将使用默认模板进行初始化！(The custom template [${name}] parsing occured error, the default template will be used for initialization!)`);    
+          }
 
-            return default_tpl_list[name](config);
-          };
+          return default_tpl_list[name](config);
+        };
 
-          (list[name] as TPLS_INITIAL_FN) = tplFactory as TPLS_INITIAL_FN;
-        }
+        (list[name] as TPLS_INITIAL_FN) = tplFactory as TPLS_INITIAL_FN;
       }
     } catch (err_tpls) {
       logWarn(JSON.stringify(err_tpls));
