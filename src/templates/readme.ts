@@ -15,7 +15,7 @@ or
 npm run dev
 \`\`\`
 
-## Create Component by Template
+## Create a Component by Template
 
 ### Class Component
 \`\`\`sh
@@ -49,7 +49,7 @@ npm run release -- -i
 npm run release -- -m 0.3.25
 \`\`\`
 
-## More powerful customization is in [omni.config.js]
+**More powerful customization is in [omni.config.js]**
 `;
 }
 

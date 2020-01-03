@@ -27,12 +27,20 @@ export type GenerateOmniConfigParams = {
 };
 
 export type PluginStage = 'new' | 'build' | 'release';
+
 export interface PluginHandler {
-  <T extends TPLS_NEW>(config: Omit<OmniConfig, 'plugins'>, tpls?: T): T extends TPLS_NEW ? Promise<TPLS_NEW_RETURE> : Promise<any>;
+  (config: Omit<OmniConfig, 'plugins'>): Promise<any>;
+  (config: Omit<OmniConfig, 'plugins'>, tpls: TPLS_NEW): Promise<TPLS_NEW_RETURE>;
 }
 
+export type PluginHandler_Build = (config: Omit<OmniConfig, 'plugins'>) => Promise<any>;
+
+export type PluginHandler_Release = (config: Omit<OmniConfig, 'plugins'>) => Promise<any>;
+
+export type PluginHandler_New = (config: Omit<OmniConfig, 'plugins'>, tpls: TPLS_NEW) => Promise<TPLS_NEW_RETURE>;
+
 export interface HandlerFactoryRet {
-  <T extends TPLS_NEW>(config: Omit<OmniConfig, 'plugins'>, tpls?: T): (T extends TPLS_NEW ? Promise<TPLS_NEW_RETURE> : Promise<any>) | Promise<{}>;
+  (config: Omit<OmniConfig, 'plugins'>, tpls?: TPLS_NEW): Promise<any> | Promise<TPLS_NEW_RETURE> | Promise<{}>;
 }
 
 export interface HandlerFactory {
