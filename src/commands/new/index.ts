@@ -59,6 +59,11 @@ export default async function (config: OmniConfig | {}, componentName: string, o
     mdx = false
   }, plugins } = config as OmniConfig;
   
+  if (!root) {
+    logWarn('生成模板的路径缺失！(Missing the path for generate template!)');
+    process.exit(0);
+  }
+
   // handle new plugins
   let custom_tpl_list = {};
   const plugin_handles = plugins && getHandlers(plugins, 'new');
