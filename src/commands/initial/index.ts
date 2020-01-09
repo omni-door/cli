@@ -41,6 +41,7 @@ import templates from '../../configs/initial_tpls';
 import installClis from '../../configs/initial_clis';
 import { logErr, logWarn } from '../../utils/logger';
 import { execShell } from '../../utils/exec';
+import logo from '../../utils/logo';
 import { 
   TPLS_INITIAL,
   TPLS_INITIAL_FN,
@@ -91,7 +92,7 @@ enum ProjectType {
   'toolkit (工具库)' = 'toolkit'
 }
 
-const spinner = ora('🐸  [OMNI-DOOR]: 项目初始化中 (Initializing, please wait patiently)  💤  \n');
+const spinner = ora(`${logo} 项目初始化中 (Initializing, please wait patiently)  💤  \n`);
 
 const default_tpl_list = {
   babel: babelConfigJs,
@@ -444,9 +445,9 @@ export default function ({
       const { success, msg } = afterRes || {};
 
       if (success === false) {
-        spinner.fail(chalk.red(`🐸  [OMNI-DOOR]: ${msg || '初始化项目失败 (Initialize project failed)'}  ❌  \n`));
+        spinner.fail(chalk.red(`${logo} ${msg || '初始化项目失败 (Initialize project failed)'}  ❌  \n`));
       } else {
-        spinner.succeed(chalk.green(`🐸  [OMNI-DOOR]: ${msg || '初始化项目完成 (Initialize project success)'}  ✅  \n`));
+        spinner.succeed(chalk.green(`${logo} ${msg || '初始化项目完成 (Initialize project success)'}  ✅  \n`));
       }
 
       process.exit(0);
@@ -455,7 +456,7 @@ export default function ({
     return figlet('omni cli', function (err, data) {
       if (err) {
         logErr(JSON.stringify(err));
-        spinner.fail(chalk.red('🐸  [OMNI-DOOR]: figlet 出现了问题！(Some thing about figlet is wrong!)  ❌  \n'));
+        spinner.fail(chalk.red(`${logo} figlet 出现了问题！(Some thing about figlet is wrong!)  ❌  \n`));
       }
       console.info(chalk.yellow(data || 'OMNI-DOOR CLI'));
       fn(done);
@@ -506,13 +507,13 @@ export default function ({
         installCommitlintDevCli,
         installStylelintDevCli,
         installServerDevCli
-      ], done, err => spinner.warn(chalk.yellow(`🐸  [OMNI-DOOR]: ${JSON.stringify(err)}  ❗️  \n`)), isSilent));
+      ], done, err => spinner.warn(chalk.yellow(`${logo} ${JSON.stringify(err)}  ❗️  \n`)), isSilent));
 
       // loading start display
       spinner.start();
     } catch (err) {
       logErr(JSON.stringify(err));
-      spinner.fail(chalk.red('🐸  [OMNI-DOOR]: 安装依赖发生错误！(The installation of dependencies occurred some accidents!)  ❌  \n'));
+      spinner.fail(chalk.red(`${logo} 安装依赖发生错误！(The installation of dependencies occurred some accidents!)  ❌  \n`));
     }
   }
 
@@ -526,7 +527,7 @@ export default function ({
           logWarn('没有找到 npm 包管理工具！(Cannot found the npm package management tool!)');
           process.exit(0);
         } else {
-          spinner.info(chalk.yellowBright(`🐸  [OMNI-DOOR]: 缺少包管理工具 ${pkgtool}！(Missing package management tool ${pkgtool}!)  🔰  \n`));
+          spinner.info(chalk.yellowBright(`${logo} 缺少包管理工具 ${pkgtool}！(Missing package management tool ${pkgtool}!)  🔰  \n`));
           inquirer.prompt([{
             name: 'install',
             type: 'confirm',
@@ -706,7 +707,7 @@ export default function ({
         createDir = true;
       }
     } catch (err) {
-      spinner.warn(chalk.yellow(`🐸  [OMNI-DOOR]: ${JSON.stringify(err)}  ❗️  \n`));
+      spinner.warn(chalk.yellow(`${logo} ${JSON.stringify(err)}  ❗️  \n`));
     }
 
     inquirer.prompt(questions)
@@ -772,14 +773,14 @@ export default function ({
           installStylelintDevCli,
           installServerDevCli,
           gitCli
-        ], done, err => spinner.warn(chalk.yellow(`🐸  [OMNI-DOOR]: ${JSON.stringify(err)}  ❗  \n`)), isSilent));
+        ], done, err => spinner.warn(chalk.yellow(`${logo} ${JSON.stringify(err)}  ❗  \n`)), isSilent));
 
         // loading start display
         spinner.start();
       })
       .catch(err => {
         logErr(JSON.stringify(err));
-        spinner.fail(chalk.red('🐸  [OMNI-DOOR]: 安装依赖发生错误！(The installation of dependencies occurred some accidents!)  ❌  \n'));
+        spinner.fail(chalk.red(`${logo} 安装依赖发生错误！(The installation of dependencies occurred some accidents!)  ❌  \n`));
         process.exit(1);
       });
   }

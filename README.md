@@ -106,6 +106,9 @@ Options:
   -h, --help              output usage information
 ```
 
+## Accessible SDK
+click [here](./docs/DEV.md)
+
 ## License
 
 Copyright (c) 2019 [Bobby.li](https://github.com/BobbyLH)

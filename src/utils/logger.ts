@@ -1,25 +1,26 @@
 import chalk from 'chalk';
+import logo from './logo';
 
 export function logErr (err: string) {
-  console.error(chalk.red('🐸  [OMNI-DOOR]:', err, '  ❌  \n'));
+  console.error(chalk.red(logo, err, '  ❌  \n'));
 }
 
 export function logWarn (warn: string) {
-  console.warn(chalk.yellow('🐸  [OMNI-DOOR]:', warn, '  ❗  \n'));
+  console.warn(chalk.yellow(logo, warn, '  ❗  \n'));
 }
 
 export function logInfo (info: string) {
-  console.info(chalk.white('🐸  [OMNI-DOOR]:', info, '  🔊  \n'));
+  console.info(chalk.white(logo, info, '  🔊  \n'));
 }
 
 export function logDetail (info: string) {
-  console.info(chalk.gray('🐸  [OMNI-DOOR]:', info));
+  console.info(chalk.gray(logo, info));
 }
 
 export function logEmph (info: string) {
-  console.info(chalk.cyan('🐸  [OMNI-DOOR]:', info, '  🚩  \n'));
+  console.info(chalk.cyan(logo, info, '  🚩  \n'));
 }
 
 export function logSuc (msg: string) {
-  console.info(chalk.green('🐸  [OMNI-DOOR]:', msg, '  ✅  \n'));
+  console.info(chalk.green(logo, msg, '  ✅  \n'));
 }
