@@ -1,5 +1,5 @@
 # 接入文档(Docs)
-@omni-door/cli 提供了二次开发的能力，通过 plugin 或者 import 到项目中，
+@omni-door/cli 提供了二次开发的能力，通过 plugin 或者 import 到项目中实现。
 
 ## Plugin
 插件向第三方开发者提供了脚手架在项目各个周期的执行多元化任务的能力，插件的编写请务必满足 `type OmniPlugin` 的类型定义。

@@ -146,8 +146,8 @@ export default function ({
     stdout?: boolean;
   };
   tpls?: (tpls: TPLS_INITIAL) => TPLS_INITIAL_RETURE;
-  dependencies?: () => string[];
-  devDependencies?: () => string[];
+  dependencies?: (dependecies_default: string[]) => string[];
+  devDependencies?: (devDependecies_default: string[]) => string[];
   after?: () => {
     success?: boolean;
     msg?: string;
@@ -381,6 +381,30 @@ export default function ({
     let installCliPrefix = pkgtool === 'yarn' ? `${pkgtool} add --cwd ${initPath}` : `${pkgtool} install --save --prefix ${initPath}`;
 
     let installDevCliPrefix = pkgtool === 'yarn' ? `${pkgtool} add -D --cwd ${initPath}` : `${pkgtool} install --save-dev --prefix ${initPath}`;
+    if (pkgtool === 'cnpm' && initPath !== process.cwd()) {
+      // fix cnpm cannot set prefix bug
+      // pkgtool = 'npm';
+      installCliPrefix = `cd ${initPath} && ${installCliPrefix}`;
+      installDevCliPrefix = `cd ${initPath} && ${installDevCliPrefix}`;
+    }
+
+    const dependencies_default = dependencies({
+      project_type,
+      build,
+      ts,
+      eslint,
+      commitlint,
+      style,
+      stylelint,
+      testFrame,
+      devServer
+    });
+    const installCli = `${installCliPrefix} ${dependencies_default.join(' ')} ${
+      typeof dependencies_custom === 'function'
+        ? dependencies_custom(dependencies_default).join(' ')
+        : ''
+    }`;
+
     const { defaultDep, buildDep, tsDep, testDep, eslintDep, commitlintDep, stylelintDep, devServerDep } = devDependencies({
       project_type,
       build,
@@ -392,29 +416,7 @@ export default function ({
       testFrame,
       devServer
     });
-
-    if (pkgtool === 'cnpm' && initPath !== process.cwd()) {
-      // fix cnpm cannot set prefix bug
-      // pkgtool = 'npm';
-      installCliPrefix = `cd ${initPath} && ${installCliPrefix}`;
-      installDevCliPrefix = `cd ${initPath} && ${installDevCliPrefix}`;
-    }
-
-    const installCli = `${installCliPrefix} ${dependencies({
-      project_type,
-      build,
-      ts,
-      eslint,
-      commitlint,
-      style,
-      stylelint,
-      testFrame,
-      devServer
-    }).join(' ')} ${
-      typeof dependencies_custom === 'function'
-        ? dependencies_custom().join(' ')
-        : ''
-    }`;
+    const devDependencies_default = [...defaultDep, ...buildDep, ...tsDep, ...testDep, ...eslintDep, ...commitlintDep, ...stylelintDep, ...devServerDep ]; 
     const installDevCli = defaultDep.length > 0 ? `${installDevCliPrefix} ${defaultDep.join(' ')}` : '';
     const installBuildDevCli = buildDep.length > 0 ? `${installDevCliPrefix} ${buildDep.join(' ')}` : '';
     const installTsDevCli = tsDep.length > 0 ? `${installDevCliPrefix} ${tsDep.join(' ')}` : '';
@@ -423,7 +425,7 @@ export default function ({
     const installCommitlintDevCli = commitlintDep.length > 0 ? `${installDevCliPrefix} ${commitlintDep.join(' ')}` : '';
     const installStylelintDevCli = stylelintDep.length > 0 ? `${installDevCliPrefix} ${stylelintDep.join(' ')}` : '';
     const installServerDevCli = devServerDep.length > 0 ? `${installDevCliPrefix} ${devServerDep.join(' ')}` : '';
-    const installCustomDevCli = typeof devDependencies_custom === 'function' ? `${installDevCliPrefix} ${devDependencies_custom().join(' ')}` : '';
+    const installCustomDevCli = typeof devDependencies_custom === 'function' ? `${installDevCliPrefix} ${devDependencies_custom(devDependencies_default).join(' ')}` : '';
 
     return {
       installCli,
