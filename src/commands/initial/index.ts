@@ -41,7 +41,7 @@ import templates from '../../configs/initial_tpls';
 import installClis from '../../configs/initial_clis';
 import { logErr, logWarn } from '../../utils/logger';
 import { execShell } from '../../utils/exec';
-import brand, { LOGO } from '../../utils/brand';
+import getBrand, { LOGO } from '../../utils/brand';
 import { 
   TPLS_INITIAL,
   TPLS_INITIAL_FN,
@@ -92,7 +92,7 @@ enum ProjectType {
   'toolkit (工具库)' = 'toolkit'
 }
 
-const spinner = ora(`${brand} 项目初始化中 (Initializing, please wait patiently)  💤  \n`);
+const spinner = ora(`${getBrand()} 项目初始化中 (Initializing, please wait patiently)  💤  \n`);
 
 const default_tpl_list = {
   babel: babelConfigJs,
@@ -447,9 +447,9 @@ export default function (strategy: STRATEGY, {
       const { success, msg } = afterRes || {};
 
       if (success === false) {
-        spinner.fail(chalk.red(`${brand} ${msg || '初始化项目失败 (Initialize project failed)'}  ❌  \n`));
+        spinner.fail(chalk.red(`${getBrand()} ${msg || '初始化项目失败 (Initialize project failed)'}  ❌  \n`));
       } else {
-        spinner.succeed(chalk.green(`${brand} ${msg || '初始化项目完成 (Initialize project success)'}  ✅  \n`));
+        spinner.succeed(chalk.green(`${getBrand()} ${msg || '初始化项目完成 (Initialize project success)'}  ✅  \n`));
       }
 
       process.exit(0);
@@ -458,7 +458,7 @@ export default function (strategy: STRATEGY, {
     return figlet('omni cli', function (err, data) {
       if (err) {
         logErr(JSON.stringify(err));
-        spinner.fail(chalk.red(`${brand} figlet 出现了问题！(Some thing about figlet is wrong!)  ❌  \n`));
+        spinner.fail(chalk.red(`${getBrand()} figlet 出现了问题！(Some thing about figlet is wrong!)  ❌  \n`));
       }
       console.info(chalk.yellow(data || 'OMNI-DOOR CLI'));
       fn(done);
@@ -496,7 +496,8 @@ export default function (strategy: STRATEGY, {
         installEslintDevCli,
         installCommitlintDevCli,
         installStylelintDevCli,
-        installServerDevCli
+        installServerDevCli,
+        installCustomDevCli
       } = await generateInstallDenpendencies(cli as GInstallCli);
 
       generateFiglet((done) => execShell([
@@ -508,14 +509,15 @@ export default function (strategy: STRATEGY, {
         installEslintDevCli,
         installCommitlintDevCli,
         installStylelintDevCli,
-        installServerDevCli
-      ], done, err => spinner.warn(chalk.yellow(`${brand} ${JSON.stringify(err)}  ❗️  \n`)), isSilent));
+        installServerDevCli,
+        installCustomDevCli
+      ], done, err => spinner.warn(chalk.yellow(`${getBrand()} ${JSON.stringify(err)}  ❗️  \n`)), isSilent));
 
       // loading start display
       spinner.start();
     } catch (err) {
       logErr(JSON.stringify(err));
-      spinner.fail(chalk.red(`${brand} 安装依赖发生错误！(The installation of dependencies occurred some accidents!)  ❌  \n`));
+      spinner.fail(chalk.red(`${getBrand()} 安装依赖发生错误！(The installation of dependencies occurred some accidents!)  ❌  \n`));
     }
   }
 
@@ -529,7 +531,7 @@ export default function (strategy: STRATEGY, {
           logWarn('没有找到 npm 包管理工具！(Cannot found the npm package management tool!)');
           process.exit(0);
         } else {
-          spinner.info(chalk.yellowBright(`${brand} 缺少包管理工具 ${pkgtool}！(Missing package management tool ${pkgtool}!)  🔰  \n`));
+          spinner.info(chalk.yellowBright(`${getBrand()} 缺少包管理工具 ${pkgtool}！(Missing package management tool ${pkgtool}!)  🔰  \n`));
           inquirer.prompt([{
             name: 'install',
             type: 'confirm',
@@ -687,7 +689,7 @@ export default function (strategy: STRATEGY, {
         createDir = true;
       }
     } catch (err) {
-      spinner.warn(chalk.yellow(`${brand} ${JSON.stringify(err)}  ❗️  \n`));
+      spinner.warn(chalk.yellow(`${getBrand()} ${JSON.stringify(err)}  ❗️  \n`));
     }
 
     inquirer.prompt(questions)
@@ -724,7 +726,8 @@ export default function (strategy: STRATEGY, {
           installEslintDevCli,
           installCommitlintDevCli,
           installStylelintDevCli,
-          installServerDevCli
+          installServerDevCli,
+          installCustomDevCli
         } = await generateInstallDenpendencies({
           project_type: projectType,
           pkgtool,
@@ -751,15 +754,16 @@ export default function (strategy: STRATEGY, {
           installCommitlintDevCli,
           installStylelintDevCli,
           installServerDevCli,
+          installCustomDevCli,
           gitCli
-        ], done, err => spinner.warn(chalk.yellow(`${brand} ${JSON.stringify(err)}  ❗  \n`)), isSilent));
+        ], done, err => spinner.warn(chalk.yellow(`${getBrand()} ${JSON.stringify(err)}  ❗  \n`)), isSilent));
 
         // loading start display
         spinner.start();
       })
       .catch(err => {
         logErr(JSON.stringify(err));
-        spinner.fail(chalk.red(`${brand} 安装依赖发生错误！(The installation of dependencies occurred some accidents!)  ❌  \n`));
+        spinner.fail(chalk.red(`${getBrand()} 安装依赖发生错误！(The installation of dependencies occurred some accidents!)  ❌  \n`));
         process.exit(1);
       });
   }

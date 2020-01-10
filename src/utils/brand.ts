@@ -2,7 +2,7 @@ export const LOGO = '🐸  ';
 export const BRAND = `${LOGO}[OMNI-DOOR]:`;
 
 class Brand {
-  public brand: string;
+  private brand: string;
 
   constructor () {
     this.brand = BRAND;
@@ -11,9 +11,13 @@ class Brand {
   setBrand (brand: string) {
     this.brand = brand || BRAND;
   }
+
+  getBrand () {
+    return this.brand;
+  }
 }
 
 const brand = new Brand();
 
 export const setBrand = brand.setBrand;
-export default brand.brand;
+export default brand.getBrand;

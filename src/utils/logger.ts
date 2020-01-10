@@ -1,26 +1,26 @@
 import chalk from 'chalk';
-import brand from './brand';
+import getBrand from './brand';
 
 export function logErr (err: string) {
-  console.error(chalk.red(brand, err, '  ❌  \n'));
+  console.error(chalk.red(getBrand(), err, '  ❌  \n'));
 }
 
 export function logWarn (warn: string) {
-  console.warn(chalk.yellow(brand, warn, '  ❗  \n'));
+  console.warn(chalk.yellow(getBrand(), warn, '  ❗  \n'));
 }
 
 export function logInfo (info: string) {
-  console.info(chalk.white(brand, info, '  🔊  \n'));
+  console.info(chalk.white(getBrand(), info, '  🔊  \n'));
 }
 
 export function logDetail (info: string) {
-  console.info(chalk.gray(brand, info));
+  console.info(chalk.gray(getBrand(), info));
 }
 
 export function logEmph (info: string) {
-  console.info(chalk.cyan(brand, info, '  🚩  \n'));
+  console.info(chalk.cyan(getBrand(), info, '  🚩  \n'));
 }
 
 export function logSuc (msg: string) {
-  console.info(chalk.green(brand, msg, '  ✅  \n'));
+  console.info(chalk.green(getBrand(), msg, '  ✅  \n'));
 }

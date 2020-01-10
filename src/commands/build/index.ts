@@ -11,7 +11,7 @@ import webpackConfig from './webpack';
 import { logErr, logInfo, logWarn, logSuc, logEmph } from '../../utils/logger';
 import { execShell } from '../../utils/exec';
 import { getHandlers } from '../../utils/tackle_plugins';
-import brand from '../../utils/brand';
+import getBrand from '../../utils/brand';
 import { OmniConfig, BUILD } from '../../index.d';
 import dependencies_build from '../../configs/dependencies_build';
 
@@ -223,7 +223,7 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
       }
     }
 
-    const spinner = tool !== 'rollup' && ora(`${brand} 项目构建中 (Building, please wait patiently)  ⏱  \n`);
+    const spinner = tool !== 'rollup' && ora(`${getBrand()} 项目构建中 (Building, please wait patiently)  ⏱  \n`);
     spinner && spinner.start();
 
     del.sync(out_dir);
