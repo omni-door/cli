@@ -6,6 +6,8 @@ class Brand {
 
   constructor () {
     this.brand = BRAND;
+    this.setBrand = this.setBrand.bind(this);
+    this.getBrand = this.getBrand.bind(this);
   }
 
   setBrand (brand: string) {
@@ -13,7 +15,7 @@ class Brand {
   }
 
   getBrand () {
-    return this.brand;
+    return this.brand || BRAND;
   }
 }
 
