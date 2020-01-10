@@ -24,13 +24,18 @@ npm run new [componentName]
 
 ### Functional Component
 \`\`\`sh
-npm run new [componentName] -f
+npm run new [componentName] -- -f
 \`\`\`
 
 ## Build your Project
 
 \`\`\`sh
 npm run build
+\`\`\`
+
+### Ignore pre-check
+\`\`\`sh
+npm run build -- -n
 \`\`\`
 
 ## Release your Project
@@ -47,6 +52,11 @@ npm run release -- -i
 ### manual iteration version
 \`\`\`sh
 npm run release -- -m 0.3.25
+\`\`\`
+
+### Ignore pre-check
+\`\`\`sh
+npm run release -- -n
 \`\`\`
 
 **More powerful customization is in [omni.config.js]**

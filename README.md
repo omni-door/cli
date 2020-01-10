@@ -19,7 +19,7 @@ Several options to get up and running:
 
 ## omni --help
 ```sh
-  Usage: index [options] [command]
+  Usage: index [command] [options]
 
   Options:
 
@@ -28,8 +28,8 @@ Several options to get up and running:
 
   Commands:
 
-    init [options]          initialize your project
-    new [options] [module]  omni new [module] [-f | -c]
+    init [strategy] [options]  initialize your project, [strategy] could be stable(default) or latest
+    new <module> [options]  omni new [module] [-f | -c]
     build                   build your project according to [omni.config.js]
     release [options]       publish your project according to [omni.config.js]
 
@@ -51,11 +51,15 @@ or
 omni init --entire
 ```
 
-#### options
+### options
 ```sh
-Usage: omni init [options]
+Usage: omni init [strategy] [options]
 
-initialize your project
+initialize your project, [strategy] could be stable(default) or latest
+
+Arguments:
+
+  strategy                 stable or latest
 
 Options:
   -s, --simple [name]     create a simple React SPA project
@@ -70,9 +74,13 @@ Options:
 
 ### options
 ```sh
-Usage: omni new [options] [module]
+Usage: omni new <module> [options]
 
-omni new [module] [-f | -c]
+omni new <module> [-fc | -cc]
+
+Arguments:
+
+  module           required! The first letter will be capitalizing.
 
 Options:
   -f, --fc    create a functional component
@@ -82,13 +90,15 @@ Options:
 
 ## omni build
 
-### Build your project according to [omni.config.js]
+### options
 ```sh
-npm run build
-```
-or
-```sh
-omni build
+Usage: omni build [options]
+
+build your project according to [omni.config.js]
+
+Options:
+  -n, --no-verify  bypass all pre-check before building
+  -h, --help       output usage information
 ```
 
 ## omni release
@@ -106,7 +116,7 @@ Options:
   -h, --help              output usage information
 ```
 
-## Accessible SDK
+## Accessible Docs
 click [here](./docs/DEV.md)
 
 ## License
