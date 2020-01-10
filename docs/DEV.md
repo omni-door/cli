@@ -113,9 +113,10 @@ type STYLE = 'less' | 'scss' | 'css' | 'all' | '';
 
 - 其他阶段的命令同样支持：`import { new as newTpl, build, release } from '@omni-door/cli';`
 
-- 支持自定义 brand 前缀：
+- 支持自定义 logo、brand 前缀：
   ```ts
-  import { setBrand } from '@omni-door/cli';
+  import { setLogo, setBrand } from '@omni-door/cli';
 
+  setLogo('🐸');
   setBrand('自定义的前缀：');
   ```

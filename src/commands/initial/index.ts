@@ -41,7 +41,7 @@ import templates from '../../configs/initial_tpls';
 import installClis from '../../configs/initial_clis';
 import { logErr, logWarn } from '../../utils/logger';
 import { execShell } from '../../utils/exec';
-import getBrand, { LOGO } from '../../utils/brand';
+import getLogPrefix, { getLogo } from '../../utils/log_prefix';
 import { 
   TPLS_INITIAL,
   TPLS_INITIAL_FN,
@@ -92,7 +92,7 @@ enum ProjectType {
   'toolkit (工具库)' = 'toolkit'
 }
 
-const spinner = ora(`${getBrand()} 项目初始化中 (Initializing, please wait patiently)  💤  \n`);
+const spinner = ora(`${getLogPrefix()} 项目初始化中 (Initializing, please wait patiently)  💤  \n`);
 
 const default_tpl_list = {
   babel: babelConfigJs,
@@ -447,9 +447,9 @@ export default function (strategy: STRATEGY, {
       const { success, msg } = afterRes || {};
 
       if (success === false) {
-        spinner.fail(chalk.red(`${getBrand()} ${msg || '初始化项目失败 (Initialize project failed)'}  ❌  \n`));
+        spinner.fail(chalk.red(`${getLogPrefix()} ${msg || '初始化项目失败 (Initialize project failed)'}  ❌  \n`));
       } else {
-        spinner.succeed(chalk.green(`${getBrand()} ${msg || '初始化项目完成 (Initialize project success)'}  ✅  \n`));
+        spinner.succeed(chalk.green(`${getLogPrefix()} ${msg || '初始化项目完成 (Initialize project success)'}  ✅  \n`));
       }
 
       process.exit(0);
@@ -458,7 +458,7 @@ export default function (strategy: STRATEGY, {
     return figlet('omni cli', function (err, data) {
       if (err) {
         logErr(JSON.stringify(err));
-        spinner.fail(chalk.red(`${getBrand()} figlet 出现了问题！(Some thing about figlet is wrong!)  ❌  \n`));
+        spinner.fail(chalk.red(`${getLogPrefix()} figlet 出现了问题！(Some thing about figlet is wrong!)  ❌  \n`));
       }
       console.info(chalk.yellow(data || 'OMNI-DOOR CLI'));
       fn(done);
@@ -511,13 +511,13 @@ export default function (strategy: STRATEGY, {
         installStylelintDevCli,
         installServerDevCli,
         installCustomDevCli
-      ], done, err => spinner.warn(chalk.yellow(`${getBrand()} ${JSON.stringify(err)}  ❗️  \n`)), isSilent));
+      ], done, err => spinner.warn(chalk.yellow(`${getLogPrefix()} ${JSON.stringify(err)}  ❗️  \n`)), isSilent));
 
       // loading start display
       spinner.start();
     } catch (err) {
       logErr(JSON.stringify(err));
-      spinner.fail(chalk.red(`${getBrand()} 安装依赖发生错误！(The installation of dependencies occurred some accidents!)  ❌  \n`));
+      spinner.fail(chalk.red(`${getLogPrefix()} 安装依赖发生错误！(The installation of dependencies occurred some accidents!)  ❌  \n`));
     }
   }
 
@@ -531,11 +531,11 @@ export default function (strategy: STRATEGY, {
           logWarn('没有找到 npm 包管理工具！(Cannot found the npm package management tool!)');
           process.exit(0);
         } else {
-          spinner.info(chalk.yellowBright(`${getBrand()} 缺少包管理工具 ${pkgtool}！(Missing package management tool ${pkgtool}!)  🔰  \n`));
+          spinner.info(chalk.yellowBright(`${getLogPrefix()} 缺少包管理工具 ${pkgtool}！(Missing package management tool ${pkgtool}!)  🔰  \n`));
           inquirer.prompt([{
             name: 'install',
             type: 'confirm',
-            message: `自动安装 ${pkgtool} 到全局环境? (Automatic install the ${pkgtool} in the global environment?)`,
+            message: `${getLogo()} 自动安装 ${pkgtool} 到全局环境? (Automatic install the ${pkgtool} in the global environment?)`,
             default: true
           }]).then(answers => {
             const { install } = answers;
@@ -561,7 +561,7 @@ export default function (strategy: STRATEGY, {
       inquirer.prompt([{
         name: 'overwrite',
         type: 'confirm',
-        message: '确定要覆盖已经存在的 [omni.config.js] 文件? (Are you sure to overwrite [omni.config.js]?)',
+        message: `${getLogo()} 确定要覆盖已经存在的 [omni.config.js] 文件? (Are you sure to overwrite [omni.config.js]?)`,
         default: false
       }]).then(answers => {
         const { overwrite } = answers;
@@ -578,12 +578,12 @@ export default function (strategy: STRATEGY, {
       {
         name: 'overwrite',
         type: 'confirm',
-        message: '确定要覆盖已经存在的 [omni.config.js] 文件? (Are you sure to overwrite [omni.config.js]?)',
+        message: `${getLogo()} 确定要覆盖已经存在的 [omni.config.js] 文件? (Are you sure to overwrite [omni.config.js]?)`,
         default: false
       },{
         name: 'name',
         type: 'input',
-        message: `${LOGO}[1/13] 请输入项目名称 (please enter your project name)：`,
+        message: `${getLogo()}[1/13] 请输入项目名称 (please enter your project name)：`,
         when: function (answer: any) {
           if (answer.overwrite === false) {
             return process.exit(0);
@@ -595,24 +595,24 @@ export default function (strategy: STRATEGY, {
         name: 'project_type',
         type: 'list',
         choices: [ 'react-spa (React单页应用)', 'react-component-library (React组件库)', 'toolkit (工具库)' ],
-        message: `${LOGO}[2/13] 请选择项目类型 (please choose the type of project)：`
+        message: `${getLogo()}[2/13] 请选择项目类型 (please choose the type of project)：`
       },{
         name: 'ts',
         type: 'confirm',
-        message: `${LOGO}[3/13] 是否使用typescript? (whether or not apply typescript?)`
+        message: `${getLogo()}[3/13] 是否使用typescript? (whether or not apply typescript?)`
       },{
         name: 'eslint',
         type: 'confirm',
-        message: `${LOGO}[4/13] 是否使用eslint? (whether or not apply eslint?)`
+        message: `${getLogo()}[4/13] 是否使用eslint? (whether or not apply eslint?)`
       },{
         name: 'commitlint',
         type: 'confirm',
-        message: `${LOGO}[5/13] 是否使用commitlint? (whether or not apply commitlint?)`
+        message: `${getLogo()}[5/13] 是否使用commitlint? (whether or not apply commitlint?)`
       },{
         name: 'style',
         type: 'list',
         choices: [ 'less', 'scss', 'css', 'all', 'none' ],
-        message: `${LOGO}[6/13] 应用哪种样式文件? (which the stylesheet type you like applying?)`,
+        message: `${getLogo()}[6/13] 应用哪种样式文件? (which the stylesheet type you like applying?)`,
         default: 'less',
         when: function (answer: any) {
           if (answer.project_type === 'toolkit (工具库)') {
@@ -623,7 +623,7 @@ export default function (strategy: STRATEGY, {
       },{
         name: 'stylelint',
         type: 'confirm',
-        message: `${LOGO}[7/13] 是否使用stylelint? (whether or not apply stylelint?)`,
+        message: `${getLogo()}[7/13] 是否使用stylelint? (whether or not apply stylelint?)`,
         when: function (answer: any) {
           if (!answer.style || answer.style === 'none') {
             return false;
@@ -634,25 +634,25 @@ export default function (strategy: STRATEGY, {
         name: 'test',
         type: 'list',
         choices: [ 'mocha', 'jest', 'karma', 'none' ],
-        message: `${LOGO}[8/13] 应用哪种单测框架? (which unit test frame would you like applying?)`
+        message: `${getLogo()}[8/13] 应用哪种单测框架? (which unit test frame would you like applying?)`
       },{
         name: 'build',
         type: 'list',
         choices: [ 'webpack', 'rollup', 'tsc', 'none' ],
-        message: `${LOGO}[9/13] 应用哪种打包工具? (which build tool would you like applying?)`
+        message: `${getLogo()}[9/13] 应用哪种打包工具? (which build tool would you like applying?)`
       },{
         name: 'git',
         type: 'input',
-        message: `${LOGO}[10/13] 请输入你的git仓库地址 (please enter your git repo address)：`
+        message: `${getLogo()}[10/13] 请输入你的git仓库地址 (please enter your git repo address)：`
       },{
         name: 'npm',
         type: 'list',
         choices: [ 'none', 'npm', 'yarn', 'cnpm', 'taobao', 'set by yourself' ],
-        message: `${LOGO}[11/13] 请选择npm仓库地址 (please chioce the npm depository address)：`
+        message: `${getLogo()}[11/13] 请选择npm仓库地址 (please chioce the npm depository address)：`
       },{
         name: 'npm_custom',
         type: 'input',
-        message: `${LOGO}[11/13] 请输入npm仓库地址 (please input the npm depository address)：`,
+        message: `${getLogo()}[11/13] 请输入npm仓库地址 (please input the npm depository address)：`,
         when: function (answer: any) {
           if (answer.npm === 'set by yourself') {
             return true;
@@ -661,7 +661,7 @@ export default function (strategy: STRATEGY, {
         },
         validate: function (input: any) {
           if (!input) {
-            return `${LOGO} Please input your npm depository address`;
+            return `${getLogo()}[11/13] Please input your npm depository address`;
           }
   
           return true;
@@ -670,13 +670,13 @@ export default function (strategy: STRATEGY, {
         name: 'dev_server',
         type: 'list',
         choices: [ 'basic', 'docz', 'storybook', 'bisheng', 'none' ],
-        message: `${LOGO}[12/13] 请选择开发服务 (please chioce the development server)：`,
+        message: `${getLogo()}[12/13] 请选择开发服务 (please chioce the development server)：`,
         default: 'basic'
       },{
         name: 'pkgtool',
         type: 'list',
         choices: [ 'yarn', 'npm', 'cnpm' ],
-        message: `${LOGO}[13/13] 即将进行初始化，请选择包安装工具，推荐使用yarn (please chioce the package install tool, recommended use yarn)：`,
+        message: `${getLogo()}[13/13] 即将进行初始化，请选择包安装工具，推荐使用yarn (please chioce the package install tool, recommended use yarn)：`,
         default: 'yarn'
       }
     ];
@@ -689,7 +689,7 @@ export default function (strategy: STRATEGY, {
         createDir = true;
       }
     } catch (err) {
-      spinner.warn(chalk.yellow(`${getBrand()} ${JSON.stringify(err)}  ❗️  \n`));
+      spinner.warn(chalk.yellow(`${getLogPrefix()} ${JSON.stringify(err)}  ❗️  \n`));
     }
 
     inquirer.prompt(questions)
@@ -756,14 +756,14 @@ export default function (strategy: STRATEGY, {
           installServerDevCli,
           installCustomDevCli,
           gitCli
-        ], done, err => spinner.warn(chalk.yellow(`${getBrand()} ${JSON.stringify(err)}  ❗  \n`)), isSilent));
+        ], done, err => spinner.warn(chalk.yellow(`${getLogPrefix()} ${JSON.stringify(err)}  ❗  \n`)), isSilent));
 
         // loading start display
         spinner.start();
       })
       .catch(err => {
         logErr(JSON.stringify(err));
-        spinner.fail(chalk.red(`${getBrand()} 安装依赖发生错误！(The installation of dependencies occurred some accidents!)  ❌  \n`));
+        spinner.fail(chalk.red(`${getLogPrefix()} 安装依赖发生错误！(The installation of dependencies occurred some accidents!)  ❌  \n`));
         process.exit(1);
       });
   }
