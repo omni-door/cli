@@ -92,7 +92,7 @@ enum ProjectType {
   'toolkit (工具库)' = 'toolkit'
 }
 
-const spinner = ora(`${getLogPrefix()} 项目初始化中 (Initializing, please wait patiently)  💤  \n`);
+
 
 const default_tpl_list = {
   babel: babelConfigJs,
@@ -153,6 +153,9 @@ export default function (strategy: STRATEGY, {
     msg?: string;
   };
 }) {
+  // initial spinner
+  const spinner = ora(`${getLogPrefix()} 项目初始化中 (Initializing, please wait patiently)  💤  \n`);
+
   // reset illegal strategy
   strategy = (strategy === 'stable' || strategy === 'latest') ? strategy : 'stable';
   const { before, tpls, dependencies: dependencies_custom, devDependencies: devDependencies_custom, after } = option || {};
