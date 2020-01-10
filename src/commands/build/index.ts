@@ -11,11 +11,13 @@ import webpackConfig from './webpack';
 import { logErr, logInfo, logWarn, logSuc, logEmph } from '../../utils/logger';
 import { execShell } from '../../utils/exec';
 import { getHandlers } from '../../utils/tackle_plugins';
-import logo from '../../utils/logo';
+import brand from '../../utils/brand';
 import { OmniConfig, BUILD } from '../../index.d';
 import dependencies_build from '../../configs/dependencies_build';
 
-export default async function (config: OmniConfig | {}) {
+export default async function (config: OmniConfig | {}, buildTactic?: {
+  verify?: boolean;
+}) {
   if (JSON.stringify(config) === '{}') {
     logWarn('请先初始化项目！(Please Initialize project first!)');
     return;
@@ -37,6 +39,8 @@ export default async function (config: OmniConfig | {}) {
     esm_dir = '',
     auto_release
   }, plugins } = config as OmniConfig;
+
+  const { verify } = buildTactic || {};
 
   if (!out_dir || !src_dir) {
     handleBuildErr('[omni.config.js]文件中未定义$src_dir 或 $out_dir (The $src_dir or $out_dir were missed in [omni.config.js])')();
@@ -152,15 +156,15 @@ export default async function (config: OmniConfig | {}) {
   }
 
   try {
-    if (test) {
+    if (verify && test) {
       await execShell(['npm test'], () => logEmph('单元测试通过！(unit test passed!)'), handleBuildErr('单元测试失败！(unit test failed!)'));
     }
 
-    if (eslint) {
+    if (verify && eslint) {
       await execShell(['npm run lint:es'], () => logEmph('eslint校验通过！(eslint passed!)'), handleBuildErr(`eslint校验失败！(eslint checking failed!) \n ${chalk.bgGreen('尝试执行 (try to exec): npm run lint:es_fix')}`));
     }
 
-    if (stylelint) {
+    if (verify && stylelint) {
       await execShell(['npm run lint:style'], () => logEmph('stylelint校验通过！(stylelint passed!)'), handleBuildErr(`stylelint校验失败！(stylelint checking failed!) \n ${chalk.bgGreen('尝试执行 (try to exec): npm run lint:style_fix')}`));
     }
 
@@ -219,7 +223,7 @@ export default async function (config: OmniConfig | {}) {
       }
     }
 
-    const spinner = tool !== 'rollup' && ora(`${logo} 项目构建中 (Building, please wait patiently)  ⏱  \n`);
+    const spinner = tool !== 'rollup' && ora(`${brand} 项目构建中 (Building, please wait patiently)  ⏱  \n`);
     spinner && spinner.start();
 
     del.sync(out_dir);

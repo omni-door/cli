@@ -41,7 +41,7 @@ import templates from '../../configs/initial_tpls';
 import installClis from '../../configs/initial_clis';
 import { logErr, logWarn } from '../../utils/logger';
 import { execShell } from '../../utils/exec';
-import logo from '../../utils/logo';
+import brand, { LOGO } from '../../utils/brand';
 import { 
   TPLS_INITIAL,
   TPLS_INITIAL_FN,
@@ -52,7 +52,8 @@ import {
   PKJTOOL,
   STYLE,
   DEVSERVER,
-  PROJECT_TYPE
+  PROJECT_TYPE,
+  STRATEGY
 } from '../../index.d';
 
 export type GTpls = {
@@ -68,7 +69,6 @@ export type GTpls = {
   stylelint: boolean;
   git: string;
   npm: NPM | '';
-  cdn: string;
   devServer: DEVSERVER;
   createDir: boolean;
 };
@@ -92,7 +92,7 @@ enum ProjectType {
   'toolkit (工具库)' = 'toolkit'
 }
 
-const spinner = ora(`${logo} 项目初始化中 (Initializing, please wait patiently)  💤  \n`);
+const spinner = ora(`${brand} 项目初始化中 (Initializing, please wait patiently)  💤  \n`);
 
 const default_tpl_list = {
   babel: babelConfigJs,
@@ -125,7 +125,7 @@ const default_tpl_list = {
   storybook_webpack
 };
 
-export default function ({
+export default function (strategy: STRATEGY, {
   simple,
   standard,
   entire,
@@ -153,6 +153,8 @@ export default function ({
     msg?: string;
   };
 }) {
+  // reset illegal strategy
+  strategy = (strategy === 'stable' || strategy === 'latest') ? strategy : 'stable';
   const { before, tpls, dependencies: dependencies_custom, devDependencies: devDependencies_custom, after } = option || {};
   const { name: defaultName } = parse(process.cwd());
   const projectName =
@@ -192,7 +194,6 @@ export default function ({
     stylelint,
     git,
     npm,
-    cdn,
     devServer,
     createDir
   }: GTpls) {
@@ -254,7 +255,6 @@ export default function ({
       stylelint,
       git,
       npm,
-      cdn,
       mdx: devServer === 'docz'
     });
     const content_pkg = tpl.pkj({
@@ -388,7 +388,7 @@ export default function ({
       installDevCliPrefix = `cd ${initPath} && ${installDevCliPrefix}`;
     }
 
-    const dependencies_default = dependencies({
+    const dependencies_default = dependencies(strategy, {
       project_type,
       build,
       ts,
@@ -405,7 +405,7 @@ export default function ({
         : ''
     }`;
 
-    const { defaultDep, buildDep, tsDep, testDep, eslintDep, commitlintDep, stylelintDep, devServerDep } = devDependencies({
+    const { defaultDep, buildDep, tsDep, testDep, eslintDep, commitlintDep, stylelintDep, devServerDep } = devDependencies(strategy, {
       project_type,
       build,
       ts,
@@ -447,9 +447,9 @@ export default function ({
       const { success, msg } = afterRes || {};
 
       if (success === false) {
-        spinner.fail(chalk.red(`${logo} ${msg || '初始化项目失败 (Initialize project failed)'}  ❌  \n`));
+        spinner.fail(chalk.red(`${brand} ${msg || '初始化项目失败 (Initialize project failed)'}  ❌  \n`));
       } else {
-        spinner.succeed(chalk.green(`${logo} ${msg || '初始化项目完成 (Initialize project success)'}  ✅  \n`));
+        spinner.succeed(chalk.green(`${brand} ${msg || '初始化项目完成 (Initialize project success)'}  ✅  \n`));
       }
 
       process.exit(0);
@@ -458,7 +458,7 @@ export default function ({
     return figlet('omni cli', function (err, data) {
       if (err) {
         logErr(JSON.stringify(err));
-        spinner.fail(chalk.red(`${logo} figlet 出现了问题！(Some thing about figlet is wrong!)  ❌  \n`));
+        spinner.fail(chalk.red(`${brand} figlet 出现了问题！(Some thing about figlet is wrong!)  ❌  \n`));
       }
       console.info(chalk.yellow(data || 'OMNI-DOOR CLI'));
       fn(done);
@@ -509,13 +509,13 @@ export default function ({
         installCommitlintDevCli,
         installStylelintDevCli,
         installServerDevCli
-      ], done, err => spinner.warn(chalk.yellow(`${logo} ${JSON.stringify(err)}  ❗️  \n`)), isSilent));
+      ], done, err => spinner.warn(chalk.yellow(`${brand} ${JSON.stringify(err)}  ❗️  \n`)), isSilent));
 
       // loading start display
       spinner.start();
     } catch (err) {
       logErr(JSON.stringify(err));
-      spinner.fail(chalk.red(`${logo} 安装依赖发生错误！(The installation of dependencies occurred some accidents!)  ❌  \n`));
+      spinner.fail(chalk.red(`${brand} 安装依赖发生错误！(The installation of dependencies occurred some accidents!)  ❌  \n`));
     }
   }
 
@@ -529,7 +529,7 @@ export default function ({
           logWarn('没有找到 npm 包管理工具！(Cannot found the npm package management tool!)');
           process.exit(0);
         } else {
-          spinner.info(chalk.yellowBright(`${logo} 缺少包管理工具 ${pkgtool}！(Missing package management tool ${pkgtool}!)  🔰  \n`));
+          spinner.info(chalk.yellowBright(`${brand} 缺少包管理工具 ${pkgtool}！(Missing package management tool ${pkgtool}!)  🔰  \n`));
           inquirer.prompt([{
             name: 'install',
             type: 'confirm',
@@ -581,7 +581,7 @@ export default function ({
       },{
         name: 'name',
         type: 'input',
-        message: '请输入项目名称 (please enter your project name)：',
+        message: `${LOGO}[1/13] 请输入项目名称 (please enter your project name)：`,
         when: function (answer: any) {
           if (answer.overwrite === false) {
             return process.exit(0);
@@ -593,24 +593,24 @@ export default function ({
         name: 'project_type',
         type: 'list',
         choices: [ 'react-spa (React单页应用)', 'react-component-library (React组件库)', 'toolkit (工具库)' ],
-        message: '请选择项目类型 (please choose the type of project)：'
+        message: `${LOGO}[2/13] 请选择项目类型 (please choose the type of project)：`
       },{
         name: 'ts',
         type: 'confirm',
-        message: '是否使用typescript? (whether or not apply typescript?)'
+        message: `${LOGO}[3/13] 是否使用typescript? (whether or not apply typescript?)`
       },{
         name: 'eslint',
         type: 'confirm',
-        message: '是否使用eslint? (whether or not apply eslint?)'
+        message: `${LOGO}[4/13] 是否使用eslint? (whether or not apply eslint?)`
       },{
         name: 'commitlint',
         type: 'confirm',
-        message: '是否使用commitlint? (whether or not apply commitlint?)'
+        message: `${LOGO}[5/13] 是否使用commitlint? (whether or not apply commitlint?)`
       },{
         name: 'style',
         type: 'list',
         choices: [ 'less', 'scss', 'css', 'all', 'none' ],
-        message: '应用哪种样式文件? (which the stylesheet type you like applying?)',
+        message: `${LOGO}[6/13] 应用哪种样式文件? (which the stylesheet type you like applying?)`,
         default: 'less',
         when: function (answer: any) {
           if (answer.project_type === 'toolkit (工具库)') {
@@ -621,7 +621,7 @@ export default function ({
       },{
         name: 'stylelint',
         type: 'confirm',
-        message: '是否使用stylelint? (whether or not apply stylelint?)',
+        message: `${LOGO}[7/13] 是否使用stylelint? (whether or not apply stylelint?)`,
         when: function (answer: any) {
           if (!answer.style || answer.style === 'none') {
             return false;
@@ -632,25 +632,25 @@ export default function ({
         name: 'test',
         type: 'list',
         choices: [ 'mocha', 'jest', 'karma', 'none' ],
-        message: '应用哪种单测框架? (which unit test frame would you like applying?)'
+        message: `${LOGO}[8/13] 应用哪种单测框架? (which unit test frame would you like applying?)`
       },{
         name: 'build',
         type: 'list',
         choices: [ 'webpack', 'rollup', 'tsc', 'none' ],
-        message: '应用哪种打包工具? (which build tool would you like applying?)'
+        message: `${LOGO}[9/13] 应用哪种打包工具? (which build tool would you like applying?)`
       },{
         name: 'git',
         type: 'input',
-        message: '请输入你的git仓库地址 (please enter your git repo address)：'
+        message: `${LOGO}[10/13] 请输入你的git仓库地址 (please enter your git repo address)：`
       },{
         name: 'npm',
         type: 'list',
         choices: [ 'none', 'npm', 'yarn', 'cnpm', 'taobao', 'set by yourself' ],
-        message: '请选择npm仓库地址 (please chioce the npm depository address)：'
+        message: `${LOGO}[11/13] 请选择npm仓库地址 (please chioce the npm depository address)：`
       },{
         name: 'npm_custom',
         type: 'input',
-        message: '请输入npm仓库地址 (please input the npm depository address)：',
+        message: `${LOGO}[11/13] 请输入npm仓库地址 (please input the npm depository address)：`,
         when: function (answer: any) {
           if (answer.npm === 'set by yourself') {
             return true;
@@ -659,29 +659,7 @@ export default function ({
         },
         validate: function (input: any) {
           if (!input) {
-            return 'Please input your npm depository address';
-          }
-  
-          return true;
-        }
-      },{
-        name: 'cdn',
-        type: 'list',
-        choices: [ 'none', 'set by yourself' ],
-        message: '请选择cdn地址 (please chioce the cdn address)：'
-      },{
-        name: 'cdn_custom',
-        type: 'input',
-        message: '请输入cdn地址 (please input the cdn address)：',
-        when: function (answer: any) {
-          if (answer.cdn === 'set by yourself') {
-            return true;
-          }
-          return false;
-        },
-        validate: function (input: any) {
-          if (!input) {
-            return 'Please input your cdn address';
+            return `${LOGO} Please input your npm depository address`;
           }
   
           return true;
@@ -690,13 +668,13 @@ export default function ({
         name: 'dev_server',
         type: 'list',
         choices: [ 'basic', 'docz', 'storybook', 'bisheng', 'none' ],
-        message: '请选择开发服务 (please chioce the development server)：',
+        message: `${LOGO}[12/13] 请选择开发服务 (please chioce the development server)：`,
         default: 'basic'
       },{
         name: 'pkgtool',
         type: 'list',
         choices: [ 'yarn', 'npm', 'cnpm' ],
-        message: '请选择包安装工具，推荐使用yarn (please chioce the package install tool, recommended use yarn)：',
+        message: `${LOGO}[13/13] 即将进行初始化，请选择包安装工具，推荐使用yarn (please chioce the package install tool, recommended use yarn)：`,
         default: 'yarn'
       }
     ];
@@ -709,12 +687,12 @@ export default function ({
         createDir = true;
       }
     } catch (err) {
-      spinner.warn(chalk.yellow(`${logo} ${JSON.stringify(err)}  ❗️  \n`));
+      spinner.warn(chalk.yellow(`${brand} ${JSON.stringify(err)}  ❗️  \n`));
     }
 
     inquirer.prompt(questions)
-      .then(async (answers) => {
-        const { name, project_type, ts, eslint, commitlint, style, stylelint, test, build, git, npm, npm_custom, cdn, cdn_custom, dev_server, pkgtool } = answers;
+      .then(async answers => {
+        const { name, project_type, ts, eslint, commitlint, style, stylelint, test, build, git, npm, npm_custom, dev_server, pkgtool } = answers;
 
         const testFrame: TESTFRAME = test === 'none' ? '' : test;
         const stylesheet = style === 'none' ? '' : style;
@@ -734,7 +712,6 @@ export default function ({
           stylelint,
           git,
           npm: npm_custom || (npm === 'none' ? '' : npm),
-          cdn: cdn_custom || (cdn === 'none' ? '' : cdn),
           devServer: dev_server === 'none' ? '' : dev_server
         });
 
@@ -775,14 +752,14 @@ export default function ({
           installStylelintDevCli,
           installServerDevCli,
           gitCli
-        ], done, err => spinner.warn(chalk.yellow(`${logo} ${JSON.stringify(err)}  ❗  \n`)), isSilent));
+        ], done, err => spinner.warn(chalk.yellow(`${brand} ${JSON.stringify(err)}  ❗  \n`)), isSilent));
 
         // loading start display
         spinner.start();
       })
       .catch(err => {
         logErr(JSON.stringify(err));
-        spinner.fail(chalk.red(`${logo} 安装依赖发生错误！(The installation of dependencies occurred some accidents!)  ❌  \n`));
+        spinner.fail(chalk.red(`${brand} 安装依赖发生错误！(The installation of dependencies occurred some accidents!)  ❌  \n`));
         process.exit(1);
       });
   }

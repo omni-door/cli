@@ -1,4 +1,5 @@
-import { BUILD, TESTFRAME, STYLE, DEVSERVER, PROJECT_TYPE } from '../index.d';
+import { BUILD, TESTFRAME, STYLE, DEVSERVER, PROJECT_TYPE, STRATEGY } from '../index.d';
+import getDependency from './dependencies_strategy';
 
 interface Config {
   project_type: PROJECT_TYPE;
@@ -12,18 +13,21 @@ interface Config {
   devServer: DEVSERVER;
 }
 
-export function dependencies (config: Config) {
+export function dependencies (strategy: STRATEGY, config: Config) {
+  const dependency = getDependency(strategy);
   const { project_type, build } = config;
   const isReactProject = project_type === 'spa_react' || project_type === 'component_library_react';
 
   return [
-    isReactProject ? 'react' : '',
-    isReactProject ? 'react-dom' : '',
-    (build === 'webpack' || build === 'rollup') ? 'core-js@3' : ''
+    isReactProject ? dependency('react') : '',
+    isReactProject ? dependency('react-dom') : '',
+    (build === 'webpack' || build === 'rollup') ? dependency('core-js') : ''
   ];
 }
 
-export function devDependencies (config: Config) {
+export function devDependencies (strategy: STRATEGY, config: Config) {
+  const dependency = getDependency(strategy);
+
   const {
     project_type,
     build,
@@ -38,170 +42,169 @@ export function devDependencies (config: Config) {
   const isReactProject = project_type === 'spa_react' || project_type === 'component_library_react';
 
   const reactDependencies = [
-    'react',
-    'react-dom',
-    '@babel/preset-react',
-    '@types/react',
-    '@types/react-dom'
+    dependency('react'),
+    dependency('react-dom'),
+    dependency('@babel/preset-react'),
+    dependency('@types/react'),
+    dependency('@types/react-dom')
   ];
 
   const loaderDependencies = [
-    'babel-loader',
-    style ? 'style-loader' : '',
-    style ? 'css-loader' : '',
-    (style === 'all' || style === 'less') ? 'less' : '',
-    (style === 'all' || style === 'less') ? 'less-loader' : '',
-    (style === 'all' || style === 'scss') ? 'sass-loader' : '',
-    (style === 'all' || style === 'scss') ? 'node-sass' : '',
-    'url-loader',
-    'file-loader'
+    dependency('babel-loader'),
+    style ? dependency('style-loader') : '',
+    style ? dependency('css-loader') : '',
+    (style === 'all' || style === 'less') ? dependency('less') : '',
+    (style === 'all' || style === 'less') ? dependency('less-loader') : '',
+    (style === 'all' || style === 'scss') ? dependency('sass-loader') : '',
+    (style === 'all' || style === 'scss') ? dependency('node-sass') : '',
+    dependency('url-loader'),
+    dependency('file-loader')
   ];
 
   const babelDependencies = [
-    '@babel/core',
-    '@babel/preset-env',
-    isReactProject ? '@babel/preset-react' : '',
-    ts ? '@babel/preset-typescript' : ''
+    dependency('@babel/core'),
+    dependency('@babel/preset-env'),
+    isReactProject ? dependency('@babel/preset-react') : '',
+    ts ? dependency('@babel/preset-typescript') : ''
   ];
 
   const pluginDependencies = [
-    'html-webpack-plugin'
+    dependency('html-webpack-plugin')
   ];
 
   const buildDependencies = build === 'webpack' ? [
-    'webpack',
-    'webpack-cli',
+    dependency('webpack'),
+    dependency('webpack-cli'),
     ...pluginDependencies,
     ...loaderDependencies,
     ...babelDependencies
   ] : build === 'rollup' ? [
-    'rollup',
-    'rollup-plugin-node-resolve',
-    'rollup-plugin-babel',
-    'rollup-plugin-commonjs',
-    'rollup-plugin-node-resolve',
-    ts ? 'rollup-plugin-typescript' : '',
-    ts ? 'rollup-plugin-typescript2' : '',
-    'rollup-plugin-json',
+    dependency('rollup'),
+    dependency('rollup-plugin-node-resolve'),
+    dependency('rollup-plugin-babel'),
+    dependency('rollup-plugin-commonjs'),
+    dependency('rollup-plugin-node-resolve'),
+    ts ? dependency('rollup-plugin-typescript') : '',
+    ts ? dependency('rollup-plugin-typescript2') : '',
+    dependency('rollup-plugin-json'),
     ...babelDependencies
   ] : [];
 
   const tsTypesDependencies = testFrame ? testFrame === 'jest' ? [
-    '@types/jest',
-    '@types/enzyme',
-    isReactProject ? '@types/enzyme-adapter-react-16' : '',
-    'ts-jest'
+    dependency('@types/jest'),
+    dependency('@types/enzyme'),
+    isReactProject ? dependency('@types/enzyme-adapter-react-16') : '',
+    dependency('ts-jest')
   ] : [
-    '@types/chai',
-    '@types/mocha'
+    dependency('@types/chai'),
+    dependency('@types/mocha')
   ] : [];
 
   const tsDependencies = ts ? [
-    isReactProject ? '@types/react' : '',
-    isReactProject ? '@types/react-dom' : '',
-    'typescript',
-    'ts-node',
-    'ts-loader',
+    isReactProject ? dependency('@types/react') : '',
+    isReactProject ? dependency('@types/react-dom') : '',
+    dependency('typescript'),
+    dependency('ts-node'),
+    dependency('ts-loader'),
     ...tsTypesDependencies
   ] : [];
 
   const testDependencies = testFrame
     ? testFrame === 'jest'
       ? [
-        isReactProject ? 'enzyme' : '',
-        isReactProject ? 'enzyme-adapter-react-16' : '',
-        'jest',
-        'jest-transform-stub'
+        isReactProject ? dependency('enzyme') : '',
+        isReactProject ? dependency('enzyme-adapter-react-16') : '',
+        dependency('jest'),
+        dependency('jest-transform-stub')
       ]
       : testFrame === 'karma'
         ? [
-          'chai',
-          'mocha',
-          'nyc',
-          'karma',
-          'karma-chrome-launcher',
-          'karma-firefox-launcher',
-          'karma-coverage',
-          'karma-firefox-launcher',
-          'karma-mocha',
-          'karma-opera-launcher',
-          'karma-safari-launcher',
-          'karma-typescript',
-          'karma-webpack'
+          dependency('chai'),
+          dependency('mocha'),
+          dependency('nyc'),
+          dependency('karma'),
+          dependency('karma-chrome-launcher'),
+          dependency('karma-firefox-launcher'),
+          dependency('karma-coverage'),
+          dependency('karma-firefox-launcher'),
+          dependency('karma-mocha'),
+          dependency('karma-opera-launcher'),
+          dependency('karma-safari-launcher'),
+          dependency('karma-typescript'),
+          dependency('karma-webpack')
         ]
         : [
-          'chai',
-          'mocha',
-          'nyc'
+          dependency('chai'),
+          dependency('mocha'),
+          dependency('nyc')
         ]
     : [];
 
   const eslintDependencies = eslint ? [
-    'eslint',
-    isReactProject ? 'eslint-plugin-react' : '',
-    ts ? '@typescript-eslint/eslint-plugin' : '',
-    ts ? '@typescript-eslint/parser' : ''
+    dependency('eslint'),
+    isReactProject ? dependency('eslint-plugin-react') : '',
+    ts ? dependency('@typescript-eslint/eslint-plugin') : '',
+    ts ? dependency('@typescript-eslint/parser') : ''
   ] : [];
 
   const commitlintDependencies = commitlint ? [
-    '@commitlint/cli',
-    'husky',
-    'lint-staged'
+    dependency('@commitlint/cli'),
+    dependency('husky'),
+    dependency('lint-staged')
   ] : [];
 
   const stylelintDependencies = stylelint ? [
-    'stylelint',
-    'stylelint-config-standard',
-    'stylelint-config-standard',
-    'stylelint-config-css-modules',
-    'stylelint-config-rational-order',
-    'stylelint-config-prettier',
-    'stylelint-order',
-    'stylelint-declaration-block-no-ignored-properties',
-    style === 'all' || style === 'scss' ? 'stylelint-scss' : ''
+    dependency('stylelint'),
+    dependency('stylelint-config-standard'),
+    dependency('stylelint-config-standard'),
+    dependency('stylelint-config-css-modules'),
+    dependency('stylelint-config-rational-order'),
+    dependency('stylelint-config-prettier'),
+    dependency('stylelint-order'),
+    dependency('stylelint-declaration-block-no-ignored-properties'),
+    style === 'all' || style === 'scss' ? dependency('stylelint-scss') : ''
   ] : [];
 
   const doczDependencies= [
-    'docz@1.3.2',
-    'docz-theme-default@1.2.0',
-    'docz-plugin-css@0.11.0',
-    'react-hot-loader@4.12.16'
+    dependency('docz'),
+    dependency('docz-theme-default'),
+    dependency('docz-plugin-css'),
+    dependency('react-hot-loader')
   ];
 
   const storybookDependencies= [
-    '@storybook/react@5.2.5',
-    '@storybook/addons@5.2.5',
-    '@storybook/addon-options@5.2.5',
-    '@storybook/addon-actions@5.2.5',
-    '@storybook/addon-actions@5.2.5',
-    '@storybook/addon-docs@5.2.5',
-    '@storybook/addon-info@5.2.5',
-    '@storybook/addon-knobs@5.2.5',
-    '@storybook/addon-links@5.2.5',
-    '@storybook/addon-notes@5.2.5',
-    'awesome-typescript-loader@5.2.1',
-    'react-docgen-typescript-loader@3.3.0',
-    'storybook-readme@5.0.8',
+    dependency('@storybook/react'),
+    dependency('@storybook/addons'),
+    dependency('@storybook/addon-options'),
+    dependency('@storybook/addon-actions'),
+    dependency('@storybook/addon-docs'),
+    dependency('@storybook/addon-info'),
+    dependency('@storybook/addon-knobs'),
+    dependency('@storybook/addon-links'),
+    dependency('@storybook/addon-notes'),
+    dependency('awesome-typescript-loader'),
+    dependency('react-docgen-typescript-loader'),
+    dependency('storybook-readme'),
     ...(build !== 'webpack' ? loaderDependencies : []),
     ...(build !== 'webpack' && build !== 'rollup' ? babelDependencies : [])
   ];
 
   const bishengDependencies = [
-    'bisheng',
-    'bisheng-theme-one',
-    'bisheng-plugin-react'
+    dependency('bisheng'),
+    dependency('bisheng-theme-one'),
+    dependency('bisheng-plugin-react')
   ];
 
   const basicServerDependencies = [
-    'express',
-    build !== 'webpack' ? 'webpack' : '',
-    'webpack-dev-middleware',
-    'webpack-hot-middleware',
-    'http-proxy-middleware',
+    dependency('express'),
+    build !== 'webpack' ? dependency('webpack') : '',
+    dependency('webpack-dev-middleware'),
+    dependency('webpack-hot-middleware'),
+    dependency('http-proxy-middleware'),
     ...(build !== 'webpack' ? loaderDependencies : []),
     ...(build !== 'webpack' ? pluginDependencies : []),
     ...(build !== 'webpack' && build !== 'rollup' ? babelDependencies : []),
-    ts ? '@types/webpack-env': ''
+    ts ? dependency('@types/webpack-env'): ''
   ];
 
   let devServerDependencies: string[] = [];
@@ -222,8 +225,8 @@ export function devDependencies (config: Config) {
 
   return {
     defaultDep: [
-      '@omni-door/cli',
-      'del'
+      dependency('@omni-door/cli'),
+      dependency('del')
     ],
     buildDep: buildDependencies,
     tsDep: tsDependencies,

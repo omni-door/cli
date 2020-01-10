@@ -8,6 +8,7 @@ export type TESTFRAME = 'mocha' | 'jest' | 'karma' | '';
 export type PKJTOOL = 'yarn' | 'npm' | 'cnpm';
 export type STYLE = 'less' | 'scss' | 'css' | 'all' | '';
 export type DEVSERVER = 'basic' | 'docz' | 'storybook' | 'bisheng' | '';
+export type STRATEGY = 'stable' | 'latest';
 export type ANYOBJECT = { [propName: string]: any };
 
 export type GenerateOmniConfigParams = {
@@ -22,7 +23,6 @@ export type GenerateOmniConfigParams = {
   stylelint: boolean;
   git?: string;
   npm: NPM | string;
-  cdn: string;
   mdx: boolean;
 };
 
@@ -74,7 +74,6 @@ export type OmniConfig = {
   release: {
     git?: string;
     npm?: NPM | string;
-    cdn?: string;
     test?: boolean;
     eslint?: boolean;
     stylelint?: boolean;

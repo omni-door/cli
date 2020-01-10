@@ -42,7 +42,6 @@ type OmniConfig = {
   release: {
     git?: string;
     npm?: NPM | string;
-    cdn?: string;
     test?: boolean;
     eslint?: boolean;
     stylelint?: boolean;
@@ -114,9 +113,9 @@ initial({
 
 - 同样支持其他阶段的命令：`import { new as newTpl, build, release } from '@omni-door/cli';`
 
-- 支持自定义 logo 前缀：
+- 支持自定义 brand 前缀：
   ```ts
-  import { setLogo } from '@omni-door/cli';
+  import { setBrand } from '@omni-door/cli';
 
-  setLogo('自定义的前缀：');
+  setBrand('自定义的前缀：');
   ```

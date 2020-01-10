@@ -6,9 +6,6 @@ import { execShell } from '../../utils/exec';
 import { getHandlers } from '../../utils/tackle_plugins';
 import { OmniConfig } from '../../index.d';
 
-/**
- * todo 1. cdn release
- */
 export default async function (config: OmniConfig | {}, iterTactic?: {
   ignore?: boolean;
   manual?: string;
@@ -22,7 +19,6 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
   const { release: {
     git,
     npm,
-    cdn,
     test = false,
     eslint = false,
     stylelint = false,

@@ -1,41 +1,43 @@
+import getDependency from './dependencies_strategy';
 import { BUILD } from '../index.d';
 
 export default function (config: {
   build: BUILD;
 }) {
+  const dependency = getDependency('stable');
   const {
     build
   } = config;
 
   const buildDependencies = build === 'webpack' ? [
-    'webpack',
-    'webpack-cli',
-    'babel-loader',
-    'ts-loader',
-    'style-loader',
-    'css-loader',
-    'less',
-    'less-loader',
-    'sass-loader',
-    'node-sass',
-    'url-loader',
-    'file-loader',
-    'html-webpack-plugin',
-    '@babel/core',
-    '@babel/preset-env',
-    '@babel/preset-react',
-    '@babel/preset-typescript'
+    dependency('webpack'),
+    dependency('webpack-cli'),
+    dependency('babel-loader'),
+    dependency('ts-loader'),
+    dependency('style-loader'),
+    dependency('css-loader'),
+    dependency('less'),
+    dependency('less-loader'),
+    dependency('sass-loader'),
+    dependency('node-sass'),
+    dependency('url-loader'),
+    dependency('file-loader'),
+    dependency('html-webpack-plugin'),
+    dependency('@babel/core'),
+    dependency('@babel/preset-env'),
+    dependency('@babel/preset-react'),
+    dependency('@babel/preset-typescript')
   ] : build === 'rollup' ? [
-    'rollup',
-    'rollup-plugin-node-resolve',
-    'rollup-plugin-babel',
-    'rollup-plugin-commonjs',
-    'rollup-plugin-node-resolve',
-    'rollup-plugin-typescript',
-    'rollup-plugin-typescript2',
-    'rollup-plugin-json'
+    dependency('rollup'),
+    dependency('rollup-plugin-node-resolve'),
+    dependency('rollup-plugin-babel'),
+    dependency('rollup-plugin-commonjs'),
+    dependency('rollup-plugin-node-resolve'),
+    dependency('rollup-plugin-typescript'),
+    dependency('rollup-plugin-typescript2'),
+    dependency('rollup-plugin-json')
   ] : build === 'tsc' ? [
-    'typescript'
+    dependency('typescript')
   ]
     : [];
 
