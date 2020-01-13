@@ -14,7 +14,7 @@ export default function (config: {
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+const WebpackBar = require('webpackbar');
 
 const htmlWebpackPlugin = new HtmlWebpackPlugin({
   title: '${name}',
@@ -87,7 +87,7 @@ module.exports = {
   plugins: [
     htmlWebpackPlugin,
     new webpack.HotModuleReplacementPlugin(),
-    new ProgressBarPlugin()
+    new WebpackBar()
   ],
   mode: 'development',
   resolve: {
