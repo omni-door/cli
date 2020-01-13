@@ -69,7 +69,8 @@ export function devDependencies (strategy: STRATEGY, config: Config) {
   ];
 
   const pluginDependencies = [
-    dependency('html-webpack-plugin')
+    dependency('html-webpack-plugin'),
+    dependency('progress-bar-webpack-plugin')
   ];
 
   const buildDependencies = build === 'webpack' ? [

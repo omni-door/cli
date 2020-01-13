@@ -57,6 +57,7 @@ const devDependencies = {
   'webpack-cli': '3.3.10',
   'webpack-dev-middleware': '3.7.2',
   'webpack-hot-middleware': '2.25.0',
+  'progress-bar-webpack-plugin': '1.12.1',
   'docz': '1.3.2',
   'docz-plugin-css': '0.11.0',
   'docz-theme-default': '1.2.0',

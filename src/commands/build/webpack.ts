@@ -12,6 +12,7 @@ export default function (config: {
 const fs = require('fs');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 
 const omni_config = require(path.resolve(process.cwd(), 'omni.config.js'));
 const htmlPath = path.join('${src_dir}', 'index.html');
@@ -110,6 +111,7 @@ module.exports = configuration({
     ],
   },
   plugins: [
+    new ProgressBarPlugin(),
     htmlWebpackPlugin ? htmlWebpackPlugin : null
   ],
   mode: 'production',

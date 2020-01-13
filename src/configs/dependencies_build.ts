@@ -26,7 +26,8 @@ export default function (config: {
     dependency('@babel/core'),
     dependency('@babel/preset-env'),
     dependency('@babel/preset-react'),
-    dependency('@babel/preset-typescript')
+    dependency('@babel/preset-typescript'),
+    dependency('progress-bar-webpack-plugin')
   ] : build === 'rollup' ? [
     dependency('rollup'),
     dependency('rollup-plugin-node-resolve'),
