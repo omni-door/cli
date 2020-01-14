@@ -251,11 +251,7 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
       }
 
       spinner && spinner.stop();
-      if ((out_dir && !fs.existsSync(out_dir)) || (esm_dir && !fs.existsSync(esm_dir))) {
-        handleBuildErr()();
-      } else {
-        handleBuildSuc()();
-      }
+      handleBuildSuc()();
     }, function () {
       spinner && spinner.stop();
       handleBuildErr()();
