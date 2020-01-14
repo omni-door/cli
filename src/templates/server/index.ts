@@ -54,6 +54,9 @@ app.listen(port, () => {
     case 'win32':
       exec('start ' + url);
       break;
+    case 'linux':
+      exec('xdg-open ' + url);
+      break;
   }
   console.info('> Ready on ' + url);
 });
