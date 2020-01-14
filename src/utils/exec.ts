@@ -1,5 +1,5 @@
 import shelljs from 'shelljs';
-import { logDetail, logErr } from './logger';
+import { logErr } from './logger';
 
 export async function execShell (clis: string[], done?: (results: any[]) => any, handleErr?: (err: any) => any, silent?: boolean) {
   const results = [];
@@ -13,19 +13,16 @@ export async function execShell (clis: string[], done?: (results: any[]) => any,
           async: true,
           silent: !!silent
         }, function (code, stdout, stderr) {
-          if (code !== 0 || stderr) {
+          if (code === 1 || stderr) {
             reject(stderr || stdout);
           } else {
             resolve(stdout);
           }
         });
       })
-        .then(res => {
-          !silent && logDetail(`${i}-shelljs.exec.then.result~~~ ` +  res);
-          return res;
-        })
+        .then(res => res)
         .catch(err => {
-          !silent && logErr(`${i}-shelljs.exec.catch.error~~~ ` + err);
+          !silent && logErr(`${i}_${cli}_error:\n` + err);
           throw err;
         });
 

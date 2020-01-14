@@ -184,7 +184,7 @@ export default function (strategy: STRATEGY, {
     dir_name,
     stdout
   } = beforeRes || {};
-  const isSilent = typeof stdout === 'boolean' ? stdout : false;
+  const isSilent = typeof stdout === 'boolean' ? !stdout : false;
 
   function generateTpls ({
     name,
@@ -548,26 +548,25 @@ export default function (strategy: STRATEGY, {
   }
 
   function generateFiglet (fn: (done: () => void) => any) {
-    function done () {
-      const afterRes = typeof after === 'function' && after();
-      const { success, msg } = afterRes || {};
-
-      if (success === false) {
-        spinner.fail(chalk.red(`${getLogPrefix()} ${msg || '初始化项目失败 (Initialize project failed)'}  ❌  \n`));
-      } else {
-        spinner.succeed(chalk.green(`${getLogPrefix()} ${msg || '初始化项目完成 (Initialize project success)'}  ✅  \n`));
-      }
-
-      process.exit(0);
-    }
-
-    return figlet('omni cli', function (err, data) {
+    return figlet('@OMNI-DOOR/CLI', function (err, data) {
       if (err) {
         logErr(JSON.stringify(err));
-        spinner.fail(chalk.red(`${getLogPrefix()} figlet 出现了问题！(Some thing about figlet is wrong!)  ❌  \n`));
+        spinner.fail(chalk.yellow(`${getLogPrefix()} figlet 出现了问题！(Some thing about figlet is wrong!)  ❌  \n`));
       }
-      console.info(chalk.yellow(data || 'OMNI-DOOR CLI'));
-      fn(done);
+
+      return fn(function () {
+        const afterRes = typeof after === 'function' && after();
+        const { success, msg } = afterRes || {};
+  
+        if (success === false) {
+          spinner.fail(chalk.red(`${getLogPrefix()} ${msg || '初始化项目失败 (Initialize project failed)'}  ❌  \n`));
+        } else {
+          spinner.succeed(chalk.green(`${getLogPrefix()} ${msg || '初始化项目完成 (Initialize project success)'}  ✅  \n`));
+        }
+  
+        data && console.info(chalk.yellow(data));
+        process.exit(0);
+      });
     });
   }
 
