@@ -14,7 +14,7 @@ export async function execShell (clis: string[], done?: (results: any[]) => any,
           silent: !!silent
         }, function (code, stdout, stderr) {
           if (code !== 0 || stderr) {
-            reject(stderr);
+            reject(stderr || stdout);
           } else {
             resolve(stdout);
           }
