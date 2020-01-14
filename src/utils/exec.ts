@@ -13,16 +13,16 @@ export async function execShell (clis: string[], done?: (results: any[]) => any,
           async: true,
           silent: !!silent
         }, function (code, stdout, stderr) {
-          if (code === 1 || stderr) {
+          if (code !== 0) {
             reject(stderr || stdout);
           } else {
-            resolve(stdout);
+            resolve(stdout || stderr);
           }
         });
       })
         .then(res => res)
         .catch(err => {
-          !silent && logErr(`${i}_${cli}_error:\n` + err);
+          !silent && logErr(`${i} [${cli}] error:\n` + err);
           throw err;
         });
 

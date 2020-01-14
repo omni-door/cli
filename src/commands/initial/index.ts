@@ -738,7 +738,7 @@ export default function (strategy: STRATEGY, {
       },{
         name: 'test',
         type: 'list',
-        choices: [ 'mocha', 'jest', 'karma', 'none' ],
+        choices: [ 'none', 'mocha', 'jest', 'karma' ],
         message: `${getLogo()}[8/13] 应用哪种单测框架? (which unit test frame would you like applying?)`
       },{
         name: 'build',
