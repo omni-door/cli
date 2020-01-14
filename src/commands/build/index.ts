@@ -11,12 +11,15 @@ import webpackConfig from './webpack';
 import { logErr, logInfo, logWarn, logSuc, logEmph } from '../../utils/logger';
 import { execShell } from '../../utils/exec';
 import { getHandlers } from '../../utils/tackle_plugins';
+import { output_file } from '../../utils/output_file';
 import getLogPrefix, { getLogo } from '../../utils/log_prefix';
 import { OmniConfig, BUILD } from '../../index.d';
 import dependencies_build from '../../configs/dependencies_build';
 
 export default async function (config: OmniConfig | {}, buildTactic?: {
   verify?: boolean;
+  buildConfig?: string;
+  configFileName?: string;
 }) {
   if (JSON.stringify(config) === '{}') {
     logWarn('请先初始化项目！(Please Initialize project first!)');
@@ -40,10 +43,10 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
     auto_release
   }, plugins } = config as OmniConfig;
 
-  const { verify } = buildTactic || {};
+  const { verify, buildConfig, configFileName } = buildTactic || {};
 
   if (!out_dir || !src_dir) {
-    handleBuildErr('[omni.config.js]文件中未定义$src_dir 或 $out_dir (The $src_dir or $out_dir were missed in [omni.config.js])')();
+    handleBuildErr('配置文件中未定义 $src_dir 或 $out_dir (The $src_dir or $out_dir were missed in configuration file)')();
   }
 
   function handleBuildSuc (msg?: string) {
@@ -76,7 +79,7 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
       if (install) {
         const dependencies = dependencies_build({ build }).join(' ');
 
-        // install tool precheck
+        // install tool pre-check
         let iTool = 'yarn add -D';
         let iToolCheck = shelljs.exec('yarn -v', { async: false });
         if (~iToolCheck.stderr.indexOf('command not found')) {
@@ -185,9 +188,9 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
         if (!is_go_on) return;
       }
     } else {
-      const content_rollup = tool === 'rollup' && rollupConfig({ ts: typescript, multi_output, src_dir, out_dir, esm_dir });
-      const content_webpack = tool === 'webpack' && webpackConfig({ ts: typescript, multi_output, src_dir, out_dir });
-      const content_config = content_rollup || content_webpack;
+      const content_rollup = !buildConfig && tool === 'rollup' && rollupConfig({ ts: typescript, multi_output, src_dir, out_dir, esm_dir, configFileName });
+      const content_webpack = !buildConfig && tool === 'webpack' && webpackConfig({ ts: typescript, multi_output, src_dir, out_dir, configFileName });
+      const content_config = buildConfig || content_rollup || content_webpack;
   
       // put temporary file for build process
       if (content_config) {
@@ -207,7 +210,7 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
           buildCliArr.push(`${webpackPath} --config ${buildConfigPath}`);
 
           if (!fs.existsSync(webpackPath)) {
-            logWarn('请先安装 webpack-cl! (Please install webpack-cli first!)');
+            logWarn('请先安装 webpack-cli! (Please install webpack-cli first!)');
             is_go_on = await installDenpendencies('webpack');
           }
         }
@@ -216,13 +219,17 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
           return process.exit(1);
         }
 
-        fsExtra.outputFileSync(buildConfigPath, content_config, 'utf8');
+        output_file({
+          file_path: buildConfigPath,
+          file_content: content_config
+        });
       } else {
-        logWarn(`你的构建工具 ${tool} 暂不支持，请自行构建你的项目，或联系我们：omni.door.official@gmail.com \n your build tool ${tool} has not been support yet, please build the project by yourself! \n contact us: omni.door.official@gmail.com`);
+        logWarn(`你的构建工具 [${tool}] 暂不支持，请自行构建你的项目，或联系我们：omni.door.official@gmail.com \n your build tool ${tool} has not been support yet, please build the project by yourself! \n contact us: omni.door.official@gmail.com`);
         return process.exit(1);
       }
     }
 
+    // loading
     const spinner = tool !== 'rollup' && ora(`${getLogPrefix()} 项目构建中 (Building, please wait patiently)  ⏱  \n`);
     spinner && spinner.start();
 

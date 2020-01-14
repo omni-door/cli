@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import fsExtra from 'fs-extra';
 import { logErr, logInfo, logWarn, logSuc } from '../../utils/logger';
 import {
   component_class as class_component,
@@ -15,6 +14,7 @@ import {
   tool_readme,
   tool_test
 } from '../../templates';
+import { output_file } from '../../utils/output_file';
 import { getHandlers } from '../../utils/tackle_plugins';
 import { OmniConfig } from '../../index.d';
 
@@ -98,36 +98,81 @@ export default async function (config: OmniConfig | {}, componentName: string, o
     const content_test_tool = tpl.tool_test({ testFrame: test, toolName: componentName }); 
 
     if (isReactProject) {
-      fsExtra.outputFileSync(path.resolve(root, componentName, `index.${typescript ? 'ts' : 'js'}`), content_index, 'utf8');
-      cc && fsExtra.outputFileSync(path.resolve(root, componentName, `${componentName}.${typescript ? 'tsx' : 'jsx'}`), content_cc, 'utf8');
-      fc && fsExtra.outputFileSync(path.resolve(root, componentName, `${componentName}.${typescript ? 'tsx' : 'jsx'}`), content_fc, 'utf8');
-      readme && !mdx && fsExtra.outputFileSync(path.resolve(root, componentName, 'README.md'), content_readme, 'utf8');
-      readme && mdx && fsExtra.outputFileSync(path.resolve(root, componentName, 'README.mdx'), content_mdx, 'utf8');
-      fs.existsSync(path.resolve(process.cwd(), '.storybook')) && fsExtra.outputFileSync(path.resolve(root, componentName, `__stories__/index.stories.${
-        typescript
-          ? 'tsx'
-          : 'jsx'
-      }`), content_stories, 'utf8');
-      content_style && fsExtra.outputFileSync(path.resolve(root, componentName, `style/${componentName}.${stylesheet}`), content_style, 'utf8');
-      test && fsExtra.outputFileSync(path.resolve(root, componentName, `__test__/index.test.${
-        typescript
-          ? test === 'jest'
-            ? 'tsx' : 'ts'
-          : test === 'jest'
-            ? 'jsx' : 'js'
-      }`), content_test, 'utf8');
+      output_file({
+        file_path: path.resolve(root, componentName, `index.${typescript ? 'ts' : 'js'}`),
+        file_content: content_index
+      });
+      // class component
+      cc && output_file({
+        file_path: path.resolve(root, componentName, `${componentName}.${typescript ? 'tsx' : 'jsx'}`),
+        file_content: content_cc
+      });
+      // functional component
+      fc && output_file({
+        file_path: path.resolve(root, componentName, `${componentName}.${typescript ? 'tsx' : 'jsx'}`),
+        file_content: content_fc
+      });
+      // readme
+      readme && !mdx && output_file({
+        file_path: path.resolve(root, componentName, 'README.md'),
+        file_content: content_readme
+      });
+      readme && mdx && output_file({
+        file_path: path.resolve(root, componentName, 'README.mdx'),
+        file_content: content_mdx
+      });
+
+      // storybook demo
+      const hasStorybook = fs.existsSync(path.resolve(process.cwd(), '.storybook'));
+      hasStorybook && output_file({
+        file_path: path.resolve(root, componentName, `__stories__/index.stories.${
+          typescript
+            ? 'tsx'
+            : 'jsx'
+        }`),
+        file_content: content_stories
+      });
+
+      // stylesheet
+      output_file({
+        file_path: path.resolve(root, componentName, `style/${componentName}.${stylesheet}`),
+        file_content: content_style
+      });
+      // test file
+      test && output_file({
+        file_path: path.resolve(root, componentName, `__test__/index.test.${
+          typescript
+            ? test === 'jest'
+              ? 'tsx' : 'ts'
+            : test === 'jest'
+              ? 'jsx' : 'js'
+        }`),
+        file_content: content_test
+      });
     } else {
-      fsExtra.outputFileSync(path.resolve(root, componentName, `index.${typescript ? 'ts' : 'js'}`), content_index_tool, 'utf8');
-      readme && fsExtra.outputFileSync(path.resolve(root, componentName, 'README.md'), content_readme_tool, 'utf8');
-      test && fsExtra.outputFileSync(path.resolve(root, componentName, `__test__/index.test.${
-        typescript
-          ? 'ts'
-          : 'js'
-      }`), content_test_tool, 'utf8');
+      // index file
+      output_file({
+        file_path: path.resolve(root, componentName, `index.${typescript ? 'ts' : 'js'}`),
+        file_content: content_index_tool
+      });
+      // readme
+      readme && output_file({
+        file_path: path.resolve(root, componentName, 'README.md'),
+        file_content: content_readme_tool
+      });
+      // test file
+      test && output_file({
+        file_path: path.resolve(root, componentName, `__test__/index.test.${
+          typescript
+            ? 'ts'
+            : 'js'
+        }`),
+        file_content: content_test_tool
+      });
     }
 
     // success logger
-    logSuc(`${componentName} ${isReactProject ? '组件创建完成' : '创建完成'}！(The ${componentName} ${isReactProject ? 'component construction completed' : 'construction completed'}!)`);
+    logSuc(`${componentName} 创建完成！(The ${componentName} construction completed!)`);
   } catch (err) {
     // error logger
     logErr(`完蛋！好像有错误！(Oops! Some error occured) \n👉  ${JSON.stringify(err)}`);

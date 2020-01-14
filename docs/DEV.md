@@ -96,7 +96,9 @@ type STYLE = 'less' | 'scss' | 'css' | 'all' | '';
           eval(`fn = ${fn2Str}`);
 
           return fn(configs);
-        }
+        },
+        // 返回空字符串，则不会生成相应的 commitlint.config.js 文件
+        commitlint: config => ''
       };
     },
     dependencies: () => ['peeler-js'], // 安装项目依赖
@@ -107,7 +109,9 @@ type STYLE = 'less' | 'scss' | 'css' | 'all' | '';
         success: true,
         msg: '完成项目初始化构建'
       };
-    }
+    },
+    // 自定义 config 文件名称
+    configFileName: 'custom.config.js'
   });
   ```
 

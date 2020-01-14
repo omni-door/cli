@@ -1,7 +1,8 @@
 export default function (config: {
   name: string;
+  configFileName: string;
 }) {
-  const { name } = config;
+  const { name, configFileName } = config;
 
   return `# ${name}
 
@@ -59,7 +60,7 @@ npm run release -- -m 0.3.25
 npm run release -- -n
 \`\`\`
 
-**More powerful customization is in [omni.config.js]**
+**More powerful customizations are in [${configFileName}]**
 `;
 }
 

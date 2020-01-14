@@ -16,11 +16,11 @@ export type GenerateOmniConfigParams = {
   build: BUILD;
   ts: boolean;
   test: boolean;
-  testFrame: string;
-  eslint: boolean;
-  commitlint: boolean;
+  testFrame: TESTFRAME;
   style: STYLE;
   stylelint: boolean;
+  eslint: boolean;
+  commitlint: boolean;
   git?: string;
   npm: NPM | string;
   mdx: boolean;

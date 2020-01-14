@@ -7,8 +7,9 @@ export default function (config: {
   src_dir: string;
   out_dir: string;
   esm_dir: string;
+  configFileName?: string;
 }) {
-  const { ts, multi_output, src_dir = 'src', out_dir = 'lib', esm_dir } = config;
+  const { ts, multi_output, src_dir = 'src', out_dir = 'lib', esm_dir, configFileName = 'omni.config.js' } = config;
 
   return `const resolve = require('rollup-plugin-node-resolve');
 const commonjs = require('rollup-plugin-commonjs');
@@ -19,9 +20,9 @@ const json = require('rollup-plugin-json');
 const fs = require('fs');
 const path = require('path');
 const del = require('del');
-const omni_config = require(path.resolve(process.cwd(), 'omni.config.js'));
+const configs = require(path.resolve(process.cwd(), '${configFileName}'));
 
-const { build } = omni_config || {};
+const { build } = configs || {};
 const { configuration = config => config } = build || {};
 
 let indexPath = '';

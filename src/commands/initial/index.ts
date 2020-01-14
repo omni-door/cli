@@ -41,6 +41,7 @@ import templates from '../../configs/initial_tpls';
 import installClis from '../../configs/initial_clis';
 import { logErr, logWarn } from '../../utils/logger';
 import { execShell } from '../../utils/exec';
+import { output_file } from '../../utils/output_file';
 import getLogPrefix, { getLogo } from '../../utils/log_prefix';
 import { 
   TPLS_INITIAL,
@@ -152,13 +153,14 @@ export default function (strategy: STRATEGY, {
     success?: boolean;
     msg?: string;
   };
+  configFileName?: string;
 }) {
   // initial spinner
   const spinner = ora(`${getLogPrefix()} 项目初始化中 (Initializing, please wait patiently)  💤  \n`);
 
   // reset illegal strategy
   strategy = (strategy === 'stable' || strategy === 'latest') ? strategy : 'stable';
-  const { before, tpls, dependencies: dependencies_custom, devDependencies: devDependencies_custom, after } = option || {};
+  const { before, tpls, dependencies: dependencies_custom, devDependencies: devDependencies_custom, after, configFileName = 'omni.config.js' } = option || {};
   const { name: defaultName } = parse(process.cwd());
   const projectName =
     typeof simple === 'string'
@@ -173,7 +175,7 @@ export default function (strategy: STRATEGY, {
               ? components
               : defaultName;
 
-  const omniConfigPath = path.resolve('omni.config.js');
+  const configPath = path.resolve(configFileName);
   let initPath = process.cwd();
 
   const beforeRes = typeof before === 'function' && before(projectName);
@@ -309,62 +311,163 @@ export default function (strategy: STRATEGY, {
     const content_doczmdx = devServer === 'docz' && tpl.mdx({ name });
 
     // ReadMe
-    const content_readMe = tpl.readme({ name });
+    const content_readMe = tpl.readme({ name, configFileName });
 
     /**
      * create files
      */
-
+    const file_path = (p: string) => path.resolve(initPath, p);
     // default files
-    fsExtra.outputFileSync(path.resolve(initPath, 'omni.config.js'), content_omni, 'utf8');
-    fsExtra.outputFileSync(path.resolve(initPath, 'package.json'), content_pkg, 'utf8');
-    fsExtra.outputFileSync(path.resolve(initPath, '.gitignore'), content_gitignore, 'utf8');
-    fsExtra.outputFileSync(path.resolve(initPath, '.npmignore'), content_npmignore, 'utf8');
+    output_file({
+      file_path: file_path(configFileName),
+      file_content: content_omni
+    });
+    output_file({
+      file_path: file_path('package.json'),
+      file_content: content_pkg
+    });
+    output_file({
+      file_path: file_path('.gitignore'),
+      file_content: content_gitignore
+    });
+    output_file({
+      file_path: file_path('.npmignore'),
+      file_content: content_npmignore
+    });
 
     // src dir files
-    !isToolkitProject && !isReactSPAProject && fsExtra.outputFileSync(path.resolve(initPath, `src/index.${ts ? 'tsx' : 'jsx'}`), content_indexTpl, 'utf8');
-    isToolkitProject && fsExtra.outputFileSync(path.resolve(initPath, `src/toolkit/index.${ts ? 'tsx' : 'jsx'}`), content_indexTpl, 'utf8');
-    isReactSPAProject && fsExtra.outputFileSync(path.resolve(initPath, `src/index.${ts ? 'tsx' : 'jsx'}`), content_indexReactTpl, 'utf8');
-    isReactSPAProject && fsExtra.outputFileSync(path.resolve(initPath, 'src/index.html'), content_indexHtml, 'utf8');
-    content_d && fsExtra.outputFileSync(path.resolve(initPath, 'src/@types/global.d.ts'), content_d, 'utf8');
-    content_doczmdx && fsExtra.outputFileSync(path.resolve(initPath, 'src/index.mdx'), content_doczmdx, 'utf8');
+    !isToolkitProject && !isReactSPAProject && output_file({
+      file_path: file_path(`src/index.${ts ? 'tsx' : 'jsx'}`),
+      file_content: content_indexTpl
+    });
+    isToolkitProject && output_file({
+      file_path: file_path(`src/toolkit/index.${ts ? 'tsx' : 'jsx'}`),
+      file_content: content_indexTpl
+    });
+    isReactSPAProject && output_file({
+      file_path: file_path(`src/index.${ts ? 'tsx' : 'jsx'}`),
+      file_content: content_indexReactTpl
+    });
+    isReactSPAProject && output_file({
+      file_path: file_path('src/index.html'),
+      file_content: content_indexHtml
+    });
+    output_file({
+      file_path: file_path('src/@types/global.d.ts'),
+      file_content: content_d
+    });
+    output_file({
+      file_path: file_path('src/index.mdx'),
+      file_content: content_doczmdx
+    });
 
     // demo dir files
-    isBasicDevServer && !isReactSPAProject && fsExtra.outputFileSync(path.resolve(initPath, `demo/index.${ts ? 'tsx' : 'jsx'}`), content_indexReactTpl, 'utf8');
-    isBasicDevServer && !isReactSPAProject && fsExtra.outputFileSync(path.resolve(initPath, 'demo/index.html'), content_indexHtml, 'utf8');
-    isBasicDevServer && !isReactSPAProject && content_serverTpl && fsExtra.outputFileSync(path.resolve(initPath, 'demo/server/index.js'), content_serverTpl, 'utf8');
-    isBasicDevServer && !isReactSPAProject && content_webpackDev && fsExtra.outputFileSync(path.resolve(initPath, 'demo/server/webpack.config.dev.js'), content_webpackDev, 'utf8');
+    if (isBasicDevServer && !isReactSPAProject) {
+      output_file({
+        file_path: file_path(`demo/index.${ts ? 'tsx' : 'jsx'}`),
+        file_content: content_indexReactTpl
+      });
+      output_file({
+        file_path: file_path('demo/index.html'),
+        file_content: content_indexHtml
+      });
+      output_file({
+        file_path: file_path('demo/server/index.js'),
+        file_content: content_serverTpl
+      });
+      output_file({
+        file_path: file_path('demo/server/webpack.config.dev.js'),
+        file_content: content_webpackDev
+      });
+    }
 
     // tsconfig
-    content_ts && fsExtra.outputFileSync(path.resolve(initPath, 'tsconfig.json'), content_ts, 'utf8');
+    output_file({
+      file_path: file_path('tsconfig.json'),
+      file_content: content_ts
+    });
     
     // test files
-    content_mocha && fsExtra.outputFileSync(path.resolve(initPath, 'mocha.opts'), content_mocha, 'utf8');
-    content_karma && fsExtra.outputFileSync(path.resolve(initPath, 'karma.conf.js'), content_karma, 'utf8');
-    content_jest && fsExtra.outputFileSync(path.resolve(initPath, 'jest.config.js'), content_jest, 'utf8');
+    output_file({
+      file_path: file_path('mocha.opts'),
+      file_content: content_mocha
+    });
+    output_file({
+      file_path: file_path('karma.conf.js'),
+      file_content: content_karma
+    });
+    output_file({
+      file_path: file_path('jest.config.js'),
+      file_content: content_jest
+    });
 
     // lint files
-    content_eslintrc && fsExtra.outputFileSync(path.resolve(initPath, '.eslintrc.js'), content_eslintrc, 'utf8');
-    content_eslintignore && fsExtra.outputFileSync(path.resolve(initPath, '.eslintignore'), content_eslintignore, 'utf8');
-    content_stylelint && fsExtra.outputFileSync(path.resolve(initPath, 'stylelint.config.js'), content_stylelint, 'utf8');
-    content_commitlint && fsExtra.outputFileSync(path.resolve(initPath, 'commitlint.config.js'), content_commitlint, 'utf8');
+    output_file({
+      file_path: file_path('.eslintrc.js'),
+      file_content: content_eslintrc
+    });
+    output_file({
+      file_path: file_path('.eslintignore'),
+      file_content: content_eslintignore
+    });
+    output_file({
+      file_path: file_path('stylelint.config.js'),
+      file_content: content_stylelint
+    });
+    output_file({
+      file_path: file_path('commitlint.config.js'),
+      file_content: content_commitlint
+    });
 
     // build files
-    content_babel && fsExtra.outputFileSync(path.resolve(initPath, 'babel.config.js'), content_babel, 'utf8');
+    output_file({
+      file_path: file_path('babel.config.js'),
+      file_content: content_babel
+    });
 
     // dev-server files
-    content_bisheng && fsExtra.outputFileSync(path.resolve(initPath, 'bisheng.config.js'), content_bisheng, 'utf8');
-    content_postReadMe && fsExtra.outputFileSync(path.resolve(initPath, 'posts/README.md'), content_postReadMe, 'utf8');
-    isReactSPAProject && content_serverTpl && fsExtra.outputFileSync(path.resolve(initPath, 'server/index.js'), content_serverTpl, 'utf8');
-    isReactSPAProject && content_webpackDev && fsExtra.outputFileSync(path.resolve(initPath, 'server/webpack.config.dev.js'), content_webpackDev, 'utf8');
-    content_storybook_addons && fsExtra.outputFileSync(path.resolve(initPath, '.storybook/addons.js'), content_storybook_addons, 'utf8');
-    content_storybook_config && fsExtra.outputFileSync(path.resolve(initPath, '.storybook/config.js'), content_storybook_config, 'utf8');
-    content_storybook_mhead && fsExtra.outputFileSync(path.resolve(initPath, '.storybook/manager-head.html'), content_storybook_mhead, 'utf8');
-    content_storybook_webpack && fsExtra.outputFileSync(path.resolve(initPath, '.storybook/webpack.config.js'), content_storybook_webpack, 'utf8');
-    content_doczrc && fsExtra.outputFileSync(path.resolve(initPath, 'doczrc.js'), content_doczrc, 'utf8');
+    output_file({
+      file_path: file_path('bisheng.config.js'),
+      file_content: content_bisheng
+    });
+    output_file({
+      file_path: file_path('posts/README.md'),
+      file_content: content_postReadMe
+    });
+    isReactSPAProject && output_file({
+      file_path: file_path('server/index.js'),
+      file_content: content_serverTpl
+    });
+    isReactSPAProject && output_file({
+      file_path: file_path('server/webpack.config.dev.js'),
+      file_content: content_webpackDev
+    });
+    output_file({
+      file_path: file_path('.storybook/addons.js'),
+      file_content: content_storybook_addons
+    });
+    output_file({
+      file_path: file_path('.storybook/config.js'),
+      file_content: content_storybook_config
+    });
+    output_file({
+      file_path: file_path('.storybook/manager-head.html'),
+      file_content: content_storybook_mhead
+    });
+    output_file({
+      file_path: file_path('.storybook/webpack.config.js'),
+      file_content: content_storybook_webpack
+    });
+    output_file({
+      file_path: file_path('doczrc.js'),
+      file_content: content_doczrc
+    });
 
     // ReadMe
-    fsExtra.outputFileSync(path.resolve(initPath, 'README.md'), content_readMe, 'utf8');
+    output_file({
+      file_path: file_path('README.md'),
+      file_content: content_readMe
+    });
   }
 
   async function generateInstallDenpendencies ({
@@ -559,12 +662,12 @@ export default function (strategy: STRATEGY, {
   if (typeof custom === 'function') {
     return custom(default_tpl_list);
   } else if (simple || standard || entire || toolkit || components) {
-    if (fs.existsSync(omniConfigPath)) {
+    if (fs.existsSync(configPath)) {
       // double confirmation
       inquirer.prompt([{
         name: 'overwrite',
         type: 'confirm',
-        message: `${getLogo()} 确定要覆盖已经存在的 [omni.config.js] 文件? (Are you sure to overwrite [omni.config.js]?)`,
+        message: `${getLogo()} 确定要覆盖已经存在的 [${configFileName}] 文件? (Are you sure to overwrite [${configFileName}]?)`,
         default: false
       }]).then(answers => {
         const { overwrite } = answers;
@@ -581,7 +684,7 @@ export default function (strategy: STRATEGY, {
       {
         name: 'overwrite',
         type: 'confirm',
-        message: `${getLogo()} 确定要覆盖已经存在的 [omni.config.js] 文件? (Are you sure to overwrite [omni.config.js]?)`,
+        message: `${getLogo()} 确定要覆盖已经存在的 [${configFileName}] 文件? (Are you sure to overwrite [${configFileName}]?)`,
         default: false
       },{
         name: 'name',
@@ -687,7 +790,7 @@ export default function (strategy: STRATEGY, {
     let createDir = false;
     try {
       // if the config file non-existence，cancel double confirmation
-      if (!fs.existsSync(omniConfigPath)) {
+      if (!fs.existsSync(configPath)) {
         questions.shift();
         createDir = true;
       }

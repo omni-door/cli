@@ -13,7 +13,7 @@ export async function execShell (clis: string[], done?: (results: any[]) => any,
           async: true,
           silent: !!silent
         }, function (code, stdout, stderr) {
-          if (code === 1) {
+          if (code !== 0 || stderr) {
             reject(stderr);
           } else {
             resolve(stdout);
