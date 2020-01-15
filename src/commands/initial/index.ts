@@ -708,7 +708,7 @@ export default function (strategy: STRATEGY, {
         default: 'docz',
         message: `${getLogo()}[2/7] 请选择组件库Demo框架 (please chioce the component-library demonstration frame)：`,
         when: function (answer: any) {
-          if (answer.project_type === 'react-component-library (React组件库)') {
+          if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'component_library_react') {
             return true;
           }
           return false;
@@ -717,12 +717,24 @@ export default function (strategy: STRATEGY, {
         name: 'ts',
         type: 'confirm',
         message: `${getLogo()}[3/7] 是否使用typescript? (whether or not apply typescript?)`,
-        default: true
+        default: true,
+        when: function (answer: any) {
+          if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'spa_react') {
+            return true;
+          }
+          return false;
+        }
       },{
         name: 'test',
         type: 'confirm',
         message: `${getLogo()}[4/7] 是否开启单元测试? (whether or not apply unit-test?)`,
-        default: (answer: any) => answer.project_type !== 'react-spa (React单页应用)'
+        default: (answer: any) => ProjectType[answer.project_type as keyof typeof ProjectType] !== 'spa_react',
+        when: function (answer: any) {
+          if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'spa_react') {
+            return true;
+          }
+          return false;
+        }
       },{
         name: 'style',
         type: 'list',
@@ -730,7 +742,7 @@ export default function (strategy: STRATEGY, {
         message: `${getLogo()}[5/7] 应用哪种样式文件? (which the stylesheet type you like applying?)`,
         default: 'less',
         when: function (answer: any) {
-          if (answer.project_type === 'toolkit (工具库)') {
+          if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'toolkit') {
             return false;
           }
           return true;
@@ -740,7 +752,7 @@ export default function (strategy: STRATEGY, {
         type: 'checkbox',
         choices: (answer: any) => {
           const lintArr = [ 'eslint', 'commitlint', 'stylelint' ];
-          (answer.style === 'none' || answer.project_type === 'toolkit (工具库)') && lintArr.pop();
+          (answer.style === 'none' || ProjectType[answer.project_type as keyof typeof ProjectType] === 'toolkit') && lintArr.pop();
           return lintArr;
         },
         message: `${getLogo()}[6/7] 选择lint工具 (select the lint tool)：`,
