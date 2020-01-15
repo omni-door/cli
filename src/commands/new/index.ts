@@ -38,12 +38,16 @@ export default async function (config: OmniConfig | {}, componentName: string, o
 }) {
   if (JSON.stringify(config) === '{}') {
     logWarn('请先初始化项目！(Please initialize an omni-project first!)');
-    return;
+    return process.exit(1);
   }
-
 
   if (!componentName) {
     logWarn('请输入创建的模块名称！(Please input the module name!)');
+    return process.exit(1);
+  }
+
+  if (/[a-zA-Z\$\_]/.test(componentName.charAt(0))) {
+    logWarn('请输入合法的模块名称！(Please input a valid module name!)');
     return process.exit(1);
   }
 

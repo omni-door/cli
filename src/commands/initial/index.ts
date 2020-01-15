@@ -802,7 +802,7 @@ export default function (strategy: STRATEGY, {
           name,
           build,
           ts,
-          test: test === 'none' ? false : true,
+          test,
           testFrame,
           eslint,
           commitlint,
