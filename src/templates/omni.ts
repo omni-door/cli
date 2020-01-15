@@ -23,10 +23,7 @@ module.exports = {
     tool: '${build}',
     // The callback will be call in the build-process
     // You can return your custom build configuration
-    configuration: config => {
-      console.info('build config: ', config);
-      return config;
-    },
+    configuration: config => config,
     // whether or not output multiple files
     multi_output: ${project_type === 'spa_react' ? 'false' : 'true'},
     // whether or not process the ts files

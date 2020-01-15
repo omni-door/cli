@@ -164,11 +164,11 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
     }
 
     if (verify && eslint) {
-      await execShell(['npm run lint:es'], () => logEmph('eslint校验通过！(eslint passed!)'), handleBuildErr(`eslint校验失败！(eslint checking failed!) \n ${chalk.bgYellow('尝试执行 (try to exec): npm run lint:es_fix')}`));
+      await execShell(['npm run lint:es'], () => logEmph('eslint校验通过！(eslint passed!)'), handleBuildErr(`eslint校验失败！(eslint checking failed!) \n ${chalk.bgCyan('尝试执行 (try to exec): npm run lint:es_fix')}`));
     }
 
     if (verify && stylelint) {
-      await execShell(['npm run lint:style'], () => logEmph('stylelint校验通过！(stylelint passed!)'), handleBuildErr(`stylelint校验失败！(stylelint checking failed!) \n ${chalk.bgYellow('尝试执行 (try to exec): npm run lint:style_fix')}`));
+      await execShell(['npm run lint:style'], () => logEmph('stylelint校验通过！(stylelint passed!)'), handleBuildErr(`stylelint校验失败！(stylelint checking failed!) \n ${chalk.bgCyan('尝试执行 (try to exec): npm run lint:style_fix')}`));
     }
 
     if (!tool) {

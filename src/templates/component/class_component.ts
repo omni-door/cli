@@ -10,12 +10,12 @@ export default function (config: {
   return `import React, { PureComponent } from 'react';
 ${style ? `import './style/${componentName}.${style === 'all' ? 'less' : style}';` : ''}
 
-${ts ? `export interface ${componentName}Props {};
+${ts ? `export interface ${componentName}Props {}
 
-export interface ${componentName}States {};` : ''}
+export interface ${componentName}States {}` : ''}
 
 export class ${componentName} extends PureComponent${ts ? `<${componentName}Props, ${componentName}States>` : ''} {
-  render() {
+  ${ts ? 'public ' : ''}render() {
     const { children } = this.props;
 
     return (
