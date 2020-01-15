@@ -251,7 +251,11 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
       }
 
       spinner && spinner.stop();
-      handleBuildSuc()();
+      if (out_dir && !fs.existsSync(out_dir)) {
+        handleBuildErr(`输出的 ${out_dir} 文件不存在，构建失败！`)();
+      } else {
+        handleBuildSuc()();
+      }
     }, function () {
       spinner && spinner.stop();
       handleBuildErr()();
