@@ -16,6 +16,7 @@ export type GenerateOmniConfigParams = {
   build: BUILD;
   ts: boolean;
   test: boolean;
+  testFrame?: TESTFRAME;
   style: STYLE;
   stylelint: boolean;
   eslint: boolean;

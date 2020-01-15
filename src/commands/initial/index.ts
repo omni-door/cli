@@ -253,6 +253,7 @@ export default function (strategy: STRATEGY, {
       build,
       ts,
       test,
+      testFrame,
       eslint,
       commitlint,
       style,

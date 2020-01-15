@@ -2,7 +2,7 @@
 import { NPM, GenerateOmniConfigParams } from '../index.d';
 
 export default (config: GenerateOmniConfigParams) => {
-  const { project_type, build, ts, test, eslint, commitlint, style, stylelint, git, npm, mdx } = config;
+  const { project_type, build, ts, test, testFrame, eslint, commitlint, style, stylelint, git, npm, mdx } = config;
 
   const npmMap = {
     npm: 'https://registry.npmjs.org/',
@@ -31,7 +31,7 @@ module.exports = {
     multi_output: ${project_type === 'spa_react' ? 'false' : 'true'},
     // whether or not process the ts files
     typescript: ${!!ts},
-    // whether or not process unit or ui test
+    // whether or not process unit-test
     test: ${!!test},
     // whether or not process eslint fix and check
     eslint: ${!!eslint},
@@ -65,7 +65,7 @@ module.exports = {
     git: '${git}',
     // npm depository url
     npm: '${npmMap[npm as NPM] || npm}',
-    // whether or not process unit or ui test
+    // whether or not process unit-test
     test: ${!!test},
     // whether or not process eslint fix and check
     eslint: ${!!eslint},
@@ -88,6 +88,8 @@ module.exports = {
     type: '${project_type}',
     // whether or not apply typescript
     typescript: ${!!ts},
+    // the unit test frame
+    test: '${testFrame}',
     // stylesheet type
     stylesheet: '${style === 'all' ? 'less' : style}',
     // whether or not README.md

@@ -37,12 +37,18 @@ export default async function (config: OmniConfig | {}, componentName: string, o
   cc?: boolean;
 }) {
   if (JSON.stringify(config) === '{}') {
-    logWarn('请先初始化项目！(Please Initialize project first!)');
+    logWarn('请先初始化项目！(Please initialize an omni-project first!)');
     return;
   }
 
+
+  if (!componentName) {
+    logWarn('请输入创建的模块名称！(Please input the module name!)');
+    return process.exit(1);
+  }
+
   // capitalize first character
-  componentName = componentName!.charAt(0).toUpperCase() + componentName!.slice(1);
+  componentName = componentName.charAt(0).toUpperCase() + componentName.slice(1);
 
   let { fc, cc } = options!;
 
@@ -58,10 +64,15 @@ export default async function (config: OmniConfig | {}, componentName: string, o
     readme = false,
     mdx = false
   }, plugins } = config as OmniConfig;
-  
+
   if (!root) {
     logWarn('生成模板的路径缺失！(Missing the path for generate template!)');
-    process.exit(0);
+    return process.exit(1);
+  }
+
+  if (fs.existsSync(path.resolve(root, componentName))) {
+    logWarn(`模块 ${componentName} 已存在！(The ${componentName} module had been existed!)`);
+    return process.exit(1);
   }
 
   // handle new plugins
