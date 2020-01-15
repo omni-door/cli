@@ -3,7 +3,8 @@ import { STRATEGY } from '../index.d';
 const dependencies = {
   'core-js': '3',
   'react': '16.12.0',
-  'react-dom': '16.12.0'
+  'react-dom': '16.12.0',
+  'regenerator-runtime': '0.13.3'
 };
 
 const devDependencies = {

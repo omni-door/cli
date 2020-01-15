@@ -21,7 +21,8 @@ export function dependencies (strategy: STRATEGY, config: Config) {
   return [
     isReactProject ? dependency('react') : '',
     isReactProject ? dependency('react-dom') : '',
-    (build === 'webpack' || build === 'rollup') ? dependency('core-js') : ''
+    project_type === 'spa_react' ? dependency('core-js') : '',
+    project_type === 'spa_react' ? dependency('regenerator-runtime') : ''
   ];
 }
 
