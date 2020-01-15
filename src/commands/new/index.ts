@@ -38,17 +38,17 @@ export default async function (config: OmniConfig | {}, componentName: string, o
 }) {
   if (JSON.stringify(config) === '{}') {
     logWarn('请先初始化项目！(Please initialize an omni-project first!)');
-    return process.exit(1);
+    return process.exit(0);
   }
 
   if (!componentName) {
     logWarn('请输入创建的模块名称！(Please input the module name!)');
-    return process.exit(1);
+    return process.exit(0);
   }
 
   if (!/[a-zA-Z\$\_]/.test(componentName.charAt(0))) {
     logWarn('请输入合法的模块名称！(Please input a valid module name!)');
-    return process.exit(1);
+    return process.exit(0);
   }
 
   // capitalize first character
@@ -71,12 +71,12 @@ export default async function (config: OmniConfig | {}, componentName: string, o
 
   if (!root) {
     logWarn('生成模板的路径缺失！(Missing the path for generate template!)');
-    return process.exit(1);
+    return process.exit(0);
   }
 
   if (fs.existsSync(path.resolve(root, componentName))) {
     logWarn(`模块 ${componentName} 已存在！(The ${componentName} module had been existed!)`);
-    return process.exit(1);
+    return process.exit(0);
   }
 
   // handle new plugins
@@ -191,5 +191,6 @@ export default async function (config: OmniConfig | {}, componentName: string, o
   } catch (err) {
     // error logger
     logErr(`完蛋！好像有错误！(Oops! Some error occured) \n👉  ${JSON.stringify(err)}`);
+    process.exit(1);
   }
 }

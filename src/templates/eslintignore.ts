@@ -6,7 +6,8 @@ server/
 demo/
 node_modules/
 .storybook/
-src/**/*.test.*
+src/**/__test__/
+src/**/__stories__/
 
 doczrc.js
 .eslintrc.js

@@ -61,6 +61,7 @@ export default function () {
   "exclude": [
     "node_modules",
     "src/**/__test__/*",
+    "src/**/__stories__/*",
     "lib/*",
     "es/*",
     "build/*",
