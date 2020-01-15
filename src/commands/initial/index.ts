@@ -739,7 +739,7 @@ export default function (strategy: STRATEGY, {
         type: 'checkbox',
         choices: (answer: any) => {
           const lintArr = [ 'eslint', 'commitlint', 'stylelint' ];
-          answer.style === 'none' && lintArr.pop();
+          (answer.style === 'none' || answer.project_type === 'toolkit (工具库)') && lintArr.pop();
           return lintArr;
         },
         message: `${getLogo()}[6/7] 选择lint工具 (select the lint tool)：`,
