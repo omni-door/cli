@@ -2,7 +2,7 @@
 import { NPM, GenerateOmniConfigParams } from '../index.d';
 
 export default (config: GenerateOmniConfigParams) => {
-  const { project_type, build, ts, test, testFrame, eslint, commitlint, style, stylelint, git, npm, mdx } = config;
+  const { project_type, build, ts, test, eslint, commitlint, style, stylelint, git, npm, mdx } = config;
 
   const npmMap = {
     npm: 'https://registry.npmjs.org/',
@@ -86,8 +86,6 @@ module.exports = {
     root: ${project_type === 'toolkit' ? 'path.resolve(\'src/toolkit\')' : 'path.resolve(\'src\')'},
     // the type for generate template
     type: '${project_type}',
-    // the unit test frame
-    test: '${testFrame}',
     // whether or not apply typescript
     typescript: ${!!ts},
     // stylesheet type

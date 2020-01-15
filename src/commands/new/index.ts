@@ -90,12 +90,12 @@ export default async function (config: OmniConfig | {}, componentName: string, o
     const content_mdx = tpl.component_mdx({ componentName });
     const content_stories = tpl.component_stories({ componentName });
     const content_style = stylesheet && tpl.component_stylesheet({ componentName });
-    const content_test = tpl.component_test({ testFrame: test, componentName });
+    const content_test = tpl.component_test({ componentName });
   
     // tool tpl
     const content_index_tool = tpl.tool_index({ toolName: componentName });
     const content_readme_tool = tpl.tool_readme({ toolName: componentName });
-    const content_test_tool = tpl.tool_test({ testFrame: test, toolName: componentName }); 
+    const content_test_tool = tpl.tool_test({ toolName: componentName }); 
 
     if (isReactProject) {
       output_file({

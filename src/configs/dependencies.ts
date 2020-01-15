@@ -118,7 +118,7 @@ export function devDependencies (strategy: STRATEGY, config: Config) {
         dependency('jest'),
         dependency('jest-transform-stub')
       ]
-      : testFrame === 'karma'
+      : testFrame === 'mocha'
         ? [
           dependency('chai'),
           dependency('mocha'),
@@ -134,11 +134,7 @@ export function devDependencies (strategy: STRATEGY, config: Config) {
           dependency('karma-typescript'),
           dependency('karma-webpack')
         ]
-        : [
-          dependency('chai'),
-          dependency('mocha'),
-          dependency('nyc')
-        ]
+        : []
     : [];
 
   const eslintDependencies = eslint ? [

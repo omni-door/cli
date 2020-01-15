@@ -4,7 +4,7 @@ export type ENV = 'prod' | 'stg' | 'sit' | 'test' | 'dev';
 export type BUILD = 'webpack' | 'rollup' | 'tsc' | '';
 export type NPM = 'npm' | 'yarn' | 'cnpm' | 'taobao';
 export type PROJECT_TYPE = 'spa_react' | 'component_library_react' | 'toolkit';
-export type TESTFRAME = 'mocha' | 'jest' | 'karma' | '';
+export type TESTFRAME = 'mocha' | 'jest' | '';
 export type PKJTOOL = 'yarn' | 'npm' | 'cnpm';
 export type STYLE = 'less' | 'scss' | 'css' | 'all' | '';
 export type DEVSERVER = 'basic' | 'docz' | 'storybook' | 'bisheng' | '';
@@ -16,7 +16,6 @@ export type GenerateOmniConfigParams = {
   build: BUILD;
   ts: boolean;
   test: boolean;
-  testFrame: TESTFRAME;
   style: STYLE;
   stylelint: boolean;
   eslint: boolean;

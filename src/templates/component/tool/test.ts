@@ -1,20 +1,7 @@
-import { TESTFRAME } from './../../../index.d';
-
 export default function (config: {
-  testFrame: TESTFRAME;
   toolName: string;
 }) {
-  const { testFrame, toolName } = config;
-
-  if (testFrame === 'jest') {
-    return `import ${toolName} from '../';
-
-describe('${toolName}', () => {
-  it('renders correctly', () => {
-    expect(${toolName}).anything();
-  });
-});`;
-  }
+  const { toolName } = config;
 
   return `import 'mocha'
 import { expect } from 'chai'

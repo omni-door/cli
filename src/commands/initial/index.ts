@@ -253,7 +253,6 @@ export default function (strategy: STRATEGY, {
       build,
       ts,
       test,
-      testFrame,
       eslint,
       commitlint,
       style,
@@ -286,7 +285,7 @@ export default function (strategy: STRATEGY, {
 
     // test files
     const content_mocha = testFrame === 'mocha' && tpl.mocha({ ts });
-    const content_karma = testFrame === 'karma' && tpl.karma({ ts });
+    const content_karma = testFrame === 'mocha' && tpl.karma({ ts });
     const content_jest = testFrame === 'jest' && tpl.jest({ ts });
 
     // lint files
@@ -688,7 +687,7 @@ export default function (strategy: STRATEGY, {
       },{
         name: 'name',
         type: 'input',
-        message: `${getLogo()}[1/13] 请输入项目名称 (please enter your project name)：`,
+        message: `${getLogo()}[1/7] 请输入项目名称 (please enter your project name)：`,
         when: function (answer: any) {
           if (answer.overwrite === false) {
             return process.exit(0);
@@ -700,24 +699,34 @@ export default function (strategy: STRATEGY, {
         name: 'project_type',
         type: 'list',
         choices: [ 'react-spa (React单页应用)', 'react-component-library (React组件库)', 'toolkit (工具库)' ],
-        message: `${getLogo()}[2/13] 请选择项目类型 (please choose the type of project)：`
+        message: `${getLogo()}[2/7] 请选择项目类型 (please choose the type of project)：`
+      },{
+        name: 'dev_server',
+        type: 'list',
+        choices: [ 'docz', 'storybook', 'bisheng' ],
+        default: 'docz',
+        message: `${getLogo()}[2/7] 请选择组件库Demo框架 (please chioce the component-library demonstration frame)：`,
+        when: function (answer: any) {
+          if (answer.project_type === 'react-component-library (React组件库)') {
+            return true;
+          }
+          return false;
+        }
       },{
         name: 'ts',
         type: 'confirm',
-        message: `${getLogo()}[3/13] 是否使用typescript? (whether or not apply typescript?)`
+        message: `${getLogo()}[3/7] 是否使用typescript? (whether or not apply typescript?)`,
+        default: true
       },{
-        name: 'eslint',
+        name: 'test',
         type: 'confirm',
-        message: `${getLogo()}[4/13] 是否使用eslint? (whether or not apply eslint?)`
-      },{
-        name: 'commitlint',
-        type: 'confirm',
-        message: `${getLogo()}[5/13] 是否使用commitlint? (whether or not apply commitlint?)`
+        message: `${getLogo()}[4/7] 是否开启单元测试? (whether or not apply unit-test?)`,
+        default: (answer: any) => answer.project_type !== 'react-spa (React单页应用)'
       },{
         name: 'style',
         type: 'list',
         choices: [ 'less', 'scss', 'css', 'all', 'none' ],
-        message: `${getLogo()}[6/13] 应用哪种样式文件? (which the stylesheet type you like applying?)`,
+        message: `${getLogo()}[5/7] 应用哪种样式文件? (which the stylesheet type you like applying?)`,
         default: 'less',
         when: function (answer: any) {
           if (answer.project_type === 'toolkit (工具库)') {
@@ -726,62 +735,20 @@ export default function (strategy: STRATEGY, {
           return true;
         }
       },{
-        name: 'stylelint',
-        type: 'confirm',
-        message: `${getLogo()}[7/13] 是否使用stylelint? (whether or not apply stylelint?)`,
-        when: function (answer: any) {
-          if (!answer.style || answer.style === 'none') {
-            return false;
-          }
-          return true;
-        }
-      },{
-        name: 'test',
-        type: 'list',
-        choices: [ 'none', 'mocha', 'jest', 'karma' ],
-        message: `${getLogo()}[8/13] 应用哪种单测框架? (which unit test frame would you like applying?)`
-      },{
-        name: 'build',
-        type: 'list',
-        choices: [ 'webpack', 'rollup', 'tsc', 'none' ],
-        message: `${getLogo()}[9/13] 应用哪种打包工具? (which build tool would you like applying?)`
-      },{
-        name: 'git',
-        type: 'input',
-        message: `${getLogo()}[10/13] 请输入你的git仓库地址 (please enter your git repo address)：`
-      },{
-        name: 'npm',
-        type: 'list',
-        choices: [ 'none', 'npm', 'yarn', 'cnpm', 'taobao', 'set by yourself' ],
-        message: `${getLogo()}[11/13] 请选择npm仓库地址 (please chioce the npm depository address)：`
-      },{
-        name: 'npm_custom',
-        type: 'input',
-        message: `${getLogo()}[11/13] 请输入npm仓库地址 (please input the npm depository address)：`,
-        when: function (answer: any) {
-          if (answer.npm === 'set by yourself') {
-            return true;
-          }
-          return false;
+        name: 'lint',
+        type: 'checkbox',
+        choices: (answer: any) => {
+          const lintArr = [ 'eslint', 'commitlint', 'stylelint' ];
+          answer.style === 'none' && lintArr.pop();
+          return lintArr;
         },
-        validate: function (input: any) {
-          if (!input) {
-            return `${getLogo()}[11/13] Please input your npm depository address`;
-          }
-  
-          return true;
-        }
-      },{
-        name: 'dev_server',
-        type: 'list',
-        choices: [ 'basic', 'docz', 'storybook', 'bisheng', 'none' ],
-        message: `${getLogo()}[12/13] 请选择开发服务 (please chioce the development server)：`,
-        default: 'basic'
+        message: `${getLogo()}[6/7] 选择lint工具 (select the lint tool)：`,
+        default: [ 'eslint' ]
       },{
         name: 'pkgtool',
         type: 'list',
         choices: [ 'yarn', 'npm', 'cnpm' ],
-        message: `${getLogo()}[13/13] 即将进行初始化，请选择包安装工具，推荐使用yarn (please chioce the package install tool, recommended use yarn)：`,
+        message: `${getLogo()}[7/7] 请选择包安装工具，推荐使用yarn (please chioce the package install tool, recommended use yarn)：`,
         default: 'yarn'
       }
     ];
@@ -799,11 +766,34 @@ export default function (strategy: STRATEGY, {
 
     inquirer.prompt(questions)
       .then(async answers => {
-        const { name, project_type, ts, eslint, commitlint, style, stylelint, test, build, git, npm, npm_custom, dev_server, pkgtool } = answers;
+        const {
+          name,
+          project_type,
+          dev_server = 'basic',
+          ts = true,
+          test = false,
+          style = 'none',
+          lint = [],
+          pkgtool = 'yarn'
+        } = answers;
 
-        const testFrame: TESTFRAME = test === 'none' ? '' : test;
+        const eslint = !!~lint.indexOf('eslint');
+        const commitlint = !!~lint.indexOf('commitlint');
+        const stylelint = !!~lint.indexOf('stylelint');
         const stylesheet = style === 'none' ? '' : style;
         const projectType = ProjectType[project_type as keyof typeof ProjectType];
+        const testFrame: TESTFRAME = test
+          ? projectType === 'toolkit'
+            ? 'mocha'
+            : 'jest'
+          : '';
+        const build = projectType === 'spa_react'
+          ? 'webpack'
+          : projectType === 'toolkit'
+            ? 'rollup'
+            : projectType === 'component_library_react'
+              ? 'tsc'
+              : 'webpack';
 
         generateTpls({
           createDir,
@@ -817,9 +807,9 @@ export default function (strategy: STRATEGY, {
           commitlint,
           style: stylesheet,
           stylelint,
-          git,
-          npm: npm_custom || (npm === 'none' ? '' : npm),
-          devServer: dev_server === 'none' ? '' : dev_server
+          git: '',
+          npm: '',
+          devServer: dev_server
         });
 
         const {
@@ -846,8 +836,6 @@ export default function (strategy: STRATEGY, {
           devServer: dev_server === 'none' ? '' : dev_server
         });
 
-        // init git
-        const gitCli = git ? `cd ${initPath} && git init && git remote add origin ${git}` : '';
 
         generateFiglet((done) => execShell([
           installCli,
@@ -859,8 +847,7 @@ export default function (strategy: STRATEGY, {
           installCommitlintDevCli,
           installStylelintDevCli,
           installServerDevCli,
-          installCustomDevCli,
-          gitCli
+          installCustomDevCli
         ], done, err => spinner.warn(chalk.yellow(`${getLogPrefix()} ${JSON.stringify(err)}  ❗  \n`)), isSilent));
 
         // loading start display
