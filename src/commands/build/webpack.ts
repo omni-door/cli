@@ -27,9 +27,7 @@ const { configuration = config => config } = build || {};
 
 ${
   multi_output
-    ? `const fs = require('fs');
-
-const entriesPath = '${src_dir}';
+    ? `const entriesPath = '${src_dir}';
 const entriesList = getFolders(entriesPath);
 
 function getFolders (folderPath) {
