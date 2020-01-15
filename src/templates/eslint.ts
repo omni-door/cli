@@ -1,7 +1,11 @@
+import { PROJECT_TYPE } from '../index.d';
+
 export default function (config: {
+  project_type: PROJECT_TYPE;
   ts: boolean;
 }) {
-  const { ts } = config;
+  const { project_type, ts } = config;
+  const isToolkitProject = project_type === 'toolkit';
 
   return `'use strict';
 
@@ -28,8 +32,8 @@ module.exports = {
     "project": "./tsconfig.json"
   },
   "plugins": [
-    ${ts ? `"react",
-    "@typescript-eslint"` : '"react"'}
+    ${!isToolkitProject ? '"react",' : ''}
+    ${ts ? '"@typescript-eslint"' : ''}
   ],
   "rules": {
     ${

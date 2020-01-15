@@ -290,7 +290,7 @@ export default function (strategy: STRATEGY, {
     const content_jest = testFrame === 'jest' && tpl.jest({ ts });
 
     // lint files
-    const content_eslintrc = eslint && tpl.eslint({ ts });
+    const content_eslintrc = eslint && tpl.eslint({ project_type, ts });
     const content_eslintignore = eslint && tpl.eslintignore();
     const content_stylelint = stylelint && tpl.stylelint({ style });
     const content_commitlint = commitlint && tpl.commitlint({ name });
@@ -341,7 +341,7 @@ export default function (strategy: STRATEGY, {
       file_content: content_indexTpl
     });
     isToolkitProject && output_file({
-      file_path: file_path(`src/toolkit/index.${ts ? 'tsx' : 'jsx'}`),
+      file_path: file_path(`src/toolkit/index.${ts ? 'ts' : 'js'}`),
       file_content: content_indexTpl
     });
     isReactSPAProject && output_file({
