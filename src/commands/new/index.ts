@@ -46,7 +46,7 @@ export default async function (config: OmniConfig | {}, componentName: string, o
     return process.exit(1);
   }
 
-  if (/[a-zA-Z\$\_]/.test(componentName.charAt(0))) {
+  if (!/[a-zA-Z\$\_]/.test(componentName.charAt(0))) {
     logWarn('请输入合法的模块名称！(Please input a valid module name!)');
     return process.exit(1);
   }
