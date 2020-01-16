@@ -19,12 +19,12 @@ const common_config = require('./webpack.config.common.js');
 
 const htmlWebpackPlugin = new HtmlWebpackPlugin({
   title: '${name}',
-  path: path.resolve(__dirname, ${isReactSPAProject ? '../src' : '../demo'}),
+  path: path.resolve(__dirname, ${isReactSPAProject ? '\'../src\'' : '\'../demo\''}),
   template: path.join(__dirname, ${isReactSPAProject ? '\'../src/index.html\'' : '\'../demo/index.html\''}),
   filename: 'index.html'
 });
 
-module.exports = merge(commonConfig, {
+module.exports = merge(common_config, {
   mode: 'development',
   entry: [
     'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
@@ -32,7 +32,7 @@ module.exports = merge(commonConfig, {
   ],
   output: {
     filename: 'main.js',
-    path: path.resolve(__dirname, ${isReactSPAProject ? '../src' : '../demo'})
+    path: path.resolve(__dirname, ${isReactSPAProject ? '\'../src\'' : '\'../demo\''})
   },
   plugins: [
     htmlWebpackPlugin,

@@ -25,8 +25,6 @@ import {
   tsconfig as tsConfigJson,
   doczrc,
   posts_readme as postReadMe,
-  server_index as serverTpl,
-  server_webpack as webpackDevConfigJs,
   source_index as indexTpl,
   source_index_react as indexReactTpl,
   source_html as indexHtml,
@@ -117,8 +115,6 @@ const default_tpl_list = {
   tsconfig: tsConfigJson,
   doczrc,
   posts_readme: postReadMe,
-  server_index: serverTpl,
-  server_webpack: webpackDevConfigJs,
   source_index: indexTpl,
   source_index_react: indexReactTpl,
   source_html: indexHtml,
@@ -312,8 +308,6 @@ export default function (strategy: STRATEGY, {
     // server files
     const content_bisheng = devServer === 'bisheng' && tpl.bisheng({ name, git });
     const content_postReadMe = devServer === 'bisheng' && tpl.posts_readme();
-    const content_serverTpl = isBasicDevServer && tpl.server_index();
-    const content_webpackDev = isBasicDevServer && tpl.server_webpack({ project_type, name, ts, style });
     const content_storybook_addons = devServer === 'storybook' && tpl.storybook_addons();
     const content_storybook_config = devServer === 'storybook' && tpl.storybook_config({ name });
     const content_storybook_mhead = devServer === 'storybook' && tpl.storybook_mhead({ name });
@@ -497,13 +491,14 @@ export default function (strategy: STRATEGY, {
 
     let installDevCliPrefix = pkgtool === 'yarn' ? `${pkgtool} add -D --cwd ${initPath}` : `${pkgtool} install --save-dev --prefix ${initPath}`;
     if (pkgtool === 'cnpm' && initPath !== process.cwd()) {
-      // fix cnpm cannot set prefix bug
-      // pkgtool = 'npm';
       installCliPrefix = `cd ${initPath} && ${installCliPrefix}`;
       installDevCliPrefix = `cd ${initPath} && ${installDevCliPrefix}`;
     }
 
-    const dependencies_default = dependencies(strategy, {
+    const {
+      depArr,
+      depStr
+    } = dependencies(strategy, {
       project_type,
       build,
       ts,
@@ -514,13 +509,10 @@ export default function (strategy: STRATEGY, {
       testFrame,
       devServer
     });
-    const installCli = `${installCliPrefix} ${dependencies_default.join(' ')} ${
-      typeof dependencies_custom === 'function'
-        ? dependencies_custom(dependencies_default).join(' ')
-        : ''
-    }`;
+    const dependencies_custom_arr = typeof dependencies_custom === 'function' ? dependencies_custom(depArr).join(' ').trim() : '';
+    const installCli = (dependencies_custom_arr || depStr) ? `${installCliPrefix} ${depStr} ${dependencies_custom_arr}` : '';
 
-    const { defaultDep, buildDep, tsDep, testDep, eslintDep, commitlintDep, stylelintDep, devServerDep } = devDependencies(strategy, {
+    const { defaultDep, buildDep, tsDep, testDep, eslintDep, commitlintDep, stylelintDep, devServerDep, depArr: devDepArr } = devDependencies(strategy, {
       project_type,
       build,
       ts,
@@ -531,15 +523,15 @@ export default function (strategy: STRATEGY, {
       testFrame,
       devServer
     });
-    const devDependencies_default = [...defaultDep, ...buildDep, ...tsDep, ...testDep, ...eslintDep, ...commitlintDep, ...stylelintDep, ...devServerDep ]; 
-    const installDevCli = defaultDep.length > 0 ? `${installDevCliPrefix} ${defaultDep.join(' ')}` : '';
-    const installBuildDevCli = buildDep.length > 0 ? `${installDevCliPrefix} ${buildDep.join(' ')}` : '';
-    const installTsDevCli = tsDep.length > 0 ? `${installDevCliPrefix} ${tsDep.join(' ')}` : '';
-    const installTestDevCli = testDep.length > 0 ? `${installDevCliPrefix} ${testDep.join(' ')}` : '';
-    const installEslintDevCli = eslintDep.length > 0 ? `${installDevCliPrefix} ${eslintDep.join(' ')}` : '';
-    const installCommitlintDevCli = commitlintDep.length > 0 ? `${installDevCliPrefix} ${commitlintDep.join(' ')}` : '';
-    const installStylelintDevCli = stylelintDep.length > 0 ? `${installDevCliPrefix} ${stylelintDep.join(' ')}` : '';
-    const installServerDevCli = devServerDep.length > 0 ? `${installDevCliPrefix} ${devServerDep.join(' ')}` : '';
+    const devDependencies_default = [...devDepArr ]; 
+    const installDevCli = defaultDep ? `${installDevCliPrefix} ${defaultDep}` : '';
+    const installBuildDevCli = buildDep ? `${installDevCliPrefix} ${buildDep}` : '';
+    const installTsDevCli = tsDep ? `${installDevCliPrefix} ${tsDep}` : '';
+    const installTestDevCli = testDep ? `${installDevCliPrefix} ${testDep}` : '';
+    const installEslintDevCli = eslintDep ? `${installDevCliPrefix} ${eslintDep}` : '';
+    const installCommitlintDevCli = commitlintDep ? `${installDevCliPrefix} ${commitlintDep}` : '';
+    const installStylelintDevCli = stylelintDep ? `${installDevCliPrefix} ${stylelintDep}` : '';
+    const installServerDevCli = devServerDep ? `${installDevCliPrefix} ${devServerDep}` : '';
     const installCustomDevCli = typeof devDependencies_custom === 'function' ? `${installDevCliPrefix} ${devDependencies_custom(devDependencies_default).join(' ')}` : '';
 
     return {
@@ -625,7 +617,7 @@ export default function (strategy: STRATEGY, {
         installStylelintDevCli,
         installServerDevCli,
         installCustomDevCli
-      ], done, err => spinner.warn(chalk.yellow(`${getLogPrefix()} ${JSON.stringify(err)}  ❗️  \n`)), isSilent));
+      ], done, err => process.exit(1), isSilent));
 
       // loading start display
       spinner.start();
@@ -870,7 +862,7 @@ export default function (strategy: STRATEGY, {
           installStylelintDevCli,
           installServerDevCli,
           installCustomDevCli
-        ], done, err => spinner.warn(chalk.yellow(`${getLogPrefix()} ${JSON.stringify(err)}  ❗  \n`)), isSilent));
+        ], done, err => process.exit(1), isSilent));
 
         // loading start display
         spinner.start();

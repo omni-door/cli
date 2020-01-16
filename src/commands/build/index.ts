@@ -80,7 +80,7 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
     ]).then(answers => {
       const { install } = answers;
       if (install) {
-        const dependencies = dependencies_build({ build }).join(' ');
+        const dependencies = dependencies_build({ build });
 
         // install tool pre-check
         let iTool = 'yarn add -D';

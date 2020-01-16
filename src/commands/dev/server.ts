@@ -1,15 +1,9 @@
 import path from'path';
 import inquirer from 'inquirer';
-import open from'open';
-import ip from 'ip';
-import detectPort from 'detect-port';
-import express from 'express';
-import proxy from 'http-proxy-middleware';
-import webpack from 'webpack';
-import devMiddleware from 'webpack-dev-middleware';
-import hotMiddleware from 'webpack-hot-middleware';
 import { logErr, logInfo } from '../../utils/logger';
 import { getLogo } from '../../utils/log_prefix';
+import { Configuration } from 'webpack';
+import { Config } from 'http-proxy-middleware';
 
 export default async function ({
   p,
@@ -17,10 +11,19 @@ export default async function ({
   proxyConfig = []
 }: {
   p: number;
-  webpackConfig: webpack.Configuration;
-  proxyConfig?: { route: string; config: proxy.Config; }[]
+  webpackConfig: Configuration;
+  proxyConfig?: { route: string; config: Config; }[]
 }): Promise<void> {
-  const _p = await detectPort(p).catch(err => {
+  const open = require('open');
+  const ip = require('ip');
+  const detectPort = require('detect-port');
+  const express = require('express');
+  const proxy = require('http-proxy-middleware');
+  const webpack = require('webpack');
+  const devMiddleware = require('webpack-dev-middleware');
+  const hotMiddleware = require('webpack-hot-middleware');
+
+  const _p = await detectPort(p).catch((err: any) => {
     logErr(err);
     return process.exit(1);
   });
@@ -70,9 +73,9 @@ export default async function ({
       );
     }
 
-    app.use('*', function (req, res, next) {
+    app.use('*', function (req: any, res: any, next: any) {
       const filename = path.join(compiler.outputPath, 'index.html');
-      compiler.inputFileSystem.readFile(filename, function (err, result) {
+      compiler.inputFileSystem.readFile(filename, function (err: any, result: any) {
         if (err) {
           return next(err);
         }

@@ -22,7 +22,7 @@ export async function execShell (clis: string[], done?: (results: any[]) => any,
       })
         .then(res => res)
         .catch(err => {
-          !silent && logErr(`${i} [${cli}] error:\n` + err);
+          !silent && logErr(`${i}_[${cli}]:\n` + err);
           throw err;
         });
 

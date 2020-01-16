@@ -120,4 +120,8 @@ export function getDependency (strategy: STRATEGY) {
   };
 }
 
+export function arr2str (arr: string[]) {
+  return arr.join(' ').trim();
+}
+
 export default getDependency;

@@ -27,8 +27,6 @@ import tool_index from './component/tool/index';
 import tool_readme from './component/tool/readme';
 import tool_test from './component/tool/test';
 import posts_readme from './posts/readme';
-import server_index from './server/index';
-import server_webpack from './server/webpack_dev';
 import source_index from './source/index';
 import source_index_react from './source/index_react';
 import source_html from './source/html';
@@ -70,8 +68,6 @@ export { default as tool_index} from './component/tool/index';
 export { default as tool_readme} from './component/tool/readme';
 export { default as tool_test} from './component/tool/test';
 export { default as posts_readme} from './posts/readme';
-export { default as server_index} from './server/index';
-export { default as server_webpack} from './server/webpack_dev';
 export { default as source_index} from './source/index';
 export { default as source_index_react} from './source/index_react';
 export { default as source_html} from './source/html';
@@ -114,8 +110,6 @@ const tpls = {
   tool_readme,
   tool_test,
   posts_readme,
-  server_index,
-  server_webpack,
   source_index,
   source_index_react,
   source_html,

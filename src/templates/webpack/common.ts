@@ -9,7 +9,6 @@ export default function (config: {
   return `'use strict';
 
 const path = require('path');
-const webpack = require('webpack');
 const WebpackBar = require('webpackbar');
 
 module.exports = {

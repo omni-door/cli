@@ -1,4 +1,4 @@
-import getDependency from './dependencies_strategy';
+import getDependency, { arr2str } from './dependencies_strategy';
 import { BUILD } from '../index.d';
 
 export default function (config: {
@@ -42,5 +42,5 @@ export default function (config: {
   ]
     : [];
 
-  return buildDependencies;
+  return arr2str(buildDependencies);
 }

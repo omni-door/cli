@@ -20,21 +20,19 @@ ${project_type !== 'component_library_react' ? 'const dev_config = require(\'./c
 
 module.exports = {
   type: '${project_type}', // 项目类型，请勿变动 (project type, please don't modify)
-
-  dev: {
-    ${project_type !== 'component_library_react' ? `webpack_config: dev_config, // 开发服务端webpack配置文件路径 (dev-server webpack config path)
-    // 开发服务代理配置 (dev-server proxy config)
-    // [{ 
-    //    route: '/api',
-    //    config: {
-    //      target: 'http://www.api.com/api',
-    //      changeOrigin: true
-    //    }
-    // }]
-    proxy: [],` : ''}
+  ${project_type !== 'component_library_react' ? `\n  dev: {
+    webpack_config: dev_config, // 开发服务端webpack配置文件路径 (dev-server webpack config path)
+    proxy:  [
+      // { 
+      //   route: '/api',
+      //   config: {
+      //     target: 'http://www.api.com/api',
+      //     changeOrigin: true
+      //   }
+      // }
+    ], // 开发服务代理配置 (dev-server proxy config)
     port: 6200 // 开发服务端口号 (dev-server port)
-  },
-
+  },\n` : '' }
   build: {
     auto_release: false, // 构建完成后是否自动发布 (auto release project after build success)
 
@@ -45,14 +43,13 @@ module.exports = {
     // 输出路径 (the directory for compiled project)
     // 务必使用绝对路径 (must be a absolute path)
     out_dir: path.resolve('lib'),
-
-    ${project_type === 'spa_react' ? `    // es6 module输出路径 (es6 module compiled directory)
+    ${project_type === 'spa_react' ? `\n    // es6 module输出路径 (es6 module compiled directory)
     // 务必使用绝对路径 (must be a absolute path)
     // React单页应用不支持 (react spa app not support this featrue)
     esm_dir: path.resolve('es'),\n` : ''}
-    ${project_type !== 'component_library_react' ? `    // (构建阶段的自定义配置回调) The callback will be call in the build-process
+    ${project_type !== 'component_library_react' ? `// (构建阶段的自定义配置回调) The callback will be call in the build-process
     // (返回自定义的配置) You can return your custom build configuration
-    ${project_type === 'spa_react' ? 'configuration: merge(config, prod_config) => config' : 'configuration: config => config'},\n` : ''}
+    ${project_type === 'spa_react' ? 'configuration: config => merge(config, prod_config)' : 'configuration: config => config'},\n` : ''}
     reserve: {
       style: ${style && build !== 'webpack' ? true : false}, // 构建结果是否保留样式文件 (whether or not reserve the stylesheet files)
       assets: [] // 构建结果保留其他资源的路径 (reserve other asset paths)
@@ -89,7 +86,7 @@ module.exports = {
 
     stylesheet: '${style === 'all' ? 'less' : style}', // 样式文件类型 (stylesheet type)
 
-    readme: [true, ${mdx ? 'mdx' : 'md'}] // [是否生成ReadMe文件, 创建md 或 mdx文件] ([whether or not README.md, generate mdx or md file])
+    readme: [true, ${mdx ? '\'mdx\'' : '\'md\''}] // [是否生成ReadMe文件, 创建md 或 mdx文件] ([whether or not README.md, generate mdx or md file])
   },
 
   plugins: []

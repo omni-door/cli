@@ -4,7 +4,7 @@ export default function () {
 const merge = require('webpack-merge');
 const common_config = require('./webpack.config.common.js');
 
-module.exports = merge(commonConfig, {
+module.exports = merge(common_config, {
   mode: 'production'
 });`;
 }

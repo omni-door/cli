@@ -62,6 +62,7 @@ export default function () {
     "node_modules",
     "src/**/__test__/*",
     "src/**/__stories__/*",
+    "configs/*",
     "lib/*",
     "es/*",
     "dist/",

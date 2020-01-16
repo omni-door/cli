@@ -1,5 +1,5 @@
 import { BUILD, TESTFRAME, STYLE, DEVSERVER, PROJECT_TYPE, STRATEGY } from '../index.d';
-import getDependency from './dependencies_strategy';
+import getDependency, { arr2str } from './dependencies_strategy';
 
 interface Config {
   project_type: PROJECT_TYPE;
@@ -17,13 +17,16 @@ export function dependencies (strategy: STRATEGY, config: Config) {
   const dependency = getDependency(strategy);
   const { project_type } = config;
   const isReactProject = project_type === 'spa_react' || project_type === 'component_library_react';
-
-  return [
+  const deps = [
     isReactProject ? dependency('react') : '',
     isReactProject ? dependency('react-dom') : '',
     project_type === 'spa_react' ? dependency('core-js') : '',
     project_type === 'spa_react' ? dependency('regenerator-runtime') : ''
   ];
+  return {
+    depArr: [ ...deps ],
+    depStr: arr2str(deps)
+  };
 }
 
 export function devDependencies (strategy: STRATEGY, config: Config) {
@@ -77,7 +80,7 @@ export function devDependencies (strategy: STRATEGY, config: Config) {
   const buildDependencies = build === 'webpack' ? [
     dependency('webpack'),
     dependency('webpack-cli'),
-    project_type === 'spa_react' ? dependency('webpack-merge') : '',
+    dependency('webpack-merge'),
     ...pluginDependencies,
     ...loaderDependencies,
     ...babelDependencies
@@ -201,6 +204,7 @@ export function devDependencies (strategy: STRATEGY, config: Config) {
     dependency('detect-port'),
     dependency('express'),
     build !== 'webpack' ? dependency('webpack') : '',
+    build !== 'webpack' ? dependency('webpack-merge') : '',
     dependency('webpack-dev-middleware'),
     dependency('webpack-hot-middleware'),
     dependency('http-proxy-middleware'),
@@ -226,18 +230,30 @@ export function devDependencies (strategy: STRATEGY, config: Config) {
       break;
   }
 
+  const defaultDep = [
+    dependency('@omni-door/cli'),
+    dependency('del')
+  ];
+
   return {
-    defaultDep: [
-      dependency('@omni-door/cli'),
-      dependency('del')
+    depArr: [
+      ...defaultDep,
+      ...buildDependencies,
+      ...tsDependencies,
+      ...testDependencies,
+      ...eslintDependencies,
+      ...commitlintDependencies,
+      ...stylelintDependencies,
+      ...devServerDependencies
     ],
-    buildDep: buildDependencies,
-    tsDep: tsDependencies,
-    testDep: testDependencies,
-    eslintDep: eslintDependencies,
-    commitlintDep: commitlintDependencies,
-    stylelintDep: stylelintDependencies,
-    devServerDep: devServerDependencies,
+    defaultDep: arr2str(defaultDep),
+    buildDep: arr2str(buildDependencies),
+    tsDep: arr2str(tsDependencies),
+    testDep: arr2str(testDependencies),
+    eslintDep: arr2str(eslintDependencies),
+    commitlintDep: arr2str(commitlintDependencies),
+    stylelintDep: arr2str(stylelintDependencies),
+    devServerDep: arr2str(devServerDependencies)
   };
 }
 
