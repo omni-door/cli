@@ -4,6 +4,7 @@ import initial from '../initial';
 import newTpl from '../new';
 import build from '../build';
 import release from '../release';
+import dev from '../dev';
 
 describe('initial command test', function () {
   it('type checking', function () {
@@ -26,5 +27,11 @@ describe('build command test', function () {
 describe('build command test', function () {
   it('type checking', function () {
     expect(release).to.be.a('function');
+  });
+});
+
+describe('dev command test', function () {
+  it('type checking', function () {
+    expect(dev).to.be.a('function');
   });
 });
