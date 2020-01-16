@@ -28,12 +28,6 @@ const Configuration = {
       'modify',
       'merge',
       'chore'
-    ]],
-    'header-case': [2, 'always', [
-      'lower-case', // default
-      'camel-case', // camelCase
-      'kebab-case', // kebab-case
-      'pascal-case' // PascalCase
     ]]
   },
   /*

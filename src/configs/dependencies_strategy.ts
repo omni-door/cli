@@ -18,6 +18,7 @@ const devDependencies = {
   '@types/jest': '24.0.25',
   '@types/react': '16.9.17',
   '@types/react-dom': '16.9.4',
+  '@types/vfile-message': '2.0.0',
   '@types/webpack-env': '1.15.0',
   '@typescript-eslint/eslint-plugin': '2.15.0',
   '@typescript-eslint/parser': '2.15.0',

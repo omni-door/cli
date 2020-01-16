@@ -167,7 +167,8 @@ export function devDependencies (strategy: STRATEGY, config: Config) {
     dependency('docz'),
     dependency('docz-theme-default'),
     dependency('docz-plugin-css'),
-    dependency('react-hot-loader')
+    dependency('react-hot-loader'),
+    ts ? dependency('@types/vfile-message') : ''
   ];
 
   const storybookDependencies= [

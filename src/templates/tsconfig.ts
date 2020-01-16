@@ -64,9 +64,13 @@ export default function () {
     "src/**/__stories__/*",
     "lib/*",
     "es/*",
+    "dist/",
     "build/*",
     "server/*",
-    "demo/*"
+    "demo/*",
+    ".docz/",
+    ".storybook/",
+    ".out/",
   ]
 }`;
 }
