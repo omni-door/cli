@@ -1,7 +1,7 @@
 import program from 'commander';
 import fs from 'fs';
 import path from 'path';
-import { initial, newTpl, build, release } from './commands';
+import { initial, dev, newTpl, build, release } from './commands';
 import { OmniConfig } from '../index.d';
 const pkj = require('../../package.json');
 
@@ -27,6 +27,14 @@ program
   })
   .usage('[strategy] [options]')
   .action((strategy, options) => initial(strategy, options));
+
+program
+  .command('dev [port]')
+  .description('omni dev [port]', {
+    port: 'optional! The dev-server run port.',
+  })
+  .usage('[port] [options]')
+  .action((port) => dev(config, port));
 
 program
   .command('new <module>')

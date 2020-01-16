@@ -34,7 +34,10 @@ import {
   storybook_addons,
   storybook_config,
   storybook_mhead,
-  storybook_webpack
+  storybook_webpack,
+  webpack_config_common,
+  webpack_config_dev,
+  webpack_config_prod
 } from '../../templates';
 import { dependencies, devDependencies } from '../../configs/dependencies';
 import templates from '../../configs/initial_tpls';
@@ -123,7 +126,10 @@ const default_tpl_list = {
   storybook_addons,
   storybook_config,
   storybook_mhead,
-  storybook_webpack
+  storybook_webpack,
+  webpack_config_common,
+  webpack_config_dev,
+  webpack_config_prod
 };
 
 export default function (strategy: STRATEGY, {
@@ -298,6 +304,11 @@ export default function (strategy: STRATEGY, {
     // build files
     const content_babel = build && (build !== 'tsc' || devServer === 'storybook') && tpl.babel({ project_type, ts });
 
+    // webpack config files
+    const content_webpack_common = isBasicDevServer && tpl.webpack_config_common({ ts, style });
+    const content_webpack_dev = isBasicDevServer && tpl.webpack_config_dev({ project_type, name, ts });
+    const content_webpack_prod = isBasicDevServer && tpl.webpack_config_prod();
+
     // server files
     const content_bisheng = devServer === 'bisheng' && tpl.bisheng({ name, git });
     const content_postReadMe = devServer === 'bisheng' && tpl.posts_readme();
@@ -361,8 +372,22 @@ export default function (strategy: STRATEGY, {
       file_content: content_doczmdx
     });
 
+    // webpack config files
+    (isReactSPAProject || isToolkitProject) && output_file({
+      file_path: file_path('configs/webpack.config.common.js'),
+      file_content: content_webpack_common
+    });
+    (isReactSPAProject || isToolkitProject) && output_file({
+      file_path: file_path('configs/webpack.config.dev.js'),
+      file_content: content_webpack_dev
+    });
+    isReactSPAProject && output_file({
+      file_path: file_path('configs/webpack.config.prod.js'),
+      file_content: content_webpack_prod
+    });
+
     // demo dir files
-    if (isBasicDevServer && !isReactSPAProject) {
+    if (isToolkitProject) {
       output_file({
         file_path: file_path(`demo/index.${ts ? 'tsx' : 'jsx'}`),
         file_content: content_indexReactTpl
@@ -370,14 +395,6 @@ export default function (strategy: STRATEGY, {
       output_file({
         file_path: file_path('demo/index.html'),
         file_content: content_indexHtml
-      });
-      output_file({
-        file_path: file_path('demo/server/index.js'),
-        file_content: content_serverTpl
-      });
-      output_file({
-        file_path: file_path('demo/server/webpack.config.dev.js'),
-        file_content: content_webpackDev
       });
     }
 
@@ -433,14 +450,6 @@ export default function (strategy: STRATEGY, {
     output_file({
       file_path: file_path('posts/README.md'),
       file_content: content_postReadMe
-    });
-    isReactSPAProject && output_file({
-      file_path: file_path('server/index.js'),
-      file_content: content_serverTpl
-    });
-    isReactSPAProject && output_file({
-      file_path: file_path('server/webpack.config.dev.js'),
-      file_content: content_webpackDev
     });
     output_file({
       file_path: file_path('.storybook/addons.js'),

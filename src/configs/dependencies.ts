@@ -15,7 +15,7 @@ interface Config {
 
 export function dependencies (strategy: STRATEGY, config: Config) {
   const dependency = getDependency(strategy);
-  const { project_type, build } = config;
+  const { project_type } = config;
   const isReactProject = project_type === 'spa_react' || project_type === 'component_library_react';
 
   return [
@@ -77,6 +77,7 @@ export function devDependencies (strategy: STRATEGY, config: Config) {
   const buildDependencies = build === 'webpack' ? [
     dependency('webpack'),
     dependency('webpack-cli'),
+    project_type === 'spa_react' ? dependency('webpack-merge') : '',
     ...pluginDependencies,
     ...loaderDependencies,
     ...babelDependencies
@@ -195,6 +196,9 @@ export function devDependencies (strategy: STRATEGY, config: Config) {
   ];
 
   const basicServerDependencies = [
+    dependency('open'),
+    dependency('ip'),
+    dependency('detect-port'),
     dependency('express'),
     build !== 'webpack' ? dependency('webpack') : '',
     dependency('webpack-dev-middleware'),

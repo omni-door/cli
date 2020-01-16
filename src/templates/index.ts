@@ -37,6 +37,9 @@ import storybook_addons from './.storybook/addons';
 import storybook_config from './.storybook/config';
 import storybook_mhead from './.storybook/manager-head';
 import storybook_webpack from './.storybook/webpack';
+import webpack_config_common from './webpack/common';
+import webpack_config_dev from './webpack/dev';
+import webpack_config_prod from './webpack/prod';
 
 export { default as babel } from './babel';
 export { default as bisheng} from './bisheng';
@@ -77,6 +80,9 @@ export { default as storybook_addons} from './.storybook/addons';
 export { default as storybook_config} from './.storybook/config';
 export { default as storybook_mhead} from './.storybook/manager-head';
 export { default as storybook_webpack} from './.storybook/webpack';
+export { default as webpack_config_common } from './webpack/common';
+export { default as webpack_config_dev } from './webpack/dev';
+export { default as webpack_config_prod } from './webpack/prod';
 
 const tpls = {
   babel,
@@ -117,7 +123,10 @@ const tpls = {
   storybook_addons,
   storybook_config,
   storybook_mhead,
-  storybook_webpack
+  storybook_webpack,
+  webpack_config_common,
+  webpack_config_dev,
+  webpack_config_prod
 };
 
 export type TPLS_ALL = {

@@ -12,19 +12,23 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
   verify?: boolean;
 }) {
   if (JSON.stringify(config) === '{}') {
-    logWarn('请先初始化项目！(Please Initialize project first!)');
+    logWarn('请先初始化项目！(Please initialize project first!)');
     return;
   }
 
   const { release: {
     git,
     npm,
+    preflight
+  }, plugins } = config as OmniConfig;
+
+  const {
     test = false,
     eslint = false,
     stylelint = false,
     commitlint = false,
     branch
-  }, plugins } = config as OmniConfig;
+  } = preflight || {};
 
   if (branch) {
     // branch check

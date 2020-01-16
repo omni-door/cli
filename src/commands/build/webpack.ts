@@ -72,48 +72,9 @@ module.exports = configuration({
     filename: '[name].js',
     path: '${out_dir}'
   },
-  module: {
-    rules: [
-      {
-        test: /\\.(js|jsx)$/,
-        use: [
-          {loader: 'babel-loader'}
-        ]
-      },
-      {
-        test: /\\.(ts|tsx)$/,
-        use: [
-          {loader: 'ts-loader'}
-        ]
-      },
-      {
-        test: /\\.less$/,
-        use: ['style-loader', 'css-loader', 'less-loader']
-      },
-      {
-        test: /\\.(css|scss|sass)$/,
-        use: ['style-loader', 'css-loader', 'sass-loader']
-      },
-      {
-        test: /\\.(woff|woff2|eot|ttf|svg|jpg|png|gif)$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 8192,
-              name: 'assets/[name].[hash:8].[ext]'
-            }
-          }
-        ]
-      }
-    ],
-  },
   plugins: [
     htmlWebpackPlugin ? htmlWebpackPlugin : null
   ],
-  mode: 'production',
-  resolve: {
-    extensions: [".ts", ".tsx", ".js", ".jsx", ".css", ".less", ".scss", ".sass"]
-  }
+  mode: 'production'
 });`;
 }

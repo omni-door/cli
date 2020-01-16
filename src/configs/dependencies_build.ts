@@ -12,6 +12,7 @@ export default function (config: {
   const buildDependencies = build === 'webpack' ? [
     dependency('webpack'),
     dependency('webpack-cli'),
+    dependency('webpack-merge'),
     dependency('babel-loader'),
     dependency('ts-loader'),
     dependency('style-loader'),

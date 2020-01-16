@@ -29,9 +29,10 @@ Several options to get up and running:
   Commands:
 
     init [strategy] [options]  initialize your project, [strategy] could be stable(default) or latest
-    new <module> [options]  omni new [module] [-f | -c]
-    build                   build your project according to [omni.config.js]
-    release [options]       publish your project according to [omni.config.js]
+    dev [port]                 omni dev [port]
+    new <module> [options]     omni new [module] [-f | -c]
+    build                      build your project according to [omni.config.js]
+    release [options]          publish your project according to [omni.config.js]
 
 ```
 
@@ -70,6 +71,26 @@ Options:
   -h, --help               output usage information
 ```
 
+---
+
+## omni dev
+
+### options
+```sh
+Usage: omni dev [port] [options]
+
+omni dev [port]
+
+Arguments:
+
+  port        optional! The dev-server run port.
+
+Options:
+  -h, --help  output usage information
+```
+
+---
+
 ## omni new
 
 ### options
@@ -88,6 +109,8 @@ Options:
   -h, --help  output usage information
 ```
 
+---
+
 ## omni build
 
 ### options
@@ -100,6 +123,8 @@ Options:
   -n, --no-verify  bypass all pre-check before building
   -h, --help       output usage information
 ```
+
+---
 
 ## omni release
 
@@ -115,6 +140,8 @@ Options:
   -n, --no-verify         bypass unit-test eslint and stylelint check
   -h, --help              output usage information
 ```
+
+---
 
 ## Accessible Docs
 click [here](./docs/DEV.md)

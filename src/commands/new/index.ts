@@ -59,15 +59,17 @@ export default async function (config: OmniConfig | {}, componentName: string, o
   // default create class component
   if (!fc && !cc) cc = true;
 
-  const { template: {
-    root,
+  const {
     type = 'spa_react',
-    test = '',
-    typescript = false,
-    stylesheet = '',
-    readme = false,
-    mdx = false
-  }, plugins } = config as OmniConfig;
+    template: {
+      root,
+      test = '',
+      typescript = false,
+      stylesheet = '',
+      readme = [false, 'md']
+    }, plugins } = config as OmniConfig;
+
+  const mdx = readme[1] === 'mdx';
 
   if (!root) {
     logWarn('生成模板的路径缺失！(Missing the path for generate template!)');
@@ -128,11 +130,11 @@ export default async function (config: OmniConfig | {}, componentName: string, o
         file_content: content_fc
       });
       // readme
-      readme && !mdx && output_file({
+      readme[0] && !mdx && output_file({
         file_path: path.resolve(root, componentName, 'README.md'),
         file_content: content_readme
       });
-      readme && mdx && output_file({
+      readme[0] && mdx && output_file({
         file_path: path.resolve(root, componentName, 'README.mdx'),
         file_content: content_mdx
       });
@@ -171,7 +173,7 @@ export default async function (config: OmniConfig | {}, componentName: string, o
         file_content: content_index_tool
       });
       // readme
-      readme && output_file({
+      readme[0] && output_file({
         file_path: path.resolve(root, componentName, 'README.md'),
         file_content: content_readme_tool
       });

@@ -28,7 +28,7 @@ export default (config: {
       demoScript = 'bisheng build';
       break;
     case 'basic':
-      devScript = project_type !== 'toolkit' ? 'node server/index.js' : 'node demo/server/index.js';
+      devScript = 'omni dev';
       break;
   }
 

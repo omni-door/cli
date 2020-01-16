@@ -22,26 +22,29 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
   configFileName?: string;
 }) {
   if (JSON.stringify(config) === '{}') {
-    logWarn('请先初始化项目！(Please Initialize project first!)');
-    return;
+    logWarn('请先初始化项目！(Please initialize project first!)');
+    return process.exit(0);
   }
 
   const message = '开始构建！(Build process start!)';
   logInfo(message);
 
-  const { build: {
-    tool,
-    multi_output = false,
+  const { type,
+    build: {
+      reserve = {},
+      src_dir,
+      out_dir,
+      esm_dir = '',
+      auto_release,
+      preflight
+    }, plugins } = config as OmniConfig;
+
+  const {
     typescript = false,
     test = false,
     eslint = false,
-    stylelint = false,
-    reserve = {},
-    src_dir,
-    out_dir,
-    esm_dir = '',
-    auto_release
-  }, plugins } = config as OmniConfig;
+    stylelint = false
+  } = preflight || {};
 
   const { verify, buildConfig, configFileName } = buildTactic || {};
 
@@ -171,13 +174,8 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
       await execShell(['npm run lint:style'], () => logEmph('stylelint校验通过！(stylelint passed!)'), handleBuildErr(`stylelint校验失败！(stylelint checking failed!) \n ${chalk.bgCyan('尝试执行 (try to exec): npm run lint:style_fix')}`));
     }
 
-    if (!tool) {
-      logWarn('构建完毕，但是没有指定任何构建工具参与构建！(Building completed but without any build tool process!)');
-      return process.exit(0);
-    }
-
     const buildCliArr = [];
-    if (tool === 'tsc') {
+    if (type === 'component_library_react') {
       const tscPath = path.resolve(process.cwd(), 'node_modules/typescript/bin/tsc');
       buildCliArr.push(`${tscPath} --outDir ${out_dir} --project ${path.resolve(process.cwd(), 'tsconfig.json')}`);
       esm_dir && buildCliArr.push(`${tscPath} --module ES6 --target ES6 --outDir ${esm_dir} --project ${path.resolve(process.cwd(), 'tsconfig.json')}`);
@@ -188,8 +186,8 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
         if (!is_go_on) return;
       }
     } else {
-      const content_rollup = !buildConfig && tool === 'rollup' && rollupConfig({ ts: typescript, multi_output, src_dir, out_dir, esm_dir, configFileName });
-      const content_webpack = !buildConfig && tool === 'webpack' && webpackConfig({ ts: typescript, multi_output, src_dir, out_dir, configFileName });
+      const content_rollup = !buildConfig && type === 'toolkit' && rollupConfig({ ts: typescript, multi_output: true, src_dir, out_dir, esm_dir, configFileName });
+      const content_webpack = !buildConfig && type === 'spa_react' && webpackConfig({ ts: typescript, multi_output: false, src_dir, out_dir, configFileName });
       const content_config = buildConfig || content_rollup || content_webpack;
   
       // put temporary file for build process
@@ -197,7 +195,7 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
         const buildConfigPath = path.resolve(__dirname, '../../../', '.omni_cache/build.config.js');
 
         let is_go_on = true;
-        if (tool === 'rollup') {
+        if (type === 'toolkit') {
           const rollupPath = path.resolve(process.cwd(), 'node_modules/rollup/dist/bin/rollup');
           buildCliArr.push(`${rollupPath} -c ${buildConfigPath}`);
 
@@ -205,7 +203,7 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
             logWarn('请先安装 rollup! (Please install rollup first!)');
             is_go_on = await installDenpendencies('rollup');
           }
-        } else if (tool === 'webpack') {
+        } else if (type === 'spa_react') {
           const webpackPath = path.resolve(process.cwd(), 'node_modules/webpack-cli/bin/cli.js');
           buildCliArr.push(`${webpackPath} --config ${buildConfigPath}`);
 
@@ -223,14 +221,11 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
           file_path: buildConfigPath,
           file_content: content_config
         });
-      } else {
-        logWarn(`你的构建工具 [${tool}] 暂不支持，请自行构建你的项目，或联系我们：omni.door.official@gmail.com \n your build tool ${tool} has not been support yet, please build the project by yourself! \n contact us: omni.door.official@gmail.com`);
-        return process.exit(1);
       }
     }
 
     // loading
-    const spinner = tool !== 'rollup' && ora(`${getLogPrefix()} 项目构建中 (Building, please wait patiently)  ⏱  \n`);
+    const spinner = type !== 'toolkit' && ora(`${getLogPrefix()} 项目构建中 (Building, please wait patiently)  ⏱  \n`);
     spinner && spinner.start();
 
     del.sync(out_dir);

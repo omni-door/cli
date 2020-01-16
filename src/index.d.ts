@@ -1,3 +1,5 @@
+import { Configuration } from 'webpack';
+import { Config } from 'http-proxy-middleware';
 import { TPLS_ALL, TPLS_INITIAL, TPLS_INITIAL_FN, TPLS_INITIAL_RETURE, TPLS_NEW, TPLS_NEW_FN, TPLS_NEW_RETURE } from './templates';
 export { TPLS_ALL, TPLS_INITIAL, TPLS_INITIAL_FN, TPLS_INITIAL_RETURE, TPLS_NEW, TPLS_NEW_FN, TPLS_NEW_RETURE } from './templates';
 export type ENV = 'prod' | 'stg' | 'sit' | 'test' | 'dev';
@@ -54,40 +56,49 @@ export type OmniPlugin = {
 };
 
 export type OmniConfig = {
+  type: PROJECT_TYPE;
+  dev: {
+    port?: number;
+    webpack_config?: Configuration;
+    proxy?: {
+      route: string;
+      config: Config;
+    }[];
+  };
   build: {
-    tool: BUILD;
-    configuration?: (config: ANYOBJECT) => ANYOBJECT;
-    multi_output?: boolean;
-    typescript?: boolean;
-    test?: boolean;
-    eslint?: boolean;
-    stylelint?: boolean;
-    reserve?: {
-      style?: boolean;
-      assets?: string[];
-    }
+    auto_release?: boolean;
     src_dir: string;
     out_dir: string;
     esm_dir?: string;
-    auto_release?: boolean;
+    configuration?: (config: ANYOBJECT) => ANYOBJECT;
+    preflight?: {
+      typescript?: boolean;
+      test?: boolean;
+      eslint?: boolean;
+      stylelint?: boolean;
+    };
+    reserve?: {
+      style?: boolean;
+      assets?: string[];
+    };
   };
   release: {
     git?: string;
     npm?: NPM | string;
-    test?: boolean;
-    eslint?: boolean;
-    stylelint?: boolean;
-    commitlint?: boolean;
-    branch?: string;
+    preflight?: {
+      test?: boolean;
+      eslint?: boolean;
+      stylelint?: boolean;
+      commitlint?: boolean;
+      branch?: string;
+    };
   };
   template: {
     root: string;
-    type?: PROJECT_TYPE;
     test?: TESTFRAME;
     typescript?: boolean;
     stylesheet?: STYLE;
-    readme?: boolean;
-    mdx?: boolean;
+    readme?: [boolean, 'mdx' | 'md'];
   };
   plugins?: OmniPlugin[];
 };
