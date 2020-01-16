@@ -29,12 +29,12 @@ program
   .action((strategy, options) => initial(strategy, options));
 
 program
-  .command('dev [port]')
-  .description('omni dev [port]', {
+  .command('dev')
+  .option('-p, --port [port]', 'create a simple React SPA project')
+  .description('omni dev -p [port]', {
     port: 'optional! The dev-server run port.',
   })
-  .usage('[port] [options]')
-  .action((port) => dev(config, port));
+  .action((options) => dev(config, options));
 
 program
   .command('new <module>')

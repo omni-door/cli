@@ -2,16 +2,17 @@ import { logWarn } from '../../utils/logger';
 import server from './server';
 import { OmniConfig } from '../../index.d';
 
-export default async function (config: OmniConfig | {}, p: number | string = 6200) {
+export default async function (config: OmniConfig | {}, options: { port?: number | string }) {
   if (JSON.stringify(config) === '{}') {
     logWarn('请先初始化项目！(Please initialize project first!)');
     return process.exit(0);
   }
 
+  const p = options.port;
   const {
     type,
     dev: {
-      port = 6200,
+      port,
       webpack_config,
       proxy
     }
@@ -26,10 +27,10 @@ export default async function (config: OmniConfig | {}, p: number | string = 620
       return process.exit(1);
     }
 
-    const _port = !isNaN(+p)
-      ? +p
-      : !isNaN(+port)
-        ? +port
+    const _port = !isNaN(+p!)
+      ? +p!
+      : !isNaN(+port!)
+        ? +port!
         : 6200;
 
     server({

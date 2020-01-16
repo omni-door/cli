@@ -29,7 +29,7 @@ Several options to get up and running:
   Commands:
 
     init [strategy] [options]  initialize your project, [strategy] could be stable(default) or latest
-    dev [port]                 omni dev [port]
+    dev [options]              omni dev -p [port]
     new <module> [options]     omni new [module] [-f | -c]
     build                      build your project according to [omni.config.js]
     release [options]          publish your project according to [omni.config.js]
@@ -77,16 +77,13 @@ Options:
 
 ### options
 ```sh
-Usage: omni dev [port] [options]
+Usage: omni dev [options]
 
-omni dev [port]
-
-Arguments:
-
-  port        optional! The dev-server run port.
+omni dev -p [port]
 
 Options:
-  -h, --help  output usage information
+  -p, --port [port]  create a simple React SPA project
+  -h, --help         output usage information
 ```
 
 ---
