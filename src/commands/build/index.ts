@@ -12,8 +12,9 @@ import { execShell } from '../../utils/exec';
 import { getHandlers } from '../../utils/tackle_plugins';
 import { output_file } from '../../utils/output_file';
 import getLogPrefix, { getLogo } from '../../utils/log_prefix';
-import { OmniConfig, BUILD } from '../../index.d';
 import dependencies_build from '../../configs/dependencies_build';
+import release from '../release';
+import { OmniConfig, BUILD } from '../../index.d';
 
 export default async function (config: OmniConfig | {}, buildTactic?: {
   verify?: boolean;
@@ -258,7 +259,12 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
 
     if (auto_release) {
       logInfo('开始自动发布！(beginning auto release!)');
-      await execShell(['omni release --no-verify'], handleBuildSuc('自动发布成功！(auto release success!)'), handleBuildErr('自动发布失败！(auto release failed!)'));
+      handleBuildSuc('自动发布成功！(auto release success!)')();
+      try {
+        await release(config, { verify: false });
+      } catch (err) {
+        handleBuildErr('自动发布失败！(auto release failed!)')();
+      }
     }
   } catch (err) {
     logErr(`糟糕！构建过程发生了点意外！(Oops! build process occured some accidents!) \n👉  ${JSON.stringify(err)}`);
