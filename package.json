@@ -55,7 +55,6 @@
     "@types/express": "^4.17.2",
     "@types/figlet": "^1.2.0",
     "@types/fs-extra": "^8.0.1",
-    "@types/http-proxy-middleware": "^0.19.3",
     "@types/inquirer": "^6.5.0",
     "@types/ip": "^1.1.0",
     "@types/mocha": "^5.2.7",
@@ -63,7 +62,6 @@
     "@types/progress": "^2.0.3",
     "@types/rollup": "^0.54.0",
     "@types/shelljs": "^0.8.5",
-    "@types/webpack": "^4.41.2",
     "@types/webpack-dev-middleware": "^2.0.3",
     "@types/webpack-env": "^1.15.0",
     "@types/webpack-hot-middleware": "^2.25.0",
@@ -103,6 +101,8 @@
     "webpack-hot-middleware": "^2.25.0"
   },
   "dependencies": {
+    "@types/http-proxy-middleware": "^0.19.3",
+    "@types/webpack": "^4.41.2",
     "chalk": "^2.4.2",
     "commander": "^3.0.2",
     "del": "^5.1.0",
