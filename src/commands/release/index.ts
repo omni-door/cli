@@ -148,7 +148,7 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
         logInfo(`自动设置 npm registry 地址为 ${npm} (auto set npm registry to: ${npm})`);
         await execShell(
           [`npm set registry ${npm}`],
-          () => logEmph(`npm registry 设置成功，请执行 ${chalk.yellow(underline('npm publish'))} 进行发布！(npm set registry success, please run ${chalk.yellow(underline('$npm publish'))} by yourself!)`),
+          () => logEmph(`npm registry 设置成功，请执行 ${chalk.yellow(underline('npm publish'))} 进行发布！(npm set registry success, please run ${chalk.yellow(underline('npm publish'))} by yourself!)`),
           () => logWarn('npm registry 设置失败！(set npm registry failed!)')
         );
       } else {

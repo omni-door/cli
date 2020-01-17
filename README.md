@@ -8,6 +8,7 @@ The CLI Tool for set up standard javascript project.
 [![install size](https://packagephobia.now.sh/badge?p=%40omni-door%2Fcli)](https://packagephobia.now.sh/result?p=%40omni-door%2Fcli)
 [![license](http://img.shields.io/npm/l/%40omni-door%2Fcli.svg)](https://github.com/omni-door/cli/blob/master/LICENSE)
 
+[CHANGELOG](./docs/CHANGELOG.md)
 
 ## install
 Several options to get up and running:
