@@ -71,6 +71,7 @@ export type OmniConfig = {
     out_dir: string;
     esm_dir?: string;
     configuration?: (config: ANYOBJECT) => ANYOBJECT;
+    tool?: BUILD;
     preflight?: {
       typescript?: boolean;
       test?: boolean;

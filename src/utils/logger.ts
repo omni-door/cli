@@ -22,5 +22,13 @@ export function logEmph (info: string) {
 }
 
 export function logSuc (msg: string) {
-  console.info(chalk.green(getLogPrefix(), msg, '  ✅  \n'));
+  console.info(chalk.green(getLogPrefix(), chalk.bold(msg), '  ✅  \n'));
+}
+
+export function underline (str: string) {
+  return chalk.bold.underline(str);
+}
+
+export function italic (str: string) {
+  return chalk.bold.italic(str);
 }

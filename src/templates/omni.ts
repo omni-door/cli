@@ -46,6 +46,7 @@ module.exports = {
     ${project_type !== 'component_library_react' ? `// (构建阶段的自定义配置回调) The callback will be call in the build-process
     // (返回自定义的配置) You can return your custom build configuration
     ${project_type === 'spa_react' ? 'configuration: config => merge(config, prod_config)' : 'configuration: config => config'},` : ''}
+    ${project_type === 'toolkit' ? `tool: '${build}', // 打包工具，支持 tsc、rollup、webpack (build tool, support tsc, rollup and webpack)` : ''}
     reserve: {
       style: ${style && build !== 'webpack' ? true : false}, // 构建结果是否保留样式文件 (whether or not reserve the stylesheet files)
       assets: [] // 构建结果保留其他资源的路径 (reserve other asset paths)

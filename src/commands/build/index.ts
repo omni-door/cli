@@ -3,12 +3,11 @@ import path from 'path';
 import fsExtra from 'fs-extra';
 import shelljs from 'shelljs';
 import inquirer from 'inquirer';
-import chalk from 'chalk';
 import ora from 'ora';
 import del from 'del';
 import rollupConfig from './rollup';
 import webpackConfig from './webpack';
-import { logErr, logInfo, logWarn, logSuc, logEmph } from '../../utils/logger';
+import { logErr, logInfo, logWarn, logSuc, logEmph, underline, italic } from '../../utils/logger';
 import { execShell } from '../../utils/exec';
 import { getHandlers } from '../../utils/tackle_plugins';
 import { output_file } from '../../utils/output_file';
@@ -31,11 +30,12 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
 
   const { type,
     build: {
-      reserve = {},
+      auto_release,
       src_dir,
       out_dir,
       esm_dir = '',
-      auto_release,
+      tool,
+      reserve = {},
       preflight
     }, plugins } = config as OmniConfig;
 
@@ -63,8 +63,8 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
   function handleBuildErr (msg?: string) {
     msg = msg || '项目构建失败！(Building failed!)';
 
-    return function (err?: any) {
-      logErr(msg!);
+    return function (err?: string) {
+      logErr(err || msg!);
       return process.exit(1);
     };
   }
@@ -163,19 +163,19 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
 
   try {
     if (verify && test) {
-      await execShell(['npm test'], () => logEmph('单元测试通过！(unit test passed!)'), handleBuildErr('单元测试失败！(unit test failed!)'));
+      await execShell(['npm test'], () => logEmph(italic('单元测试通过！(unit test passed!)')), handleBuildErr('单元测试失败！(unit test failed!)'));
     }
 
     if (verify && eslint) {
-      await execShell(['npm run lint:es'], () => logEmph('eslint校验通过！(eslint passed!)'), handleBuildErr(`eslint校验失败！(eslint checking failed!) \n ${chalk.bgCyan('尝试执行 (try to exec): npm run lint:es_fix')}`));
+      await execShell(['npm run lint:es'], () => logEmph(italic('eslint校验通过！(eslint passed!)')), handleBuildErr(`eslint校验失败！(eslint checking failed!) \n 尝试执行 (try to exec): ${underline('npm run lint:es_fix')}`));
     }
 
     if (verify && stylelint) {
-      await execShell(['npm run lint:style'], () => logEmph('stylelint校验通过！(stylelint passed!)'), handleBuildErr(`stylelint校验失败！(stylelint checking failed!) \n ${chalk.bgCyan('尝试执行 (try to exec): npm run lint:style_fix')}`));
+      await execShell(['npm run lint:style'], () => logEmph(italic('stylelint校验通过！(stylelint passed!)')), handleBuildErr(`stylelint校验失败！(stylelint checking failed!) \n 尝试执行 (try to exec): ${underline('npm run lint:style_fix')}`));
     }
 
     const buildCliArr = [];
-    if (type === 'component_library_react') {
+    if (type === 'component_library_react' || (tool === 'tsc' && type === 'toolkit')) {
       const tscPath = path.resolve(process.cwd(), 'node_modules/typescript/bin/tsc');
       buildCliArr.push(`${tscPath} --outDir ${out_dir} --project ${path.resolve(process.cwd(), 'tsconfig.json')}`);
       esm_dir && buildCliArr.push(`${tscPath} --module ES6 --target ES6 --outDir ${esm_dir} --project ${path.resolve(process.cwd(), 'tsconfig.json')}`);

@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
-import { logErr, logInfo, logWarn, logSuc, logEmph } from '../../utils/logger';
+import { logErr, logInfo, logWarn, logSuc, logEmph, italic, underline } from '../../utils/logger';
 import { execShell } from '../../utils/exec';
 import { getHandlers } from '../../utils/tackle_plugins';
 import { OmniConfig } from '../../index.d';
@@ -69,15 +69,15 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
     const versionShellSuffix = ignore ? 'i' : manual ? manual : '';
 
     if (verify && test) {
-      await execShell(['npm test'], () => logEmph('单元测试通过！(unit test passed!)'), handleReleaseErr('单元测试失败！(unit test failed!)'));
+      await execShell(['npm test'], () => logEmph(italic('单元测试通过！(unit test passed!)')), handleReleaseErr('单元测试失败！(unit test failed!)'));
     }
 
     if (verify && eslint) {
-      await execShell(['npm run lint:es'], () => logEmph('eslint校验通过！(eslint passed!)'), handleReleaseErr('eslint校验失败！(eslint checking failed!)'));
+      await execShell(['npm run lint:es'], () => logEmph(italic('eslint校验通过！(eslint passed!)')), handleReleaseErr('eslint校验失败！(eslint checking failed!)'));
     }
 
     if (verify && stylelint) {
-      await execShell(['npm run lint:style'], () => logEmph('stylelint校验通过！(stylelint passed!)'), handleReleaseErr('stylelint校验失败！(stylelint checking failed!)'));
+      await execShell(['npm run lint:style'], () => logEmph(italic('stylelint校验通过！(stylelint passed!)')), handleReleaseErr('stylelint校验失败！(stylelint checking failed!)'));
     }
 
     await execShell(
@@ -148,7 +148,7 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
         logInfo(`自动设置 npm registry 地址为 ${npm} (auto set npm registry to: ${npm})`);
         await execShell(
           [`npm set registry ${npm}`],
-          () => logEmph(`npm registry 设置成功，请执行 ${chalk.yellow('$npm publish')} 进行发布！(npm set registry success, please run ${chalk.yellow('$npm publish')} by yourself!)`),
+          () => logEmph(`npm registry 设置成功，请执行 ${chalk.yellow(underline('npm publish'))} 进行发布！(npm set registry success, please run ${chalk.yellow(underline('$npm publish'))} by yourself!)`),
           () => logWarn('npm registry 设置失败！(set npm registry failed!)')
         );
       } else {
