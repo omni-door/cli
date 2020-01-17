@@ -16,8 +16,7 @@ export default (config: GenerateOmniConfigParams) => {
 const path = require('path');
 ${project_type === 'spa_react' ? `const merge = require('webpack-merge');
 const prod_config = require('./configs/webpack.config.prod.js');` : ''}
-${project_type !== 'component_library_react' ? 'const dev_config = require(\'./configs/webpack.config.dev.js\');' : ''}
-
+${project_type !== 'component_library_react' ? 'const dev_config = require(\'./configs/webpack.config.dev.js\');\n' : ''}
 module.exports = {
   type: '${project_type}', // 项目类型，请勿变动 (project type, please don't modify)
   ${project_type !== 'component_library_react' ? `\n  dev: {
@@ -35,26 +34,22 @@ module.exports = {
   },\n` : '' }
   build: {
     auto_release: false, // 构建完成后是否自动发布 (auto release project after build success)
-
     // 输入路径 (the build source directory)
     // 务必使用绝对路径 (must be a absolute path)
     src_dir: ${project_type === 'toolkit' ? 'path.resolve(\'src/toolkit\')' : 'path.resolve(\'src\')'},
-
     // 输出路径 (the directory for compiled project)
     // 务必使用绝对路径 (must be a absolute path)
     out_dir: path.resolve('lib'),
-    ${project_type === 'spa_react' ? `\n    // es6 module输出路径 (es6 module compiled directory)
+    ${project_type !== 'spa_react' ? `// es6 module输出路径 (es6 module compiled directory)
     // 务必使用绝对路径 (must be a absolute path)
-    // React单页应用不支持 (react spa app not support this featrue)
-    esm_dir: path.resolve('es'),\n` : ''}
+    esm_dir: path.resolve('es'),` : ''}
     ${project_type !== 'component_library_react' ? `// (构建阶段的自定义配置回调) The callback will be call in the build-process
     // (返回自定义的配置) You can return your custom build configuration
-    ${project_type === 'spa_react' ? 'configuration: config => merge(config, prod_config)' : 'configuration: config => config'},\n` : ''}
+    ${project_type === 'spa_react' ? 'configuration: config => merge(config, prod_config)' : 'configuration: config => config'},` : ''}
     reserve: {
       style: ${style && build !== 'webpack' ? true : false}, // 构建结果是否保留样式文件 (whether or not reserve the stylesheet files)
       assets: [] // 构建结果保留其他资源的路径 (reserve other asset paths)
     },
-
     preflight: {
       typescript: ${!!ts}, // 是否处理ts或tsx文件 (whether or not process the ts or tsx files)
       test: ${!!test}, // 是否进行单元测试 (whether or not process unit-test)
@@ -79,13 +74,9 @@ module.exports = {
     // 生成模板的根路径 (the root directory for generate template)
     // 务必使用绝对路径 (must be a absolute path)
     root: ${project_type === 'toolkit' ? 'path.resolve(\'src/toolkit\')' : 'path.resolve(\'src\')'},
-    
     typescript: ${!!ts}, // 是否创建ts文件 (whether or not apply typescript)
-
     test: '${testFrame}', // 创建单元测试文件类型 (the unit test frame)
-
     stylesheet: '${style === 'all' ? 'less' : style}', // 样式文件类型 (stylesheet type)
-
     readme: [true, ${mdx ? '\'mdx\'' : '\'md\''}] // [是否生成ReadMe文件, 创建md 或 mdx文件] ([whether or not README.md, generate mdx or md file])
   },
 

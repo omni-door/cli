@@ -54,12 +54,12 @@ export default async function ({
     // dev server middleware
     app.use(devMiddleware(compiler, {
       publicPath: '/',
-      logLevel: 'debug'
+      logLevel: 'error'
     }));
 
     // hot refresh middleware
     app.use(hotMiddleware(compiler, {
-      log: console.info, 
+      log: logInfo, 
       path: '/__webpack_hmr', 
       heartbeat: 10 * 1000
     }));

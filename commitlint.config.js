@@ -19,7 +19,8 @@ const Configuration = {
       'upgrade',
       'modify',
       'merge',
-      'chore'
+      'chore',
+      'optimization'
     ]]
   },
   /*
