@@ -259,9 +259,9 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
 
     if (auto_release) {
       logInfo('开始自动发布！(beginning auto release!)');
-      handleBuildSuc('自动发布成功！(auto release success!)')();
       try {
         await release(config, { verify: false });
+        handleBuildSuc('自动发布成功！(auto release success!)')();
       } catch (err) {
         handleBuildErr('自动发布失败！(auto release failed!)')();
       }
