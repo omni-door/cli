@@ -2,7 +2,7 @@ import { GTpls } from '../commands/initial';
 
 type TPL = Omit<GTpls, 'name' | 'createDir'>;
 
-export const tpl_simple: TPL = {
+export const tpl_basic: TPL = {
   project_type: 'spa_react',
   build: 'webpack',
   ts: false,
@@ -78,7 +78,7 @@ export const tpl_lib_components: TPL = {
 };
 
 export default {
-  tpl_simple,
+  tpl_basic,
   tpl_standard,
   tpl_entire,
   tpl_lib_toolkit,

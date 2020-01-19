@@ -2,7 +2,6 @@ import { Configuration } from 'webpack';
 import { Config } from 'http-proxy-middleware';
 import { TPLS_ALL, TPLS_INITIAL, TPLS_INITIAL_FN, TPLS_INITIAL_RETURE, TPLS_NEW, TPLS_NEW_FN, TPLS_NEW_RETURE } from './templates';
 export { TPLS_ALL, TPLS_INITIAL, TPLS_INITIAL_FN, TPLS_INITIAL_RETURE, TPLS_NEW, TPLS_NEW_FN, TPLS_NEW_RETURE } from './templates';
-export type ENV = 'prod' | 'stg' | 'sit' | 'test' | 'dev';
 export type BUILD = 'webpack' | 'rollup' | 'tsc' | '';
 export type NPM = 'npm' | 'yarn' | 'cnpm' | 'taobao';
 export type PROJECT_TYPE = 'spa_react' | 'component_library_react' | 'toolkit';

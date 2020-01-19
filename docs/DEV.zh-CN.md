@@ -1,12 +1,12 @@
-# Docs
-**@omni-door/cli** provides the ability of secondary development, which is implemented through plug-in or import form。
+# 接入文档
+@omni-door/cli 提供了二次开发的能力，通过 plugin 或者 import 到项目中实现。
 
 ---
 
 ## Plugin
-The Plugin provides the third-party developers with the ability to perform multiple tasks in each lifecycle of the project. Please make sure that the Plugin writing meets the type definition of `type OmniPlugin`.
+插件向第三方开发者提供了脚手架在项目各个周期的执行多元化任务的能力，插件的编写请务必满足 `type OmniPlugin` 的类型定义。
 
-### Type of plugin
+### plugin 的类型
 ```ts
 type OmniPlugin = {
   name: string;
@@ -21,7 +21,7 @@ interface PluginHandler {
 }
 ```
 
-### Type of OmniConfig
+### OmniConfig 的类型
 ```ts
 import { Configuration } from 'webpack';
 import { Config } from 'http-proxy-middleware';
@@ -82,29 +82,29 @@ type TESTFRAME = 'mocha' | 'jest' | 'karma' | '';
 type STYLE = 'less' | 'scss' | 'css' | 'all' | '';
 ```
 
-- `name`: the name of plugin
+- `name`：插件的名称
 
-- `stage`: the stage of plugin execution
+- `stage`：插件执行的阶段
 
-- `handler`: executed callback function, returned in the form of `promise`
+- `handler`：执行的回调函数，以 `promise` 的形式返回
 
-  - through `import { PluginHandler_Release } from '@omni-door/cli/lib/index.d';` to get the type that *handler* should satisfy
-  - support: `PluginHandler_Dev`, `PluginHandler_Build`, `PluginHandler_Release`, `PluginHandler_New`
+  - 通过 `import { PluginHandler_Release } from '@omni-door/cli/lib/index.d';` 获取 handle 应满足的类型
+  - 支持： `PluginHandler_Dev`、`PluginHandler_Build`、`PluginHandler_Release`、`PluginHandler_New`
 ---
 
-## The commands by import
-- `import { initial } from '@omni-door/cli';`: get the initial instruction, then call with paramter directly:
+## import 引入 command 命令
+- `import { initial } from '@omni-door/cli';`：获取 initial 指令，传入参数直接调用：
 
   ```ts
   initial({
-    standard: true // initial a standard project
+    standard: true // 构建一个标准项目
   }, {
-    // before the project initial
+    // 项目初始化开始前
     before: dir_name => ({
-      create_dir: false // avoid create new dir
+      create_dir: false // 避免新创建文件夹
     }),
     tpls: tpls => {
-      // modify omni.config.js
+      // 改写 omni.config.js
       return {
         omni: configs => {
           let fn = tpls.omni;
@@ -114,30 +114,30 @@ type STYLE = 'less' | 'scss' | 'css' | 'all' | '';
 
           return fn(configs);
         },
-        // return an empty string will not generate commitlint.config.js file
+        // 返回空字符串，则不会生成相应的 commitlint.config.js 文件
         commitlint: config => ''
       };
     },
-    dependencies: () => ['peeler-js'], // install project dependencies
-    devDependencies: () => ['webpack-cli'], // install project devDependencies
-    // after finish the project initial
+    dependencies: () => ['peeler-js'], // 安装项目依赖
+    devDependencies: () => ['webpack-cli'], // 安装项目开发依赖
+    // 项目初始化完成后
     after: () => {
       return {
         success: true,
-        msg: 'build success!'
+        msg: '完成项目初始化构建'
       };
     },
-    // custom the name of omni.config.js file
+    // 自定义 omni.config.js 文件名称
     configFileName: 'custom.config.js'
   });
   ```
 
-- Other phases commands: `import { dev, new as newTpl, build, release } from '@omni-door/cli';`
+- 其他阶段的命令同样支持：`import { dev, new as newTpl, build, release } from '@omni-door/cli';`
 
-- Support custom logo and brand:
+- 支持自定义 logo、brand 前缀：
   ```ts
   import { setLogo, setBrand } from '@omni-door/cli';
 
   setLogo('🐸');
-  setBrand('some_prefix：');
+  setBrand('自定义的前缀：');
   ```

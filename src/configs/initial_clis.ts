@@ -1,6 +1,6 @@
 import { GInstallCli } from '../commands/initial';
 
-export const cli_simple: GInstallCli = {
+export const cli_basic: GInstallCli = {
   project_type: 'spa_react',
   pkgtool: 'yarn',
   build: 'webpack',
@@ -66,7 +66,7 @@ export const cli_lib_components: GInstallCli = {
 };
 
 export default {
-  cli_simple,
+  cli_basic,
   cli_standard,
   cli_entire,
   cli_lib_toolkit,

@@ -17,8 +17,8 @@ program
 
 program
   .command('init [strategy]')
-  .option('-s, --simple [name]', 'create a simple React SPA project')
-  .option('-d, --standard [name]', 'create a standard  React SPA project')
+  .option('-b, --basic [name]', 'create a basic React SPA project')
+  .option('-s, --standard [name]', 'create a standard  React SPA project')
   .option('-e, --entire [name]', 'create a most versatile  React SPA project')
   .option('-t, --toolkit [name]', 'create a toolkit project')
   .option('-c, --components [name]', 'create a React component library')
@@ -30,7 +30,7 @@ program
 
 program
   .command('dev')
-  .option('-p, --port [port]', 'create a simple React SPA project')
+  .option('-p, --port [port]', 'start the dev-server according to the specified port')
   .description('omni dev -p [port]', {
     port: 'optional! The dev-server run port.',
   })

@@ -2,22 +2,28 @@
 
 ## v1.0.x
 ### v1.0.0
-1. feat: 新增 `omni dev` 命令以支持基于 Express + webpack-dev-server 的开发服务
+1. add `omni dev` command that support the development server which powered by Express and webpack-dev-server 
 
 ### v1.0.1
-1. feat: 优化了log日志的输出
+1. optimized log output
 
 ### v1.0.2
-1. feat: toolkit 项目支持使用 tsc 打包
+1. toolkit-project support tsc build
 
 ### v1.0.3
-1. feat: 构建(build)自动发布优化，摆脱依赖npm script，直接调用release方法
+1. build phase auto-release optimization, get rid of relying on NPM script and call release method directly
+
+### v1.0.4
+1. dev-server start process optimization
+
+2. init change `omni init -s` and `omni init --simple` to `omni init -b` and `omni init --basic`
+---
 
 ## v0.2.x
-1. 正式稳定版本
+1. stable version
 
 ## v0.1.x
-1. 可用版本，请使用最新版本
+1. available version, please upgrade the latest version
 
 ## v0.0.x
-1. 非正式版本，请使用最新版本
+1. informal version, please upgrade the latest version

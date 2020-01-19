@@ -129,14 +129,14 @@ const default_tpl_list = {
 };
 
 export default function (strategy: STRATEGY, {
-  simple,
+  basic,
   standard,
   entire,
   toolkit,
   components,
   custom
 }: {
-  simple?: boolean | string;
+  basic?: boolean | string;
   standard?: boolean | string;
   entire?: boolean | string;
   toolkit?: boolean | string;
@@ -165,8 +165,8 @@ export default function (strategy: STRATEGY, {
   const { before, tpls, dependencies: dependencies_custom, devDependencies: devDependencies_custom, after, configFileName = 'omni.config.js' } = option || {};
   const { name: defaultName } = parse(process.cwd());
   const projectName =
-    typeof simple === 'string'
-      ? simple
+    typeof basic === 'string'
+      ? basic
       : typeof standard === 'string'
         ? standard
         : typeof entire === 'string'
@@ -573,9 +573,9 @@ export default function (strategy: STRATEGY, {
 
   async function presetTpl (createDir: boolean) {
     let cli, tpl;
-    if (simple) {
-      cli = installClis.cli_simple;
-      tpl = templates.tpl_simple;
+    if (basic) {
+      cli = installClis.cli_basic;
+      tpl = templates.tpl_basic;
     } else if (standard) {
       cli = installClis.cli_standard;
       tpl = templates.tpl_standard;
@@ -661,7 +661,7 @@ export default function (strategy: STRATEGY, {
 
   if (typeof custom === 'function') {
     return custom(default_tpl_list);
-  } else if (simple || standard || entire || toolkit || components) {
+  } else if (basic || standard || entire || toolkit || components) {
     if (fs.existsSync(configPath)) {
       // double confirmation
       inquirer.prompt([{

@@ -2,15 +2,15 @@ import chalk from 'chalk';
 import getLogPrefix from './log_prefix';
 
 export function logErr (err: string) {
-  console.error(chalk.red(getLogPrefix(), err, '  ❌  \n'));
+  console.error(chalk.red(getLogPrefix(), err, '❌\n'));
 }
 
 export function logWarn (warn: string) {
-  console.warn(chalk.yellow(getLogPrefix(), warn, '  ❗  \n'));
+  console.warn(chalk.yellow(getLogPrefix(), warn, '❗\n'));
 }
 
 export function logInfo (info: string) {
-  console.info(chalk.white(getLogPrefix(), info, '  🔊  \n'));
+  console.info(chalk.white(getLogPrefix(), info, '🔊\n'));
 }
 
 export function logDetail (info: string) {
@@ -18,11 +18,11 @@ export function logDetail (info: string) {
 }
 
 export function logEmph (info: string) {
-  console.info(chalk.cyan(getLogPrefix(), info, '  🚩  \n'));
+  console.info(chalk.cyan(getLogPrefix(), info, '🚩\n'));
 }
 
 export function logSuc (msg: string) {
-  console.info(chalk.green(getLogPrefix(), chalk.bold(msg), '  ✅  \n'));
+  console.info(chalk.green(getLogPrefix(), chalk.bold(msg), '✅\n'));
 }
 
 export function underline (str: string) {
