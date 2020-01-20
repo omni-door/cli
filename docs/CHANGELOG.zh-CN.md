@@ -18,6 +18,13 @@
 
 2. init 更改 `omni init -s` 和 `omni init --simple` 为 `omni init -b` 和 `omni init -basic`
 
+### v1.0.5
+1. <omni.config.js>, 新增 `dev.middleware` 字段
+
+2. <omni.config.js>, 新增 `dev.logLevel` 字段
+
+3. <omni.config.js>, `dev.webpack_config` 更变为 `dev.webpack`
+
 ---
 
 ## v0.2.x

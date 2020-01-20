@@ -11,18 +11,27 @@ export default function (config: OmniConfig | {}, options: { port?: number | str
   const p = options.port;
   const {
     type,
-    dev: {
-      port,
-      webpack_config,
-      proxy
-    }
+    dev
   } = config as OmniConfig;
-  
+
+  if (!dev || JSON.stringify(dev) === '{}') {
+    logWarn('配置文件 dev 字段缺失！(The dev field is missing in config file!)');
+    return process.exit(0);
+  }
+
+  const {
+    port,
+    logLevel,
+    webpack,
+    proxy,
+    middleware
+  } = dev;
+
   if (type === 'component_library_react') {
     logWarn('请直接执行 [npm start] 启动开发服务！(Please exec [npm start] to run dev-server!)');
     return process.exit(0);
   } else {
-    if (!webpack_config) {
+    if (!webpack) {
       logWarn('缺少开发服务webpack配置文件！(Missing the dev-server webpack-config!)');
       return process.exit(1);
     }
@@ -35,8 +44,10 @@ export default function (config: OmniConfig | {}, options: { port?: number | str
 
     run({
       p: _port,
-      webpackConfig: webpack_config,
-      proxyConfig: proxy
+      logLevel,
+      webpackConfig: webpack,
+      proxyConfig: proxy,
+      middlewareConfig: middleware
     });
   }
 }

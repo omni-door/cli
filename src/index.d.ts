@@ -1,5 +1,7 @@
 import { Configuration } from 'webpack';
 import { Config } from 'http-proxy-middleware';
+import { Request, Response, NextFunction } from 'express';
+import { PathParams } from 'express-serve-static-core';
 import { TPLS_ALL, TPLS_INITIAL, TPLS_INITIAL_FN, TPLS_INITIAL_RETURE, TPLS_NEW, TPLS_NEW_FN, TPLS_NEW_RETURE } from './templates';
 export { TPLS_ALL, TPLS_INITIAL, TPLS_INITIAL_FN, TPLS_INITIAL_RETURE, TPLS_NEW, TPLS_NEW_FN, TPLS_NEW_RETURE } from './templates';
 export type BUILD = 'webpack' | 'rollup' | 'tsc' | '';
@@ -11,6 +13,7 @@ export type STYLE = 'less' | 'scss' | 'css' | 'all' | '';
 export type DEVSERVER = 'basic' | 'docz' | 'storybook' | 'bisheng' | '';
 export type STRATEGY = 'stable' | 'latest';
 export type ANYOBJECT = { [propName: string]: any };
+export type LogLevel = 'debug' | 'info' | 'warn' | 'error' | 'silent';
 
 export type GenerateOmniConfigParams = {
   project_type: PROJECT_TYPE;
@@ -56,13 +59,18 @@ export type OmniPlugin = {
 
 export type OmniConfig = {
   type: PROJECT_TYPE;
-  dev: {
+  dev?: {
     port?: number;
-    webpack_config?: Configuration;
+    logLevel?: LogLevel;
+    webpack?: Configuration;
     proxy?: {
       route: string;
       config: Config;
     }[];
+    middleware?: {
+      route: PathParams;
+      callback: (req: Request, res: Response, next: NextFunction) => void;
+    }[]
   };
   build: {
     auto_release?: boolean;

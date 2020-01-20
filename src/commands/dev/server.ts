@@ -1,18 +1,25 @@
 import path from 'path';
 import { logInfo } from '../../utils/logger';
-import { Configuration } from 'webpack';
+import { Express, Request, Response, NextFunction } from 'express';
+import { PathParams } from 'express-serve-static-core';
+import { Configuration, Compiler } from 'webpack';
 import { Config } from 'http-proxy-middleware';
+import { LogLevel } from '../../index.d';
 
 export type ServerOptions = {
   p: number;
+  logLevel?: LogLevel;
   webpackConfig: Configuration;
-  proxyConfig?: { route: string; config: Config; }[]
+  proxyConfig?: { route: string; config: Config; }[];
+  middlewareConfig?: { route: PathParams; callback: (req: Request, res: Response, next: NextFunction) => void; }[];
 };
 
 function server ({
   p,
+  logLevel = 'error',
   webpackConfig,
-  proxyConfig = []
+  proxyConfig = [],
+  middlewareConfig = []
 }: ServerOptions): void {
   const open = require('open');
   const ip = require('ip');
@@ -22,13 +29,13 @@ function server ({
   const devMiddleware = require('webpack-dev-middleware');
   const hotMiddleware = require('webpack-hot-middleware');
 
-  const compiler = webpack(webpackConfig);
-  const app = express();
+  const compiler: Compiler = webpack(webpackConfig);
+  const app: Express = express();
 
   // dev server middleware
   app.use(devMiddleware(compiler, {
     publicPath: '/',
-    logLevel: 'error'
+    logLevel: logLevel
   }));
 
   // hot refresh middleware
@@ -38,7 +45,7 @@ function server ({
     heartbeat: 10 * 1000
   }));
 
-  // proxy
+  // http proxy middleware
   for (let i = 0; i < proxyConfig.length; i++) {
     const item = proxyConfig[i];
     app.use(
@@ -47,9 +54,19 @@ function server ({
     );
   }
 
-  app.use('*', function (req: any, res: any, next: any) {
+  // custom middleware
+  for (let i = 0; i < middlewareConfig.length; i++) {
+    const item = middlewareConfig[i];
+    app.use(
+      item.route,
+      item.callback
+    );
+  }
+
+  // index.html
+  app.use('*', function (req, res, next) {
     const filename = path.join(compiler.outputPath, 'index.html');
-    compiler.inputFileSystem.readFile(filename, function (err: any, result: any) {
+    compiler.inputFileSystem.readFile(filename, function (err, result) {
       if (err) {
         return next(err);
       }

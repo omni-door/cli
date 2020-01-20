@@ -17,6 +17,14 @@
 1. dev-server start process optimization
 
 2. init change `omni init -s` and `omni init --simple` to `omni init -b` and `omni init --basic`
+
+### v1.0.5
+1. <omni.config.js>, add `dev.middleware` field
+
+2. <omni.config.js>, add `dev.logLevel` field
+
+3. <omni.config.js>, `dev.webpack_config` change to `dev.webpack`
+
 ---
 
 ## v0.2.x

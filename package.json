@@ -52,7 +52,6 @@
     "@types/chai": "^4.2.3",
     "@types/clui": "^0.3.0",
     "@types/detect-port": "^1.1.0",
-    "@types/express": "^4.17.2",
     "@types/figlet": "^1.2.0",
     "@types/fs-extra": "^8.0.1",
     "@types/inquirer": "^6.5.0",
@@ -101,6 +100,7 @@
     "webpack-hot-middleware": "^2.25.0"
   },
   "dependencies": {
+    "@types/express": "^4.17.2",
     "@types/http-proxy-middleware": "^0.19.3",
     "@types/webpack": "^4.41.2",
     "chalk": "^2.4.2",

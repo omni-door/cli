@@ -10,8 +10,8 @@ node_modules/
 .docz/
 .storybook/
 .out/
-src/**/__test__/
-src/**/__stories__/
+**/__test__/
+**/__stories__/
 
 doczrc.js
 .eslintrc.js

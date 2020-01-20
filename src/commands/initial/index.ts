@@ -549,7 +549,7 @@ export default function (strategy: STRATEGY, {
   }
 
   function generateFiglet (fn: (done: () => void) => any) {
-    return figlet('@OMNI-DOOR/CLI', function (err, data) {
+    return figlet('OMNI-DOOR', function (err, data) {
       if (err) {
         logErr(JSON.stringify(err));
         spinner.fail(chalk.yellow(`${getLogPrefix()} figlet 出现了问题！(Some thing about figlet is wrong!)  ❌  \n`));
@@ -762,7 +762,7 @@ export default function (strategy: STRATEGY, {
         name: 'pkgtool',
         type: 'list',
         choices: [ 'yarn', 'npm', 'cnpm' ],
-        message: `${getLogo()}[7/7] 请选择包安装工具，推荐使用yarn (please chioce the package install tool, recommended use yarn)：`,
+        message: `${getLogo()}[7/7] 请选择包安装工具，推荐使用yarn (please choice the package install tool, recommended use yarn)：`,
         default: 'yarn'
       }
     ];
