@@ -1,7 +1,11 @@
 import { Configuration } from 'webpack';
+export { Configuration } from 'webpack';
 import { Config } from 'http-proxy-middleware';
+export { Config } from 'http-proxy-middleware';
 import { Request, Response, NextFunction } from 'express';
+export { Request, Response, NextFunction } from 'express';
 import { PathParams } from 'express-serve-static-core';
+export { PathParams } from 'express-serve-static-core';
 import { TPLS_ALL, TPLS_INITIAL, TPLS_INITIAL_FN, TPLS_INITIAL_RETURE, TPLS_NEW, TPLS_NEW_FN, TPLS_NEW_RETURE } from './templates';
 export { TPLS_ALL, TPLS_INITIAL, TPLS_INITIAL_FN, TPLS_INITIAL_RETURE, TPLS_NEW, TPLS_NEW_FN, TPLS_NEW_RETURE } from './templates';
 export type BUILD = 'webpack' | 'rollup' | 'tsc' | '';
@@ -57,6 +61,8 @@ export type OmniPlugin = {
   handler: PluginHandler;
 };
 
+export type MiddleWareCallback = (req: Request, res: Response, next: NextFunction) => void;
+
 export type OmniConfig = {
   type: PROJECT_TYPE;
   dev?: {
@@ -69,7 +75,7 @@ export type OmniConfig = {
     }[];
     middleware?: {
       route: PathParams;
-      callback: (req: Request, res: Response, next: NextFunction) => void;
+      callback: MiddleWareCallback;
     }[]
   };
   build: {

@@ -16,6 +16,7 @@ import {
 } from '../../templates';
 import { output_file } from '../../utils/output_file';
 import { getHandlers } from '../../utils/tackle_plugins';
+import node_version from '../../utils/node_version';
 import { OmniConfig } from '../../index.d';
 
 const default_tpl_list = {
@@ -36,6 +37,13 @@ export default async function (config: OmniConfig | {}, componentName: string, o
   fc?: boolean;
   cc?: boolean;
 }) {
+  try {
+    // node version pre-check
+    await node_version('8');
+  } catch (err) {
+    logWarn(err);
+  }
+
   if (JSON.stringify(config) === '{}') {
     logWarn('请先初始化项目！(Please initialize an omni-project first!)');
     return process.exit(0);

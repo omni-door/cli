@@ -25,6 +25,9 @@
 
 3. <omni.config.js>, `dev.webpack_config` 更变为 `dev.webpack`
 
+### v1.0.6
+1. 新增对 node 版本做检测，要求 node >= 10.13.0
+
 ---
 
 ## v0.2.x

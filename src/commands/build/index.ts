@@ -12,6 +12,7 @@ import { execShell } from '../../utils/exec';
 import { getHandlers } from '../../utils/tackle_plugins';
 import { output_file } from '../../utils/output_file';
 import getLogPrefix, { getLogo } from '../../utils/log_prefix';
+import node_version from '../../utils/node_version';
 import dependencies_build from '../../configs/dependencies_build';
 import release from '../release';
 import { OmniConfig, BUILD } from '../../index.d';
@@ -21,6 +22,13 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
   buildConfig?: string;
   configFileName?: string;
 }) {
+  try {
+    // node version pre-check
+    await node_version('10.13.0');
+  } catch (err) {
+    logWarn(err);
+  }
+
   if (JSON.stringify(config) === '{}') {
     logWarn('请先初始化项目！(Please initialize project first!)');
     return process.exit(0);

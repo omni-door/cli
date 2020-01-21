@@ -4,6 +4,7 @@ import chalk from 'chalk';
 import { logErr, logInfo, logWarn, logSuc, logEmph, italic, underline } from '../../utils/logger';
 import { execShell } from '../../utils/exec';
 import { getHandlers } from '../../utils/tackle_plugins';
+import node_version from '../../utils/node_version';
 import { OmniConfig } from '../../index.d';
 
 export default async function (config: OmniConfig | {}, iterTactic?: {
@@ -11,6 +12,13 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
   manual?: string;
   verify?: boolean;
 }) {
+  try {
+    // node version pre-check
+    await node_version('8');
+  } catch (err) {
+    logWarn(err);
+  }
+
   if (JSON.stringify(config) === '{}') {
     logWarn('请先初始化项目！(Please initialize project first!)');
     return;

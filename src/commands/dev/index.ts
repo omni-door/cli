@@ -1,8 +1,16 @@
 import run from './run';
 import { logWarn } from '../../utils/logger';
+import node_version from '../../utils/node_version';
 import { OmniConfig } from '../../index.d';
 
-export default function (config: OmniConfig | {}, options: { port?: number | string }) {
+export default async function (config: OmniConfig | {}, options: { port?: number | string }) {
+  try {
+    // node version pre-check
+    await node_version('8');
+  } catch (err) {
+    logWarn(err);
+  }
+
   if (JSON.stringify(config) === '{}') {
     logWarn('请先初始化项目！(Please initialize project first!)');
     return process.exit(0);

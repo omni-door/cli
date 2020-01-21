@@ -3,6 +3,7 @@
 
 [![NPM downloads](http://img.shields.io/npm/dm/%40omni-door%2Fcli.svg?style=flat-square)](https://www.npmjs.com/package/@omni-door/cli)
 [![npm version](https://badge.fury.io/js/%40omni-door%2Fcli.svg)](https://badge.fury.io/js/%40omni-door%2Fcli)
+[![node version](https://img.shields.io/badge/node.js-%3E=_10.13.0-green.svg?style=flat-square)](http://nodejs.org/download/)
 [![Build Status](https://travis-ci.com/omni-door/cli.svg?branch=master)](https://travis-ci.com/omni-door/cli)
 [![codecov](https://codecov.io/gh/omni-door/cli/branch/master/graph/badge.svg)](https://codecov.io/gh/omni-door/cli)
 [![install size](https://packagephobia.now.sh/badge?p=%40omni-door%2Fcli)](https://packagephobia.now.sh/result?p=%40omni-door%2Fcli)
@@ -13,6 +14,8 @@
 [CHANGELOG](./CHANGELOG.zh-CN.md)
 
 ## 安装
+推荐使用 node 最新的 LTS 版本，或至少保证 node >= 10.13.0
+
 几个选项:
 
 * 克隆仓库: `git@github.com:omni-door/cli.git`

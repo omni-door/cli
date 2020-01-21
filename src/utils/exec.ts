@@ -19,12 +19,10 @@ export async function execShell (clis: string[], done?: (results: any[]) => any,
             resolve(stdout || stderr);
           }
         });
-      })
-        .then(res => res)
-        .catch(err => {
-          !silent && logErr(`${i}_[${cli}]:\n` + err);
-          throw err;
-        });
+      }).catch(err => {
+        !silent && logErr(`${i}_[${cli}]:\n` + err);
+        throw err;
+      });
 
       results.push(result);
     } catch (err) {

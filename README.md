@@ -3,6 +3,7 @@ The CLI Tool for set up standard javascript project.
 
 [![NPM downloads](http://img.shields.io/npm/dm/%40omni-door%2Fcli.svg?style=flat-square)](https://www.npmjs.com/package/@omni-door/cli)
 [![npm version](https://badge.fury.io/js/%40omni-door%2Fcli.svg)](https://badge.fury.io/js/%40omni-door%2Fcli)
+[![node version](https://img.shields.io/badge/node.js-%3E=_10.13.0-green.svg?style=flat-square)](http://nodejs.org/download/)
 [![Build Status](https://travis-ci.com/omni-door/cli.svg?branch=master)](https://travis-ci.com/omni-door/cli)
 [![codecov](https://codecov.io/gh/omni-door/cli/branch/master/graph/badge.svg)](https://codecov.io/gh/omni-door/cli)
 [![install size](https://packagephobia.now.sh/badge?p=%40omni-door%2Fcli)](https://packagephobia.now.sh/result?p=%40omni-door%2Fcli)
@@ -13,6 +14,8 @@ English | [简体中文](./docs/README.zh-CN.md)
 [CHANGELOG](./docs/CHANGELOG.md)
 
 ## install
+The latest LTS version of Node.js is recommended, or at least ensure node >= 10.13.0
+
 Several options to get up and running:
 
 * Clone the repo: `git@github.com:omni-door/cli.git`

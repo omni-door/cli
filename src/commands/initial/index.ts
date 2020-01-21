@@ -44,6 +44,7 @@ import { logErr, logWarn } from '../../utils/logger';
 import { execShell } from '../../utils/exec';
 import { output_file } from '../../utils/output_file';
 import getLogPrefix, { getLogo } from '../../utils/log_prefix';
+import node_version from '../../utils/node_version';
 import { 
   TPLS_INITIAL,
   TPLS_INITIAL_FN,
@@ -128,7 +129,7 @@ const default_tpl_list = {
   webpack_config_prod
 };
 
-export default function (strategy: STRATEGY, {
+export default async function (strategy: STRATEGY, {
   basic,
   standard,
   entire,
@@ -157,6 +158,13 @@ export default function (strategy: STRATEGY, {
   };
   configFileName?: string;
 }) {
+  try {
+    // node version pre-check
+    await node_version('10.13.0');
+  } catch (err) {
+    logWarn(err);
+  }
+
   // initial spinner
   const spinner = ora(`${getLogPrefix()} 项目初始化中 (Initializing, please wait patiently)  💤  \n`);
 

@@ -25,6 +25,9 @@
 
 3. <omni.config.js>, `dev.webpack_config` change to `dev.webpack`
 
+### v1.0.6
+1. pre-check node version，demand node >= 10.13.0
+
 ---
 
 ## v0.2.x
