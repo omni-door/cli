@@ -25,8 +25,8 @@ export class ${componentName} extends PureComponent${ts ? `<${componentName}Prop
         { children }
       </div>
     );
-  };
-};
+  }
+}
 
 export default ${componentName};`;
 }

@@ -289,7 +289,7 @@ export default async function (strategy: STRATEGY, {
     const content_indexHtml = tpl.source_html({ name });
 
     // tsconfig
-    const content_ts = ts && tpl.tsconfig();
+    const content_ts = ts && tpl.tsconfig({ project_type });
 
     // d.ts files
     const content_d = ts && tpl.source_d({ style });
@@ -311,7 +311,7 @@ export default async function (strategy: STRATEGY, {
     // webpack config files
     const content_webpack_common = isBasicDevServer && tpl.webpack_config_common({ ts, style });
     const content_webpack_dev = isBasicDevServer && tpl.webpack_config_dev({ project_type, name, ts });
-    const content_webpack_prod = isBasicDevServer && tpl.webpack_config_prod();
+    const content_webpack_prod = isBasicDevServer && tpl.webpack_config_prod({ style });
 
     // server files
     const content_bisheng = devServer === 'bisheng' && tpl.bisheng({ name, git });

@@ -44,8 +44,8 @@ module.exports = {
     ${project_type !== 'spa_react' ? `// es6 module输出路径 (es6 module compiled directory)
     // 务必使用绝对路径 (must be a absolute path)
     esm_dir: path.resolve('es'),` : ''}
-    ${project_type !== 'component_library_react' ? `// (构建阶段的自定义配置回调) The callback will be call in the build-process
-    // (返回自定义的配置) You can return your custom build configuration
+    ${project_type !== 'component_library_react' ? `// 构建阶段的自定义配置回调 (The callback will be call in the build-process)
+    // 返回自定义的配置 (You can return your custom build configuration)
     ${project_type === 'spa_react' ? 'configuration: config => merge(config, config_prod)' : 'configuration: config => config'},` : ''}
     ${project_type === 'toolkit' ? `tool: '${build}', // 打包工具，支持 tsc、rollup、webpack (build tool, support tsc, rollup and webpack)` : ''}
     reserve: {

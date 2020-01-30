@@ -46,9 +46,9 @@ import { OmniConfig } from '../index.d';
 
   program
     .command('new <module>')
-    .option('-fc, --function', 'create a functional component')
-    .option('-cc, --class', 'create a class component')
-    .description('omni new <module> [-fc | -cc]', {
+    .option('-f, --function', 'create a functional component')
+    .option('-c, --class', 'create a class component')
+    .description('omni new <module> [-f | -c]', {
       module: 'required! The first letter will be capitalizing.',
     })
     .usage('<module> [options]')

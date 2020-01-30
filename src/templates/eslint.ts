@@ -39,7 +39,7 @@ module.exports = {
     ${
   ts
     ? `"@typescript-eslint/indent": ["warn", 2],
-    "@typescript-eslint/no-empty-interface": ["warn"],
+    "@typescript-eslint/no-empty-interface": ["off"],
     "@typescript-eslint/camelcase": ["off"],
     "@typescript-eslint/restrict-plus-operands": ["warn"],
     "@typescript-eslint/array-type": ["off"],

@@ -69,7 +69,7 @@ ${
 module.exports = configuration({
   entry,
   output: {
-    filename: '[name].js',
+    filename: '[name].[hash:8].js',
     path: '${out_dir}'
   },
   plugins: [

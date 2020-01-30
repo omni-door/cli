@@ -34,8 +34,8 @@ const default_tpl_list = {
 };
 
 export default async function (config: OmniConfig | {}, componentName: string, options?: {
-  fc?: boolean;
-  cc?: boolean;
+  function?: boolean;
+  class?: boolean;
 }) {
   try {
     // node version pre-check
@@ -62,7 +62,7 @@ export default async function (config: OmniConfig | {}, componentName: string, o
   // capitalize first character
   componentName = componentName.charAt(0).toUpperCase() + componentName.slice(1);
 
-  let { fc, cc } = options!;
+  let { function: fc, class: cc } = options!;
 
   // default create class component
   if (!fc && !cc) cc = true;
@@ -78,13 +78,15 @@ export default async function (config: OmniConfig | {}, componentName: string, o
     }, plugins } = config as OmniConfig;
 
   const mdx = readme[1] === 'mdx';
+  const path_cp = path.resolve(root, componentName);
+  const path_cp_rel = path.relative(process.cwd(), path_cp);
 
   if (!root) {
     logWarn('生成模板的路径缺失！(Missing the path for generate template!)');
     return process.exit(0);
   }
 
-  if (fs.existsSync(path.resolve(root, componentName))) {
+  if (fs.existsSync(path_cp)) {
     logWarn(`模块 ${componentName} 已存在！(The ${componentName} module had been existed!)`);
     return process.exit(0);
   }
@@ -124,33 +126,33 @@ export default async function (config: OmniConfig | {}, componentName: string, o
 
     if (isReactProject) {
       output_file({
-        file_path: path.resolve(root, componentName, `index.${typescript ? 'ts' : 'js'}`),
+        file_path: path.resolve(path_cp, `index.${typescript ? 'ts' : 'js'}`),
         file_content: content_index
       });
       // class component
       cc && output_file({
-        file_path: path.resolve(root, componentName, `${componentName}.${typescript ? 'tsx' : 'jsx'}`),
+        file_path: path.resolve(path_cp, `${componentName}.${typescript ? 'tsx' : 'jsx'}`),
         file_content: content_cc
       });
       // functional component
       fc && output_file({
-        file_path: path.resolve(root, componentName, `${componentName}.${typescript ? 'tsx' : 'jsx'}`),
+        file_path: path.resolve(path_cp, `${componentName}.${typescript ? 'tsx' : 'jsx'}`),
         file_content: content_fc
       });
       // readme
       readme[0] && !mdx && output_file({
-        file_path: path.resolve(root, componentName, 'README.md'),
+        file_path: path.resolve(path_cp, 'README.md'),
         file_content: content_readme
       });
       readme[0] && mdx && output_file({
-        file_path: path.resolve(root, componentName, 'README.mdx'),
+        file_path: path.resolve(path_cp, 'README.mdx'),
         file_content: content_mdx
       });
 
       // storybook demo
       const hasStorybook = fs.existsSync(path.resolve(process.cwd(), '.storybook'));
       hasStorybook && output_file({
-        file_path: path.resolve(root, componentName, `__stories__/index.stories.${
+        file_path: path.resolve(path_cp, `__stories__/index.stories.${
           typescript
             ? 'tsx'
             : 'jsx'
@@ -160,12 +162,12 @@ export default async function (config: OmniConfig | {}, componentName: string, o
 
       // stylesheet
       output_file({
-        file_path: path.resolve(root, componentName, `style/${componentName}.${stylesheet}`),
+        file_path: path.resolve(path_cp, `style/${componentName}.${stylesheet}`),
         file_content: content_style
       });
       // test file
       test && output_file({
-        file_path: path.resolve(root, componentName, `__test__/index.test.${
+        file_path: path.resolve(path_cp, `__test__/index.test.${
           typescript
             ? test === 'jest'
               ? 'tsx' : 'ts'
@@ -177,17 +179,17 @@ export default async function (config: OmniConfig | {}, componentName: string, o
     } else {
       // index file
       output_file({
-        file_path: path.resolve(root, componentName, `index.${typescript ? 'ts' : 'js'}`),
+        file_path: path.resolve(path_cp, `index.${typescript ? 'ts' : 'js'}`),
         file_content: content_index_tool
       });
       // readme
       readme[0] && output_file({
-        file_path: path.resolve(root, componentName, 'README.md'),
+        file_path: path.resolve(path_cp, 'README.md'),
         file_content: content_readme_tool
       });
       // test file
       test && output_file({
-        file_path: path.resolve(root, componentName, `__test__/index.test.${
+        file_path: path.resolve(path_cp, `__test__/index.test.${
           typescript
             ? 'ts'
             : 'js'
@@ -197,7 +199,7 @@ export default async function (config: OmniConfig | {}, componentName: string, o
     }
 
     // success logger
-    logSuc(`${componentName} 创建完成！(The ${componentName} construction completed!)`);
+    logSuc(`${componentName} 位于 ${path_cp_rel}，创建完成！(The ${componentName} local at ${path_cp_rel}, construction completed!)`);
   } catch (err) {
     // error logger
     logErr(`完蛋！好像有错误！(Oops! Some error occured) \n👉  ${JSON.stringify(err)}`);

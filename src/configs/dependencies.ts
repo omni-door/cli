@@ -74,6 +74,10 @@ export function devDependencies (strategy: STRATEGY, config: Config) {
 
   const pluginDependencies = [
     dependency('html-webpack-plugin'),
+    dependency('terser-webpack-plugin'),
+    dependency('optimize-css-assets-webpack-plugin'),
+    dependency('mini-css-extract-plugin'),
+    dependency('cssnano'),
     dependency('webpackbar')
   ];
 

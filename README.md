@@ -103,15 +103,15 @@ Options:
 ```sh
 Usage: omni new <module> [options]
 
-omni new <module> [-fc | -cc]
+omni new <module> [-f | -c]
 
 Arguments:
 
   module           required! The first letter will be capitalizing.
 
 Options:
-  -f, --fc    create a functional component
-  -c, --cc    create a class component
+  -f, --function    create a functional component
+  -c, --class    create a class component
   -h, --help  output usage information
 ```
 

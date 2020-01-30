@@ -11,12 +11,12 @@
 1. toolkit-project support tsc build
 
 ### v1.0.3
-1. build phase auto-release optimization, get rid of relying on NPM script and call release method directly
+1. [omni build] auto-release optimization, get rid of relying on NPM script and call release method directly
 
 ### v1.0.4
-1. dev-server start process optimization
+1. (dev-server) start process optimization
 
-2. init change `omni init -s` and `omni init --simple` to `omni init -b` and `omni init --basic`
+2. [omni init] change `omni init -s` and `omni init --simple` to `omni init -b` and `omni init --basic`
 
 ### v1.0.5
 1. <omni.config.js>, add `dev.middleware` field
@@ -27,6 +27,17 @@
 
 ### v1.0.6
 1. pre-check node version，demand node >= 10.13.0
+
+### v1.0.7
+1. <tsconfig.json> template add project_type judgement
+
+2. <omni.config.js> annotation change
+
+3. <webpack.config.prod.js> optimize production environment packing
+
+4. (dev-server) add run-time try/exception
+
+5. [omni new] fix cannot identify options bug
 
 ---
 

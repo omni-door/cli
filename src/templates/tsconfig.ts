@@ -1,4 +1,11 @@
-export default function () {
+import { PROJECT_TYPE } from '../index.d';
+
+export default function (config: {
+  project_type: PROJECT_TYPE;
+}) {
+  const { project_type } = config;
+  const isToolkitProject = project_type === 'toolkit';
+
   return `{
   "compilerOptions": {
     /* Basic Options */
@@ -8,11 +15,11 @@ export default function () {
     // "allowJs": true,                       /* Allow javascript files to be compiled. */
     // "checkJs": true,                       /* Report errors in .js files. */
     "jsx": "react",                     /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */
-    "declaration": true,                 /* Generates corresponding '.d.ts' file. */
+    ${project_type === 'spa_react' ? '// ' : ''}"declaration": true,                 /* Generates corresponding '.d.ts' file. */
     // "declarationMap": true,                /* Generates a sourcemap for each corresponding '.d.ts' file. */
     // "sourceMap": true,                     /* Generates corresponding '.map' file. */
     // "outFile": "./",                       /* Concatenate and emit output to single file. */
-    "outDir": "./lib",                        /* Redirect output structure to the directory. */
+    ${project_type === 'spa_react' ? '// ' : ''}"outDir": "./lib",                        /* Redirect output structure to the directory. */
     // "rootDir": "./",                       /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
     // "composite": true,                     /* Enable project compilation */
     // "removeComments": true,                /* Do not emit comments to output. */

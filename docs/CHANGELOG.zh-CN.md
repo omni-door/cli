@@ -11,12 +11,12 @@
 1. toolkit 项目支持使用 tsc 打包
 
 ### v1.0.3
-1. 构建(build)自动发布优化，摆脱依赖npm script，直接调用release方法
+1. [omni build] 自动发布优化，摆脱依赖npm script，直接调用release方法
 
 ### v1.0.4
-1. dev-server 启动进程优化
+1. (dev-server) 启动进程优化
 
-2. init 更改 `omni init -s` 和 `omni init --simple` 为 `omni init -b` 和 `omni init -basic`
+2. [omni init] 更改 `omni init -s` 和 `omni init --simple` 为 `omni init -b` 和 `omni init -basic`
 
 ### v1.0.5
 1. <omni.config.js>, 新增 `dev.middleware` 字段
@@ -27,6 +27,17 @@
 
 ### v1.0.6
 1. 新增对 node 版本做检测，要求 node >= 10.13.0
+
+### v1.0.7
+1. <tsconfig.json> 模板新增对项目类型判断
+
+2. <omni.config.js> 注释变更
+
+3. <webpack.config.prod.js> 优化生产环境打包
+
+4. (dev-server) 新增运行时错误捕获
+
+5. [omni new] 修复无法识别参数的问题
 
 ---
 
