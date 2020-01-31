@@ -9,6 +9,8 @@ The CLI Tool for set up standard javascript project.
 [![install size](https://packagephobia.now.sh/badge?p=%40omni-door%2Fcli)](https://packagephobia.now.sh/result?p=%40omni-door%2Fcli)
 [![license](http://img.shields.io/npm/l/%40omni-door%2Fcli.svg)](https://github.com/omni-door/cli/blob/master/LICENSE)
 
+<img src='./docs/omni-init.gif' width='500px' height='400px' />
+
 English | [简体中文](./docs/README.zh-CN.md)
 
 [CHANGELOG](./docs/CHANGELOG.md)
@@ -54,11 +56,11 @@ omni init
 
 ### Initial your project according to some template
 ```sh
-omni init -t
+omni init -t [projectName]
 ```
 or
 ```sh
-omni init --entire
+omni init --entire [projectName]
 ```
 
 ### options

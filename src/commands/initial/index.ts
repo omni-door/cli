@@ -557,7 +557,7 @@ export default async function (strategy: STRATEGY, {
   }
 
   function generateFiglet (fn: (done: () => void) => any) {
-    return figlet('OMNI-DOOR', function (err, data) {
+    return figlet('OMNI DOOR', function (err, data) {
       if (err) {
         logErr(JSON.stringify(err));
         spinner.fail(chalk.yellow(`${getLogPrefix()} figlet 出现了问题！(Some thing about figlet is wrong!)  ❌  \n`));

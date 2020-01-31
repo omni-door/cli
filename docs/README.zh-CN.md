@@ -47,18 +47,18 @@
 
 ## omni init
 
-### 仅仅回答几个问题就能初始化一个项目
+### 初始化一个项目
 ```sh
 omni init
 ```
 
-### 直接套用模板初始化项目
+### 套用模板一键初始化项目
 ```sh
-omni init -t
+omni init -t [projectName]
 ```
 or
 ```sh
-omni init --entire
+omni init --entire [projectName]
 ```
 
 ### 选项
@@ -103,15 +103,15 @@ Options:
 ```sh
 Usage: omni new <module> [options]
 
-omni new <module> [-fc | -cc]
+omni new <module> [-f | -c]
 
 Arguments:
 
   module           必填！第一个字母会变成大写。
 
 Options:
-  -f, --fc    创建一个函数组件
-  -c, --cc    创建一个类组件
+  -f, --function    创建一个函数组件
+  -c, --class    创建一个类组件
   -h, --help  output usage information
 ```
 
