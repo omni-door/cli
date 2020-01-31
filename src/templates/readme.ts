@@ -60,7 +60,7 @@ npm run release -- -m 0.3.25
 npm run release -- -n
 \`\`\`
 
-**More powerful customizations are in [${configFileName}]**
+**More powerful customizations is in [${configFileName}]**
 `;
 }
 
