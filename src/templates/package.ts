@@ -10,7 +10,7 @@ export default (config: {
   commitlint: boolean;
   stylelint: boolean;
 }) => {
-  const { project_type, name, ts, devServer, testFrame, eslint, commitlint, stylelint } = config;
+  const { name, ts, devServer, testFrame, eslint, commitlint, stylelint } = config;
 
   let devScript = '';
   let demoScript = '';

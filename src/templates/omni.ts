@@ -20,7 +20,7 @@ ${project_type !== 'component_library_react' ? 'const config_dev = require(\'./c
 module.exports = {
   type: '${project_type}', // 项目类型，请勿变动 (project type, please don't modify)
   ${project_type !== 'component_library_react' ? `\n  dev: {
-    webpack: config_dev, // 开发服务端webpack配置文件路径 (dev-server webpack config path)
+    webpack: config_dev, // 开发服务端webpack配置文件 (dev-server webpack config file)
     proxy:  [
       // {
       //   route: '/api',

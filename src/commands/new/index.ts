@@ -77,14 +77,14 @@ export default async function (config: OmniConfig | {}, componentName: string, o
       readme = [false, 'md']
     }, plugins } = config as OmniConfig;
 
-  const mdx = readme[1] === 'mdx';
-  const path_cp = path.resolve(root, componentName);
-  const path_cp_rel = path.relative(process.cwd(), path_cp);
-
   if (!root) {
     logWarn('生成模板的路径缺失！(Missing the path for generate template!)');
     return process.exit(0);
   }
+
+  const mdx = readme[1] === 'mdx';
+  const path_cp = path.resolve(root, componentName);
+  const path_cp_rel = path.relative(process.cwd(), path_cp);
 
   if (fs.existsSync(path_cp)) {
     logWarn(`模块 ${componentName} 已存在！(The ${componentName} module had been existed!)`);
