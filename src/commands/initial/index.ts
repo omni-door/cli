@@ -520,7 +520,7 @@ export default async function (strategy: STRATEGY, {
       testFrame,
       devServer
     });
-    let dependencies_str;
+    let dependencies_str = depStr;
     if (typeof dependencies_custom === 'function') {
       const result = dependencies_custom(depArr);
       if (result instanceof Array) {
