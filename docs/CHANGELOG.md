@@ -39,6 +39,11 @@
 
 5. [omni new] fix cannot identify options bug
 
+### v1.0.8
+1. [omni init] fix incorrect display of custom logo
+
+2. [omni init] support remove origin dependencies
+
 ---
 
 ## v0.2.x

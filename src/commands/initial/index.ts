@@ -37,13 +37,14 @@ import {
   webpack_config_dev,
   webpack_config_prod
 } from '../../templates';
+import { arr2str, intersection } from '../../configs/dependencies_strategy';
 import { dependencies, devDependencies } from '../../configs/dependencies';
 import templates from '../../configs/initial_tpls';
 import installClis from '../../configs/initial_clis';
 import { logErr, logWarn } from '../../utils/logger';
 import { execShell } from '../../utils/exec';
 import { output_file } from '../../utils/output_file';
-import getLogPrefix, { getLogo } from '../../utils/log_prefix';
+import getLogPrefix, { getLogo, getBrand } from '../../utils/log_prefix';
 import node_version from '../../utils/node_version';
 import { 
   TPLS_INITIAL,
@@ -129,6 +130,8 @@ const default_tpl_list = {
   webpack_config_prod
 };
 
+export type ResultOfDependencies = string[] | { add?: string[]; remove?: string[]; };
+
 export default async function (strategy: STRATEGY, {
   basic,
   standard,
@@ -150,8 +153,8 @@ export default async function (strategy: STRATEGY, {
     stdout?: boolean;
   };
   tpls?: (tpls: TPLS_INITIAL) => TPLS_INITIAL_RETURE;
-  dependencies?: (dependecies_default: string[]) => string[];
-  devDependencies?: (devDependecies_default: string[]) => string[];
+  dependencies?: (dependecies_default: string[]) => ResultOfDependencies;
+  devDependencies?: (devDependecies_default: string[]) => ResultOfDependencies;
   after?: () => {
     success?: boolean;
     msg?: string;
@@ -503,7 +506,7 @@ export default async function (strategy: STRATEGY, {
       installDevCliPrefix = `cd ${initPath} && ${installDevCliPrefix}`;
     }
 
-    const {
+    let {
       depArr,
       depStr
     } = dependencies(strategy, {
@@ -517,10 +520,41 @@ export default async function (strategy: STRATEGY, {
       testFrame,
       devServer
     });
-    const dependencies_custom_arr = typeof dependencies_custom === 'function' ? dependencies_custom(depArr).join(' ').trim() : '';
-    const installCli = (dependencies_custom_arr || depStr) ? `${installCliPrefix} ${depStr} ${dependencies_custom_arr}` : '';
+    let dependencies_str;
+    if (typeof dependencies_custom === 'function') {
+      const result = dependencies_custom(depArr);
+      if (result instanceof Array) {
+        dependencies_str = `${depStr} ${arr2str(result)}`;
+      } else {
+        const { add = [], remove = [] } = result;
+        for (let i = 0; i < remove.length; i++) {
+          const item_rm = remove[i];
+          depArr = [ ...intersection(depArr, depArr.filter(v => v !== item_rm)) ];
+        }
+        dependencies_str = `${arr2str(depArr)} ${arr2str(add)}`;
+      }
+    }
+    const installCli = dependencies_str ? `${installCliPrefix} ${dependencies_str}` : '';
 
-    const { defaultDep, buildDep, tsDep, testDep, eslintDep, commitlintDep, stylelintDep, devServerDep, depArr: devDepArr } = devDependencies(strategy, {
+    let {
+      defaultDepArr,
+      defaultDepStr,
+      buildDepArr,
+      buildDepStr,
+      tsDepArr,
+      tsDepStr,
+      testDepStr,
+      testDepArr,
+      eslintDepArr,
+      eslintDepStr,
+      commitlintDepArr,
+      commitlintDepStr,
+      stylelintDepArr,
+      stylelintDepStr,
+      devServerDepArr,
+      devServerDepStr,
+      devDepArr
+    } = devDependencies(strategy, {
       project_type,
       build,
       ts,
@@ -531,16 +565,46 @@ export default async function (strategy: STRATEGY, {
       testFrame,
       devServer
     });
-    const devDependencies_default = [...devDepArr ]; 
-    const installDevCli = defaultDep ? `${installDevCliPrefix} ${defaultDep}` : '';
-    const installBuildDevCli = buildDep ? `${installDevCliPrefix} ${buildDep}` : '';
-    const installTsDevCli = tsDep ? `${installDevCliPrefix} ${tsDep}` : '';
-    const installTestDevCli = testDep ? `${installDevCliPrefix} ${testDep}` : '';
-    const installEslintDevCli = eslintDep ? `${installDevCliPrefix} ${eslintDep}` : '';
-    const installCommitlintDevCli = commitlintDep ? `${installDevCliPrefix} ${commitlintDep}` : '';
-    const installStylelintDevCli = stylelintDep ? `${installDevCliPrefix} ${stylelintDep}` : '';
-    const installServerDevCli = devServerDep ? `${installDevCliPrefix} ${devServerDep}` : '';
-    const installCustomDevCli = typeof devDependencies_custom === 'function' ? `${installDevCliPrefix} ${devDependencies_custom(devDependencies_default).join(' ')}` : '';
+
+    let customDepStr;
+    if (typeof devDependencies_custom === 'function') {
+      const result = devDependencies_custom(devDepArr);
+      if (result instanceof Array) {
+        customDepStr = arr2str(result);
+      } else {
+        const { add = [], remove = [] } = result;
+        for (let i = 0; i < remove.length; i++) {
+          const item_rm = remove[i];
+          defaultDepArr = [ ...intersection(defaultDepArr, defaultDepArr.filter(v => v !== item_rm)) ];
+          buildDepArr = [ ...intersection(buildDepArr, buildDepArr.filter(v => v !== item_rm)) ];
+          tsDepArr = [ ...intersection(tsDepArr, tsDepArr.filter(v => v !== item_rm)) ];
+          testDepArr = [ ...intersection(testDepArr, testDepArr.filter(v => v !== item_rm)) ];
+          eslintDepArr = [ ...intersection(eslintDepArr, eslintDepArr.filter(v => v !== item_rm)) ];
+          commitlintDepArr = [ ...intersection(commitlintDepArr, commitlintDepArr.filter(v => v !== item_rm)) ];
+          stylelintDepArr = [ ...intersection(stylelintDepArr, stylelintDepArr.filter(v => v !== item_rm)) ];
+          devServerDepArr = [ ...intersection(devServerDepArr, devServerDepArr.filter(v => v !== item_rm)) ];
+        }
+        defaultDepStr = arr2str(defaultDepArr);
+        buildDepStr = arr2str(buildDepArr);
+        tsDepStr = arr2str(tsDepArr);
+        testDepStr = arr2str(testDepArr);
+        eslintDepStr = arr2str(eslintDepArr);
+        commitlintDepStr = arr2str(commitlintDepArr);
+        stylelintDepStr = arr2str(stylelintDepArr);
+        devServerDepStr = arr2str(devServerDepArr);
+        customDepStr = arr2str(add);
+      }
+    }
+
+    const installDevCli = defaultDepStr ? `${installDevCliPrefix} ${defaultDepStr}` : '';
+    const installBuildDevCli = buildDepStr ? `${installDevCliPrefix} ${buildDepStr}` : '';
+    const installTsDevCli = tsDepStr ? `${installDevCliPrefix} ${tsDepStr}` : '';
+    const installTestDevCli = testDepStr ? `${installDevCliPrefix} ${testDepStr}` : '';
+    const installEslintDevCli = eslintDepStr ? `${installDevCliPrefix} ${eslintDepStr}` : '';
+    const installCommitlintDevCli = commitlintDepStr ? `${installDevCliPrefix} ${commitlintDepStr}` : '';
+    const installStylelintDevCli = stylelintDepStr ? `${installDevCliPrefix} ${stylelintDepStr}` : '';
+    const installServerDevCli = devServerDepStr ? `${installDevCliPrefix} ${devServerDepStr}` : '';
+    const installCustomDevCli = customDepStr ? `${installDevCliPrefix} ${customDepStr}` : '';
 
     return {
       installCli,
@@ -557,7 +621,7 @@ export default async function (strategy: STRATEGY, {
   }
 
   function generateFiglet (fn: (done: () => void) => any) {
-    return figlet('OMNI DOOR', function (err, data) {
+    return figlet(getBrand(), function (err, data) {
       if (err) {
         logErr(JSON.stringify(err));
         spinner.fail(chalk.yellow(`${getLogPrefix()} figlet 出现了问题！(Some thing about figlet is wrong!)  ❌  \n`));

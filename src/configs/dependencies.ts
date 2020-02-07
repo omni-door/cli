@@ -240,7 +240,7 @@ export function devDependencies (strategy: STRATEGY, config: Config) {
   ];
 
   return {
-    depArr: [
+    devDepArr: [
       ...defaultDep,
       ...buildDependencies,
       ...tsDependencies,
@@ -250,14 +250,22 @@ export function devDependencies (strategy: STRATEGY, config: Config) {
       ...stylelintDependencies,
       ...devServerDependencies
     ],
-    defaultDep: arr2str(defaultDep),
-    buildDep: arr2str(buildDependencies),
-    tsDep: arr2str(tsDependencies),
-    testDep: arr2str(testDependencies),
-    eslintDep: arr2str(eslintDependencies),
-    commitlintDep: arr2str(commitlintDependencies),
-    stylelintDep: arr2str(stylelintDependencies),
-    devServerDep: arr2str(devServerDependencies)
+    defaultDepArr: defaultDep,
+    defaultDepStr: arr2str(defaultDep),
+    buildDepArr: buildDependencies,
+    buildDepStr: arr2str(buildDependencies),
+    tsDepArr: tsDependencies,
+    tsDepStr: arr2str(tsDependencies),
+    testDepArr: testDependencies,
+    testDepStr: arr2str(testDependencies),
+    eslintDepArr: eslintDependencies,
+    eslintDepStr: arr2str(eslintDependencies),
+    commitlintDepArr: commitlintDependencies,
+    commitlintDepStr: arr2str(commitlintDependencies),
+    stylelintDepArr: stylelintDependencies,
+    stylelintDepStr: arr2str(stylelintDependencies),
+    devServerDepArr: devServerDependencies,
+    devServerDepStr: arr2str(devServerDependencies)
   };
 }
 

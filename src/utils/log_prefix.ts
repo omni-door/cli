@@ -1,5 +1,5 @@
 export const LOGO = '🐸  ';
-export const BRAND = '[OMNI-DOOR]:';
+export const BRAND = 'OMNI-DOOR';
 
 class Brand {
   private logo: string;
@@ -32,7 +32,7 @@ class Brand {
   }
 
   public getLogPrefix () {
-    return (this.logo || LOGO) + (this.brand || BRAND);
+    return (this.logo || LOGO) + '[' + (this.brand || BRAND) + ']:';
   }
 }
 

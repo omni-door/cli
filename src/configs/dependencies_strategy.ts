@@ -128,4 +128,10 @@ export function arr2str (arr: string[]) {
   return arr.join(' ').trim();
 }
 
+export function intersection (arr1: any[], arr2: any[]) {
+  const set_2 = new Set(arr2);
+
+  return Array.from(new Set(arr1.filter(v => set_2.has(v))));
+}
+
 export default getDependency;
