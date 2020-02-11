@@ -44,6 +44,9 @@
 
 2. [omni init] 支持移除内置的依赖项
 
+### v1.0.9
+1. <package.json> 新增 stylelint 检测参数 {--allow-empty-input}
+
 ---
 
 ## v0.2.x

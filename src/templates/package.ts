@@ -73,7 +73,7 @@ export default (config: {
 }",
         ${eslint ? `"lint:es": "eslint src/ --ext .${ts ? 'ts' : 'js'} --ext .${ts ? 'tsx' : 'jsx'}",
         "lint:es_fix": "eslint src/ --ext .${ts ? 'ts' : 'js'} --ext .${ts ? 'tsx' : 'jsx'} --fix",` : ''}
-        ${stylelint ? `"lint:style": "stylelint src/**/*.{css,less,scss,sass}",
+        ${stylelint ? `"lint:style": "stylelint src/**/*.{css,less,scss,sass} --allow-empty-input",
         "lint:style_fix": "stylelint src/**/*.{css,less,scss,sass} --fix",` : ''}`
     : ''
 }

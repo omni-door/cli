@@ -44,6 +44,9 @@
 
 2. [omni init] support remove origin dependencies
 
+### v1.0.9
+1. <package.json> add stylelint check paramter {--allow-empty-input}
+
 ---
 
 ## v0.2.x
