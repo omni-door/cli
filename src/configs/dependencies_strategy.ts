@@ -74,7 +74,7 @@ const devDependencies = {
   'awesome-typescript-loader': '5.2.1',
   'react-docgen-typescript-loader': '3.3.0',
   'storybook-readme': '5.0.8',
-  '@omni-door/cli': 'latest',
+  '@omni-door/cli': 'old-0.1',
   '@types/chai': '4.2.7',
   '@types/mocha': '5.2.7',
   'chai': '4.2.0',
