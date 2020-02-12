@@ -346,7 +346,9 @@ export default async function (strategy: STRATEGY, {
       file_path: file_path('.gitignore'),
       file_content: content_gitignore
     });
-    output_file({
+
+    // .npmignore
+    !isReactSPAProject && output_file({
       file_path: file_path('.npmignore'),
       file_content: content_npmignore
     });
@@ -810,10 +812,10 @@ export default async function (strategy: STRATEGY, {
         }
       },{
         name: 'style',
-        type: 'list',
-        choices: [ 'less', 'scss', 'css', 'all', 'none' ],
-        message: `${getLogo()}[5/7] 应用哪种样式文件? (which the stylesheet type you like applying?)`,
-        default: 'less',
+        type: 'checkbox',
+        choices: [ 'css', 'less', 'scss' ],
+        message: `${getLogo()}[5/7] 选择样式文件 (select the stylesheets)`,
+        default: [ 'css' ],
         when: function (answer: any) {
           if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'toolkit') {
             return false;
@@ -828,7 +830,7 @@ export default async function (strategy: STRATEGY, {
           (answer.style === 'none' || ProjectType[answer.project_type as keyof typeof ProjectType] === 'toolkit') && lintArr.pop();
           return lintArr;
         },
-        message: `${getLogo()}[6/7] 选择lint工具 (select the lint tool)：`,
+        message: `${getLogo()}[6/7] 选择lint工具 (select the lint tools)：`,
         default: [ 'eslint' ]
       },{
         name: 'pkgtool',
@@ -858,7 +860,7 @@ export default async function (strategy: STRATEGY, {
           dev_server = 'basic',
           ts = true,
           test = false,
-          style = 'none',
+          style = [],
           lint = [],
           pkgtool = 'yarn'
         } = answers;
@@ -866,7 +868,15 @@ export default async function (strategy: STRATEGY, {
         const eslint = !!~lint.indexOf('eslint');
         const commitlint = !!~lint.indexOf('commitlint');
         const stylelint = !!~lint.indexOf('stylelint');
-        const stylesheet = style === 'none' ? '' : style;
+        const stylesheet = style.length === 0
+          ? ''
+          : style.includes('less') && style.includes('scss')
+            ? 'all'
+            : style.includes('less')
+              ? 'less'
+              : style.includes('scss')
+                ? 'scss'
+                : 'css';
         const projectType = ProjectType[project_type as keyof typeof ProjectType];
         const testFrame: TESTFRAME = test
           ? projectType === 'toolkit'

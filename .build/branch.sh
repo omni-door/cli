@@ -13,7 +13,7 @@ checkBranch () {
 
   if [ "$currentBranch" != "$branch" ]
   then
-    echo -e "\033[31m \n ${name}: Please checkout branch at \033[43;30m ${branch} \033[0m \033[31mfirst\n \033[0m"
+    echo -e "\033[31m \n ${name}: Please switch to \033[43;30m ${branch} \033[0m \033[31mbranch first\n \033[0m"
     exit 1
   fi
 

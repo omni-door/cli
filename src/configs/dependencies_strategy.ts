@@ -68,6 +68,7 @@ const devDependencies = {
   'webpack-hot-middleware': '2.25.0',
   'webpack-merge': '4.2.2',
   'webpackbar': '4.0.0',
+  'webpack-bundle-analyzer': '3.6.0',
   'docz': '1.3.2',
   'docz-plugin-css': '0.11.0',
   'docz-theme-default': '1.2.0',

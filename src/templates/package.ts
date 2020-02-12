@@ -45,7 +45,7 @@ export default (config: {
     "dev": "${devScript}",` : ''}
     ${
   testFrame
-    ? testFrame === 'jest' ? `"test": "jest",
+    ? testFrame === 'jest' ? `"test": "jest --passWithNoTests",
       "test:snapshot": "jest --updateSnapshot",`
       : testFrame === 'mocha'
         ? `"test": "karma start --single-run && npm run test:mocha",

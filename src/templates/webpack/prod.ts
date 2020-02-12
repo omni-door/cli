@@ -12,6 +12,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const common_config = require('./webpack.config.common.js');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 module.exports = merge(common_config, {
   module: {
@@ -93,8 +94,13 @@ module.exports = merge(common_config, {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: "[name].[hash:8].css",
-      chunkFilename: "[id].css"
+      filename: '[name].[hash:8].css',
+      chunkFilename: '[id].css'
+    }),
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+      defaultSizes: 'parsed',
+      reportFilename: './bundle_analysis.html'
     })
   ],
   mode: 'production'

@@ -47,6 +47,16 @@
 ### v1.0.9
 1. <package.json> add stylelint check paramter {--allow-empty-input}
 
+2. <package.json> add jest test paramter {--passWithNoTests}
+
+3. <tsconfig.json> remove annotation of allowJs and experimentalDecorators, updating {exclude} field
+
+4. <webpack.config.prod.js> add webpack-bundle-analyzer plugin
+
+5. <.npmignore> generate by project-type
+
+6. [onmi init] support multiple select stylesheet
+
 ---
 
 ## v0.2.x

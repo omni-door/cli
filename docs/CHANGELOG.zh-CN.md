@@ -45,7 +45,17 @@
 2. [omni init] 支持移除内置的依赖项
 
 ### v1.0.9
-1. <package.json> 新增 stylelint 检测参数 {--allow-empty-input}
+1. <package.json> 新增 stylelint 检测启动参数 {--allow-empty-input}
+
+2. <package.json> 新增 jest 单元测试启动参数 {--passWithNoTests}
+
+3. <tsconfig.json> 移除 allowJs、experimentalDecorators 的注释，更新 {exclude} 字段
+
+4. <webpack.config.prod.js> 新增 webpack-bundle-analyzer 插件
+
+5. <.npmignore> 生成基于项目类型
+
+6. [onmi init] 支持样式多选
 
 ---
 
