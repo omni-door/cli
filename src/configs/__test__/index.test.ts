@@ -2,6 +2,7 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import dependencies_build from '../dependencies_build';
 import getDependency, { arr2str } from '../dependencies_strategy';
+import { dependencies as dependencies_stable, devDependencies as devDependencies_stable } from '../dependencies_stable_map';
 import { dependencies, devDependencies } from '../dependencies';
 import {
   cli_basic,
@@ -24,10 +25,17 @@ describe('dependencies_build test', function () {
   });
 });
 
+describe('dependencies_stable_map test', function () {
+  it('type checking', function () {
+    expect(dependencies_stable).to.be.a('function');
+    expect(arr2str).to.be.a('function');
+  });
+});
+
 describe('dependencies_strategy test', function () {
   it('type checking', function () {
-    expect(getDependency).to.be.a('function');
-    expect(arr2str).to.be.a('function');
+    expect(getDependency).to.be.an('object');
+    expect(devDependencies_stable).to.be.an('object');
   });
 });
 

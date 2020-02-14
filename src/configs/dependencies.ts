@@ -200,7 +200,8 @@ export function devDependencies (strategy: STRATEGY, config: Config) {
   const bishengDependencies = [
     dependency('bisheng'),
     dependency('bisheng-theme-one'),
-    dependency('bisheng-plugin-react')
+    dependency('bisheng-plugin-react'),
+    ts ? dependency('@types/vfile-message') : ''
   ];
 
   const basicServerDependencies = [

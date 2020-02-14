@@ -1,5 +1,15 @@
 # CHANGE LOG
 
+## v1.1.x
+### v1.1.0
+1. <package.json> add resolutions field, resolve [Duplicate identifier 'LibraryManagedAttributes'](https://stackoverflow.com/questions/52399839/duplicate-identifier-librarymanagedattributes) problem
+
+2. [onmi init] strategy-stable update dependencies version
+
+3. [onmi init] component_library_react and toolkit set unit-test by default
+
+---
+
 ## v1.0.x
 ### v1.0.0
 1. add `omni dev` command that support the development server which powered by Express and webpack-dev-server 

@@ -1,4 +1,5 @@
-import { PROJECT_TYPE, TESTFRAME, DEVSERVER } from '../index.d';
+import { devDependencies } from '../configs/dependencies_stable_map';
+import { PROJECT_TYPE, TESTFRAME, DEVSERVER, STRATEGY } from '../index.d';
 
 export default (config: {
   project_type: PROJECT_TYPE;
@@ -9,8 +10,9 @@ export default (config: {
   eslint: boolean;
   commitlint: boolean;
   stylelint: boolean;
+  strategy: STRATEGY;
 }) => {
-  const { name, ts, devServer, testFrame, eslint, commitlint, stylelint } = config;
+  const { name, ts, devServer, testFrame, eslint, commitlint, stylelint, strategy } = config;
 
   let devScript = '';
   let demoScript = '';
@@ -121,6 +123,13 @@ export default (config: {
 }
   "keywords": [],
   "author": "",
+  ${
+  ts && strategy === 'stable'
+    ? `"resolutions": {
+      "@types/react": "${devDependencies['@types/react']}"
+    },`
+    : ''
+}
   "license": "ISC"
 }`;
 };

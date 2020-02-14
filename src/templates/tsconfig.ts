@@ -79,8 +79,7 @@ export default function (config: {
     ".docz/",
     ".storybook/",
     ".out/",
-    "*.config.js",
-    ".eslintrc.js",
+    "*.js",
     "src/**/*.js"
   ]
 }`;

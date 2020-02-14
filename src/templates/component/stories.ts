@@ -6,12 +6,11 @@ export default function (config: {
   return `import * as React from 'react';
 import { storiesOf } from '@storybook/react';
 import ${componentName} from '../index';
-import ${componentName}ReadMe from '../README.md';
 
 storiesOf('${componentName}', module)
   .addParameters({
     readme: {
-      sidebar: ${componentName}ReadMe,
+      sidebar: require('../README.md').default,
       highlightSidebar: true,
       codeTheme: 'github'
     },

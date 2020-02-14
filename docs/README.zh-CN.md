@@ -52,6 +52,11 @@
 omni init
 ```
 
+### 用最新的依赖@lastest初始化项目
+```sh
+omni init lastest
+```
+
 ### 套用模板一键初始化项目
 ```sh
 omni init -t [projectName]

@@ -281,7 +281,8 @@ export default async function (strategy: STRATEGY, {
       testFrame,
       eslint,
       commitlint,
-      stylelint
+      stylelint,
+      strategy
     });
     const content_gitignore = tpl.gitignore();
     const content_npmignore = tpl.npmignore();
@@ -880,7 +881,7 @@ export default async function (strategy: STRATEGY, {
           name,
           dev_server = 'basic',
           ts = true,
-          test = false,
+          test = true,
           style = [],
           lint = [],
           pkgtool = 'yarn'

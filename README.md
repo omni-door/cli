@@ -54,6 +54,11 @@ Several options to get up and running:
 omni init
 ```
 
+### Initial your project with lastest denpendencies
+```sh
+omni init lastest
+```
+
 ### Initial your project according to some template
 ```sh
 omni init -t [projectName]

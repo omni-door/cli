@@ -7,6 +7,7 @@ export default function (config: {
   ts: boolean;
 }) {
   const { build, devServer, project_type, ts } = config;
+  const initText = `It's Your ${ project_type === 'toolkit' ? 'Omni-Toolkit' : 'Omni'} Project`;
   const needCoreJS = (project_type === 'spa_react' || project_type === 'component_library_react') && (build === 'webpack' || build === 'rollup');
 
   return `${ts ? '///<reference types=\'webpack-env\' />\n' : ''}${needCoreJS ? `
@@ -18,7 +19,7 @@ import { render } from 'react-dom';
 
 const App = () => (
   <div className='main'>
-    It's Your Omni Project
+    ${initText}
   </div>
 );
 

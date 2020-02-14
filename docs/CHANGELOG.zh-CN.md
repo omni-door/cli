@@ -1,5 +1,15 @@
 # CHANGE LOG
 
+## v1.1.x
+### v1.1.0
+1. <package.json> 新增 resolutions 字段，解决 [依赖重复导致TS报错](https://stackoverflow.com/questions/52399839/duplicate-identifier-librarymanagedattributes) 的问题
+
+2. [onmi init] stable 策略版本更新
+
+3. [onmi init] component_library_react 和 toolkit 默认开启单元测试
+
+---
+
 ## v1.0.x
 ### v1.0.0
 1. 新增 `omni dev` 命令以支持基于 Express + webpack-dev-server 的开发服务
