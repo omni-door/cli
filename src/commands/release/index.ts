@@ -67,7 +67,8 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
     msg = msg || '发布失败！(release failed!)';
 
     return function (err: any) {
-      logErr(msg!);
+      err && logErr(err);
+      msg && logErr(msg);
       process.exit(1);
     };
   }

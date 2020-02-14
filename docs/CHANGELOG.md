@@ -57,6 +57,15 @@
 
 6. [onmi init] support multiple select stylesheet
 
+### v1.0.10
+1. (node-version-check) fix the version check bug
+
+2. [onmi init] dynamic update the total-step of initial project
+
+3. [onmi build] fix miss of error log problem
+
+4. [onmi release] fix miss of error log problem
+
 ---
 
 ## v0.2.x

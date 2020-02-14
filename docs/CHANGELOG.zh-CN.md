@@ -57,6 +57,15 @@
 
 6. [onmi init] 支持样式多选
 
+### v1.0.10
+1. (node-version-check) 修复node版本检测问题
+
+2. [onmi init] 动态更新初始化总步数
+
+3. [onmi build] 修复错误日志丢失的问题
+
+4. [onmi release] 修复错误日志丢失的问题
+
 ---
 
 ## v0.2.x

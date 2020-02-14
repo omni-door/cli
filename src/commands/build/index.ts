@@ -73,7 +73,8 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
     msg = msg || '项目构建失败！(Building failed!)';
 
     return function (err?: string) {
-      logErr(err || msg!);
+      err && logErr(err);
+      msg && logErr(msg);
       return process.exit(1);
     };
   }

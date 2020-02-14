@@ -1,6 +1,28 @@
 import shelljs from 'shelljs';
 import { logWarn } from './logger';
 
+const VERSION_MATCH_DICT = [
+  // specified-node-version compare to current-node-version
+  {
+    // first layer
+    big: false,
+    equal: void 0, // undefined means unknown true or false
+    small: true
+  },
+  {
+    // second layer
+    big: false,
+    equal: void 0,
+    small: true
+  },
+  {
+    // third layer
+    big: false,
+    equal: true,
+    small: true
+  }
+];
+
 async function node_version (v: string) {
   if (!v) return Promise.resolve(false);
 
@@ -23,15 +45,24 @@ async function node_version (v: string) {
         }
 
         if (isValid) {
-          const currentV = stdout.substr(1);
+          const currentV = stdout.substr(1).trim();
           const c_v_arr = currentV.split('.');
           const v_arr = v.split('.');
-          for (var i = 0; i < v_arr.length; i++) {
-            if (+v_arr[i] > +c_v_arr[i]) {
+          let isMatch = true;
+          for (let i = 0; i < v_arr.length; i++) {
+            const state = +v_arr[i] > +c_v_arr[i] 
+              ? 'big'
+              : +v_arr[i] === +c_v_arr[i]
+                ? 'equal'
+                : 'small';
+            const layer = VERSION_MATCH_DICT[i];
+            if (layer[state] !== void 0) {
+              // the state was determination
+              !layer[state] && (isMatch = false);
               break;
             }
           }
-          return resolve(i === v_arr.length);
+          return resolve(isMatch);
         }
 
         resolve(false);

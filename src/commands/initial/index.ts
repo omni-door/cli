@@ -96,8 +96,6 @@ enum ProjectType {
   'toolkit (工具库)' = 'toolkit'
 }
 
-
-
 const default_tpl_list = {
   babel: babelConfigJs,
   bisheng: bishengConfigJs,
@@ -754,6 +752,8 @@ export default async function (strategy: STRATEGY, {
       presetTpl(true);
     }
   } else {
+    let currStep = 1;
+    let totalStep: string | number = '?';
     const questions = [
       {
         name: 'overwrite',
@@ -761,27 +761,38 @@ export default async function (strategy: STRATEGY, {
         message: `${getLogo()} 确定要覆盖已经存在的 [${configFileName}] 文件? (Are you sure to overwrite [${configFileName}]?)`,
         default: false
       },{
-        name: 'name',
-        type: 'input',
-        message: `${getLogo()}[1/7] 请输入项目名称 (please enter your project name)：`,
+        name: 'project_type',
+        type: 'list',
+        choices: [ 'react-spa (React单页应用)', 'react-component-library (React组件库)', 'toolkit (工具库)' ],
+        message: `${getLogo()}[${currStep}/${totalStep}] 请选择项目类型 (please choose the type of project)：`,
         when: function (answer: any) {
           if (answer.overwrite === false) {
             return process.exit(0);
           }
           return true;
+        }
+      },{
+        name: 'name',
+        type: 'input',
+        message: function (answer: any) {
+          if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'spa_react') {
+            totalStep = 7;
+          } else if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'component_library_react') {
+            totalStep = 6;
+          } else {
+            totalStep = 4;
+          }
+          return `${getLogo()}[${++currStep}/${totalStep}] 请输入项目名称 (please enter your project name)：`;
         },
         default: defaultName
-      },{
-        name: 'project_type',
-        type: 'list',
-        choices: [ 'react-spa (React单页应用)', 'react-component-library (React组件库)', 'toolkit (工具库)' ],
-        message: `${getLogo()}[2/7] 请选择项目类型 (please choose the type of project)：`
       },{
         name: 'dev_server',
         type: 'list',
         choices: [ 'docz', 'storybook', 'bisheng' ],
         default: 'docz',
-        message: `${getLogo()}[2/7] 请选择组件库Demo框架 (please chioce the component-library demonstration frame)：`,
+        message: function (answer: any) {
+          return `${getLogo()}[${++currStep}/${totalStep}] 请选择组件库Demo框架 (please chioce the component-library demonstration frame)：`;
+        },
         when: function (answer: any) {
           if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'component_library_react') {
             return true;
@@ -791,7 +802,9 @@ export default async function (strategy: STRATEGY, {
       },{
         name: 'ts',
         type: 'confirm',
-        message: `${getLogo()}[3/7] 是否使用typescript? (whether or not apply typescript?)`,
+        message: function (answer: any) {
+          return `${getLogo()}[${++currStep}/${totalStep}] 是否使用typescript? (whether or not apply typescript?)`;
+        },
         default: true,
         when: function (answer: any) {
           if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'spa_react') {
@@ -802,7 +815,9 @@ export default async function (strategy: STRATEGY, {
       },{
         name: 'test',
         type: 'confirm',
-        message: `${getLogo()}[4/7] 是否开启单元测试? (whether or not apply unit-test?)`,
+        message: function (answer: any) {
+          return `${getLogo()}[${++currStep}/${totalStep}] 是否开启单元测试? (whether or not apply unit-test?)`;
+        },
         default: (answer: any) => ProjectType[answer.project_type as keyof typeof ProjectType] !== 'spa_react',
         when: function (answer: any) {
           if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'spa_react') {
@@ -814,7 +829,9 @@ export default async function (strategy: STRATEGY, {
         name: 'style',
         type: 'checkbox',
         choices: [ 'css', 'less', 'scss' ],
-        message: `${getLogo()}[5/7] 选择样式文件 (select the stylesheets)`,
+        message: function (answer: any) {
+          return `${getLogo()}[${++currStep}/${totalStep}] 选择样式文件 (select the stylesheets)`;
+        },
         default: [ 'css' ],
         when: function (answer: any) {
           if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'toolkit') {
@@ -830,13 +847,17 @@ export default async function (strategy: STRATEGY, {
           (answer.style === 'none' || ProjectType[answer.project_type as keyof typeof ProjectType] === 'toolkit') && lintArr.pop();
           return lintArr;
         },
-        message: `${getLogo()}[6/7] 选择lint工具 (select the lint tools)：`,
+        message: function (answer: any) {
+          return `${getLogo()}[${++currStep}/${totalStep}] 选择lint工具 (select the lint tools)：`;
+        },
         default: [ 'eslint' ]
       },{
         name: 'pkgtool',
         type: 'list',
         choices: [ 'yarn', 'npm', 'cnpm' ],
-        message: `${getLogo()}[7/7] 请选择包安装工具，推荐使用yarn (please choice the package install tool, recommended use yarn)：`,
+        message: function (answer: any) {
+          return `${getLogo()}[${++currStep}/${totalStep}] 请选择包安装工具，推荐使用yarn (please choice the package install tool, recommended use yarn)：`;
+        },
         default: 'yarn'
       }
     ];
@@ -855,8 +876,8 @@ export default async function (strategy: STRATEGY, {
     inquirer.prompt(questions)
       .then(async answers => {
         const {
-          name,
           project_type,
+          name,
           dev_server = 'basic',
           ts = true,
           test = false,
