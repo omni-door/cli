@@ -27,15 +27,15 @@ describe('dependencies_build test', function () {
 
 describe('dependencies_stable_map test', function () {
   it('type checking', function () {
-    expect(dependencies_stable).to.be.a('function');
-    expect(arr2str).to.be.a('function');
+    expect(dependencies_stable).to.be.an('object');
+    expect(devDependencies_stable).to.be.an('object');
   });
 });
 
 describe('dependencies_strategy test', function () {
   it('type checking', function () {
-    expect(getDependency).to.be.an('object');
-    expect(devDependencies_stable).to.be.an('object');
+    expect(getDependency).to.be.a('function');
+    expect(arr2str).to.be.a('function');
   });
 });
 
