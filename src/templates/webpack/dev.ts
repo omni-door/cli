@@ -1,4 +1,4 @@
-import { STYLE, PROJECT_TYPE } from '../../index.d';
+import { PROJECT_TYPE } from '../../index.d';
 
 export default function (config: {
   project_type: PROJECT_TYPE;

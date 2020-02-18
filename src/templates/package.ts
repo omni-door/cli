@@ -1,7 +1,7 @@
 import { devDependencies } from '../configs/dependencies_stable_map';
 import { PROJECT_TYPE, TESTFRAME, DEVSERVER, STRATEGY } from '../index.d';
 
-export default (config: {
+const fn = (config: {
   project_type: PROJECT_TYPE;
   name: string;
   ts: boolean;
@@ -126,11 +126,20 @@ export default (config: {
   ${
   ts && strategy === 'stable'
     ? `"resolutions": {
-      "@types/react": "${devDependencies['@types/react']}"
+      "@types/react": "type_react"
     },`
     : ''
 }
   "license": "ISC"
 }`;
 };
+
+export default (function (): typeof fn {
+  const type_react = devDependencies['@types/react'];
+
+  // 解决函数的调用栈在转化成字符串后丢失，无法正确获取到变量值的问题
+  let fn_str = fn.toString();
+  fn_str = fn_str.replace('type_react', type_react);
+  return new Function(`return ${fn_str}`)();
+})();
 

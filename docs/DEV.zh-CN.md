@@ -30,11 +30,12 @@ type OmniConfig = {
   type: PROJECT_TYPE;
   dev: {
     port?: number;
-    webpack_config?: Configuration;
+    webpack?: Configuration;
     proxy?: {
       route: string;
       config: Config;
     }[];
+    logLevel: 'debug' | 'info' | 'warn' | 'error' | 'silent';
   };
   build: {
     auto_release?: boolean;
