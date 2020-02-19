@@ -2,8 +2,9 @@ import { STYLE } from '../../index.d';
 
 export default function (config: {
   style: STYLE;
+  configFileName: string;
 }) {
-  const { style } = config;
+  const { style, configFileName } = config;
 
   return `'use strict';
 
@@ -11,8 +12,9 @@ const merge = require('webpack-merge');
 const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const common_config = require('./webpack.config.common.js');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const common_config = require('./webpack.config.common.js');
+const cli_config = require('../${configFileName}');
 
 module.exports = merge(common_config, {
   module: {
@@ -94,7 +96,7 @@ module.exports = merge(common_config, {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: '[name].[hash:8].css',
+      filename: cli_config && cli_config.build && cli_config.build.hash ? '[name].[hash:8].css' : '[name].css',
       chunkFilename: '[id].css'
     }),
     new BundleAnalyzerPlugin({

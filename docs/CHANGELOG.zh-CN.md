@@ -1,6 +1,11 @@
 # CHANGE LOG
 
 ## v1.1.x
+### v1.1.2
+1. <omni.config.js> build 新增 hash 字段控制打包资源名是否添加哈希
+
+2. 新增 omni.config.js 详解文档
+
 ### v1.1.1
 1. <package.json> 修复函数的调用栈在转化成字符串后丢失，无法正确获取到变量值的问题
 

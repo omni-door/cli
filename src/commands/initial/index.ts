@@ -311,9 +311,9 @@ export default async function (strategy: STRATEGY, {
     const content_babel = build && (build !== 'tsc' || devServer === 'storybook') && tpl.babel({ project_type, ts });
 
     // webpack config files
-    const content_webpack_common = isBasicDevServer && tpl.webpack_config_common({ ts, style });
+    const content_webpack_common = isBasicDevServer && tpl.webpack_config_common({ ts, style, configFileName });
     const content_webpack_dev = isBasicDevServer && tpl.webpack_config_dev({ project_type, name, ts });
-    const content_webpack_prod = isBasicDevServer && tpl.webpack_config_prod({ style });
+    const content_webpack_prod = isBasicDevServer && tpl.webpack_config_prod({ style, configFileName });
 
     // server files
     const content_bisheng = devServer === 'bisheng' && tpl.bisheng({ name, git });

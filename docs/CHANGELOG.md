@@ -1,6 +1,11 @@
 # CHANGE LOG
 
 ## v1.1.x
+### v1.1.2
+1. <omni.config.js> add hash field for control whether add to hash-tag to building result
+
+2. add omni.config.js detail docs
+
 ### v1.1.1
 1. <package.json> fix the call-stack will be lost when the function convert to string which will cause the variable become undefined
 

@@ -13,6 +13,8 @@ The CLI Tool for set up standard javascript project.
 
 English | [简体中文](./docs/README.zh-CN.md)
 
+[omni.config.js details](./docs/OMNI.md)
+
 [CHANGELOG](./docs/CHANGELOG.md)
 
 ## install

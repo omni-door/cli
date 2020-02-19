@@ -43,6 +43,7 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
       src_dir,
       out_dir,
       esm_dir = '',
+      hash,
       tool,
       reserve = {},
       preflight
@@ -197,7 +198,7 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
       }
     } else {
       const content_rollup = !buildConfig && type === 'toolkit' && rollupConfig({ ts: typescript, multi_output: true, src_dir, out_dir, esm_dir, configFileName });
-      const content_webpack = !buildConfig && type === 'spa_react' && webpackConfig({ ts: typescript, multi_output: false, src_dir, out_dir, configFileName });
+      const content_webpack = !buildConfig && type === 'spa_react' && webpackConfig({ ts: typescript, multi_output: false, src_dir, out_dir, configFileName, hash });
       const content_config = buildConfig || content_rollup || content_webpack;
   
       // put temporary file for build process

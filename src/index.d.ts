@@ -83,6 +83,7 @@ export type OmniConfig = {
     src_dir: string;
     out_dir: string;
     esm_dir?: string;
+    hash?: boolean;
     configuration?: (config: ANYOBJECT) => ANYOBJECT;
     tool?: BUILD;
     preflight?: {

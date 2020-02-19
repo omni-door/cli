@@ -18,9 +18,9 @@ ${project_type === 'spa_react' ? `const merge = require('webpack-merge');
 const config_prod = require('./configs/webpack.config.prod.js');` : ''}
 ${project_type !== 'component_library_react' ? 'const config_dev = require(\'./configs/webpack.config.dev.js\');\n' : ''}
 module.exports = {
-  type: '${project_type}', // 项目类型，请勿变动 (project type, please don't modify)
+  type: '${project_type}', // 项目类型，请勿任意变动 (project type, please don't modify)
   ${project_type !== 'component_library_react' ? `\n  dev: {
-    webpack: config_dev, // 开发服务端webpack配置文件 (dev-server webpack config file)
+    webpack: config_dev, // 开发服务端webpack配置 (dev-server webpack configuration)
     proxy:  [
       // {
       //   route: '/api',
@@ -40,10 +40,12 @@ module.exports = {
     src_dir: ${project_type === 'toolkit' ? 'path.resolve(\'src/toolkit\')' : 'path.resolve(\'src\')'},
     // 输出路径 (the directory for compiled project)
     // 务必使用绝对路径 (must be a absolute path)
-    out_dir: path.resolve('lib'),
+    out_dir: path.resolve('${project_type === 'spa_react' ? 'dist' : 'lib'}'),
     ${project_type !== 'spa_react' ? `// es6 module输出路径 (es6 module compiled directory)
     // 务必使用绝对路径 (must be a absolute path)
     esm_dir: path.resolve('es'),` : ''}
+    ${project_type === 'spa_react' ? `// 构建的资源是否加上hash (whether the hash tag add to building result)
+    hash: true,` : ''}
     ${project_type !== 'component_library_react' ? `// 构建阶段的自定义配置回调 (The callback will be call in the build-process)
     // 返回自定义的配置 (You can return your custom build configuration)
     ${project_type === 'spa_react' ? 'configuration: config => merge(config, config_prod)' : 'configuration: config => config'},` : ''}

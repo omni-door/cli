@@ -3,12 +3,14 @@ import { STYLE } from '../../index.d';
 export default function (config: {
   ts: boolean;
   style: STYLE;
+  configFileName: string;
 }) {
-  const { ts, style } = config;
+  const { ts, style, configFileName } = config;
 
   return `'use strict';
 
 const WebpackBar = require('webpackbar');
+const cli_config = require('../${configFileName}');
 
 module.exports = {
   module: {
@@ -57,7 +59,7 @@ module.exports = {
             loader: 'url-loader',
             options: {
               limit: 8192,
-              name: 'assets/[name].[hash:8].[ext]'
+              name: cli_config && cli_config.build && cli_config.build.hash ? 'assets/[name].[hash:8].[ext]' : 'assets/[name].[ext]'
             }
           }
         ]
