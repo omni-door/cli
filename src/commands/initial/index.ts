@@ -312,7 +312,7 @@ export default async function (strategy: STRATEGY, {
 
     // webpack config files
     const content_webpack_common = isBasicDevServer && tpl.webpack_config_common({ ts, style, configFileName });
-    const content_webpack_dev = isBasicDevServer && tpl.webpack_config_dev({ project_type, name, ts });
+    const content_webpack_dev = isBasicDevServer && tpl.webpack_config_dev({ project_type, name, style, ts });
     const content_webpack_prod = isBasicDevServer && tpl.webpack_config_prod({ style, configFileName });
 
     // server files

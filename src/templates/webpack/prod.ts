@@ -8,15 +8,23 @@ export default function (config: {
 
   return `'use strict';
 
+const path = require('path');
 const merge = require('webpack-merge');
 const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const common_config = require('./webpack.config.common.js');
-const cli_config = require('../${configFileName}');
 
-module.exports = merge(common_config, {
+const commonConfig = require(path.resolve(__dirname, 'webpack.config.common.js'));
+const { build } = require(path.resolve(__dirname, '../${configFileName}'));
+const {
+  src_dir = path.resolve(__dirname, '../src/'),
+  out_dir = path.resolve(__dirname, '../lib/'),
+  hash
+} = build || {};
+
+module.exports = merge(commonConfig, {
   module: {
     rules: [
       ${style ? (style === 'css' ? `{
@@ -96,13 +104,22 @@ module.exports = merge(common_config, {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: cli_config && cli_config.build && cli_config.build.hash ? '[name].[hash:8].css' : '[name].css',
+      filename: hash ? '[name].[hash:8].css' : '[name].css',
       chunkFilename: '[id].css'
     }),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
       defaultSizes: 'parsed',
       reportFilename: './bundle_analysis.html'
+    }),
+    new HtmlWebpackPlugin({
+      path: path.resolve(out_dir),
+      template: path.resolve(src_dir, 'index.html'),
+      minify:{
+        removeComments: true,
+        collapseWhitespace: true
+      },
+      filename: hash ? 'index.[hash:8].html' : 'index.html'
     })
   ],
   mode: 'production'

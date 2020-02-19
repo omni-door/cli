@@ -1,6 +1,13 @@
 # CHANGE LOG
 
 ## v1.1.x
+### v1.1.3
+1. <omni.config.js> 修复无法由于循环引用导致webpack配置文件无法获取正确值的问题
+
+2. <webpack.config.prod.js> 新增 html-webpack-plugin
+
+3. <webpack.config.dev.js> 将css、less、scss等样式文件的处理迁移至此
+
 ### v1.1.2
 1. <omni.config.js> build 新增 hash 字段控制打包资源名是否添加哈希
 

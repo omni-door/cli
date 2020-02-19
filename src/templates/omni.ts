@@ -14,13 +14,11 @@ export default (config: GenerateOmniConfigParams) => {
   return `'use strict';
 
 const path = require('path');
-${project_type === 'spa_react' ? `const merge = require('webpack-merge');
-const config_prod = require('./configs/webpack.config.prod.js');` : ''}
-${project_type !== 'component_library_react' ? 'const config_dev = require(\'./configs/webpack.config.dev.js\');\n' : ''}
+${project_type === 'spa_react' ? 'const merge = require(\'webpack-merge\');\n' : ''}
 module.exports = {
   type: '${project_type}', // 项目类型，请勿任意变动 (project type, please don't modify)
   ${project_type !== 'component_library_react' ? `\n  dev: {
-    webpack: config_dev, // 开发服务端webpack配置 (dev-server webpack configuration)
+    webpack: require(path.resolve(\'configs/webpack.config.dev.js\')), // 开发服务端webpack配置 (dev-server webpack configuration)
     proxy:  [
       // {
       //   route: '/api',
@@ -48,7 +46,7 @@ module.exports = {
     hash: true,` : ''}
     ${project_type !== 'component_library_react' ? `// 构建阶段的自定义配置回调 (The callback will be call in the build-process)
     // 返回自定义的配置 (You can return your custom build configuration)
-    ${project_type === 'spa_react' ? 'configuration: config => merge(config, config_prod)' : 'configuration: config => config'},` : ''}
+    ${project_type === 'spa_react' ? 'configuration: config => merge(config, require(path.resolve(\'configs/webpack.config.prod.js\')))' : 'configuration: config => config'},` : ''}
     ${project_type === 'toolkit' ? `tool: '${build}', // 打包工具，支持 tsc、rollup、webpack (build tool, support tsc, rollup and webpack)` : ''}
     reserve: {
       style: ${style && build !== 'webpack' ? true : false}, // 构建结果是否保留样式文件 (whether or not reserve the stylesheet files)

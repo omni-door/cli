@@ -1,6 +1,13 @@
 # CHANGE LOG
 
 ## v1.1.x
+### v1.1.3
+1. <omni.config.js> fix webpack configuration file cannot get correct value due to circular references problem
+
+2. <webpack.config.prod.js> add html-webpack-plugin
+
+3. <webpack.config.dev.js> migrate into css, less and scss stylesheet procession
+
 ### v1.1.2
 1. <omni.config.js> add hash field for control whether add to hash-tag to building result
 

@@ -13,20 +13,8 @@ export default function (config: {
 
 const fs = require('fs');
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const configs = require(path.resolve(process.cwd(), '${configFileName}'));
-const htmlPath = path.join('${src_dir}', 'index.html');
-const isExistHtml = fs.existsSync(htmlPath);
-const htmlWebpackPlugin = isExistHtml && new HtmlWebpackPlugin({
-  path: path.resolve('${out_dir}'),
-  template: path.join('${src_dir}', 'index.html'),
-  minify:{
-    removeComments: true,
-    collapseWhitespace: true
-  },
-  filename: '${hash ? 'index.[hash:8].html' : 'index.html'}'
-});
 const { build } = configs || {};
 const { configuration = config => config } = build || {};
 
@@ -77,9 +65,6 @@ module.exports = configuration({
     filename: '${hash ? '[name].[hash:8].js' : '[name].js'}',
     path: '${out_dir}'
   },
-  plugins: [
-    htmlWebpackPlugin ? htmlWebpackPlugin : null
-  ],
   mode: 'production'
 });`;
 }

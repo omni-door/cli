@@ -10,6 +10,7 @@ export default function () {
 node_modules
 lib
 es
+dist
 
 package-lock.json
 

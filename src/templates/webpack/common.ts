@@ -9,8 +9,12 @@ export default function (config: {
 
   return `'use strict';
 
+const path = require('path');
 const WebpackBar = require('webpackbar');
-const cli_config = require('../${configFileName}');
+
+const cliConfig = require(path.resolve(__dirname, '../${configFileName}'));
+const hash = cliConfig && cliConfig.build && cliConfig.build.hash;
+
 
 module.exports = {
   module: {
@@ -31,27 +35,6 @@ module.exports = {
           }
         ]
       },` : ''}
-      ${style ? (style === 'css' ? `{
-        test: /\\.css$/,
-        use:  ['style-loader', 'css-loader']
-      },
-      ` : style === 'less' ? `{
-        test: /\\.(css|less)$/,
-        use: ['style-loader', 'css-loader', 'less-loader']
-      },` : style === 'scss' ? `{
-        test: /\\.(css|scss|sass)$/,
-        use: ['style-loader', 'css-loader', 'sass-loader']
-      },` : `{
-        test: /\\.css$/,
-        use:  ['style-loader', 'css-loader']
-      },{
-        test: /\\.less$/,
-        use: ['style-loader', 'css-loader', 'less-loader']
-      },
-      {
-        test: /\.(scss|sass)$/,
-        use: ['style-loader', 'css-loader', 'sass-loader']
-      },`) : ''}
       {
         test: /\\.(woff|woff2|eot|ttf|svg|jpg|png|gif)$/,
         use: [
@@ -59,7 +42,7 @@ module.exports = {
             loader: 'url-loader',
             options: {
               limit: 8192,
-              name: cli_config && cli_config.build && cli_config.build.hash ? 'assets/[name].[hash:8].[ext]' : 'assets/[name].[ext]'
+              name: hash ? 'assets/[name].[hash:8].[ext]' : 'assets/[name].[ext]'
             }
           }
         ]
