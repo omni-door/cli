@@ -16,12 +16,12 @@ interface Config {
 export function dependencies (strategy: STRATEGY, config: Config) {
   const dependency = getDependency(strategy);
   const { project_type } = config;
-  const isReactProject = project_type === 'spa_react' || project_type === 'component_library_react';
+  const isReactProject = project_type === 'spa-react' || project_type === 'component-library-react';
   const deps = [
     isReactProject ? dependency('react') : '',
     isReactProject ? dependency('react-dom') : '',
-    project_type === 'spa_react' ? dependency('core-js') : '',
-    project_type === 'spa_react' ? dependency('regenerator-runtime') : ''
+    project_type === 'spa-react' ? dependency('core-js') : '',
+    project_type === 'spa-react' ? dependency('regenerator-runtime') : ''
   ];
   return {
     depArr: [ ...deps ],
@@ -43,7 +43,7 @@ export function devDependencies (strategy: STRATEGY, config: Config) {
     stylelint,
     devServer
   } = config;
-  const isReactProject = project_type === 'spa_react' || project_type === 'component_library_react';
+  const isReactProject = project_type === 'spa-react' || project_type === 'component-library-react';
 
   const reactDependencies = [
     dependency('react'),

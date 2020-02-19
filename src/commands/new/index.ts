@@ -68,7 +68,7 @@ export default async function (config: OmniConfig | {}, componentName: string, o
   if (!fc && !cc) cc = true;
 
   const {
-    type = 'spa_react',
+    type = 'spa-react',
     template: {
       root,
       test = '',
@@ -103,7 +103,7 @@ export default async function (config: OmniConfig | {}, componentName: string, o
   }
 
   const tpl = { ...default_tpl_list, ...custom_tpl_list };
-  const isReactProject = type === 'spa_react' || type === 'component_library_react'; 
+  const isReactProject = type === 'spa-react' || type === 'component-library-react'; 
 
   const message = `开始创建 ${componentName} ${isReactProject ? `${cc ? '类' : '函数'}组件` : ''} (Start create ${componentName} ${isReactProject ? `${cc ? 'class' : 'functional'} component` : ''})`;
   logInfo(message);

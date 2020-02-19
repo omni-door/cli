@@ -38,10 +38,10 @@ type OmniConfig = {
     logLevel: 'debug' | 'info' | 'warn' | 'error' | 'silent';
   };
   build: {
-    auto_release?: boolean;
-    src_dir: string;
-    out_dir: string;
-    esm_dir?: string;
+    autoRelease?: boolean;
+    srcDir: string;
+    outDir: string;
+    esmDir?: string;
     configuration?: (config: ANYOBJECT) => ANYOBJECT;
     tool?: BUILD;
     preflight?: {
@@ -78,7 +78,7 @@ type OmniConfig = {
 
 export type BUILD = 'webpack' | 'rollup' | 'tsc' | '';
 type NPM = 'npm' | 'yarn' | 'cnpm' | 'taobao';
-type PROJECT_TYPE = 'spa_react' | 'component_library_react' | 'toolkit';
+type PROJECT_TYPE = 'spa-react' | 'component-library-react' | 'toolkit';
 type TESTFRAME = 'mocha' | 'jest' | 'karma' | '';
 type STYLE = 'less' | 'scss' | 'css' | 'all' | '';
 ```

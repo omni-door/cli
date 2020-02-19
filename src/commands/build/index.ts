@@ -39,10 +39,10 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
 
   const { type,
     build: {
-      auto_release,
-      src_dir,
-      out_dir,
-      esm_dir = '',
+      autoRelease,
+      srcDir,
+      outDir,
+      esmDir = '',
       hash,
       tool,
       reserve = {},
@@ -58,8 +58,8 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
 
   const { verify, buildConfig, configFileName } = buildTactic || {};
 
-  if (!out_dir || !src_dir) {
-    handleBuildErr('配置文件中未定义 $src_dir 或 $out_dir (The $src_dir or $out_dir were missed in configuration file)')();
+  if (!outDir || !srcDir) {
+    handleBuildErr('配置文件中未定义 $srcDir 或 $outDir (The $srcDir or $outDir were missed in configuration file)')();
   }
 
   function handleBuildSuc (msg?: string) {
@@ -132,8 +132,8 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
         }
       } else if (/.(css|scss|less)$/.test(v)) {
         const relativePath = path.relative(originDir || dir, filePath);
-        const destPath = path.resolve(out_dir, relativePath);
-        const emsPath = esm_dir && path.resolve(esm_dir, relativePath);
+        const destPath = path.resolve(outDir, relativePath);
+        const emsPath = esmDir && path.resolve(esmDir, relativePath);
         fsExtra.ensureDirSync(path.resolve(destPath, '..'));
         fsExtra.copySync(filePath, destPath);
         if (emsPath) {
@@ -154,9 +154,9 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
         logWarn(`"${reserveItem}" 是一个无效的路径！(The path "${reserveItem}" is invaild!)`);
         continue;
       }
-      const relativePath = path.relative(src_dir, reserveItem);
-      const destPath = path.resolve(out_dir, relativePath);
-      const emsPath = esm_dir && path.resolve(esm_dir, relativePath);
+      const relativePath = path.relative(srcDir, reserveItem);
+      const destPath = path.resolve(outDir, relativePath);
+      const emsPath = esmDir && path.resolve(esmDir, relativePath);
       if (stats.isDirectory()) {
         fsExtra.ensureDirSync(destPath);
         emsPath && fsExtra.ensureDirSync(emsPath);
@@ -186,10 +186,10 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
     }
 
     const buildCliArr = [];
-    if (type === 'component_library_react' || (tool === 'tsc' && type === 'toolkit')) {
+    if (type === 'component-library-react' || (tool === 'tsc' && type === 'toolkit')) {
       const tscPath = path.resolve(process.cwd(), 'node_modules/typescript/bin/tsc');
-      buildCliArr.push(`${tscPath} --outDir ${out_dir} --project ${path.resolve(process.cwd(), 'tsconfig.json')}`);
-      esm_dir && buildCliArr.push(`${tscPath} --module ES6 --target ES6 --outDir ${esm_dir} --project ${path.resolve(process.cwd(), 'tsconfig.json')}`);
+      buildCliArr.push(`${tscPath} --outDir ${outDir} --project ${path.resolve(process.cwd(), 'tsconfig.json')}`);
+      esmDir && buildCliArr.push(`${tscPath} --module ES6 --target ES6 --outDir ${esmDir} --project ${path.resolve(process.cwd(), 'tsconfig.json')}`);
 
       if (!fs.existsSync(tscPath)) {
         logWarn('请先安装 typescript! (Please install typescript first!)');
@@ -197,8 +197,8 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
         if (!is_go_on) return;
       }
     } else {
-      const content_rollup = !buildConfig && type === 'toolkit' && rollupConfig({ ts: typescript, multi_output: true, src_dir, out_dir, esm_dir, configFileName });
-      const content_webpack = !buildConfig && type === 'spa_react' && webpackConfig({ ts: typescript, multi_output: false, src_dir, out_dir, configFileName, hash });
+      const content_rollup = !buildConfig && type === 'toolkit' && rollupConfig({ ts: typescript, multiOutput: true, srcDir, outDir, esmDir, configFileName });
+      const content_webpack = !buildConfig && type === 'spa-react' && webpackConfig({ ts: typescript, multiOutput: false, srcDir, outDir, configFileName, hash });
       const content_config = buildConfig || content_rollup || content_webpack;
   
       // put temporary file for build process
@@ -214,7 +214,7 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
             logWarn('请先安装 rollup! (Please install rollup first!)');
             is_go_on = await installDenpendencies('rollup');
           }
-        } else if (type === 'spa_react') {
+        } else if (type === 'spa-react') {
           const webpackPath = path.resolve(process.cwd(), 'node_modules/webpack-cli/bin/cli.js');
           buildCliArr.push(`${webpackPath} --config ${buildConfigPath}`);
 
@@ -239,12 +239,12 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
     const spinner = type !== 'toolkit' && ora(`${getLogPrefix()} 项目构建中 (Building, please wait patiently)  ⏱  \n`);
     spinner && spinner.start();
 
-    del.sync(out_dir);
-    esm_dir && del.sync(esm_dir);
+    del.sync(outDir);
+    esmDir && del.sync(esmDir);
 
     await execShell(buildCliArr, async function () {
       const { style, assets = [] } = reserve;
-      style && copyStylesheet(src_dir);
+      style && copyStylesheet(srcDir);
       copyReserves(assets);
 
       // handle build plugins
@@ -257,8 +257,8 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
       }
 
       spinner && spinner.stop();
-      if (out_dir && !fs.existsSync(out_dir)) {
-        handleBuildErr(`输出的 ${out_dir} 文件不存在，构建失败！`)();
+      if (outDir && !fs.existsSync(outDir)) {
+        handleBuildErr(`输出的 ${outDir} 文件不存在，构建失败！`)();
       } else {
         handleBuildSuc()();
       }
@@ -267,7 +267,7 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
       handleBuildErr()();
     });
 
-    if (auto_release) {
+    if (autoRelease) {
       logInfo('开始自动发布！(beginning auto release!)');
       try {
         await release(config, { verify: false });

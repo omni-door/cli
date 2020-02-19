@@ -1,5 +1,9 @@
 # CHANGE LOG
 
+## v1.2.x
+### v1.2.0
+1. naming conventions
+
 ## v1.1.x
 ### v1.1.3
 1. <omni.config.js> fix webpack configuration file cannot get correct value due to circular references problem
@@ -21,7 +25,7 @@
 
 2. [onmi init] strategy-stable update dependencies version
 
-3. [onmi init] component_library_react and toolkit set unit-test by default
+3. [onmi init] component-library-react and toolkit set unit-test by default
 
 ---
 

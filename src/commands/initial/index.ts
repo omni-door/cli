@@ -91,8 +91,8 @@ export type GInstallCli = {
 };
 
 enum ProjectType {
-  'react-spa (React单页应用)' = 'spa_react',
-  'react-component-library (React组件库)' = 'component_library_react',
+  'spa-react (React单页应用)' = 'spa-react',
+  'component-library-react (React组件库)' = 'component-library-react',
   'toolkit (工具库)' = 'toolkit'
 }
 
@@ -251,8 +251,8 @@ export default async function (strategy: STRATEGY, {
     const tpl = { ...default_tpl_list, ...custom_tpl_list };
 
     // switchers
-    // whether or not react-spa project
-    const isReactSPAProject = project_type === 'spa_react';
+    // whether or not spa-react project
+    const isReactSPAProject = project_type === 'spa-react';
     const isToolkitProject = project_type === 'toolkit';
     // whether or not basic server
     const isBasicDevServer = devServer === 'basic';
@@ -764,7 +764,7 @@ export default async function (strategy: STRATEGY, {
       },{
         name: 'project_type',
         type: 'list',
-        choices: [ 'react-spa (React单页应用)', 'react-component-library (React组件库)', 'toolkit (工具库)' ],
+        choices: [ 'spa-react (React单页应用)', 'component-library-react (React组件库)', 'toolkit (工具库)' ],
         message: `${getLogo()}[${currStep}/${totalStep}] 请选择项目类型 (please choose the type of project)：`,
         when: function (answer: any) {
           if (answer.overwrite === false) {
@@ -776,9 +776,9 @@ export default async function (strategy: STRATEGY, {
         name: 'name',
         type: 'input',
         message: function (answer: any) {
-          if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'spa_react') {
+          if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'spa-react') {
             totalStep = 7;
-          } else if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'component_library_react') {
+          } else if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'component-library-react') {
             totalStep = 6;
           } else {
             totalStep = 4;
@@ -795,7 +795,7 @@ export default async function (strategy: STRATEGY, {
           return `${getLogo()}[${++currStep}/${totalStep}] 请选择组件库Demo框架 (please chioce the component-library demonstration frame)：`;
         },
         when: function (answer: any) {
-          if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'component_library_react') {
+          if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'component-library-react') {
             return true;
           }
           return false;
@@ -808,7 +808,7 @@ export default async function (strategy: STRATEGY, {
         },
         default: true,
         when: function (answer: any) {
-          if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'spa_react') {
+          if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'spa-react') {
             return true;
           }
           return false;
@@ -819,9 +819,9 @@ export default async function (strategy: STRATEGY, {
         message: function (answer: any) {
           return `${getLogo()}[${++currStep}/${totalStep}] 是否开启单元测试? (whether or not apply unit-test?)`;
         },
-        default: (answer: any) => ProjectType[answer.project_type as keyof typeof ProjectType] !== 'spa_react',
+        default: (answer: any) => ProjectType[answer.project_type as keyof typeof ProjectType] !== 'spa-react',
         when: function (answer: any) {
-          if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'spa_react') {
+          if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'spa-react') {
             return true;
           }
           return false;
@@ -905,11 +905,11 @@ export default async function (strategy: STRATEGY, {
             ? 'mocha'
             : 'jest'
           : '';
-        const build = projectType === 'spa_react'
+        const build = projectType === 'spa-react'
           ? 'webpack'
           : projectType === 'toolkit'
             ? 'rollup'
-            : projectType === 'component_library_react'
+            : projectType === 'component-library-react'
               ? 'tsc'
               : 'webpack';
 

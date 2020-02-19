@@ -10,7 +10,7 @@ import { TPLS_ALL, TPLS_INITIAL, TPLS_INITIAL_FN, TPLS_INITIAL_RETURE, TPLS_NEW,
 export { TPLS_ALL, TPLS_INITIAL, TPLS_INITIAL_FN, TPLS_INITIAL_RETURE, TPLS_NEW, TPLS_NEW_FN, TPLS_NEW_RETURE } from './templates';
 export type BUILD = 'webpack' | 'rollup' | 'tsc' | '';
 export type NPM = 'npm' | 'yarn' | 'cnpm' | 'taobao';
-export type PROJECT_TYPE = 'spa_react' | 'component_library_react' | 'toolkit';
+export type PROJECT_TYPE = 'spa-react' | 'component-library-react' | 'toolkit';
 export type TESTFRAME = 'mocha' | 'jest' | '';
 export type PKJTOOL = 'yarn' | 'npm' | 'cnpm';
 export type STYLE = 'less' | 'scss' | 'css' | 'all' | '';
@@ -79,10 +79,10 @@ export type OmniConfig = {
     }[]
   };
   build: {
-    auto_release?: boolean;
-    src_dir: string;
-    out_dir: string;
-    esm_dir?: string;
+    autoRelease?: boolean;
+    srcDir: string;
+    outDir: string;
+    esmDir?: string;
     hash?: boolean;
     configuration?: (config: ANYOBJECT) => ANYOBJECT;
     tool?: BUILD;

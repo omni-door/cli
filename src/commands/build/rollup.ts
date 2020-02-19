@@ -1,12 +1,12 @@
 export default function (config: {
   ts: boolean;
-  multi_output: boolean;
-  src_dir: string;
-  out_dir: string;
-  esm_dir: string;
+  multiOutput: boolean;
+  srcDir: string;
+  outDir: string;
+  esmDir: string;
   configFileName?: string;
 }) {
-  const { ts, multi_output, src_dir = 'src', out_dir = 'lib', esm_dir, configFileName = 'omni.config.js' } = config;
+  const { ts, multiOutput, srcDir = 'src', outDir = 'lib', esmDir, configFileName = 'omni.config.js' } = config;
 
   return `const resolve = require('rollup-plugin-node-resolve');
 const commonjs = require('rollup-plugin-commonjs');
@@ -25,13 +25,13 @@ const { configuration = config => config } = build || {};
 let indexPath = '';
 const exts = ['ts', 'tsx', 'js', 'jsx'];
 for (let i = 0, len = exts.length; i < len; i++) {
-  indexPath = path.resolve('${src_dir}', \`index.\${exts[i]}\`);
+  indexPath = path.resolve('${srcDir}', \`index.\${exts[i]}\`);
   if (fs.existsSync(indexPath)) break;
 }
 
 function clearDir () {
-  ${out_dir ? `del.sync('${out_dir}/*');` : ''}
-  ${esm_dir ? `del.sync('${esm_dir}/*');` : ''}
+  ${outDir ? `del.sync('${outDir}/*');` : ''}
+  ${esmDir ? `del.sync('${esmDir}/*');` : ''}
 }
 
 function flatten (arr) {
@@ -43,11 +43,11 @@ function flatten (arr) {
 function createConfig () {
   const extensions = ['.ts', '.js'];
   const filesPaths = [];
-  ${multi_output ? `const files = fs.readdirSync('${src_dir}');
+  ${multiOutput ? `const files = fs.readdirSync('${srcDir}');
   const len = files.length;
   for (let i = 0; i < len; i++) {
     const file = files[i];
-    const filePath = path.resolve('${src_dir}', file);
+    const filePath = path.resolve('${srcDir}', file);
     const stats = fs.statSync(filePath);
     if (stats.isDirectory()) {
       let entryPath = '';
@@ -65,7 +65,7 @@ function createConfig () {
   return [{
     input: indexPath,
     output: {
-      file: '${out_dir}/index.js',
+      file: '${outDir}/index.js',
       format: 'cjs',
       compact: true
     },
@@ -113,11 +113,11 @@ function createConfig () {
       }),
       json()
     ]}, ${
-  esm_dir
+  esmDir
     ? `{
           input: indexPath,
           output: {
-            file: '${esm_dir}/index.js',
+            file: '${esmDir}/index.js',
             format: 'esm',
             compact: true
           },
@@ -167,7 +167,7 @@ function createConfig () {
       return [{
         input: entry,
         output: {
-          file: path.resolve('${out_dir}', file),
+          file: path.resolve('${outDir}', file),
           format: 'cjs',
           exports: 'named',
           compact: true
@@ -211,11 +211,11 @@ function createConfig () {
           json()
         ]
       }, ${
-  esm_dir
+  esmDir
     ? `{
             input: entry,
             output: {
-              file: path.resolve('${esm_dir}', file),
+              file: path.resolve('${esmDir}', file),
               format: 'esm',
               compact: true
             },

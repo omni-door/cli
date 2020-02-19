@@ -1,5 +1,9 @@
 # CHANGE LOG
 
+## v1.2.x
+### v1.2.0
+1. 命名规范
+
 ## v1.1.x
 ### v1.1.3
 1. <omni.config.js> 修复无法由于循环引用导致webpack配置文件无法获取正确值的问题
@@ -21,7 +25,7 @@
 
 2. [onmi init] stable 策略版本更新
 
-3. [onmi init] component_library_react 和 toolkit 默认开启单元测试
+3. [onmi init] component-library-react 和 toolkit 默认开启单元测试
 
 ---
 

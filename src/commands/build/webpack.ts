@@ -2,13 +2,13 @@ import path from 'path';
 
 export default function (config: {
   ts: boolean;
-  multi_output: boolean;
-  src_dir: string;
-  out_dir: string;
+  multiOutput: boolean;
+  srcDir: string;
+  outDir: string;
   configFileName?: string;
   hash?: boolean;
 }) {
-  const { multi_output, src_dir = path.resolve(__dirname, '../src/'), out_dir = path.resolve(__dirname, '../lib/'), configFileName = 'omni.config.js', hash } = config;
+  const { multiOutput, srcDir = path.resolve(__dirname, '../src/'), outDir = path.resolve(__dirname, '../lib/'), configFileName = 'omni.config.js', hash } = config;
   return `'use strict';
 
 const fs = require('fs');
@@ -19,8 +19,8 @@ const { build } = configs || {};
 const { configuration = config => config } = build || {};
 
 ${
-  multi_output
-    ? `const entriesPath = '${src_dir}';
+  multiOutput
+    ? `const entriesPath = '${srcDir}';
 const entriesList = getFolders(entriesPath);
 
 function getFolders (folderPath) {
@@ -37,7 +37,7 @@ function getFolders (folderPath) {
 let indexPath = '';
 const exts = ['ts', 'tsx', 'js', 'jsx'];
 for (let i = 0, len = exts.length; i < len; i++) {
-  indexPath = path.resolve('${src_dir}', \`index.\${exts[i]}\`);
+  indexPath = path.resolve('${srcDir}', \`index.\${exts[i]}\`);
   if (fs.existsSync(indexPath)) break;
 }
 const entry = {
@@ -45,12 +45,12 @@ const entry = {
 };
 
 ${
-  multi_output
+  multiOutput
     ? `entriesList.forEach(v => {
   if (v !== 'style' && v !== 'styles') {
     let entryPath = '';
     for (let i = 0, len = exts.length; i < len; i++) {
-      entryPath = path.resolve('${src_dir}', \`\${v}/index.\${exts[i]}\`);
+      entryPath = path.resolve('${srcDir}', \`\${v}/index.\${exts[i]}\`);
       if (fs.existsSync(entryPath)) break;
     }
     entry[v] = entryPath;
@@ -63,7 +63,7 @@ module.exports = configuration({
   entry,
   output: {
     filename: '${hash ? '[name].[hash:8].js' : '[name].js'}',
-    path: '${out_dir}'
+    path: '${outDir}'
   },
   mode: 'production'
 });`;

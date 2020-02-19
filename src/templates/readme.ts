@@ -6,7 +6,7 @@ export default function (config: {
 
   return `# ${name}
 
-## Run Your Project
+## Run your project
 
 \`\`\`sh
 npm start
@@ -16,7 +16,7 @@ or
 npm run dev
 \`\`\`
 
-## Create a Component by Template
+## Create a Component by the Template
 
 ### Class Component
 \`\`\`sh
@@ -28,7 +28,7 @@ npm run new [componentName]
 npm run new [componentName] -- -f
 \`\`\`
 
-## Build your Project
+## Build your project
 
 \`\`\`sh
 npm run build
@@ -39,18 +39,18 @@ npm run build
 npm run build -- -n
 \`\`\`
 
-## Release your Project
+## Release your project
 
 \`\`\`sh
 npm run release
 \`\`\`
 
-### Ignore automatic iteration version
+### Ignore automatic iteration of version
 \`\`\`sh
 npm run release -- -i
 \`\`\`
 
-### manual iteration version
+### Manual iteration of version
 \`\`\`sh
 npm run release -- -m 0.3.25
 \`\`\`

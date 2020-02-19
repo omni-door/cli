@@ -5,9 +5,9 @@ OMNI 会根据不同的项目类型决定整个初始化、构建、创建模板
 
 目前支持的项目类型有：
 
-- spa_react - React单页应用
+- spa-react - React单页应用
 
-- component_library_react - React组件库
+- component-library-react - React组件库
 
 - toolkit - SDK工具包
 
@@ -45,13 +45,13 @@ OMNI 会根据不同的项目类型决定整个初始化、构建、创建模板
 
 ## build 构建配置
 
-- auto_release - 构建完成后是否自动发布
+- autoRelease - 构建完成后是否自动发布
 
-- src_dir - 构建资源输入路径
+- srcDir - 构建资源输入路径
 
-- out_dir - 构建结果输出路径
+- outDir - 构建结果输出路径
 
-- esm_dir - 构建结果输出路径(符合es6 module规范)
+- esmDir - 构建结果输出路径(符合es6 module规范)
 
 - hash - 构建的资源是否加上hash
 

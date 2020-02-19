@@ -8,7 +8,7 @@ export default function (config: {
 }) {
   const { build, devServer, project_type, ts } = config;
   const initText = `It's Your ${ project_type === 'toolkit' ? 'Omni-Toolkit' : 'Omni'} Project`;
-  const needCoreJS = (project_type === 'spa_react' || project_type === 'component_library_react') && (build === 'webpack' || build === 'rollup');
+  const needCoreJS = (project_type === 'spa-react' || project_type === 'component-library-react') && (build === 'webpack' || build === 'rollup');
 
   return `${ts ? '///<reference types=\'webpack-env\' />\n' : ''}${needCoreJS ? `
 import 'core-js/stable';

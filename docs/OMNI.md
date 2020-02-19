@@ -5,9 +5,9 @@ OMNI will process of initialization, construction and template creation accordin
 
 The project types:
 
-- spa_react - React single-page-application
+- spa-react - React single-page-application
 
-- component_library_react - React Component Library
+- component-library-react - React Component Library
 
 - toolkit - SDK Library 
 
@@ -45,13 +45,13 @@ The dev-server based on express, realizing hot-update, api-proxy and other commo
 
 ## build
 
-- auto_release - auto release project after build success
+- autoRelease - auto release project after build success
 
-- src_dir - the build source directory
+- srcDir - the build source directory
 
-- out_dir - the directory for compiled project
+- outDir - the directory for compiled project
 
-- esm_dir - es6 module compiled directory
+- esmDir - es6 module compiled directory
 
 - hash - whether the hash tag add to building result
 

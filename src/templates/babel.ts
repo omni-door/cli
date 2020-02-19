@@ -5,7 +5,7 @@ export default function (config: {
   ts: boolean;
 }) {
   const { project_type, ts } = config;
-  const isReactSPAProject = project_type === 'spa_react';
+  const isReactSPAProject = project_type === 'spa-react';
 
   return `'use strict';
 

@@ -19,8 +19,8 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const commonConfig = require(path.resolve(__dirname, 'webpack.config.common.js'));
 const { build } = require(path.resolve(__dirname, '../${configFileName}'));
 const {
-  src_dir = path.resolve(__dirname, '../src/'),
-  out_dir = path.resolve(__dirname, '../lib/'),
+  srcDir = path.resolve(__dirname, '../src/'),
+  outDir = path.resolve(__dirname, '../lib/'),
   hash
 } = build || {};
 
@@ -113,8 +113,8 @@ module.exports = merge(commonConfig, {
       reportFilename: './bundle_analysis.html'
     }),
     new HtmlWebpackPlugin({
-      path: path.resolve(out_dir),
-      template: path.resolve(src_dir, 'index.html'),
+      path: path.resolve(outDir),
+      template: path.resolve(srcDir, 'index.html'),
       minify:{
         removeComments: true,
         collapseWhitespace: true

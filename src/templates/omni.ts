@@ -14,10 +14,10 @@ export default (config: GenerateOmniConfigParams) => {
   return `'use strict';
 
 const path = require('path');
-${project_type === 'spa_react' ? 'const merge = require(\'webpack-merge\');\n' : ''}
+${project_type === 'spa-react' ? 'const merge = require(\'webpack-merge\');\n' : ''}
 module.exports = {
   type: '${project_type}', // 项目类型，请勿任意变动 (project type, please don't modify)
-  ${project_type !== 'component_library_react' ? `\n  dev: {
+  ${project_type !== 'component-library-react' ? `\n  dev: {
     webpack: require(path.resolve(\'configs/webpack.config.dev.js\')), // 开发服务端webpack配置 (dev-server webpack configuration)
     proxy:  [
       // {
@@ -32,21 +32,21 @@ module.exports = {
     logLevel: 'error' // 开发服务日志输出等级，可选 'debug'、'info'、'warn'、'error'、'silent' (The log-level which dev-server will apply)
   },\n` : '' }
   build: {
-    auto_release: false, // 构建完成后是否自动发布 (auto release project after build success)
+    autoRelease: false, // 构建完成后是否自动发布 (auto release project after build success)
     // 输入路径 (the build source directory)
     // 务必使用绝对路径 (must be a absolute path)
-    src_dir: ${project_type === 'toolkit' ? 'path.resolve(\'src/toolkit\')' : 'path.resolve(\'src\')'},
+    srcDir: ${project_type === 'toolkit' ? 'path.resolve(\'src/toolkit\')' : 'path.resolve(\'src\')'},
     // 输出路径 (the directory for compiled project)
     // 务必使用绝对路径 (must be a absolute path)
-    out_dir: path.resolve('${project_type === 'spa_react' ? 'dist' : 'lib'}'),
-    ${project_type !== 'spa_react' ? `// es6 module输出路径 (es6 module compiled directory)
+    outDir: path.resolve('${project_type === 'spa-react' ? 'dist' : 'lib'}'),
+    ${project_type !== 'spa-react' ? `// es6 module输出路径 (es6 module compiled directory)
     // 务必使用绝对路径 (must be a absolute path)
-    esm_dir: path.resolve('es'),` : ''}
-    ${project_type === 'spa_react' ? `// 构建的资源是否加上hash (whether the hash tag add to building result)
+    esmDir: path.resolve('es'),` : ''}
+    ${project_type === 'spa-react' ? `// 构建的资源是否加上hash (whether the hash tag add to building result)
     hash: true,` : ''}
-    ${project_type !== 'component_library_react' ? `// 构建阶段的自定义配置回调 (The callback will be call in the build-process)
+    ${project_type !== 'component-library-react' ? `// 构建阶段的自定义配置回调 (The callback will be call in the build-process)
     // 返回自定义的配置 (You can return your custom build configuration)
-    ${project_type === 'spa_react' ? 'configuration: config => merge(config, require(path.resolve(\'configs/webpack.config.prod.js\')))' : 'configuration: config => config'},` : ''}
+    ${project_type === 'spa-react' ? 'configuration: config => merge(config, require(path.resolve(\'configs/webpack.config.prod.js\')))' : 'configuration: config => config'},` : ''}
     ${project_type === 'toolkit' ? `tool: '${build}', // 打包工具，支持 tsc、rollup、webpack (build tool, support tsc, rollup and webpack)` : ''}
     reserve: {
       style: ${style && build !== 'webpack' ? true : false}, // 构建结果是否保留样式文件 (whether or not reserve the stylesheet files)

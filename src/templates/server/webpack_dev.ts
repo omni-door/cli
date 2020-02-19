@@ -7,7 +7,7 @@ export default function (config: {
   style: STYLE;
 }) {
   const { project_type, name, ts, style } = config;
-  const isReactSPAProject = project_type === 'spa_react';
+  const isReactSPAProject = project_type === 'spa-react';
 
   return `'use strict';
 

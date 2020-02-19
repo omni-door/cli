@@ -1,7 +1,7 @@
 import { GInstallCli } from '../commands/initial';
 
 export const cli_basic: GInstallCli = {
-  project_type: 'spa_react',
+  project_type: 'spa-react',
   pkgtool: 'yarn',
   build: 'webpack',
   ts: false,
@@ -14,7 +14,7 @@ export const cli_basic: GInstallCli = {
 };
 
 export const cli_standard: GInstallCli = {
-  project_type: 'spa_react',
+  project_type: 'spa-react',
   pkgtool: 'yarn',
   build: 'webpack',
   ts: true,
@@ -27,7 +27,7 @@ export const cli_standard: GInstallCli = {
 };
 
 export const cli_entire: GInstallCli = {
-  project_type: 'spa_react',
+  project_type: 'spa-react',
   pkgtool: 'yarn',
   build: 'webpack',
   ts: true,
@@ -53,7 +53,7 @@ export const cli_lib_toolkit: GInstallCli = {
 };
 
 export const cli_lib_components: GInstallCli = {
-  project_type: 'component_library_react',
+  project_type: 'component-library-react',
   pkgtool: 'yarn',
   build: 'tsc',
   ts: true,
