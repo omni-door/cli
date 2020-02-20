@@ -41,11 +41,16 @@ import { arr2str, intersection } from '../../configs/dependencies_strategy';
 import { dependencies, devDependencies } from '../../configs/dependencies';
 import templates from '../../configs/initial_tpls';
 import installClis from '../../configs/initial_clis';
-import { logErr, logWarn } from '../../utils/logger';
-import { execShell } from '../../utils/exec';
-import { output_file } from '../../utils/output_file';
-import getLogPrefix, { getLogo, getBrand } from '../../utils/log_prefix';
-import node_version from '../../utils/node_version';
+import {
+  exec as execShell,
+  logErr,
+  logWarn,
+  output_file,
+  logPrefix as getLogPrefix,
+  getLogo,
+  getBrand,
+  node_version
+} from '@omni-door/tpl-utils';
 import { 
   TPLS_INITIAL,
   TPLS_INITIAL_FN,

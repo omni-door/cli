@@ -1,6 +1,5 @@
 import run from './run';
-import { logWarn } from '../../utils/logger';
-import node_version from '../../utils/node_version';
+import { logWarn, node_version } from '@omni-door/tpl-utils';
 import { OmniConfig } from '../../index.d';
 
 export default async function (config: OmniConfig | {}, options: { port?: number | string }) {

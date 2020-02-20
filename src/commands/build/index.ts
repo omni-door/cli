@@ -7,12 +7,21 @@ import ora from 'ora';
 import del from 'del';
 import rollupConfig from './rollup';
 import webpackConfig from './webpack';
-import { logErr, logInfo, logWarn, logSuc, logEmph, underline, italic } from '../../utils/logger';
-import { execShell } from '../../utils/exec';
+import {
+  exec as execShell,
+  logErr,
+  logInfo,
+  logWarn,
+  logSuc,
+  logEmph,
+  underline,
+  italic,
+  output_file,
+  logPrefix as getLogPrefix,
+  getLogo,
+  node_version
+} from '@omni-door/tpl-utils';
 import { getHandlers } from '../../utils/tackle_plugins';
-import { output_file } from '../../utils/output_file';
-import getLogPrefix, { getLogo } from '../../utils/log_prefix';
-import node_version from '../../utils/node_version';
 import dependencies_build from '../../configs/dependencies_build';
 import release from '../release';
 import { OmniConfig, BUILD } from '../../index.d';

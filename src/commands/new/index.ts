@@ -1,6 +1,13 @@
 import fs from 'fs';
 import path from 'path';
-import { logErr, logInfo, logWarn, logSuc } from '../../utils/logger';
+import {
+  logErr,
+  logInfo,
+  logWarn,
+  logSuc,
+  output_file,
+  node_version
+} from '@omni-door/tpl-utils';
 import {
   component_class as class_component,
   component_functional as functional_component,
@@ -14,9 +21,7 @@ import {
   tool_readme,
   tool_test
 } from '../../templates';
-import { output_file } from '../../utils/output_file';
 import { getHandlers } from '../../utils/tackle_plugins';
-import node_version from '../../utils/node_version';
 import { OmniConfig } from '../../index.d';
 
 const default_tpl_list = {

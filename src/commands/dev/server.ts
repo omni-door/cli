@@ -1,5 +1,5 @@
 import path from 'path';
-import { logInfo, logErr } from '../../utils/logger';
+import { logInfo, logErr } from '@omni-door/tpl-utils';
 import { Express, Request, Response, NextFunction } from 'express';
 import { PathParams } from 'express-serve-static-core';
 import { Configuration, Compiler } from 'webpack';

@@ -1,10 +1,18 @@
 import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
-import { logErr, logInfo, logWarn, logSuc, logEmph, italic, underline } from '../../utils/logger';
-import { execShell } from '../../utils/exec';
+import {
+  exec as execShell, 
+  logErr,
+  logInfo,
+  logWarn,
+  logSuc,
+  logEmph,
+  italic,
+  underline,
+  node_version
+} from '@omni-door/tpl-utils';
 import { getHandlers } from '../../utils/tackle_plugins';
-import node_version from '../../utils/node_version';
 import { OmniConfig } from '../../index.d';
 
 export default async function (config: OmniConfig | {}, iterTactic?: {

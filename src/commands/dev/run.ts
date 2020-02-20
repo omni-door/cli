@@ -1,6 +1,5 @@
 import inquirer from 'inquirer';
-import { logErr } from '../../utils/logger';
-import { getLogo } from '../../utils/log_prefix';
+import { logErr, getLogo } from '@omni-door/tpl-utils';
 import server, { ServerOptions } from './server';
 
 export default async function ({

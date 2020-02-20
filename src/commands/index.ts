@@ -1,7 +1,7 @@
 import program from 'commander';
 import fs from 'fs';
 import path from 'path';
-import node_version from '../utils/node_version';
+import { node_version } from '@omni-door/tpl-utils';
 import { OmniConfig } from '../index.d';
 
 (async function () {
