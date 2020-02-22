@@ -1,9 +1,6 @@
 # CHANGE LOG
 
 ## v1.2.x
-### v1.2.0
-1. naming conventions
-
 ### v1.2.1
 1. split templates
   - @omni-door/tpl-spa-react
@@ -11,6 +8,9 @@
   - @omni-door/tpl-toolkit
 
   - @omni-door/tpl-component-library-react
+
+### v1.2.0
+1. naming conventions
 
 ## v1.1.x
 ### v1.1.3
