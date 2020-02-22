@@ -92,7 +92,7 @@ The dev-server based on express, realizing hot-update, api-proxy and other commo
 
 - typescript - whether or not apply typescript
 
-- test - the unit test frame
+- test - whether or not generate unit-test file
 
 - stylesheet - stylesheet type
 
