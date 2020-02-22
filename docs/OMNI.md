@@ -111,6 +111,5 @@ type OmniPlugin = {
 type PluginStage = 'new' | 'build' | 'release';
 interface PluginHandler {
   (config: Omit<OmniConfig, 'plugins'>): Promise<any>;
-  (config: Omit<OmniConfig, 'plugins'>, tpls: TPLS_NEW): Promise<TPLS_NEW_RETURE>;
 }
 ```
