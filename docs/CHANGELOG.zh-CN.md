@@ -4,8 +4,6 @@
 ### v1.2.2
 1. [omni build] rollup 打包新增未正确发现入口文件的提示
 
-2. (initial) 恢复 tpls、dependencies、devDependencies 等选项的支持
-
 ### v1.2.1
 1. 拆分模板
   - @omni-door/tpl-spa-react

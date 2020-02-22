@@ -4,8 +4,6 @@
 ### v1.2.2
 1. [omni build] add not found the entry file hint when process rollup-build
 
-2. (initial) restore tpls, dependencies and devDependencies support
-
 ### v1.2.1
 1. split templates
   - @omni-door/tpl-spa-react

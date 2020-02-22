@@ -43,10 +43,6 @@ enum ProjectType {
   'toolkit (工具库)' = 'toolkit'
 }
 
-export type ResultOfDependencies = string[] | { add?: string[]; remove?: string[]; };
-export type TPLS_INITIAL = { [tpl: string]: (config: { [param: string]: string | boolean}) => string };
-export type TPLS_INITIAL_RETURE = Partial<TPLS_INITIAL>;
-
 export default async function (strategy: STRATEGY, {
   basic,
   standard,
@@ -69,9 +65,6 @@ export default async function (strategy: STRATEGY, {
     success?: boolean;
     msg?: string;
   };
-  tpls?: (tpls: TPLS_INITIAL) => TPLS_INITIAL_RETURE;
-  dependencies?: (dependecies_default: string[]) => ResultOfDependencies;
-  devDependencies?: (devDependecies_default: string[]) => ResultOfDependencies;
   configFileName?: string;
 }) {
   try {
@@ -86,7 +79,11 @@ export default async function (strategy: STRATEGY, {
 
   // reset illegal strategy
   strategy = (strategy === 'stable' || strategy === 'latest') ? strategy : 'stable';
-  const { before, after, configFileName = 'omni.config.js' } = option || {};
+  const {
+    before,
+    after,
+    configFileName = 'omni.config.js'
+  } = option || {};
   const { name: defaultName } = parse(process.cwd());
   const projectName =
     typeof basic === 'string'
@@ -385,7 +382,12 @@ export default async function (strategy: STRATEGY, {
       tplPackage = '@omni-door/tpl-component-library-react';
     }
 
-    const params: string[] = [ `projectName=${projectName}`, `strategy=${strategy}`, `initPath=${initPath}`, `isSilent=${isSilent}` ];
+    const params: string[] = [
+      `projectName=${projectName}`,
+      `strategy=${strategy}`,
+      `initPath=${initPath}`,
+      `isSilent=${isSilent}`
+    ];
     for (const k in cli) {
       params.push(`${k}=${cli[k as keyof typeof cli]}`);
     }
