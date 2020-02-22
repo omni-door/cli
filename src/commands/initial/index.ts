@@ -21,8 +21,7 @@ import {
   STYLE,
   DEVSERVER,
   PROJECT_TYPE,
-  STRATEGY,
-  logInfo
+  STRATEGY
 } from '@omni-door/tpl-utils';
 
 export type GInstallCli = {
@@ -43,6 +42,10 @@ enum ProjectType {
   'component-library-react (React组件库)' = 'component-library-react',
   'toolkit (工具库)' = 'toolkit'
 }
+
+export type ResultOfDependencies = string[] | { add?: string[]; remove?: string[]; };
+export type TPLS_INITIAL = { [tpl: string]: (config: { [param: string]: string | boolean}) => string };
+export type TPLS_INITIAL_RETURE = Partial<TPLS_INITIAL>;
 
 export default async function (strategy: STRATEGY, {
   basic,
@@ -66,6 +69,9 @@ export default async function (strategy: STRATEGY, {
     success?: boolean;
     msg?: string;
   };
+  tpls?: (tpls: TPLS_INITIAL) => TPLS_INITIAL_RETURE;
+  dependencies?: (dependecies_default: string[]) => ResultOfDependencies;
+  devDependencies?: (devDependecies_default: string[]) => ResultOfDependencies;
   configFileName?: string;
 }) {
   try {
