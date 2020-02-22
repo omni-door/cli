@@ -1,4 +1,4 @@
-import { GInstallCli } from '../commands/initial';
+import { GInstallCli } from './index';
 
 export const cli_basic: GInstallCli = {
   project_type: 'spa-react',
@@ -9,8 +9,7 @@ export const cli_basic: GInstallCli = {
   eslint: false,
   commitlint: false,
   style: 'css',
-  stylelint: false,
-  devServer: 'basic',
+  stylelint: false
 };
 
 export const cli_standard: GInstallCli = {
@@ -21,9 +20,8 @@ export const cli_standard: GInstallCli = {
   testFrame: '',
   eslint: true,
   commitlint: false,
-  style: 'scss',
-  stylelint: true,
-  devServer: 'basic'
+  style: 'less',
+  stylelint: true
 };
 
 export const cli_entire: GInstallCli = {
@@ -35,8 +33,7 @@ export const cli_entire: GInstallCli = {
   eslint: true,
   commitlint: true,
   style: 'all',
-  stylelint: true,
-  devServer: 'basic'
+  stylelint: true
 };
 
 export const cli_lib_toolkit: GInstallCli = {
@@ -48,8 +45,7 @@ export const cli_lib_toolkit: GInstallCli = {
   eslint: true,
   commitlint: true,
   style: '',
-  stylelint: false,
-  devServer: 'basic'
+  stylelint: false
 };
 
 export const cli_lib_components: GInstallCli = {

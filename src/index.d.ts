@@ -6,49 +6,15 @@ import { Request, Response, NextFunction } from 'express';
 export { Request, Response, NextFunction } from 'express';
 import { PathParams } from 'express-serve-static-core';
 export { PathParams } from 'express-serve-static-core';
-import { TPLS_ALL, TPLS_INITIAL, TPLS_INITIAL_FN, TPLS_INITIAL_RETURE, TPLS_NEW, TPLS_NEW_FN, TPLS_NEW_RETURE } from './templates';
-export { TPLS_ALL, TPLS_INITIAL, TPLS_INITIAL_FN, TPLS_INITIAL_RETURE, TPLS_NEW, TPLS_NEW_FN, TPLS_NEW_RETURE } from './templates';
-export type BUILD = 'webpack' | 'rollup' | 'tsc' | '';
-export type NPM = 'npm' | 'yarn' | 'cnpm' | 'taobao';
-export type PROJECT_TYPE = 'spa-react' | 'component-library-react' | 'toolkit';
-export type TESTFRAME = 'mocha' | 'jest' | '';
-export type PKJTOOL = 'yarn' | 'npm' | 'cnpm';
-export type STYLE = 'less' | 'scss' | 'css' | 'all' | '';
-export type DEVSERVER = 'basic' | 'docz' | 'storybook' | 'bisheng' | '';
-export type STRATEGY = 'stable' | 'latest';
+import { BUILD, PROJECT_TYPE, PKJTOOL, STYLE, DEVSERVER, STRATEGY, PLUGINSTAGE, TESTFRAME, LOGLEVEL } from '@omni-door/tpl-utils';
 export type ANYOBJECT = { [propName: string]: any };
-export type LogLevel = 'debug' | 'info' | 'warn' | 'error' | 'silent';
-
-export type GenerateOmniConfigParams = {
-  project_type: PROJECT_TYPE;
-  build: BUILD;
-  ts: boolean;
-  test: boolean;
-  testFrame?: TESTFRAME;
-  style: STYLE;
-  stylelint: boolean;
-  eslint: boolean;
-  commitlint: boolean;
-  git?: string;
-  npm: NPM | string;
-  mdx: boolean;
-};
-
-export type PluginStage = 'new' | 'build' | 'release';
 
 export interface PluginHandler {
   (config: Omit<OmniConfig, 'plugins'>): Promise<any>;
-  (config: Omit<OmniConfig, 'plugins'>, tpls: TPLS_NEW): Promise<TPLS_NEW_RETURE>;
 }
 
-export type PluginHandler_Build = (config: Omit<OmniConfig, 'plugins'>) => Promise<any>;
-
-export type PluginHandler_Release = (config: Omit<OmniConfig, 'plugins'>) => Promise<any>;
-
-export type PluginHandler_New = (config: Omit<OmniConfig, 'plugins'>, tpls: TPLS_NEW) => Promise<TPLS_NEW_RETURE>;
-
 export interface HandlerFactoryRet {
-  (config: Omit<OmniConfig, 'plugins'>, tpls?: TPLS_NEW): Promise<any> | Promise<TPLS_NEW_RETURE> | Promise<{}>;
+  (config: Omit<OmniConfig, 'plugins'>): Promise<any>;
 }
 
 export interface HandlerFactory {
@@ -57,7 +23,7 @@ export interface HandlerFactory {
 
 export type OmniPlugin = {
   name: string;
-  stage: PluginStage;
+  stage: PLUGINSTAGE;
   handler: PluginHandler;
 };
 
@@ -67,7 +33,7 @@ export type OmniConfig = {
   type: PROJECT_TYPE;
   dev?: {
     port?: number;
-    logLevel?: LogLevel;
+    logLevel?: LOGLEVEL;
     webpack?: Configuration;
     proxy?: {
       route: string;
@@ -99,7 +65,7 @@ export type OmniConfig = {
   };
   release: {
     git?: string;
-    npm?: NPM | string;
+    npm?: string;
     preflight?: {
       test?: boolean;
       eslint?: boolean;
@@ -110,7 +76,7 @@ export type OmniConfig = {
   };
   template: {
     root: string;
-    test?: TESTFRAME;
+    test?: boolean;
     typescript?: boolean;
     stylesheet?: STYLE;
     readme?: [boolean, 'mdx' | 'md'];

@@ -4,11 +4,11 @@ import { Express, Request, Response, NextFunction } from 'express';
 import { PathParams } from 'express-serve-static-core';
 import { Configuration, Compiler } from 'webpack';
 import { Config } from 'http-proxy-middleware';
-import { LogLevel } from '../../index.d';
+import { LOGLEVEL } from '@omni-door/tpl-utils';
 
 export type ServerOptions = {
   p: number;
-  logLevel?: LogLevel;
+  logLevel?: LOGLEVEL;
   webpackConfig: Configuration;
   proxyConfig?: { route: string; config: Config; }[];
   middlewareConfig?: { route: PathParams; callback: (req: Request, res: Response, next: NextFunction) => void; }[];

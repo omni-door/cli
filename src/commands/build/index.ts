@@ -3,11 +3,11 @@ import path from 'path';
 import fsExtra from 'fs-extra';
 import shelljs from 'shelljs';
 import inquirer from 'inquirer';
-import ora from 'ora';
 import del from 'del';
 import rollupConfig from './rollup';
 import webpackConfig from './webpack';
 import {
+  spinner,
   exec as execShell,
   logErr,
   logInfo,
@@ -21,10 +21,11 @@ import {
   getLogo,
   node_version
 } from '@omni-door/tpl-utils';
+import { BUILD } from '@omni-door/tpl-utils';
+import { OmniConfig } from '../../index.d';
 import { getHandlers } from '../../utils/tackle_plugins';
-import dependencies_build from '../../configs/dependencies_build';
+import dependencies_build from './dependencies_build';
 import release from '../release';
-import { OmniConfig, BUILD } from '../../index.d';
 
 export default async function (config: OmniConfig | {}, buildTactic?: {
   verify?: boolean;
@@ -245,8 +246,11 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
     }
 
     // loading
-    const spinner = type !== 'toolkit' && ora(`${getLogPrefix()} 项目构建中 (Building, please wait patiently)  ⏱  \n`);
-    spinner && spinner.start();
+    if (type !== 'toolkit') {
+      spinner.color('green');
+      spinner.prefix('moon');
+      spinner.state('start', '项目构建中 (Building, please wait patiently)');
+    }
 
     del.sync(outDir);
     esmDir && del.sync(esmDir);
@@ -265,14 +269,14 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
         }
       }
 
-      spinner && spinner.stop();
+      type !== 'toolkit' && spinner.state('stop');
       if (outDir && !fs.existsSync(outDir)) {
         handleBuildErr(`输出的 ${outDir} 文件不存在，构建失败！`)();
       } else {
         handleBuildSuc()();
       }
     }, function () {
-      spinner && spinner.stop();
+      type !== 'toolkit' && spinner.state('stop');
       handleBuildErr()();
     });
 

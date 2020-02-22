@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import {
+  exec,
+  arr2str,
   logErr,
   logInfo,
   logWarn,
@@ -8,35 +10,8 @@ import {
   output_file,
   node_version
 } from '@omni-door/tpl-utils';
-import {
-  component_class as class_component,
-  component_functional as functional_component,
-  component_index as indexTpl,
-  component_readme as readmeTpl,
-  component_stylesheet as styleTpl,
-  component_test as testTpl,
-  component_mdx as mdxTpl,
-  component_stories as storiesTpl,
-  tool_index,
-  tool_readme,
-  tool_test
-} from '../../templates';
-import { getHandlers } from '../../utils/tackle_plugins';
 import { OmniConfig } from '../../index.d';
-
-const default_tpl_list = {
-  component_class: class_component,
-  component_functional: functional_component,
-  component_index: indexTpl,
-  component_readme: readmeTpl,
-  component_stylesheet: styleTpl,
-  component_test: testTpl,
-  component_mdx: mdxTpl,
-  component_stories: storiesTpl,
-  tool_index,
-  tool_readme,
-  tool_test
-};
+import { getHandlers } from '../../utils/tackle_plugins';
 
 export default async function (config: OmniConfig | {}, componentName: string, options?: {
   function?: boolean;
@@ -76,7 +51,7 @@ export default async function (config: OmniConfig | {}, componentName: string, o
     type = 'spa-react',
     template: {
       root,
-      test = '',
+      test,
       typescript = false,
       stylesheet = '',
       readme = [false, 'md']
@@ -96,118 +71,57 @@ export default async function (config: OmniConfig | {}, componentName: string, o
     return process.exit(0);
   }
 
+  /**
+   * todo 设计 new 的插件模式
+   */
   // handle new plugins
-  let custom_tpl_list = {};
-  const plugin_handles = plugins && getHandlers(plugins, 'new');
-  if (plugin_handles) {
-    for (const name in plugin_handles) {
-      const handler = plugin_handles[name];
-      const res = await handler(config as OmniConfig, default_tpl_list);
-      custom_tpl_list = { ...custom_tpl_list, ...res };
-    }
-  }
+  // let custom_tpl_list = {};
+  // const plugin_handles = plugins && getHandlers(plugins, 'new');
+  // if (plugin_handles) {
+  //   for (const name in plugin_handles) {
+  //     const handler = plugin_handles[name];
+  //     const res = await handler(config as OmniConfig);
+  //     custom_tpl_list = { ...custom_tpl_list, ...res };
+  //   }
+  // }
 
-  const tpl = { ...default_tpl_list, ...custom_tpl_list };
-  const isReactProject = type === 'spa-react' || type === 'component-library-react'; 
-
-  const message = `开始创建 ${componentName} ${isReactProject ? `${cc ? '类' : '函数'}组件` : ''} (Start create ${componentName} ${isReactProject ? `${cc ? 'class' : 'functional'} component` : ''})`;
-  logInfo(message);
-
-  try {
-    // component tpl
-    const content_index = tpl.component_index({ ts: typescript, componentName });
-    const content_cc = tpl.component_class({ ts: typescript, componentName, style: stylesheet });
-    const content_fc = tpl.component_functional({ ts: typescript, componentName, style: stylesheet });
-    const content_readme = tpl.component_readme({ componentName });
-    const content_mdx = tpl.component_mdx({ componentName });
-    const content_stories = tpl.component_stories({ componentName });
-    const content_style = stylesheet && tpl.component_stylesheet({ componentName });
-    const content_test = tpl.component_test({ componentName });
-  
-    // tool tpl
-    const content_index_tool = tpl.tool_index({ toolName: componentName });
-    const content_readme_tool = tpl.tool_readme({ toolName: componentName });
-    const content_test_tool = tpl.tool_test({ toolName: componentName }); 
-
-    if (isReactProject) {
-      output_file({
-        file_path: path.resolve(path_cp, `index.${typescript ? 'ts' : 'js'}`),
-        file_content: content_index
-      });
-      // class component
-      cc && output_file({
-        file_path: path.resolve(path_cp, `${componentName}.${typescript ? 'tsx' : 'jsx'}`),
-        file_content: content_cc
-      });
-      // functional component
-      fc && output_file({
-        file_path: path.resolve(path_cp, `${componentName}.${typescript ? 'tsx' : 'jsx'}`),
-        file_content: content_fc
-      });
-      // readme
-      readme[0] && !mdx && output_file({
-        file_path: path.resolve(path_cp, 'README.md'),
-        file_content: content_readme
-      });
-      readme[0] && mdx && output_file({
-        file_path: path.resolve(path_cp, 'README.mdx'),
-        file_content: content_mdx
-      });
-
-      // storybook demo
-      const hasStorybook = fs.existsSync(path.resolve(process.cwd(), '.storybook'));
-      hasStorybook && output_file({
-        file_path: path.resolve(path_cp, `__stories__/index.stories.${
-          typescript
-            ? 'tsx'
-            : 'jsx'
-        }`),
-        file_content: content_stories
-      });
-
-      // stylesheet
-      output_file({
-        file_path: path.resolve(path_cp, `style/${componentName}.${stylesheet}`),
-        file_content: content_style
-      });
-      // test file
-      test && output_file({
-        file_path: path.resolve(path_cp, `__test__/index.test.${
-          typescript
-            ? test === 'jest'
-              ? 'tsx' : 'ts'
-            : test === 'jest'
-              ? 'jsx' : 'js'
-        }`),
-        file_content: content_test
-      });
-    } else {
-      // index file
-      output_file({
-        file_path: path.resolve(path_cp, `index.${typescript ? 'ts' : 'js'}`),
-        file_content: content_index_tool
-      });
-      // readme
-      readme[0] && output_file({
-        file_path: path.resolve(path_cp, 'README.md'),
-        file_content: content_readme_tool
-      });
-      // test file
-      test && output_file({
-        file_path: path.resolve(path_cp, `__test__/index.test.${
-          typescript
-            ? 'ts'
-            : 'js'
-        }`),
-        file_content: content_test_tool
-      });
-    }
-
+  const hasStorybook = fs.existsSync(path.resolve(process.cwd(), '.storybook'));
+  const params = [
+    `componentName=${componentName}`,
+    `newPath=${path_cp}`,
+    `stylesheet=${stylesheet}`,
+    `ts=${typescript}`,
+    `type=${fc ? 'fc' : 'cc'}`,
+    `test=${!!test}`,
+    `hasStorybook=${hasStorybook}`,
+    readme[0] ? `md=${mdx ? 'mdx' : 'md'}` : ''
+  ];
+  function handleSuc () {
     // success logger
     logSuc(`${componentName} 位于 ${path_cp_rel}，创建完成！(The ${componentName} local at ${path_cp_rel}, construction completed!)`);
-  } catch (err) {
+  }
+
+  function handleErr (err: any) {
     // error logger
     logErr(`完蛋！好像有错误！(Oops! Some error occured) \n👉  ${JSON.stringify(err)}`);
     process.exit(1);
   }
+
+  let newTplPkj = '';
+  switch (type) {
+    case 'spa-react':
+      newTplPkj = '@omni-door/tpl-spa-react';
+      break;
+    case 'component-library-react':
+      newTplPkj = '@omni-door/tpl-component-library-react';
+      break;
+    case 'toolkit':
+      newTplPkj = '@omni-door/tpl-toolkit';
+      break;
+  }
+
+  logInfo(`正在下载 ${newTplPkj} 模板，请稍后... (Downloading the templates, please wait patiently…)`);
+  exec([
+    `npx ${newTplPkj}@latest new ${arr2str(params)}`
+  ], handleSuc, handleErr);
 }

@@ -12,8 +12,8 @@ import {
   underline,
   node_version
 } from '@omni-door/tpl-utils';
-import { getHandlers } from '../../utils/tackle_plugins';
 import { OmniConfig } from '../../index.d';
+import { getHandlers } from '../../utils/tackle_plugins';
 
 export default async function (config: OmniConfig | {}, iterTactic?: {
   ignore?: boolean;

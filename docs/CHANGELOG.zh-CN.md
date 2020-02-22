@@ -1,12 +1,16 @@
 # CHANGE LOG
 
-## v2.0.x
-### v2.0.0
-1. 拆分模板
-
 ## v1.2.x
 ### v1.2.0
 1. 命名规范
+
+### v1.2.1
+1. 拆分模板
+  - @omni-door/tpl-spa-react
+
+  - @omni-door/tpl-toolkit
+
+  - @omni-door/tpl-component-library-react
 
 ## v1.1.x
 ### v1.1.3
