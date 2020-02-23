@@ -68,7 +68,7 @@ type OmniConfig = {
   };
   template: {
     root: string;
-    test?: TESTFRAME;
+    test?: boolean;
     typescript?: boolean;
     stylesheet?: STYLE;
     readme?: [boolean, 'mdx' | 'md'];
@@ -79,7 +79,6 @@ type OmniConfig = {
 export type BUILD = 'webpack' | 'rollup' | 'tsc' | '';
 type NPM = 'npm' | 'yarn' | 'cnpm' | 'taobao';
 type PROJECT_TYPE = 'spa-react' | 'component-library-react' | 'toolkit';
-type TESTFRAME = 'mocha' | 'jest' | 'karma' | '';
 type STYLE = 'less' | 'scss' | 'css' | 'all' | '';
 ```
 
@@ -124,6 +123,6 @@ type STYLE = 'less' | 'scss' | 'css' | 'all' | '';
   ```ts
   import { setLogo, setBrand } from '@omni-door/cli';
 
-  setLogo('🐸');
+  setLogo('😄');
   setBrand('自定义的前缀：');
   ```
