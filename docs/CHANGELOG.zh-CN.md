@@ -4,6 +4,10 @@
 ### v1.2.2
 1. [omni build] rollup 打包新增未正确发现入口文件的提示
 
+2. (newTpl、initial) 支持 tplPkj 选项
+
+3. [omni new] 恢复 plugin 的支持
+
 ### v1.2.1
 1. 拆分模板
   - @omni-door/tpl-spa-react

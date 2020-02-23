@@ -104,23 +104,6 @@ type STYLE = 'less' | 'scss' | 'css' | 'all' | '';
     before: dir_name => ({
       create_dir: false // avoid create new dir
     }),
-    tpls: tpls => {
-      // modify omni.config.js
-      return {
-        omni: configs => {
-          let fn = tpls.omni;
-          let fn2Str = fn.toString();
-          fn2Str = fn2Str.replace('const path = require(\'path\');', 'const path = require(\'path\');\\nconst fs = require(\'fs\')');
-          eval(`fn = ${fn2Str}`);
-
-          return fn(configs);
-        },
-        // return an empty string will not generate commitlint.config.js file
-        commitlint: config => ''
-      };
-    },
-    dependencies: () => ['peeler-js'], // install project dependencies
-    devDependencies: () => ['webpack-cli'], // install project devDependencies
     // after finish the project initial
     after: () => {
       return {
@@ -128,6 +111,8 @@ type STYLE = 'less' | 'scss' | 'css' | 'all' | '';
         msg: 'build success!'
       };
     },
+    // custom the installing template
+    tplPkj: '@omni-door/tpl-toolkit',
     // custom the name of omni.config.js file
     configFileName: 'custom.config.js'
   });

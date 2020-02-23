@@ -1,4 +1,25 @@
-import { GInstallCli } from './index';
+
+import {
+  BUILD,
+  TESTFRAME,
+  PKJTOOL,
+  STYLE,
+  DEVSERVER,
+  PROJECT_TYPE
+} from '@omni-door/tpl-utils';
+
+export type GInstallCli = {
+  project_type: PROJECT_TYPE;
+  pkgtool: PKJTOOL;
+  build: BUILD;
+  ts: boolean;
+  testFrame: TESTFRAME;
+  eslint: boolean;
+  commitlint: boolean;
+  style: STYLE;
+  stylelint: boolean;
+  devServer?: DEVSERVER;
+};
 
 export const cli_basic: GInstallCli = {
   project_type: 'spa-react',

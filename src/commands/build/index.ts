@@ -8,7 +8,7 @@ import rollupConfig from './rollup';
 import webpackConfig from './webpack';
 import {
   spinner,
-  exec as execShell,
+  exec,
   logErr,
   logInfo,
   logWarn,
@@ -17,7 +17,6 @@ import {
   underline,
   italic,
   output_file,
-  logPrefix as getLogPrefix,
   getLogo,
   node_version
 } from '@omni-door/tpl-utils';
@@ -114,7 +113,7 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
           }
         }
 
-        return execShell([
+        return exec([
           `${iTool} ${dependencies}`
         ],
         () => {
@@ -184,15 +183,15 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
 
   try {
     if (verify && test) {
-      await execShell(['npm test'], () => logEmph(italic('单元测试通过！(unit test passed!)')), handleBuildErr('单元测试失败！(unit test failed!)'));
+      await exec(['npm test'], () => logEmph(italic('单元测试通过！(unit test passed!)')), handleBuildErr('单元测试失败！(unit test failed!)'));
     }
 
     if (verify && eslint) {
-      await execShell(['npm run lint:es'], () => logEmph(italic('eslint校验通过！(eslint passed!)')), handleBuildErr(`eslint校验失败！(eslint checking failed!) \n 尝试执行 (try to exec): ${underline('npm run lint:es_fix')}`));
+      await exec(['npm run lint:es'], () => logEmph(italic('eslint校验通过！(eslint passed!)')), handleBuildErr(`eslint校验失败！(eslint checking failed!) \n 尝试执行 (try to exec): ${underline('npm run lint:es_fix')}`));
     }
 
     if (verify && stylelint) {
-      await execShell(['npm run lint:style'], () => logEmph(italic('stylelint校验通过！(stylelint passed!)')), handleBuildErr(`stylelint校验失败！(stylelint checking failed!) \n 尝试执行 (try to exec): ${underline('npm run lint:style_fix')}`));
+      await exec(['npm run lint:style'], () => logEmph(italic('stylelint校验通过！(stylelint passed!)')), handleBuildErr(`stylelint校验失败！(stylelint checking failed!) \n 尝试执行 (try to exec): ${underline('npm run lint:style_fix')}`));
     }
 
     const buildCliArr = [];
@@ -210,7 +209,7 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
       const content_rollup = !buildConfig && type === 'toolkit' && rollupConfig({ ts: typescript, multiOutput: true, srcDir, outDir, esmDir, configFileName });
       const content_webpack = !buildConfig && type === 'spa-react' && webpackConfig({ ts: typescript, multiOutput: false, srcDir, outDir, configFileName, hash });
       const content_config = buildConfig || content_rollup || content_webpack;
-  
+
       // put temporary file for build process
       if (content_config) {
         const buildConfigPath = path.resolve(__dirname, '../../../', '.omni_cache/build.config.js');
@@ -255,7 +254,7 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
     del.sync(outDir);
     esmDir && del.sync(esmDir);
 
-    await execShell(buildCliArr, async function () {
+    await exec(buildCliArr, async function () {
       const { style, assets = [] } = reserve;
       style && copyStylesheet(srcDir);
       copyReserves(assets);

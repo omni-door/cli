@@ -7,7 +7,6 @@ import {
   logInfo,
   logWarn,
   logSuc,
-  output_file,
   node_version
 } from '@omni-door/tpl-utils';
 import { OmniConfig } from '../../index.d';
@@ -16,6 +15,7 @@ import { getHandlers } from '../../utils/tackle_plugins';
 export default async function (config: OmniConfig | {}, componentName: string, options?: {
   function?: boolean;
   class?: boolean;
+  tplPkj?: string;
 }) {
   try {
     // node version pre-check
@@ -42,7 +42,7 @@ export default async function (config: OmniConfig | {}, componentName: string, o
   // capitalize first character
   componentName = componentName.charAt(0).toUpperCase() + componentName.slice(1);
 
-  let { function: fc, class: cc } = options!;
+  let { function: fc, class: cc, tplPkj } = options!;
 
   // default create class component
   if (!fc && !cc) cc = true;
@@ -71,20 +71,6 @@ export default async function (config: OmniConfig | {}, componentName: string, o
     return process.exit(0);
   }
 
-  /**
-   * todo 设计 new 的插件模式
-   */
-  // handle new plugins
-  // let custom_tpl_list = {};
-  // const plugin_handles = plugins && getHandlers(plugins, 'new');
-  // if (plugin_handles) {
-  //   for (const name in plugin_handles) {
-  //     const handler = plugin_handles[name];
-  //     const res = await handler(config as OmniConfig);
-  //     custom_tpl_list = { ...custom_tpl_list, ...res };
-  //   }
-  // }
-
   const hasStorybook = fs.existsSync(path.resolve(process.cwd(), '.storybook'));
   const params = [
     `componentName=${componentName}`,
@@ -96,9 +82,19 @@ export default async function (config: OmniConfig | {}, componentName: string, o
     `hasStorybook=${hasStorybook}`,
     readme[0] ? `md=${mdx ? 'mdx' : 'md'}` : ''
   ];
-  function handleSuc () {
+
+  async function handleSuc () {
+    // handle new plugins
+    const plugin_handles = plugins && getHandlers(plugins, 'new');
+    if (plugin_handles) {
+      for (const name in plugin_handles) {
+        const handler = plugin_handles[name];
+        await handler(config as OmniConfig);
+      }
+    }
     // success logger
     logSuc(`${componentName} 位于 ${path_cp_rel}，创建完成！(The ${componentName} local at ${path_cp_rel}, construction completed!)`);
+    process.exit(0);
   }
 
   function handleErr (err: any) {
@@ -107,17 +103,19 @@ export default async function (config: OmniConfig | {}, componentName: string, o
     process.exit(1);
   }
 
-  let newTplPkj = '';
-  switch (type) {
-    case 'spa-react':
-      newTplPkj = '@omni-door/tpl-spa-react';
-      break;
-    case 'component-library-react':
-      newTplPkj = '@omni-door/tpl-component-library-react';
-      break;
-    case 'toolkit':
-      newTplPkj = '@omni-door/tpl-toolkit';
-      break;
+  let newTplPkj = tplPkj;
+  if (!newTplPkj) {
+    switch (type) {
+      case 'spa-react':
+        newTplPkj = '@omni-door/tpl-spa-react';
+        break;
+      case 'component-library-react':
+        newTplPkj = '@omni-door/tpl-component-library-react';
+        break;
+      case 'toolkit':
+        newTplPkj = '@omni-door/tpl-toolkit';
+        break;
+    }
   }
 
   logInfo(`正在下载 ${newTplPkj} 模板，请稍后... (Downloading the templates, please wait patiently…)`);

@@ -11,9 +11,9 @@
 
 [English](../README.md) | 简体中文
 
-[omni.config.js 详解](./OMNI.zh-CN.md)
+[<omni.config.js> 详解](./OMNI.zh-CN.md)
 
-[更改日志](./CHANGELOG.zh-CN.md)
+[变更日志](./CHANGELOG.zh-CN.md)
 
 ## 安装
 推荐使用 node 最新的 LTS 版本，或至少保证 node >= 10.13.0

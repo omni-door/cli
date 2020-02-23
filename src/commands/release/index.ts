@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
 import {
-  exec as execShell, 
+  exec, 
   logErr,
   logInfo,
   logWarn,
@@ -49,7 +49,7 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
   if (branch) {
     // branch check
     let branchInfo = '';
-    await execShell(
+    await exec(
       [`${path.resolve(__dirname, 'branch.sh')} ${branch}`],
       function (results) { branchInfo = results[0]; },
       function () { process.exit(1); }
@@ -86,18 +86,18 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
     const versionShellSuffix = ignore ? 'i' : manual ? manual : '';
 
     if (verify && test) {
-      await execShell(['npm test'], () => logEmph(italic('单元测试通过！(unit test passed!)')), handleReleaseErr('单元测试失败！(unit test failed!)'));
+      await exec(['npm test'], () => logEmph(italic('单元测试通过！(unit test passed!)')), handleReleaseErr('单元测试失败！(unit test failed!)'));
     }
 
     if (verify && eslint) {
-      await execShell(['npm run lint:es'], () => logEmph(italic('eslint校验通过！(eslint passed!)')), handleReleaseErr('eslint校验失败！(eslint checking failed!)'));
+      await exec(['npm run lint:es'], () => logEmph(italic('eslint校验通过！(eslint passed!)')), handleReleaseErr('eslint校验失败！(eslint checking failed!)'));
     }
 
     if (verify && stylelint) {
-      await execShell(['npm run lint:style'], () => logEmph(italic('stylelint校验通过！(stylelint passed!)')), handleReleaseErr('stylelint校验失败！(stylelint checking failed!)'));
+      await exec(['npm run lint:style'], () => logEmph(italic('stylelint校验通过！(stylelint passed!)')), handleReleaseErr('stylelint校验失败！(stylelint checking failed!)'));
     }
 
-    await execShell(
+    await exec(
       [`${path.resolve(__dirname, 'version.sh')} ${versionShellSuffix}`],
       function () {},
       function () {}
@@ -105,7 +105,7 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
 
     if (git) {
       let gitUrl = '';
-      await execShell([
+      await exec([
         'git remote get-url origin'
       ], function (results) {
         gitUrl = results[0] && results[0].trim();
@@ -114,7 +114,7 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
       let canPush = true;
       if (git.trim() !== gitUrl) {
         logInfo(`替换当前 ${git.trim()} (remote origin) 为 ${git} (replace ${git.trim()} to ${git})`);
-        await execShell(
+        await exec(
           ['git remote remove origin', `git remote add origin ${git}`],
           () => logEmph(`git remote origin 为 ${git} (git remote origin is: ${git})`),
           () => {
@@ -141,7 +141,7 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
         ? `git push origin ${branch || 'master'}`
         : `git push origin ${branch || 'master'} --no-verify`;
 
-      canPush && await execShell(
+      canPush && await exec(
         [
           'git add -A',
           `${commit}`,
@@ -154,7 +154,7 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
 
     if (npm) {
       let npmUrl = '';
-      await execShell(
+      await exec(
         ['npm get registry'],
         function (results) {
           npmUrl = results[0] && results[0].trim();
@@ -163,13 +163,13 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
 
       if (npm.trim() !== npmUrl && npm.trim() + '/' !== npmUrl) {
         logInfo(`自动设置 npm registry 地址为 ${npm} (auto set npm registry to: ${npm})`);
-        await execShell(
+        await exec(
           [`npm set registry ${npm}`],
           () => logEmph(`npm registry 设置成功，请执行 ${chalk.yellow(underline('npm publish'))} 进行发布！(npm set registry success, please run ${chalk.yellow(underline('npm publish'))} by yourself!)`),
           () => logWarn('npm registry 设置失败！(set npm registry failed!)')
         );
       } else {
-        await execShell(
+        await exec(
           ['npm publish'],
           () => logEmph('npm publish success!'),
           () => logWarn('npm publish failed!')

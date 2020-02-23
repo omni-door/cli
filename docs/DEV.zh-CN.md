@@ -104,23 +104,6 @@ type STYLE = 'less' | 'scss' | 'css' | 'all' | '';
     before: dir_name => ({
       create_dir: false // 避免新创建文件夹
     }),
-    tpls: tpls => {
-      // 改写 omni.config.js
-      return {
-        omni: configs => {
-          let fn = tpls.omni;
-          let fn2Str = fn.toString();
-          fn2Str = fn2Str.replace('const path = require(\'path\');', 'const path = require(\'path\');\\nconst fs = require(\'fs\')');
-          eval(`fn = ${fn2Str}`);
-
-          return fn(configs);
-        },
-        // 返回空字符串，则不会生成相应的 commitlint.config.js 文件
-        commitlint: config => ''
-      };
-    },
-    dependencies: () => ['peeler-js'], // 安装项目依赖
-    devDependencies: () => ['webpack-cli'], // 安装项目开发依赖
     // 项目初始化完成后
     after: () => {
       return {
@@ -128,6 +111,8 @@ type STYLE = 'less' | 'scss' | 'css' | 'all' | '';
         msg: '完成项目初始化构建'
       };
     },
+    // 自定义安装的模板
+    tplPkj: '@omni-door/tpl-toolkit',
     // 自定义 omni.config.js 文件名称
     configFileName: 'custom.config.js'
   });

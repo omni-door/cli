@@ -35,7 +35,7 @@ export default async function (config: OmniConfig | {}, options: { port?: number
   } = dev;
 
   if (type === 'component-library-react') {
-    logWarn('请直接执行 [npm start] 启动开发服务！(Please exec [npm start] to run dev-server!)');
+    logWarn('请直接执行 npm start 启动开发服务！(Please exec npm start to run dev-server!)');
     return process.exit(0);
   } else {
     if (!webpack) {

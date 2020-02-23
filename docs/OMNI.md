@@ -87,7 +87,7 @@ The dev-server based on express, realizing hot-update, api-proxy and other commo
 
   - branch - only can release in this branch, set empty string to ignore this check
 
-## template 新建模板配置
+## template
 - root - the root directory for generate template
 
 - typescript - whether or not apply typescript

@@ -4,6 +4,10 @@
 ### v1.2.2
 1. [omni build] add not found the entry file hint when process rollup-build
 
+2. (newTpl initial) support tplPkj option
+
+3. [omni new] restore plugin
+
 ### v1.2.1
 1. split templates
   - @omni-door/tpl-spa-react
