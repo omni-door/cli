@@ -1,6 +1,9 @@
-# CHANGE LOG
+# 变更日志
 
 ## v1.2.x
+### v1.2.3
+1. [omni release] 汉化翻译
+
 ### v1.2.2
 1. [omni build] rollup 打包新增未正确发现入口文件的提示
 

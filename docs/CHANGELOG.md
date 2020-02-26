@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ## v1.2.x
+### v1.2.3
+1. [omni release] Chinese Translation
+
 ### v1.2.2
 1. [omni build] add not found the entry file hint when process rollup-build
 

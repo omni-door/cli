@@ -147,8 +147,8 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
           `${commit}`,
           `${push}`
         ],
-        () => logEmph('git push success!'),
-        () => logWarn('git push failed!')
+        () => logEmph('git仓库push成功！(git-repo push success!)'),
+        () => logWarn('git仓库push失败！(git-repo push failed!)')
       );
     }
 
@@ -171,8 +171,8 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
       } else {
         await exec(
           ['npm publish'],
-          () => logEmph('npm publish success!'),
-          () => logWarn('npm publish failed!')
+          () => logEmph('npm包发布成功！(npm-package publish success!)'),
+          () => logWarn('npm包发布失败！(npm-package publish failed!)')
         );
       }
     }
