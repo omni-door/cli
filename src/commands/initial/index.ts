@@ -12,12 +12,14 @@ import {
   arr2str,
   logErr,
   logWarn,
-  getLogo,
   getBrand,
   node_version,
   PKJTOOL,
   STRATEGY
 } from '@omni-door/tpl-utils';
+import logo from '../../utils/logo';
+
+
 
 enum ProjectType {
   'spa-react (React单页应用)' = 'spa-react',
@@ -39,7 +41,7 @@ async function checkPkgTool (pkgtool: PKJTOOL) {
         inquirer.prompt([{
           name: 'install',
           type: 'confirm',
-          message: `${getLogo()} 自动安装 ${pkgtool} 到全局环境? (Automatic install the ${pkgtool} in the global environment?)`,
+          message: `${logo} 自动安装 ${pkgtool} 到全局环境? (Automatic install the ${pkgtool} in the global environment?)`,
           default: true
         }]).then(answers => {
           const { install } = answers;
@@ -171,7 +173,7 @@ export default async function (strategy: STRATEGY, {
           inquirer.prompt([{
             name: 'overwrite',
             type: 'confirm',
-            message: `${getLogo()} 确定要覆盖已经存在的 [${configFileName}] 文件? (Are you sure to overwrite [${configFileName}]?)`,
+            message: `${logo} 确定要覆盖已经存在的 [${configFileName}] 文件? (Are you sure to overwrite [${configFileName}]?)`,
             default: false
           }]).then(answers => {
             const { overwrite } = answers;
@@ -199,13 +201,13 @@ export default async function (strategy: STRATEGY, {
         {
           name: 'overwrite',
           type: 'confirm',
-          message: `${getLogo()} 确定要覆盖已经存在的 [${configFileName}] 文件? (Are you sure to overwrite [${configFileName}]?)`,
+          message: `${logo} 确定要覆盖已经存在的 [${configFileName}] 文件? (Are you sure to overwrite [${configFileName}]?)`,
           default: false
         },{
           name: 'project_type',
           type: 'list',
           choices: [ 'spa-react (React单页应用)', 'component-library-react (React组件库)', 'toolkit (工具库)' ],
-          message: `${getLogo()}[${currStep}/${totalStep}] 请选择项目类型 (please choose the type of project)：`,
+          message: `${logo}[${currStep}/${totalStep}] 请选择项目类型 (please choose the type of project)：`,
           when: function (answer: any) {
             if (answer.overwrite === false) {
               return process.exit(0);
@@ -223,7 +225,7 @@ export default async function (strategy: STRATEGY, {
             } else {
               totalStep = 4;
             }
-            return `${getLogo()}[${++currStep}/${totalStep}] 请输入项目名称 (please enter your project name)：`;
+            return `${logo}[${++currStep}/${totalStep}] 请输入项目名称 (please enter your project name)：`;
           },
           default: defaultName
         },{
@@ -232,7 +234,7 @@ export default async function (strategy: STRATEGY, {
           choices: [ 'docz', 'storybook', 'bisheng' ],
           default: 'docz',
           message: function (answer: any) {
-            return `${getLogo()}[${++currStep}/${totalStep}] 请选择组件库Demo框架 (please chioce the component-library demonstration frame)：`;
+            return `${logo}[${++currStep}/${totalStep}] 请选择组件库Demo框架 (please chioce the component-library demonstration frame)：`;
           },
           when: function (answer: any) {
             if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'component-library-react') {
@@ -244,7 +246,7 @@ export default async function (strategy: STRATEGY, {
           name: 'ts',
           type: 'confirm',
           message: function (answer: any) {
-            return `${getLogo()}[${++currStep}/${totalStep}] 是否使用typescript? (whether or not apply typescript?)`;
+            return `${logo}[${++currStep}/${totalStep}] 是否使用typescript? (whether or not apply typescript?)`;
           },
           default: true,
           when: function (answer: any) {
@@ -257,7 +259,7 @@ export default async function (strategy: STRATEGY, {
           name: 'test',
           type: 'confirm',
           message: function (answer: any) {
-            return `${getLogo()}[${++currStep}/${totalStep}] 是否开启单元测试? (whether or not apply unit-test?)`;
+            return `${logo}[${++currStep}/${totalStep}] 是否开启单元测试? (whether or not apply unit-test?)`;
           },
           default: (answer: any) => ProjectType[answer.project_type as keyof typeof ProjectType] !== 'spa-react',
           when: function (answer: any) {
@@ -271,7 +273,7 @@ export default async function (strategy: STRATEGY, {
           type: 'checkbox',
           choices: [ 'css', 'less', 'scss' ],
           message: function (answer: any) {
-            return `${getLogo()}[${++currStep}/${totalStep}] 选择样式文件 (select the stylesheets)`;
+            return `${logo}[${++currStep}/${totalStep}] 选择样式文件 (select the stylesheets)`;
           },
           default: [ 'css' ],
           when: function (answer: any) {
@@ -289,7 +291,7 @@ export default async function (strategy: STRATEGY, {
             return lintArr;
           },
           message: function (answer: any) {
-            return `${getLogo()}[${++currStep}/${totalStep}] 选择lint工具 (select the lint tools)：`;
+            return `${logo}[${++currStep}/${totalStep}] 选择lint工具 (select the lint tools)：`;
           },
           default: [ 'eslint' ]
         },{
@@ -297,7 +299,7 @@ export default async function (strategy: STRATEGY, {
           type: 'list',
           choices: [ 'yarn', 'npm', 'cnpm' ],
           message: function (answer: any) {
-            return `${getLogo()}[${++currStep}/${totalStep}] 请选择包安装工具，推荐使用yarn (please choice the package install tool, recommended use yarn)：`;
+            return `${logo}[${++currStep}/${totalStep}] 请选择包安装工具，推荐使用yarn (please choice the package install tool, recommended use yarn)：`;
           },
           default: 'yarn'
         }

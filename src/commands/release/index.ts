@@ -8,6 +8,7 @@ import {
   logWarn,
   logSuc,
   logEmph,
+  logTime,
   italic,
   underline,
   node_version
@@ -32,6 +33,7 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
     return;
   }
 
+  logTime('项目发布');
   const { release: {
     git,
     npm,
@@ -186,6 +188,7 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
       }
     }
 
+    logTime('项目发布', true);
     handleReleaseSuc()();
   } catch (err) {
     logErr(`糟糕！发布过程发生了一点意外 (Oops! release process occured some accidents) \n👉  ${JSON.stringify(err)}`);

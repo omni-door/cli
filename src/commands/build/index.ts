@@ -14,10 +14,10 @@ import {
   logWarn,
   logSuc,
   logEmph,
+  logTime,
   underline,
   italic,
   output_file,
-  getLogo,
   node_version
 } from '@omni-door/tpl-utils';
 import { BUILD } from '@omni-door/tpl-utils';
@@ -25,6 +25,7 @@ import { OmniConfig } from '../../index.d';
 import { getHandlers } from '../../utils/tackle_plugins';
 import dependencies_build from './dependencies_build';
 import release from '../release';
+import logo from '../../utils/logo';
 
 export default async function (config: OmniConfig | {}, buildTactic?: {
   verify?: boolean;
@@ -44,6 +45,7 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
   }
 
   const message = '开始构建！(Build process start!)';
+  logTime('项目构建');
   logInfo(message);
 
   const { type,
@@ -94,7 +96,7 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
       {
         name: 'install',
         type: 'confirm',
-        message: `${getLogo()} 自动安装所需要的依赖? (Automatic install dependencies?)`,
+        message: `${logo} 自动安装所需要的依赖? (Automatic install dependencies?)`,
         default: true
       }
     ]).then(answers => {
@@ -272,6 +274,7 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
       if (outDir && !fs.existsSync(outDir)) {
         handleBuildErr(`输出的 ${outDir} 文件不存在，构建失败！`)();
       } else {
+        logTime('项目构建', true);
         handleBuildSuc()();
       }
     }, function () {
@@ -280,9 +283,11 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
     });
 
     if (autoRelease) {
+      logTime('项目自动发布');
       logInfo('开始自动发布！(beginning auto release!)');
       try {
         await release(config, { verify: false });
+        logTime('项目自动发布', true);
         handleBuildSuc('自动发布成功！(auto release success!)')();
       } catch (err) {
         handleBuildErr('自动发布失败！(auto release failed!)')();

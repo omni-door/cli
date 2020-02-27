@@ -4,6 +4,10 @@
 ### v1.2.3
 1. [omni release] Chinese Translation
 
+2. upgrade @omni-door/tpl-utils dependency
+
+3. [omni initial/build/release] add time log
+
 ### v1.2.2
 1. [omni build] add not found the entry file hint when process rollup-build
 

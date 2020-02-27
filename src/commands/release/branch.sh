@@ -13,7 +13,12 @@ checkBranch () {
 
   if [ "$currentBranch" != "$branch" ]
   then
-    echo -e "\033[31m \n ${name}: 请切换到\033[43;30m ${branch} \033[0m \033[31m分支进行发布 (Please switch to \033[43;30m ${branch} \033[0m \033[31mbranch first)\n \033[0m"
+    if [ "$currentBranch" == "" ]
+    then
+      echo -e "\033[31m \n ${name}: 请先初始化 git 仓库并手动完成第一次推送 (Please initialize git repository and finishing the first push operation by yourself)\n \033[0m"
+    else
+      echo -e "\033[31m \n ${name}: 请切换到 \033[43;30m ${branch} \033[0m \033[31m分支进行发布 (Please switch to \033[43;30m ${branch} \033[0m \033[31mbranch first)\n \033[0m"
+    fi
     exit 1
   fi
 

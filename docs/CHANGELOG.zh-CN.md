@@ -4,6 +4,10 @@
 ### v1.2.3
 1. [omni release] 汉化翻译
 
+2. 升级 @omni-door/tpl-utils 依赖
+
+3. [omni initial/build/release] 新增耗时日志输出
+
 ### v1.2.2
 1. [omni build] rollup 打包新增未正确发现入口文件的提示
 
