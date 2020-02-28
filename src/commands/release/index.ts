@@ -101,7 +101,7 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
     }
 
     await exec(
-      [`${path.resolve(__dirname, 'version.sh')} ${versionShellSuffix} "${logPrefix()}"`],
+      [`${path.resolve(__dirname, 'version.sh')} "${logPrefix()}" ${versionShellSuffix}`],
       function () {},
       function () {}
     );

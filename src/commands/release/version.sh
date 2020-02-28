@@ -1,11 +1,11 @@
 #! /bin/bash
 
-iterate=$1
-name=$2
+name=$1
 if [ "$name" == "" ]
 then
   name="🐸  [OMNI-DOOR]"
 fi
+iterate=$2
 dot="."
 
 updateVersion () {
