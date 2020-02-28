@@ -1,6 +1,11 @@
 # 变更日志
 
 ## v1.2.x
+### v1.2.4
+1. [omni release] 修复 分支检测和npm发布log前缀不正确的问题
+
+2. 升级 @omni-door/tpl-utils 依赖
+
 ### v1.2.3
 1. [omni release] 汉化翻译
 

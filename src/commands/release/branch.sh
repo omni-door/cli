@@ -1,7 +1,12 @@
 #! /bin/bash
 
-name="🐸  [OMNI-DOOR]"
 branch=$1
+name=$2
+
+if [ "$name" == "" ]
+then
+  name="🐸  [OMNI-DOOR]"
+fi
 
 checkBranch () {
   if [ -z "$branch" ]; then

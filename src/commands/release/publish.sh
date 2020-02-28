@@ -1,5 +1,10 @@
 #! /bin/bash
-name="🐸  [OMNI-DOOR]"
+name=$1
+
+if [ "$name" == "" ]
+then
+  name="🐸  [OMNI-DOOR]"
+fi
 
 npm publish
 

@@ -1,6 +1,11 @@
 # CHANGE LOG
 
 ## v1.2.x
+### v1.2.4
+1. [omni release] branch-check and npm-publish log prefix fixed
+
+2. upgrade @omni-door/tpl-utils dependency
+
 ### v1.2.3
 1. [omni release] Chinese Translation
 

@@ -1,7 +1,11 @@
 #! /bin/bash
 
 iterate=$1
-name="🐸  [OMNI-DOOR]"
+name=$2
+if [ "$name" == "" ]
+then
+  name="🐸  [OMNI-DOOR]"
+fi
 dot="."
 
 updateVersion () {

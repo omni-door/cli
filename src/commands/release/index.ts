@@ -11,7 +11,8 @@ import {
   logTime,
   italic,
   underline,
-  node_version
+  node_version,
+  logPrefix
 } from '@omni-door/tpl-utils';
 import { OmniConfig } from '../../index.d';
 import { getHandlers } from '../../utils/tackle_plugins';
@@ -52,7 +53,7 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
     // branch check
     let branchInfo = '';
     await exec(
-      [`${path.resolve(__dirname, 'branch.sh')} ${branch}`],
+      [`${path.resolve(__dirname, 'branch.sh')} ${branch} "${logPrefix()}"`],
       function (results) { branchInfo = results[0]; },
       function () { process.exit(1); }
     );
@@ -100,7 +101,7 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
     }
 
     await exec(
-      [`${path.resolve(__dirname, 'version.sh')} ${versionShellSuffix}`],
+      [`${path.resolve(__dirname, 'version.sh')} ${versionShellSuffix} "${logPrefix()}"`],
       function () {},
       function () {}
     );
