@@ -112,6 +112,8 @@ type STYLE = 'less' | 'scss' | 'css' | 'all' | '';
     },
     // custom the installing template
     tplPkj: '@omni-door/tpl-toolkit',
+    // custom the template parameters
+    tplPkjParams: ['bid=55232', 'test=false'],
     // custom the name of omni.config.js file
     configFileName: 'custom.config.js'
   });

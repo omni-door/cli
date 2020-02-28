@@ -112,6 +112,8 @@ type STYLE = 'less' | 'scss' | 'css' | 'all' | '';
     },
     // 自定义安装的模板
     tplPkj: '@omni-door/tpl-toolkit',
+    // 自定义模板需要传入的参数
+    tplPkjParams: ['bid=55232', 'test=false'],
     // 自定义 omni.config.js 文件名称
     configFileName: 'custom.config.js'
   });

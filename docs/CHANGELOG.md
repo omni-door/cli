@@ -1,6 +1,11 @@
 # CHANGE LOG
 
 ## v1.2.x
+### v1.2.6
+1. (initial) support tplPkjParams option
+
+2. [omni build] remove auto-release time log
+
 ### v1.2.5
 1. [omni release] version-check bug fixed
 

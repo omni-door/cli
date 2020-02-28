@@ -108,6 +108,7 @@ type OptionCustom = {
     msg?: string;
   };
   tplPkj?: string;
+  tplPkjParams?: string[];
   configFileName?: string;
 };
 
@@ -128,17 +129,22 @@ export default async function (strategy: STRATEGY, {
   // whether the config file exsit
   let configFileExist = false;
 
+  // default template package
+  let tplPackage: string;
+
   // reset illegal strategy
   strategy = (strategy === 'stable' || strategy === 'latest') ? strategy : 'stable';
 
-  let tplPackage: string;
-  const tplParams: string[] = [];
   const {
     before,
     after,
     tplPkj,
+    tplPkjParams = [],
     configFileName = 'omni.config.js'
   } = option || {};
+
+
+  const tplParams: string[] = [ ...tplPkjParams ];
   const configPath = path.resolve(configFileName);
 
   // get project name

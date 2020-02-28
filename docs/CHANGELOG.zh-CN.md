@@ -1,6 +1,11 @@
 # 变更日志
 
 ## v1.2.x
+### v1.2.6
+1. (initial) 支持 tplPkjParams 选项
+
+2. [omni build] 移除自动发布的时间日志
+
 ### v1.2.5
 1. [omni release] 修复版本检测的问题
 

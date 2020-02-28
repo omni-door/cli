@@ -283,11 +283,9 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
     });
 
     if (autoRelease) {
-      logTime('项目自动发布');
       logInfo('开始自动发布！(beginning auto release!)');
       try {
         await release(config, { verify: false });
-        logTime('项目自动发布', true);
         handleBuildSuc('自动发布成功！(auto release success!)')();
       } catch (err) {
         handleBuildErr('自动发布失败！(auto release failed!)')();
