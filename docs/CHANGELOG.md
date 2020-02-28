@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ## v1.2.x
+### v1.2.5
+1. [omni release] version-check bug fixed
+
 ### v1.2.4
 1. [omni release] branch-check and npm-publish log prefix fixed
 
