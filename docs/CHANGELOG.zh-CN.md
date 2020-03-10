@@ -8,7 +8,9 @@
 
 3. [omni release] 发布到git仓库避免修改origin
 
-4. 插件运行新增try/catch异常处理
+4. [omni release] 新增 tag 选项
+
+5. 插件运行新增try/catch异常处理
 
 ### v1.2.6
 1. (initial) 支持 tplPkjParams 选项

@@ -8,6 +8,8 @@
 
 3. [omni release] Publish to git repositor without modify remote origin
 
+5. [omni release] Adding tag option
+
 4. Adding try/catch handle when exec plugin
 
 ### v1.2.6

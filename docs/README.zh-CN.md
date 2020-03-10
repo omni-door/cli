@@ -150,6 +150,7 @@ publish your project according to [omni.config.js]
 Options:
   -i, --ignore            发布并忽视版本号的迭代
   -m, --manual <version>  发布并手动指定版本号
+  -t, --tag <tag>         发布时指定tag
   -n, --no-verify         绕过所有的预检直接发布
   -h, --help              output usage information
 ```
