@@ -89,7 +89,11 @@ export default async function (config: OmniConfig | {}, componentName: string, o
     if (plugin_handles) {
       for (const name in plugin_handles) {
         const handler = plugin_handles[name];
-        await handler(config as OmniConfig);
+        try {
+          await handler(config as OmniConfig);
+        } catch (err) {
+          logWarn(`运行插件 ${name} 出错(The plugin ${name} occured error)：\n${err}`);
+        }
       }
     }
     // success logger

@@ -64,6 +64,7 @@ import { OmniConfig } from '../index.d';
     .command('release')
     .option('-i, --ignore', 'ignore automatic iteration version')
     .option('-m, --manual <version>', 'manual iteration version')
+    .option('-t, --tag <tag>', 'the tag will add to npm-package')
     .option('-n, --no-verify', 'bypass all pre-check before release')
     .description('publish your project according to [omni.config.js]')
     .action((iterTactic) => release(config, iterTactic));

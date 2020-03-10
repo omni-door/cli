@@ -20,7 +20,7 @@ export default async function ({
         {
           name: 'changePort',
           type: 'confirm',
-          message: `${logo} ${p} 端口被占用了，切换到 ${_p}? (Port ${p} is not available, Would you like to run on ${_p}?)`,
+          message: `${logo} ${p} 端口被占用了，切换到 ${_p}? (The port ${p} is not available, would you like to run on ${_p}?)`,
           default: true
         }
       ]).then(answer => {

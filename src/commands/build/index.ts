@@ -44,7 +44,7 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
     return process.exit(0);
   }
 
-  const message = '开始构建！(Build process start!)';
+  const message = '开始构建！(Building process start!)';
   logTime('项目构建');
   logInfo(message);
 
@@ -119,11 +119,11 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
           `${iTool} ${dependencies}`
         ],
         () => {
-          logEmph('构建依赖安装完毕！(dependencies install completed!)');
+          logEmph('构建依赖安装完毕！(The dependencies install completed!)');
           return true;
         },
         err => {
-          logWarn(`依赖安装发生了错误 (dependencies install occured some accidents) \n👉  ${JSON.stringify(err)}`);
+          logWarn(`依赖安装发生了错误 (The dependencies install occured some accidents) \n👉  ${JSON.stringify(err)}`);
           return false;
         });
       } else {
@@ -185,15 +185,15 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
 
   try {
     if (verify && test) {
-      await exec(['npm test'], () => logEmph(italic('单元测试通过！(unit test passed!)')), handleBuildErr('单元测试失败！(unit test failed!)'));
+      await exec(['npm test'], () => logEmph(italic('单元测试通过！(The unit test passed!)')), handleBuildErr('单元测试失败！(The unit test failed!)'));
     }
 
     if (verify && eslint) {
-      await exec(['npm run lint:es'], () => logEmph(italic('eslint校验通过！(eslint passed!)')), handleBuildErr(`eslint校验失败！(eslint checking failed!) \n 尝试执行 (try to exec): ${underline('npm run lint:es_fix')}`));
+      await exec(['npm run lint:es'], () => logEmph(italic('eslint校验通过！(The eslint passed!)')), handleBuildErr(`eslint校验失败！(The eslint checking failed!) \n 尝试执行 (try to exec): ${underline('npm run lint:es_fix')}`));
     }
 
     if (verify && stylelint) {
-      await exec(['npm run lint:style'], () => logEmph(italic('stylelint校验通过！(stylelint passed!)')), handleBuildErr(`stylelint校验失败！(stylelint checking failed!) \n 尝试执行 (try to exec): ${underline('npm run lint:style_fix')}`));
+      await exec(['npm run lint:style'], () => logEmph(italic('stylelint校验通过！(The stylelint passed!)')), handleBuildErr(`stylelint校验失败！(The stylelint checking failed!) \n 尝试执行 (try to exec): ${underline('npm run lint:style_fix')}`));
     }
 
     const buildCliArr = [];
@@ -266,13 +266,17 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
       if (plugin_handles) {
         for (const name in plugin_handles) {
           const handler = plugin_handles[name];
-          await handler(config as OmniConfig);
+          try {
+            await handler(config as OmniConfig);
+          } catch (err) {
+            logWarn(`运行插件 ${name} 出错(The plugin ${name} occured error)：\n${err}`);
+          }
         }
       }
 
       type !== 'toolkit' && spinner.state('stop');
       if (outDir && !fs.existsSync(outDir)) {
-        handleBuildErr(`输出的 ${outDir} 文件不存在，构建失败！`)();
+        handleBuildErr(`输出的 ${outDir} 文件不存在，构建失败！(The output file ${outDir} doesn't exist)`)();
       } else {
         logTime('项目构建', true);
         handleBuildSuc()();
@@ -283,15 +287,15 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
     });
 
     if (autoRelease) {
-      logInfo('开始自动发布！(beginning auto release!)');
+      logInfo('开始自动发布！(Beginning auto release!)');
       try {
         await release(config, { verify: false });
-        handleBuildSuc('自动发布成功！(auto release success!)')();
+        handleBuildSuc('自动发布成功！(Auto release success!)')();
       } catch (err) {
-        handleBuildErr('自动发布失败！(auto release failed!)')();
+        handleBuildErr('自动发布失败！(Auto release failed!)')();
       }
     }
   } catch (err) {
-    logErr(`糟糕！构建过程发生了点意外！(Oops! build process occured some accidents!) \n👉  ${JSON.stringify(err)}`);
+    logErr(`糟糕！构建过程发生了点意外！(Oops! Building process occured some accidents!) \n👉  ${JSON.stringify(err)}`);
   }
 }

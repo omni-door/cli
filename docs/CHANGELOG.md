@@ -1,6 +1,15 @@
 # CHANGE LOG
 
 ## v1.2.x
+### v1.2.7
+1. [omni release] The exception handle logic change
+
+2. [omni release] Explicit sticking npm registry address
+
+3. [omni release] Publish to git repositor without modify remote origin
+
+4. Adding try/catch handle when exec plugin
+
 ### v1.2.6
 1. (initial) support tplPkjParams option
 

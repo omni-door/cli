@@ -213,7 +213,7 @@ export default async function (strategy: STRATEGY, {
           name: 'project_type',
           type: 'list',
           choices: [ 'spa-react (React单页应用)', 'component-library-react (React组件库)', 'toolkit (工具库)' ],
-          message: `${logo}[${currStep}/${totalStep}] 请选择项目类型 (please choose the type of project)：`,
+          message: `${logo}[${currStep}/${totalStep}] 请选择项目类型 (Please choose the type of project)：`,
           when: function (answer: any) {
             if (answer.overwrite === false) {
               return process.exit(0);
@@ -231,7 +231,7 @@ export default async function (strategy: STRATEGY, {
             } else {
               totalStep = 4;
             }
-            return `${logo}[${++currStep}/${totalStep}] 请输入项目名称 (please enter your project name)：`;
+            return `${logo}[${++currStep}/${totalStep}] 请输入项目名称 (Please enter your project name)：`;
           },
           default: defaultName
         },{
@@ -240,7 +240,7 @@ export default async function (strategy: STRATEGY, {
           choices: [ 'docz', 'storybook', 'bisheng' ],
           default: 'docz',
           message: function (answer: any) {
-            return `${logo}[${++currStep}/${totalStep}] 请选择组件库Demo框架 (please chioce the component-library demonstration frame)：`;
+            return `${logo}[${++currStep}/${totalStep}] 请选择组件库Demo框架 (Please chioce the component-library demonstration frame)：`;
           },
           when: function (answer: any) {
             if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'component-library-react') {
@@ -252,7 +252,7 @@ export default async function (strategy: STRATEGY, {
           name: 'ts',
           type: 'confirm',
           message: function (answer: any) {
-            return `${logo}[${++currStep}/${totalStep}] 是否使用typescript? (whether or not apply typescript?)`;
+            return `${logo}[${++currStep}/${totalStep}] 是否使用typescript? (Whether or not apply typescript?)`;
           },
           default: true,
           when: function (answer: any) {
@@ -265,7 +265,7 @@ export default async function (strategy: STRATEGY, {
           name: 'test',
           type: 'confirm',
           message: function (answer: any) {
-            return `${logo}[${++currStep}/${totalStep}] 是否开启单元测试? (whether or not apply unit-test?)`;
+            return `${logo}[${++currStep}/${totalStep}] 是否开启单元测试? (Whether or not apply unit-test?)`;
           },
           default: (answer: any) => ProjectType[answer.project_type as keyof typeof ProjectType] !== 'spa-react',
           when: function (answer: any) {
@@ -279,7 +279,7 @@ export default async function (strategy: STRATEGY, {
           type: 'checkbox',
           choices: [ 'css', 'less', 'scss' ],
           message: function (answer: any) {
-            return `${logo}[${++currStep}/${totalStep}] 选择样式文件 (select the stylesheets)`;
+            return `${logo}[${++currStep}/${totalStep}] 选择样式文件 (Please select the stylesheets)`;
           },
           default: [ 'css' ],
           when: function (answer: any) {
@@ -297,7 +297,7 @@ export default async function (strategy: STRATEGY, {
             return lintArr;
           },
           message: function (answer: any) {
-            return `${logo}[${++currStep}/${totalStep}] 选择lint工具 (select the lint tools)：`;
+            return `${logo}[${++currStep}/${totalStep}] 选择lint工具 (Please select the lint tools)：`;
           },
           default: [ 'eslint' ]
         },{
@@ -305,7 +305,7 @@ export default async function (strategy: STRATEGY, {
           type: 'list',
           choices: [ 'yarn', 'npm', 'cnpm' ],
           message: function (answer: any) {
-            return `${logo}[${++currStep}/${totalStep}] 请选择包安装工具，推荐使用yarn (please choice the package install tool, recommended use yarn)：`;
+            return `${logo}[${++currStep}/${totalStep}] 请选择包安装工具，推荐使用yarn (Please choice the package install tool, recommended use yarn)：`;
           },
           default: 'yarn'
         }

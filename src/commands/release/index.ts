@@ -21,6 +21,7 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
   ignore?: boolean;
   manual?: string;
   verify?: boolean;
+  tag?: string;
 }) {
   try {
     // node version pre-check
@@ -63,11 +64,11 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
     }
   }
 
-  const message = '开始发布！(starting release process!)';
+  const message = '开始发布！(Starting release process!)';
   logInfo(message);
 
   function handleReleaseSuc (msg?: string) {
-    msg = msg || '恭喜！发布完成！(release process completed!)';
+    msg = msg || '恭喜！发布完成！(The release process completed!)';
 
     return function () {
       logSuc(msg!);
@@ -85,41 +86,55 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
   }
 
   try {
-    const { ignore, manual, verify } = iterTactic || {};
+    const { ignore, manual, tag = 'latest', verify } = iterTactic || {};
     const versionShellSuffix = ignore ? 'i' : manual ? manual : '';
 
     if (verify && test) {
-      await exec(['npm test'], () => logEmph(italic('单元测试通过！(unit test passed!)')), handleReleaseErr('单元测试失败！(unit test failed!)'));
+      await exec(['npm test'], () => logEmph(italic('单元测试通过！(The unit test passed!)')), handleReleaseErr('单元测试失败！(The unit test failed!)'));
     }
 
     if (verify && eslint) {
-      await exec(['npm run lint:es'], () => logEmph(italic('eslint校验通过！(eslint passed!)')), handleReleaseErr('eslint校验失败！(eslint checking failed!)'));
+      await exec(['npm run lint:es'], () => logEmph(italic('eslint校验通过！(The eslint passed!)')), handleReleaseErr('eslint校验失败！(The eslint checking failed!)'));
     }
 
     if (verify && stylelint) {
-      await exec(['npm run lint:style'], () => logEmph(italic('stylelint校验通过！(stylelint passed!)')), handleReleaseErr('stylelint校验失败！(stylelint checking failed!)'));
+      await exec(['npm run lint:style'], () => logEmph(italic('stylelint校验通过！(The stylelint passed!)')), handleReleaseErr('stylelint校验失败！(The stylelint checking failed!)'));
     }
 
     await exec(
       [`${path.resolve(__dirname, 'version.sh')} "${logPrefix()}" ${versionShellSuffix}`],
-      function () {},
-      function () {}
+      () => logEmph('版本迭代成功！(The version iteration success!)'),
+      handleReleaseErr('版本迭代失败！(The version iteration failed!)')
     );
 
     if (git) {
-      let gitUrl = '';
+      const gitUrl = git.trim();
+      let gitOriginUrl = '';
+      let gitOmniUrl = '';
       await exec([
         'git remote get-url origin'
       ], function (results) {
-        gitUrl = results[0] && results[0].trim();
-      });
+        gitOriginUrl = results[0] && results[0].trim();
+      }, () => {}, true);
+      await exec([
+        'git remote get-url omni'
+      ], function (results) {
+        gitOmniUrl = results[0] && results[0].trim();
+      }, () => {}, true);
 
       let canPush = true;
-      if (git.trim() !== gitUrl) {
-        logInfo(`替换当前 ${git.trim()} (remote origin) 为 ${git} (replace ${git.trim()} to ${git})`);
+      let remote = gitUrl === gitOmniUrl ? 'omni' : 'origin';
+      if (gitUrl !== gitOriginUrl && gitUrl !== gitOmniUrl) {
+        !gitOmniUrl && logInfo(`新增远程地址omni ${git} (Adding remote omni ${git})`);
+        const execArr = ['git remote remove omni', `git remote add omni ${git}`];
+        !gitOmniUrl && execArr.shift(); // remote没有omni，移除remove操作
+
         await exec(
-          ['git remote remove origin', `git remote add origin ${git}`],
-          () => logEmph(`git remote origin 为 ${git} (git remote origin is: ${git})`),
+          execArr,
+          () => {
+            logEmph(`git remote omni 为 ${git} (git remote omni is: ${git})`);
+            remote = 'omni';
+          },
           () => {
             logWarn('git remote 设置失败！(setting git remote failed!)');
             canPush = false;
@@ -141,8 +156,8 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
         : `git commit -m'[${pkj.name.toUpperCase()}]: ${pkj.version}' --no-verify`;
 
       const push = commitlint
-        ? `git push origin ${branch || 'master'}`
-        : `git push origin ${branch || 'master'} --no-verify`;
+        ? `git push ${remote} ${branch || 'master'}`
+        : `git push ${remote} ${branch || 'master'} --no-verify`;
 
       canPush && await exec(
         [
@@ -150,8 +165,8 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
           `${commit}`,
           `${push}`
         ],
-        () => logEmph('git仓库push成功！(git-repo push success!)'),
-        () => logWarn('git仓库push失败！(git-repo push failed!)')
+        () => logEmph('git仓库push成功！(Pushing to git-repo success!)'),
+        handleReleaseErr('git仓库push失败！(Pushing to git-repo failed!)')
       );
     }
 
@@ -161,23 +176,14 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
         ['npm get registry'],
         function (results) {
           npmUrl = results[0] && results[0].trim();
-        }
+        }, () => {}, true
       );
 
-      if (npm.trim() !== npmUrl && npm.trim() + '/' !== npmUrl) {
-        logInfo(`自动设置 npm registry 地址为 ${npm} (auto set npm registry to: ${npm})`);
-        await exec(
-          [`npm set registry ${npm}`],
-          () => logEmph(`npm registry 设置成功，请执行 ${chalk.yellow(underline('npm publish'))} 进行发布！(npm set registry success, please run ${chalk.yellow(underline('npm publish'))} by yourself!)`),
-          () => logWarn('npm registry 设置失败！(set npm registry failed!)')
-        );
-      } else {
-        await exec(
-          ['npm publish'],
-          () => logEmph('npm包发布成功！(npm-package publish success!)'),
-          () => logWarn('npm包发布失败！(npm-package publish failed!)')
-        );
-      }
+      await exec(
+        [`npm publish --registry=${npm || npmUrl} --tag=${tag}`],
+        () => logEmph('npm包发布成功！(The npm-package publish success!)'),
+        handleReleaseErr('npm包发布失败！(The npm-package publish failed!)')
+      );
     }
 
     // handle release plugins
@@ -185,7 +191,11 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
     if (plugin_handles) {
       for (const name in plugin_handles) {
         const handler = plugin_handles[name];
-        await handler(config as OmniConfig);
+        try {
+          await handler(config as OmniConfig);
+        } catch (err) {
+          logWarn(`运行插件 ${name} 出错(The plugin ${name} occured error)：\n${err}`);
+        }
       }
     }
 

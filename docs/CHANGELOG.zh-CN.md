@@ -1,6 +1,15 @@
 # 变更日志
 
 ## v1.2.x
+### v1.2.7
+1. [omni release] 发布过程的异常处理逻辑更改
+
+2. [omni release] 发布到npm仓库显示指定registry
+
+3. [omni release] 发布到git仓库避免修改origin
+
+4. 插件运行新增try/catch异常处理
+
 ### v1.2.6
 1. (initial) 支持 tplPkjParams 选项
 
