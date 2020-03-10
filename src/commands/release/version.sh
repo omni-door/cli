@@ -23,7 +23,7 @@ updateVersion () {
     newSubSubVersion=`expr $subSubVersion + 1`
     newVersion=$(echo ${version/${dot}${subVersion}${dot}${subSubVersion}/${dot}${subVersion}${dot}${newSubSubVersion}})
     newVersionLine=$(echo "${versionLine/${version}/${newVersion}}")
-    echo -e "\033[36m${name} 版本号自动迭代 ${newVersion} (Auto version iteration)\033[0m\n"
+    echo -e "\033[36m${name} 版本号自动迭代至 ${newVersion} (Auto version iteration to ${newVersion})\033[0m\n"
     sed -i "" "s/${versionLine}/${newVersionLine}/g" "package.json"
   elif [ -n "$manualVersion" ]
     then
