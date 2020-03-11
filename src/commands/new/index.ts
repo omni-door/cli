@@ -9,10 +9,10 @@ import {
   logSuc,
   node_version
 } from '@omni-door/tpl-utils';
-import { OmniConfig } from '../../index.d';
+import { OmniConfig, OmniPlugin } from '../../index.d';
 import { getHandlers } from '../../utils/tackle_plugins';
 
-export default async function (config: OmniConfig | {}, componentName: string, options?: {
+export default async function (config: OmniConfig, componentName: string, options?: {
   function?: boolean;
   class?: boolean;
   tplPkj?: string;
@@ -24,7 +24,7 @@ export default async function (config: OmniConfig | {}, componentName: string, o
     logWarn(err);
   }
 
-  if (JSON.stringify(config) === '{}') {
+  if (!config || JSON.stringify(config) === '{}') {
     logWarn('请先初始化项目！(Please initialize an omni-project first!)');
     return process.exit(0);
   }
@@ -49,13 +49,18 @@ export default async function (config: OmniConfig | {}, componentName: string, o
 
   const {
     type = 'spa-react',
-    template: {
-      root,
-      test,
-      typescript = false,
-      stylesheet = '',
-      readme = [false, 'md']
-    }, plugins } = config as OmniConfig;
+    template,
+    build,
+    release,
+    plugins
+  } = config;
+  const {
+    root,
+    test,
+    typescript = false,
+    stylesheet = '',
+    readme = [false, 'md']
+  } = template;
 
   if (!root) {
     logWarn('生成模板的路径缺失！(Missing the path for generate template!)');
@@ -85,15 +90,19 @@ export default async function (config: OmniConfig | {}, componentName: string, o
 
   async function handleSuc () {
     // handle new plugins
-    const plugin_handles = plugins && getHandlers(plugins, 'new');
+    const plugin_handles = plugins && plugins.length > 0 && getHandlers<'new'>(plugins, 'new');
     if (plugin_handles) {
       for (const name in plugin_handles) {
         const handler = plugin_handles[name];
-        try {
-          await handler(config as OmniConfig);
-        } catch (err) {
-          logWarn(`运行插件 ${name} 出错(The plugin ${name} occured error)：\n${err}`);
-        }
+        await handler({
+          type,
+          template,
+          build,
+          release
+        }, {
+          componentName,
+          componentType: fc ? 'function' : 'class'
+        });
       }
     }
     // success logger

@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import chalk from 'chalk';
 import {
   exec, 
   logErr,
@@ -10,14 +9,13 @@ import {
   logEmph,
   logTime,
   italic,
-  underline,
   node_version,
   logPrefix
 } from '@omni-door/tpl-utils';
-import { OmniConfig } from '../../index.d';
+import { OmniConfig, OmniPlugin } from '../../index.d';
 import { getHandlers } from '../../utils/tackle_plugins';
 
-export default async function (config: OmniConfig | {}, iterTactic?: {
+export default async function (config: OmniConfig, iterTactic?: {
   ignore?: boolean;
   manual?: string;
   verify?: boolean;
@@ -30,18 +28,18 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
     logWarn(err);
   }
 
-  if (JSON.stringify(config) === '{}') {
+  if (!config || JSON.stringify(config) === '{}') {
     logWarn('请先初始化项目！(Please initialize project first!)');
     return;
   }
 
   logTime('项目发布');
-  const { release: {
+  const { type, template, build, release = {}, plugins } = config;
+  const {
     git,
     npm,
     preflight
-  }, plugins } = config as OmniConfig;
-
+  } = release;
   const {
     test = false,
     eslint = false,
@@ -187,15 +185,22 @@ export default async function (config: OmniConfig | {}, iterTactic?: {
     }
 
     // handle release plugins
-    const plugin_handles = plugins && getHandlers(plugins, 'release');
+    const plugin_handles = plugins && plugins.length > 0 && getHandlers<'release'>(plugins, 'release');
     if (plugin_handles) {
+      const pkj = require(path.resolve(process.cwd(), 'package.json'));
+      const version = pkj ? pkj.version : 'unknown';
       for (const name in plugin_handles) {
         const handler = plugin_handles[name];
-        try {
-          await handler(config as OmniConfig);
-        } catch (err) {
-          logWarn(`运行插件 ${name} 出错(The plugin ${name} occured error)：\n${err}`);
-        }
+        await handler({
+          type,
+          template,
+          build,
+          release
+        }, {
+          version: ignore ? 'ignore' : version,
+          verify,
+          tag
+        });
       }
     }
 

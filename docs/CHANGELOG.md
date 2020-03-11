@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ## v1.2.x
+### v1.2.8
+1. add `options` parameters for plugin and update the type defination
+
 ### v1.2.7
 1. [omni release] The exception handle logic change
 

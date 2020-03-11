@@ -6,30 +6,41 @@ import { Request, Response, NextFunction } from 'express';
 export { Request, Response, NextFunction } from 'express';
 import { PathParams } from 'express-serve-static-core';
 export { PathParams } from 'express-serve-static-core';
-import { BUILD, PROJECT_TYPE, PKJTOOL, STYLE, DEVSERVER, STRATEGY, PLUGINSTAGE, TESTFRAME, LOGLEVEL } from '@omni-door/tpl-utils';
+import { BUILD, PROJECT_TYPE, STYLE, PLUGINSTAGE, LOGLEVEL } from '@omni-door/tpl-utils';
 export type ANYOBJECT = { [propName: string]: any };
 
-export interface PluginHandler {
-  (config: Omit<OmniConfig, 'plugins'>): Promise<any>;
-}
+export type OptionTemplate = {
+  componentName: string;
+  componentType: 'function' | 'class';
+};
 
-export interface HandlerFactoryRet {
-  (config: Omit<OmniConfig, 'plugins'>): Promise<any>;
-}
+export type OptionBuild = {
+  verify?: boolean;
+};
 
-export interface HandlerFactory {
-  (handler: PluginHandler, errMsg?: string): HandlerFactoryRet;
-}
+export type OptionRelease = {
+  version: string;
+  verify?: boolean;
+  tag?: string;
+};
 
-export type OmniPlugin = {
+export interface PluginHandler<T extends PLUGINSTAGE> {
+  (
+    config: Omit<OmniConfig, 'dev' | 'plugins'>,
+    options?: T extends 'new' ? OptionTemplate : T extends 'build' ? OptionBuild : OptionRelease
+  ): Promise<any>;
+} 
+export type HandlerFactory = <T extends PLUGINSTAGE>(handler: PluginHandler<T>, errMsg?: string) => PluginHandler<T>;
+
+export interface OmniPlugin {
   name: string;
   stage: PLUGINSTAGE;
-  handler: PluginHandler;
-};
+  handler: PluginHandler<PLUGINSTAGE>;
+}
 
 export type MiddleWareCallback = (req: Request, res: Response, next: NextFunction) => void;
 
-export type OmniConfig = {
+export interface OmniConfig {
   type: PROJECT_TYPE;
   dev?: {
     port?: number;
@@ -82,4 +93,4 @@ export type OmniConfig = {
     readme?: [boolean, 'mdx' | 'md'];
   };
   plugins?: OmniPlugin[];
-};
+}

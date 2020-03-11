@@ -21,13 +21,13 @@ import {
   node_version
 } from '@omni-door/tpl-utils';
 import { BUILD } from '@omni-door/tpl-utils';
-import { OmniConfig } from '../../index.d';
+import { OmniConfig, OmniPlugin } from '../../index.d';
 import { getHandlers } from '../../utils/tackle_plugins';
 import dependencies_build from './dependencies_build';
 import release from '../release';
 import logo from '../../utils/logo';
 
-export default async function (config: OmniConfig | {}, buildTactic?: {
+export default async function (config: OmniConfig, buildTactic?: {
   verify?: boolean;
   buildConfig?: string;
   configFileName?: string;
@@ -39,7 +39,7 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
     logWarn(err);
   }
 
-  if (JSON.stringify(config) === '{}') {
+  if (!config || JSON.stringify(config) === '{}') {
     logWarn('请先初始化项目！(Please initialize project first!)');
     return process.exit(0);
   }
@@ -48,17 +48,18 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
   logTime('项目构建');
   logInfo(message);
 
-  const { type,
-    build: {
-      autoRelease,
-      srcDir,
-      outDir,
-      esmDir = '',
-      hash,
-      tool,
-      reserve = {},
-      preflight
-    }, plugins } = config as OmniConfig;
+  const { type, template, build, release: configRelease, plugins } = config || {};
+
+  const {
+    autoRelease,
+    srcDir,
+    outDir,
+    esmDir = '',
+    hash,
+    tool,
+    reserve = {},
+    preflight
+  } = build;
 
   const {
     typescript = false,
@@ -262,15 +263,18 @@ export default async function (config: OmniConfig | {}, buildTactic?: {
       copyReserves(assets);
 
       // handle build plugins
-      const plugin_handles = plugins && getHandlers(plugins, 'build');
+      const plugin_handles = plugins && plugins.length > 0 && getHandlers<'build'>(plugins, 'build');
       if (plugin_handles) {
         for (const name in plugin_handles) {
           const handler = plugin_handles[name];
-          try {
-            await handler(config as OmniConfig);
-          } catch (err) {
-            logWarn(`运行插件 ${name} 出错(The plugin ${name} occured error)：\n${err}`);
-          }
+          await handler({
+            type,
+            template,
+            build,
+            release: configRelease
+          }, {
+            verify
+          });
         }
       }
 

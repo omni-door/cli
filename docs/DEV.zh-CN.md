@@ -6,19 +6,65 @@
 ## Plugin
 插件向第三方开发者提供了脚手架在项目各个周期的执行多元化任务的能力，插件的编写请务必满足 `type OmniPlugin` 的类型定义。
 
+### 编写一个 release 阶段做压缩打包的插件
+
+```js
+import pack from 'pack'; // 压缩的伪代码
+
+export default function (config, options) {
+  return {
+    name: '@scope/my-release-plugin',
+    stage: 'release',
+    handler: config => new Promise((resolve, reject) => {
+      const { build } = config;
+      const srcPath = build.outDir;
+      const destPath = path.resolve(process.cwd(), 'dist.zip');
+      // 压缩打包
+      pack(srcPath, destPath, function (res) {
+        if (res === 'success') {
+          return resolve();
+        }
+        return reject();
+      });
+    })
+  });
+}
+```
+
 ### plugin 的类型
 ```ts
-type OmniPlugin = {
+type PLUGINSTAGE = 'new' | 'build' | 'release';
+
+interface OmniPlugin {
   name: string;
-  stage: PluginStage;
-  handler: PluginHandler;
+  stage: PLUGINSTAGE;
+  handler: PluginHandler<PLUGINSTAGE>;
+}
+
+interface PluginHandler<T extends PLUGINSTAGE> {
+  (
+    config: config: Omit<OmniConfig, 'dev' | 'plugins'>,
+    options?: T extends 'new' ? OptionTemplate : T extends 'build' ? OptionBuild : OptionRelease
+  ): Promise<any>;
+}
+
+// "new" 阶段
+type OptionTemplate = {
+  componentName: string;
+  componentType: 'function' | 'class';
 };
 
-type PluginStage = 'new' | 'build' | 'release';
-interface PluginHandler {
-  (config: Omit<OmniConfig, 'plugins'>): Promise<any>;
-  (config: Omit<OmniConfig, 'plugins'>, tpls: TPLS_NEW): Promise<TPLS_NEW_RETURE>;
-}
+// "build" 阶段
+type OptionBuild = {
+  verify?: boolean;
+};
+
+// "release" 阶段
+type OptionRelease = {
+  version: string;
+  verify?: boolean;
+  tag?: string;
+};
 ```
 
 ### OmniConfig 的类型
@@ -26,22 +72,27 @@ interface PluginHandler {
 import { Configuration } from 'webpack';
 import { Config } from 'http-proxy-middleware';
 
-type OmniConfig = {
+interface OmniConfig {
   type: PROJECT_TYPE;
-  dev: {
+  dev?: {
     port?: number;
+    logLevel?: LOGLEVEL;
     webpack?: Configuration;
     proxy?: {
       route: string;
       config: Config;
     }[];
-    logLevel: 'debug' | 'info' | 'warn' | 'error' | 'silent';
+    middleware?: {
+      route: PathParams;
+      callback: MiddleWareCallback;
+    }[]
   };
   build: {
     autoRelease?: boolean;
     srcDir: string;
     outDir: string;
     esmDir?: string;
+    hash?: boolean;
     configuration?: (config: ANYOBJECT) => ANYOBJECT;
     tool?: BUILD;
     preflight?: {
@@ -57,7 +108,7 @@ type OmniConfig = {
   };
   release: {
     git?: string;
-    npm?: NPM | string;
+    npm?: string;
     preflight?: {
       test?: boolean;
       eslint?: boolean;
@@ -74,9 +125,9 @@ type OmniConfig = {
     readme?: [boolean, 'mdx' | 'md'];
   };
   plugins?: OmniPlugin[];
-};
+}
 
-export type BUILD = 'webpack' | 'rollup' | 'tsc' | '';
+type BUILD = 'webpack' | 'rollup' | 'tsc' | '';
 type NPM = 'npm' | 'yarn' | 'cnpm' | 'taobao';
 type PROJECT_TYPE = 'spa-react' | 'component-library-react' | 'toolkit';
 type STYLE = 'less' | 'scss' | 'css' | 'all' | '';
