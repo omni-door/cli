@@ -185,7 +185,7 @@ export default async function (config: OmniConfig, iterTactic?: {
     }
 
     // handle release plugins
-    const plugin_handles = plugins && plugins.length > 0 && getHandlers<'release'>(plugins, 'release');
+    const plugin_handles = plugins && plugins.length > 0 && getHandlers<'release'>(plugins as OmniPlugin<'release'>[], 'release');
     if (plugin_handles) {
       const pkj = require(path.resolve(process.cwd(), 'package.json'));
       const version = pkj ? pkj.version : 'unknown';

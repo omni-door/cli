@@ -263,7 +263,7 @@ export default async function (config: OmniConfig, buildTactic?: {
       copyReserves(assets);
 
       // handle build plugins
-      const plugin_handles = plugins && plugins.length > 0 && getHandlers<'build'>(plugins, 'build');
+      const plugin_handles = plugins && plugins.length > 0 && getHandlers<'build'>(plugins as OmniPlugin<'build'>[], 'build');
       if (plugin_handles) {
         for (const name in plugin_handles) {
           const handler = plugin_handles[name];

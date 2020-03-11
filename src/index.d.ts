@@ -32,10 +32,10 @@ export interface PluginHandler<T extends PLUGINSTAGE> {
 } 
 export type HandlerFactory = <T extends PLUGINSTAGE>(handler: PluginHandler<T>, errMsg?: string) => PluginHandler<T>;
 
-export interface OmniPlugin {
+export interface OmniPlugin<T extends PLUGINSTAGE> {
   name: string;
-  stage: PLUGINSTAGE;
-  handler: PluginHandler<PLUGINSTAGE>;
+  stage: T;
+  handler: PluginHandler<T>;
 }
 
 export type MiddleWareCallback = (req: Request, res: Response, next: NextFunction) => void;
@@ -92,5 +92,5 @@ export interface OmniConfig {
     stylesheet?: STYLE;
     readme?: [boolean, 'mdx' | 'md'];
   };
-  plugins?: OmniPlugin[];
+  plugins?: OmniPlugin<PLUGINSTAGE>[];
 }

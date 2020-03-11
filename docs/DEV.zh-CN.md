@@ -35,10 +35,10 @@ export default function (config, options) {
 ```ts
 type PLUGINSTAGE = 'new' | 'build' | 'release';
 
-interface OmniPlugin {
+interface OmniPlugin<T extends PLUGINSTAGE> {
   name: string;
-  stage: PLUGINSTAGE;
-  handler: PluginHandler<PLUGINSTAGE>;
+  stage: T;
+  handler: PluginHandler<T>;
 }
 
 interface PluginHandler<T extends PLUGINSTAGE> {
@@ -124,7 +124,7 @@ interface OmniConfig {
     stylesheet?: STYLE;
     readme?: [boolean, 'mdx' | 'md'];
   };
-  plugins?: OmniPlugin[];
+  plugins?: OmniPlugin<PLUGINSTAGE>[];
 }
 
 type BUILD = 'webpack' | 'rollup' | 'tsc' | '';

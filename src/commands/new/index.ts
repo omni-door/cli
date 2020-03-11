@@ -90,7 +90,7 @@ export default async function (config: OmniConfig, componentName: string, option
 
   async function handleSuc () {
     // handle new plugins
-    const plugin_handles = plugins && plugins.length > 0 && getHandlers<'new'>(plugins, 'new');
+    const plugin_handles = plugins && plugins.length > 0 && getHandlers<'new'>(plugins as OmniPlugin<'new'>[], 'new');
     if (plugin_handles) {
       for (const name in plugin_handles) {
         const handler = plugin_handles[name];
