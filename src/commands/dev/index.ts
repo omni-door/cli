@@ -2,7 +2,7 @@ import run from './run';
 import { logWarn, node_version } from '@omni-door/tpl-utils';
 import { OmniConfig } from '../../index.d';
 
-export default async function (config: OmniConfig | {}, options: { port?: number | string }) {
+export default async function (config: OmniConfig, options: { port?: number | string }) {
   try {
     // node version pre-check
     await node_version('8');
