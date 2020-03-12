@@ -84,6 +84,10 @@ function server ({
       logInfo('> Ready on local: ' + url_local);
       logInfo('> Ready on ip: ' + url_ip);
     });
+
+    (['SIGINT', 'SIGTERM'] as NodeJS.Signals[]).forEach((sig) => {
+      process.on(sig, () => process.exit(0));
+    });
   } catch (err) {
     logErr(err);
   }
