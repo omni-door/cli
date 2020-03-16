@@ -14,4 +14,8 @@ describe('logo test', function () {
   it('type checking', function () {
     expect(logo).to.be.a('string');
   });
+
+  it('value checking', function () {
+    expect(logo).to.be.equal('🐸  ');
+  });
 });

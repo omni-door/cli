@@ -1,6 +1,11 @@
 # 变更日志
 
 ## v1.2.x
+### v1.2.9
+1. [omni dev] 新增 Signals listener
+
+2. 升级依赖 @omni-door/tpl-utils
+
 ### v1.2.8
 1. 插件新增 `options` 参数，并更新 type 定义
 

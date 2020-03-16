@@ -1,6 +1,11 @@
 # CHANGE LOG
 
 ## v1.2.x
+### v1.2.9
+1. [omni dev] add Signals listener
+
+2. upgrade the @omni-door/tpl-utils dependency
+
 ### v1.2.8
 1. add `options` parameters for plugin and update the type defination
 

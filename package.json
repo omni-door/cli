@@ -100,7 +100,7 @@
     "webpack-hot-middleware": "^2.25.0"
   },
   "dependencies": {
-    "@omni-door/tpl-utils": "^0.0.17",
+    "@omni-door/tpl-utils": "^0.0.18",
     "@types/express": "^4.17.2",
     "@types/http-proxy-middleware": "^0.19.3",
     "@types/webpack": "^4.41.2",

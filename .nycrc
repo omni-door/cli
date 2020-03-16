@@ -9,7 +9,8 @@
   "exclude": [
     "**/*.d.ts",
     "src/**/*.test.ts",
-    "src/index.ts",
+    "src/commands/index.ts",
+    "src/commands/commands.ts",
     "lib/*"
   ],
   "reporter": [
