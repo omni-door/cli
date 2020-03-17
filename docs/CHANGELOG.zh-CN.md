@@ -1,6 +1,9 @@
 # 变更日志
 
 ## v1.2.x
+### v1.2.10
+1. (initial) before 和 after 支持异步执行
+
 ### v1.2.9
 1. [omni dev] 新增 Signals listener
 

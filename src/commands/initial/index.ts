@@ -97,16 +97,20 @@ type OptionType = {
   components?: boolean | string;
 };
 
+type BeforeRes = {
+  create_dir?: boolean;
+  dir_name?: string;
+  stdout?: boolean;
+};
+
+type AfterRes = {
+  success?: boolean;
+  msg?: string;
+};
+
 type OptionCustom = {
-  before?: (dirName: string) => {
-    create_dir?: boolean;
-    dir_name?: string;
-    stdout?: boolean;
-  };
-  after?: () => {
-    success?: boolean;
-    msg?: string;
-  };
+  before?: (dirName: string) => void | BeforeRes | Promise<BeforeRes>;
+  after?: () => void | AfterRes | Promise<AfterRes>;
   tplPkj?: string;
   tplPkjParams?: string[];
   configFileName?: string;
@@ -380,7 +384,7 @@ export default async function (strategy: STRATEGY, {
       });
     }
 
-    const beforeRes = typeof before === 'function' && before(projectName);
+    const beforeRes = typeof before === 'function' && await before(projectName);
     const {
       create_dir,
       dir_name,
@@ -403,29 +407,33 @@ export default async function (strategy: STRATEGY, {
         spinner.state('fail', 'figlet 出现了问题！(Some thing about figlet is wrong!)');
       }
   
-      function handleSuc () {
-        const afterRes = typeof after === 'function' && after();
-        const { success, msg } = afterRes || {};
-  
-        if (success === false) {
-          spinner.state('fail', msg || '初始化项目失败 (Initialize project failed)');
-        } else {
-          spinner.state('succeed', msg || '初始化项目完成 (Initialize project success)');
+      
+
+      
+
+      return exec(
+        [
+          `npx ${tplPkj || tplPackage}@latest init ${arr2str(tplParams)}`
+        ],
+        async function () {
+          const afterRes = typeof after === 'function' && await after();
+          const { success, msg } = afterRes || {};
+    
+          if (success === false) {
+            spinner.state('fail', msg || '初始化项目失败 (Initialize project failed)');
+          } else {
+            spinner.state('succeed', msg || '初始化项目完成 (Initialize project success)');
+          }
+    
+          data && console.info(chalk.yellow(data));
+          process.exit(0);
+        },
+        async function (err: any) {
+          logErr(err);
+          spinner.state('fail', '初始化项目失败 (Initialize project failed)');
+          process.exit(1);
         }
-  
-        data && console.info(chalk.yellow(data));
-        process.exit(0);
-      }
-
-      function handleErr (err: any) {
-        logErr(err);
-        spinner.state('fail', '初始化项目失败 (Initialize project failed)');
-        process.exit(1);
-      }
-
-      return exec([
-        `npx ${tplPkj || tplPackage}@latest init ${arr2str(tplParams)}`
-      ], handleSuc, handleErr);
+      );
     });
   } catch (err) {
     logErr(JSON.stringify(err));
