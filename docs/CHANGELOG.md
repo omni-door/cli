@@ -4,6 +4,8 @@
 ### v1.2.10
 1. (initial) before and after support asynchronous execution
 
+2. (newTpl) support before and after callbacks
+
 ### v1.2.9
 1. [omni dev] add Signals listener
 

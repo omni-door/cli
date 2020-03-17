@@ -21,6 +21,14 @@ export default async function (config: OmniConfig, componentName: string, option
   function?: boolean;
   class?: boolean;
   tplPkj?: string;
+  before?: (params: {
+    root: string;
+    componentName: string;
+  }) => void | Promise<any>;
+  after?: (params: {
+    root: string;
+    componentName: string;
+  }) => void | Promise<any>;
 }) {
   try {
     // node version pre-check
@@ -44,7 +52,7 @@ export default async function (config: OmniConfig, componentName: string, option
   // capitalize first character
   componentName = componentName.charAt(0).toUpperCase() + componentName.slice(1);
 
-  let { function: fc, class: cc, tplPkj } = options!;
+  let { function: fc, class: cc, tplPkj, before, after } = options || {};
 
   // default create class component
   if (!fc && !cc) cc = true;
@@ -103,8 +111,12 @@ export default async function (config: OmniConfig, componentName: string, option
     }
   }
 
-  logInfo(`正在下载 ${newTplPkj} 模板，请稍后... (Downloading the templates, please wait patiently…)`);
+  typeof before === 'function' && await before({
+    componentName,
+    root
+  });
 
+  logInfo(`正在下载 ${newTplPkj} 模板，请稍后... (Downloading the templates, please wait patiently…)`);
   exec(
     [
       `npx ${newTplPkj}@latest new ${arr2str(params)}`
@@ -126,6 +138,10 @@ export default async function (config: OmniConfig, componentName: string, option
           });
         }
       }
+      typeof after === 'function' && await after({
+        componentName,
+        root
+      });
       // success logger
       logSuc(`${componentName} 位于 ${path_cp_rel}，创建完成！(The ${componentName} local at ${path_cp_rel}, construction completed!)`);
       process.exit(0);
