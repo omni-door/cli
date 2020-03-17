@@ -4,6 +4,8 @@ import { Express, Request, Response, NextFunction } from 'express';
 import { PathParams } from 'express-serve-static-core';
 import { Configuration, Compiler } from 'webpack';
 import { Config } from 'http-proxy-middleware';
+import { WebpackDevMiddleware } from 'webpack-dev-middleware';
+import { NextHandleFunction } from 'connect';
 import { LOGLEVEL } from '@omni-door/tpl-utils';
 
 export type ServerOptions = {
@@ -27,17 +29,17 @@ function server ({
     const express = require('express');
     const proxy = require('http-proxy-middleware');
     const webpack = require('webpack');
-    const devMiddleware = require('webpack-dev-middleware');
+    const compiler: Compiler = webpack(webpackConfig);
+    const devMiddleware: WebpackDevMiddleware & NextHandleFunction = require('webpack-dev-middleware')(compiler, {
+      publicPath: '/',
+      logLevel: logLevel
+    });
     const hotMiddleware = require('webpack-hot-middleware');
 
-    const compiler: Compiler = webpack(webpackConfig);
     const app: Express = express();
 
     // dev server middleware
-    app.use(devMiddleware(compiler, {
-      publicPath: '/',
-      logLevel: logLevel
-    }));
+    app.use(devMiddleware);
 
     // hot refresh middleware
     app.use(hotMiddleware(compiler, {
@@ -64,10 +66,10 @@ function server ({
       );
     }
 
-    // index.html
+    // index.html for SPA history router
     app.use('*', function (req, res, next) {
       const filename = path.join(compiler.outputPath, 'index.html');
-      compiler.inputFileSystem.readFile(filename, function (err, result) {
+      devMiddleware.fileSystem.readFile(filename, function (err, result) {
         if (err) {
           return next(err);
         }
