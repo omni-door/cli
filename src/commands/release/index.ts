@@ -30,7 +30,7 @@ export default async function (config: OmniConfig, iterTactic?: {
 
   if (!config || JSON.stringify(config) === '{}') {
     logWarn('请先初始化项目！(Please initialize project first!)');
-    return;
+    process.exit(0);
   }
 
   logTime('项目发布');

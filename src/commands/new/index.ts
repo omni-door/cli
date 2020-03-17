@@ -12,6 +12,11 @@ import {
 import { OmniConfig, OmniPlugin } from '../../index.d';
 import { getHandlers } from '../../utils/tackle_plugins';
 
+function handleException (msg?: string) {
+  logWarn(msg || '发生了一些未知错误！(Ops! Some unknown errors have occurred!)');
+  return process.exit(0);
+}
+
 export default async function (config: OmniConfig, componentName: string, options?: {
   function?: boolean;
   class?: boolean;
@@ -25,18 +30,15 @@ export default async function (config: OmniConfig, componentName: string, option
   }
 
   if (!config || JSON.stringify(config) === '{}') {
-    logWarn('请先初始化项目！(Please initialize an omni-project first!)');
-    return process.exit(0);
+    handleException('请先初始化项目！(Please initialize an omni-project first!)');
   }
 
   if (!componentName) {
-    logWarn('请输入创建的模块名称！(Please input the module name!)');
-    return process.exit(0);
+    handleException('请输入创建的模块名称！(Please input the module name!)');
   }
 
   if (!/[a-zA-Z\$\_]/.test(componentName.charAt(0))) {
-    logWarn('请输入合法的模块名称！(Please input a valid module name!)');
-    return process.exit(0);
+    handleException('请输入合法的模块名称！(Please input a valid module name!)');
   }
 
   // capitalize first character
@@ -63,8 +65,7 @@ export default async function (config: OmniConfig, componentName: string, option
   } = template;
 
   if (!root) {
-    logWarn('生成模板的路径缺失！(Missing the path for generate template!)');
-    return process.exit(0);
+    handleException('生成模板的路径缺失！(Missing the path for generate template!)');
   }
 
   const mdx = readme[1] === 'mdx';
@@ -72,8 +73,7 @@ export default async function (config: OmniConfig, componentName: string, option
   const path_cp_rel = path.relative(process.cwd(), path_cp);
 
   if (fs.existsSync(path_cp)) {
-    logWarn(`模块 ${componentName} 已存在！(The ${componentName} module had been existed!)`);
-    return process.exit(0);
+    handleException(`模块 ${componentName} 已存在！(The ${componentName} module had been existed!)`);
   }
 
   const hasStorybook = fs.existsSync(path.resolve(process.cwd(), '.storybook'));
@@ -87,34 +87,6 @@ export default async function (config: OmniConfig, componentName: string, option
     `hasStorybook=${hasStorybook}`,
     readme[0] ? `md=${mdx ? 'mdx' : 'md'}` : ''
   ];
-
-  async function handleSuc () {
-    // handle new plugins
-    const plugin_handles = plugins && plugins.length > 0 && getHandlers<'new'>(plugins as OmniPlugin<'new'>[], 'new');
-    if (plugin_handles) {
-      for (const name in plugin_handles) {
-        const handler = plugin_handles[name];
-        await handler({
-          type,
-          template,
-          build,
-          release
-        }, {
-          componentName,
-          componentType: fc ? 'function' : 'class'
-        });
-      }
-    }
-    // success logger
-    logSuc(`${componentName} 位于 ${path_cp_rel}，创建完成！(The ${componentName} local at ${path_cp_rel}, construction completed!)`);
-    process.exit(0);
-  }
-
-  function handleErr (err: any) {
-    // error logger
-    logErr(`完蛋！好像有错误！(Oops! Some error occured) \n👉  ${JSON.stringify(err)}`);
-    process.exit(1);
-  }
 
   let newTplPkj = tplPkj;
   if (!newTplPkj) {
@@ -132,7 +104,34 @@ export default async function (config: OmniConfig, componentName: string, option
   }
 
   logInfo(`正在下载 ${newTplPkj} 模板，请稍后... (Downloading the templates, please wait patiently…)`);
-  exec([
-    `npx ${newTplPkj}@latest new ${arr2str(params)}`
-  ], handleSuc, handleErr);
+
+  exec(
+    [
+      `npx ${newTplPkj}@latest new ${arr2str(params)}`
+    ],
+    async function () {
+      // handle new plugins
+      const plugin_handles = plugins && plugins.length > 0 && getHandlers<'new'>(plugins as OmniPlugin<'new'>[], 'new');
+      if (plugin_handles) {
+        for (const name in plugin_handles) {
+          const handler = plugin_handles[name];
+          await handler({
+            type,
+            template,
+            build,
+            release
+          }, {
+            componentName,
+            componentType: fc ? 'function' : 'class'
+          });
+        }
+      }
+      // success logger
+      logSuc(`${componentName} 位于 ${path_cp_rel}，创建完成！(The ${componentName} local at ${path_cp_rel}, construction completed!)`);
+      process.exit(0);
+    },
+    function (err: any) {
+      logErr(`完蛋！好像有错误！(Oops! Some error occured) \n👉  ${JSON.stringify(err)}`);
+      process.exit(1);
+    });
 }

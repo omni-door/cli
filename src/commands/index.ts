@@ -1,14 +1,14 @@
 import program from 'commander';
 import fs from 'fs';
 import path from 'path';
-import { node_version } from '@omni-door/tpl-utils';
+import { node_version, logWarn } from '@omni-door/tpl-utils';
 import { OmniConfig } from '../index.d';
 
 (async function () {
   try {
     await node_version('10.13.0');
   } catch (e) {
-    process.exit(1);
+    logWarn(e);
   }
 
   const { initial, dev, newTpl, build, release } = require('./commands');

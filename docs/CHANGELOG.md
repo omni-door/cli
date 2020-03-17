@@ -6,6 +6,8 @@
 
 2. upgrade the @omni-door/tpl-utils dependency
 
+3. [omni dev] fix the history API incorrect router problem
+
 ### v1.2.8
 1. add `options` parameters for plugin and update the type defination
 

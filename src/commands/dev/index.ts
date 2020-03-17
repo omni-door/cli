@@ -2,6 +2,11 @@ import run from './run';
 import { logWarn, node_version } from '@omni-door/tpl-utils';
 import { OmniConfig } from '../../index.d';
 
+function handleException (msg?: string) {
+  logWarn(msg || '发生了一些未知错误！(Ops! Some unknown errors have occurred!)');
+  return process.exit(0);
+}
+
 export default async function (config: OmniConfig, options: { port?: number | string }) {
   try {
     // node version pre-check
@@ -11,8 +16,7 @@ export default async function (config: OmniConfig, options: { port?: number | st
   }
 
   if (JSON.stringify(config) === '{}') {
-    logWarn('请先初始化项目！(Please initialize project first!)');
-    return process.exit(0);
+    handleException('请先初始化项目！(Please initialize project first!)');
   }
 
   const p = options.port;
@@ -22,8 +26,7 @@ export default async function (config: OmniConfig, options: { port?: number | st
   } = config as OmniConfig;
 
   if (!dev || JSON.stringify(dev) === '{}') {
-    logWarn('配置文件 dev 字段缺失！(The dev field is missing in config file!)');
-    return process.exit(0);
+    handleException('配置文件 dev 字段缺失！(The dev field is missing in config file!)');
   }
 
   const {
@@ -32,15 +35,13 @@ export default async function (config: OmniConfig, options: { port?: number | st
     webpack,
     proxy,
     middleware
-  } = dev;
+  } = dev!;
 
   if (type === 'component-library-react') {
-    logWarn('请直接执行 npm start 启动开发服务！(Please exec npm start to run dev-server!)');
-    return process.exit(0);
+    handleException('请直接执行 npm start 启动开发服务！(Please exec npm start to run dev-server!)');
   } else {
     if (!webpack) {
-      logWarn('缺少开发服务webpack配置文件！(Missing the dev-server webpack-config!)');
-      return process.exit(1);
+      handleException('缺少开发服务webpack配置文件！(Missing the dev-server webpack-config!)');
     }
 
     const _port = !isNaN(+p!)
@@ -52,7 +53,7 @@ export default async function (config: OmniConfig, options: { port?: number | st
     run({
       p: _port,
       logLevel,
-      webpackConfig: webpack,
+      webpackConfig: webpack!,
       proxyConfig: proxy,
       middlewareConfig: middleware
     });

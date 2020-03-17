@@ -11,6 +11,11 @@
     "src/**/*.test.ts",
     "src/commands/index.ts",
     "src/commands/commands.ts",
+    "src/commands/build/index.ts",
+    "src/commands/dev/*.ts",
+    "src/commands/initial/index.ts",
+    "src/commands/new/index.ts",
+    "src/commands/release/index.ts",
     "lib/*"
   ],
   "reporter": [

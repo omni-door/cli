@@ -6,6 +6,8 @@
 
 2. 升级依赖 @omni-door/tpl-utils
 
+3. [omni dev] 修复 history API 路由不正确的问题
+
 ### v1.2.8
 1. 插件新增 `options` 参数，并更新 type 定义
 
