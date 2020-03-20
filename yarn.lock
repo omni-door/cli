@@ -319,10 +319,10 @@
     "@nodelib/fs.scandir" "2.1.3"
     fastq "^1.6.0"
 
-"@omni-door/tpl-utils@^0.0.18":
-  version "0.0.18"
-  resolved "https://registry.yarnpkg.com/@omni-door/tpl-utils/-/tpl-utils-0.0.18.tgz#feb4cf17b451c2142bcf74dcee79f2617a92bd29"
-  integrity sha512-2zPYIqgMrtoyBltt5c92IJN3Vs0l6LrzLF+ZPJYBxxoikeQ1o5bl8HTMREl7AbrLzuqFfRCzgZQopZtGgYJooQ==
+"@omni-door/tpl-utils@^0.0.20":
+  version "0.0.20"
+  resolved "https://registry.npmjs.org/@omni-door/tpl-utils/-/tpl-utils-0.0.20.tgz#d89581ffd3f8c4cc8679a240c9d18e676493c6f9"
+  integrity sha512-8Ts4QkiDL1+pGUhOY69duh+xcgnFaA3QY7Ys6CCGgQOKVpFfaOlC3AqSE9LBG2n+PIQXQ52igLcb4rEFtYGEDQ==
   dependencies:
     "@types/signale" "^1.2.1"
     chalk "^3.0.0"

@@ -109,8 +109,8 @@ type AfterRes = {
 };
 
 type OptionCustom = {
-  before?: (dirName: string) => void | BeforeRes | Promise<BeforeRes>;
-  after?: () => void | AfterRes | Promise<AfterRes>;
+  before?: (dirName: string) => (void | BeforeRes | Promise<BeforeRes>);
+  after?: () => (void | AfterRes | Promise<AfterRes>);
   tplPkj?: string;
   tplPkjParams?: string[];
   configFileName?: string;

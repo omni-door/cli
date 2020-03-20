@@ -6,7 +6,7 @@ import { Request, Response, NextFunction } from 'express';
 export { Request, Response, NextFunction } from 'express';
 import { PathParams } from 'express-serve-static-core';
 export { PathParams } from 'express-serve-static-core';
-import { BUILD, PROJECT_TYPE, STYLE, PLUGINSTAGE, LOGLEVEL } from '@omni-door/tpl-utils';
+import { BUILD, PROJECT_TYPE, STYLE, PLUGINSTAGE, LOGLEVEL, HASH } from '@omni-door/tpl-utils';
 export type ANYOBJECT = { [propName: string]: any };
 
 export type OptionTemplate = {
@@ -60,7 +60,7 @@ export interface OmniConfig {
     srcDir: string;
     outDir: string;
     esmDir?: string;
-    hash?: boolean;
+    hash?: boolean | HASH;
     configuration?: (config: ANYOBJECT) => ANYOBJECT;
     tool?: BUILD;
     preflight?: {

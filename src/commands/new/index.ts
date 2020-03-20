@@ -24,11 +24,11 @@ export default async function (config: OmniConfig, componentName: string, option
   before?: (params: {
     root: string;
     componentName: string;
-  }) => void | Promise<any>;
+  }) => (void | Promise<any>);
   after?: (params: {
     root: string;
     componentName: string;
-  }) => void | Promise<any>;
+  }) => (void | Promise<any>);
 }) {
   try {
     // node version pre-check

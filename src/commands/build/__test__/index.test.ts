@@ -49,7 +49,7 @@ describe('build command test', function () {
       multiOutput: true,
       srcDir: 'src',
       outDir: 'dist',
-      hash: true
+      hash: 'chunkhash'
     });
     expect(config2).to.be.a('string');
   });

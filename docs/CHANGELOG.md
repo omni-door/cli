@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ## v1.2.x
+### v1.2.11
+1. [omni build] support "hash", "chunkhash" and "contenthash"
+
 ### v1.2.10
 1. (initial) before and after support asynchronous execution
 

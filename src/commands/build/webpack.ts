@@ -1,4 +1,5 @@
 import path from 'path';
+import { HASH } from '@omni-door/tpl-utils';
 
 export default function (config: {
   ts: boolean;
@@ -6,9 +7,16 @@ export default function (config: {
   srcDir: string;
   outDir: string;
   configFileName?: string;
-  hash?: boolean;
+  hash?: boolean | HASH;
 }) {
   const { multiOutput, srcDir = path.resolve(__dirname, '../src/'), outDir = path.resolve(__dirname, '../lib/'), configFileName = 'omni.config.js', hash } = config;
+  const hashType = 
+    typeof hash === 'string'
+      ? hash
+      : hash
+        ? 'contenthash'
+        : hash;
+
   return `'use strict';
 
 const fs = require('fs');
@@ -62,7 +70,7 @@ ${
 module.exports = configuration({
   entry,
   output: {
-    filename: '${hash ? '[name].[hash:8].js' : '[name].js'}',
+    filename: '${hashType ? `[name].[${hashType}:8].js` : '[name].js'}',
     path: '${outDir}'
   },
   mode: 'production'
