@@ -53,7 +53,7 @@ OMNI 会根据不同的项目类型决定整个初始化、构建、创建模板
 
 - esmDir - 构建结果输出路径(符合es6 module规范)
 
-- hash - 构建的资源是否加上hash
+- hash - 构建的资源是否加上hash，可选 'contenthash'、'chunkhash'、'hash'(传入true则是contenthash)
 
 - configuration - 构建阶段的自定义配置回调，返回自定义的配置
 

@@ -4,6 +4,8 @@
 ### v1.2.11
 1. [omni build] 支持 "hash"、"chunkhash"、"contenthash"
 
+2. 升级依赖 @omni-door/tpl-utils
+
 ### v1.2.10
 1. (initial) before 和 after 支持异步执行
 

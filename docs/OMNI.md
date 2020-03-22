@@ -53,7 +53,7 @@ The dev-server based on express, realizing hot-update, api-proxy and other commo
 
 - esmDir - es6 module compiled directory
 
-- hash - whether the hash tag add to building result
+- hash - whether the hash tag add to building result, optional 'contenthash', 'chunkhash' and 'hash'(true equal 'contenthash')
 
 - configuration - The callback will be call in the build-process, you can return your custom build configuration
 

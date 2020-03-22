@@ -4,6 +4,8 @@
 ### v1.2.11
 1. [omni build] support "hash", "chunkhash" and "contenthash"
 
+2. upgrade the @omni-door/tpl-utils dependency
+
 ### v1.2.10
 1. (initial) before and after support asynchronous execution
 
