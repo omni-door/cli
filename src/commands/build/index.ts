@@ -307,6 +307,7 @@ export default async function (config: OmniConfig, buildTactic?: {
       }
     }
   } catch (err) {
+    type !== 'toolkit' && spinner.state('stop');
     logErr(`糟糕！构建过程发生了点意外！(Oops! Building process occured some accidents!) \n👉  ${JSON.stringify(err)}`);
   }
 }
