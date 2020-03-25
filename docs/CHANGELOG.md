@@ -1,6 +1,11 @@
 # CHANGE LOG
 
 ## v1.2.x
+### v1.2.13
+1. [omni build] stopping loading state when catch(try/catch) error
+
+2. [omni init] integrate prettier
+
 ### v1.2.12
 1. [omni build] support specify the path of config file
 

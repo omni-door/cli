@@ -296,7 +296,7 @@ export default async function (strategy: STRATEGY, {
           name: 'lint',
           type: 'checkbox',
           choices: (answer: any) => {
-            const lintArr = [ 'eslint', 'commitlint', 'stylelint' ];
+            const lintArr = [ 'eslint', 'prettier', 'commitlint', 'stylelint' ];
             (answer.style === 'none' || ProjectType[answer.project_type as keyof typeof ProjectType] === 'toolkit') && lintArr.pop();
             return lintArr;
           },
@@ -337,6 +337,7 @@ export default async function (strategy: STRATEGY, {
             } = answers;
 
             const eslint = !!~lint.indexOf('eslint');
+            const prettier = !!~lint.indexOf('prettier');
             const commitlint = !!~lint.indexOf('commitlint');
             const stylelint = !!~lint.indexOf('stylelint');
             const stylesheet = style.length === 0
@@ -358,6 +359,7 @@ export default async function (strategy: STRATEGY, {
               `ts=${ts}`,
               `test=${test}`,
               `eslint=${eslint}`,
+              `prettier=${prettier}`,
               `commitlint=${commitlint}`,
               `style=${stylesheet}`,
               `stylelint=${stylelint}`,
