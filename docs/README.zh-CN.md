@@ -133,6 +133,7 @@ Usage: omni build [options]
 build your project according to [omni.config.js]
 
 Options:
+  -c, --config <path>  指定构建的配置文件路径
   -n, --no-verify  绕过所有预检直接构建
   -h, --help       output usage information
 ```

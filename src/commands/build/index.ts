@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs, { readFile } from 'fs';
 import path from 'path';
 import fsExtra from 'fs-extra';
 import shelljs from 'shelljs';
@@ -28,6 +28,7 @@ import release from '../release';
 import logo from '../../utils/logo';
 
 export default async function (config: OmniConfig, buildTactic?: {
+  config?: string;
   verify?: boolean;
   buildConfig?: string;
   configFileName?: string;
@@ -68,7 +69,8 @@ export default async function (config: OmniConfig, buildTactic?: {
     stylelint = false
   } = preflight || {};
 
-  const { verify, buildConfig, configFileName } = buildTactic || {};
+  const { config: configPath, verify, buildConfig, configFileName } = buildTactic || {};
+  const configurationPath = configPath && path.resolve(process.cwd(), configPath);
 
   if (!outDir || !srcDir) {
     handleBuildErr('配置文件中未定义 $srcDir 或 $outDir (The $srcDir or $outDir were missed in configuration file)')();
@@ -197,20 +199,22 @@ export default async function (config: OmniConfig, buildTactic?: {
       await exec(['npm run lint:style'], () => logEmph(italic('stylelint校验通过！(The stylelint passed!)')), handleBuildErr(`stylelint校验失败！(The stylelint checking failed!) \n 尝试执行 (try to exec): ${underline('npm run lint:style_fix')}`));
     }
 
+    let realOutDir: string = '';
     const buildCliArr = [];
     if (type === 'component-library-react' || (tool === 'tsc' && type === 'toolkit')) {
       const tscPath = path.resolve(process.cwd(), 'node_modules/typescript/bin/tsc');
-      buildCliArr.push(`${tscPath} --outDir ${outDir} --project ${path.resolve(process.cwd(), 'tsconfig.json')}`);
-      esmDir && buildCliArr.push(`${tscPath} --module ES6 --target ES6 --outDir ${esmDir} --project ${path.resolve(process.cwd(), 'tsconfig.json')}`);
+      buildCliArr.push(`${tscPath} --outDir ${outDir} --project ${configurationPath || path.resolve(process.cwd(), 'tsconfig.json')}`);
+      esmDir && buildCliArr.push(`${tscPath} --module ES6 --target ES6 --outDir ${esmDir} --project ${configurationPath || path.resolve(process.cwd(), 'tsconfig.json')}`);
 
       if (!fs.existsSync(tscPath)) {
         logWarn('请先安装 typescript! (Please install typescript first!)');
         const is_go_on = await installDenpendencies('tsc');
-        if (!is_go_on) return;
+        if (!is_go_on) return process.exit(0);
       }
+      realOutDir = outDir;
     } else {
-      const content_rollup = !buildConfig && type === 'toolkit' && rollupConfig({ ts: typescript, multiOutput: true, srcDir, outDir, esmDir, configFileName });
-      const content_webpack = !buildConfig && type === 'spa-react' && webpackConfig({ ts: typescript, multiOutput: false, srcDir, outDir, configFileName, hash });
+      const content_rollup = !buildConfig && type === 'toolkit' && rollupConfig({ ts: typescript, multiOutput: true, srcDir, outDir, esmDir, configurationPath, configFileName });
+      const content_webpack = !buildConfig && type === 'spa-react' && webpackConfig({ ts: typescript, multiOutput: false, srcDir, outDir, configurationPath, configFileName, hash });
       const content_config = buildConfig || content_rollup || content_webpack;
 
       // put temporary file for build process
@@ -236,14 +240,17 @@ export default async function (config: OmniConfig, buildTactic?: {
           }
         }
 
-        if (!is_go_on) {
-          return process.exit(1);
-        }
+        if (!is_go_on) return process.exit(0);
 
         output_file({
           file_path: buildConfigPath,
           file_content: content_config
         });
+
+        if (type === 'spa-react') {
+          const bConfig = require(buildConfigPath);
+          realOutDir = (bConfig && bConfig.output && bConfig.output.path) || outDir;
+        }
       }
     }
 
@@ -254,7 +261,7 @@ export default async function (config: OmniConfig, buildTactic?: {
       spinner.state('start', '项目构建中 (Building, please wait patiently)');
     }
 
-    del.sync(outDir);
+    del.sync(realOutDir || outDir);
     esmDir && del.sync(esmDir);
 
     await exec(buildCliArr, async function () {
@@ -279,8 +286,8 @@ export default async function (config: OmniConfig, buildTactic?: {
       }
 
       type !== 'toolkit' && spinner.state('stop');
-      if (outDir && !fs.existsSync(outDir)) {
-        handleBuildErr(`输出的 ${outDir} 文件不存在，构建失败！(The output file ${outDir} doesn't exist)`)();
+      if (realOutDir && !fs.existsSync(realOutDir)) {
+        handleBuildErr(`输出的 ${realOutDir} 文件不存在，构建失败！(The output file ${realOutDir} doesn't exist)`)();
       } else {
         logTime('项目构建', true);
         handleBuildSuc()();

@@ -96,7 +96,8 @@
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.9",
     "webpack-dev-middleware": "^3.7.2",
-    "webpack-hot-middleware": "^2.25.0"
+    "webpack-hot-middleware": "^2.25.0",
+    "webpack-merge": "^4.2.2"
   },
   "dependencies": {
     "@omni-door/tpl-utils": "^0.0.20",

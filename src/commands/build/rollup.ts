@@ -4,9 +4,10 @@ export default function (config: {
   srcDir: string;
   outDir: string;
   esmDir: string;
+  configurationPath?: string;
   configFileName?: string;
 }) {
-  const { ts, multiOutput, srcDir = 'src', outDir = 'lib', esmDir, configFileName = 'omni.config.js' } = config;
+  const { ts, multiOutput, srcDir = 'src', outDir = 'lib', esmDir, configurationPath, configFileName = 'omni.config.js' } = config;
 
   return `const resolve = require('rollup-plugin-node-resolve');
 const commonjs = require('rollup-plugin-commonjs');
@@ -16,9 +17,9 @@ const typescript2 = require('rollup-plugin-typescript2');` : ''}
 const json = require('rollup-plugin-json');
 const fs = require('fs');
 const path = require('path');
-const del = require('del');
 const { logErr } = require('@omni-door/tpl-utils').default;
 const configs = require(path.resolve(process.cwd(), '${configFileName}'));
+${configurationPath ? `const customConfig = require('${configurationPath}')` : ''}
 
 const { build } = configs || {};
 const { configuration = config => config } = build || {};
@@ -32,11 +33,6 @@ for (let i = 0, len = exts.length; i < len; i++) {
     logErr('请以 index 为名称指定正确的入口文件！(Please specify the correct entry file with name of index)');
     process.exit(1);
   }
-}
-
-function clearDir () {
-  ${outDir ? `del.sync('${outDir}/*');` : ''}
-  ${esmDir ? `del.sync('${esmDir}/*');` : ''}
 }
 
 function flatten (arr) {
@@ -265,7 +261,10 @@ function createConfig () {
   ]
 };
 
-clearDir();
-module.exports = configuration(createConfig());
+module.exports = ${
+  configurationPath
+    ? 'customConfig'
+    : 'configuration(createConfig());'
+}
 `;
 }

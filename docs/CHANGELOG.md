@@ -1,6 +1,11 @@
 # CHANGE LOG
 
 ## v1.2.x
+### v1.2.12
+1. [omni build] support specify the path of config file
+
+2. [omni build] the checking of output-result bug fixed
+
 ### v1.2.11
 1. [omni build] support "hash", "chunkhash" and "contenthash"
 

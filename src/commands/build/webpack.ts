@@ -6,10 +6,11 @@ export default function (config: {
   multiOutput: boolean;
   srcDir: string;
   outDir: string;
+  configurationPath?: string;
   configFileName?: string;
   hash?: boolean | HASH;
 }) {
-  const { multiOutput, srcDir = path.resolve(__dirname, '../src/'), outDir = path.resolve(__dirname, '../lib/'), configFileName = 'omni.config.js', hash } = config;
+  const { multiOutput, srcDir = path.resolve(__dirname, '../src/'), outDir = path.resolve(__dirname, '../lib/'), configurationPath, configFileName = 'omni.config.js', hash } = config;
   const hashType = 
     typeof hash === 'string'
       ? hash
@@ -21,8 +22,11 @@ export default function (config: {
 
 const fs = require('fs');
 const path = require('path');
+const merge = require('webpack-merge');
 
 const configs = require(path.resolve(process.cwd(), '${configFileName}'));
+${configurationPath ? `const customConfig = require('${configurationPath}')` : ''}
+
 const { build } = configs || {};
 const { configuration = config => config } = build || {};
 
@@ -67,12 +71,18 @@ ${
     : ''
 }
 
-module.exports = configuration({
+const basicConfig = {
   entry,
   output: {
     filename: '${hashType ? `[name].[${hashType}:8].js` : '[name].js'}',
     path: '${outDir}'
   },
   mode: 'production'
-});`;
+};
+
+module.exports = ${
+  configurationPath
+    ? 'merge(basicConfig, customConfig);'
+    : 'configuration(basicConfig);'
+}`;
 }

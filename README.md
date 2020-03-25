@@ -135,6 +135,7 @@ Usage: omni build [options]
 build your project according to [omni.config.js]
 
 Options:
+  -c, --config <path>  specify the path of config file
   -n, --no-verify  bypass all pre-check before building
   -h, --help       output usage information
 ```

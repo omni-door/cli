@@ -56,6 +56,7 @@ import { OmniConfig } from '../index.d';
 
   program
     .command('build')
+    .option('-c, --config <path>', 'specify the path of config file')
     .option('-n, --no-verify', 'bypass all pre-check before building')
     .description('build your project according to [omni.config.js]')
     .action((buildTactic) => build(config, buildTactic));

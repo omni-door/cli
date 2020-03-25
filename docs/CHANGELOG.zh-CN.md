@@ -1,6 +1,11 @@
 # 变更日志
 
 ## v1.2.x
+### v1.2.12
+1. [omni build] 支持自定义配置文件路径
+
+2. [omni build] 修复输出资源是否存在的校验的bug
+
 ### v1.2.11
 1. [omni build] 支持 "hash"、"chunkhash"、"contenthash"
 
