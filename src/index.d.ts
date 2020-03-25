@@ -67,6 +67,7 @@ export interface OmniConfig {
       typescript?: boolean;
       test?: boolean;
       eslint?: boolean;
+      prettier?: boolean;
       stylelint?: boolean;
     };
     reserve?: {
@@ -80,6 +81,7 @@ export interface OmniConfig {
     preflight?: {
       test?: boolean;
       eslint?: boolean;
+      prettier?: boolean;
       stylelint?: boolean;
       commitlint?: boolean;
       branch?: string;

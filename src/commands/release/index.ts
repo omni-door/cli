@@ -9,6 +9,7 @@ import {
   logEmph,
   logTime,
   italic,
+  underline,
   node_version,
   logPrefix
 } from '@omni-door/tpl-utils';
@@ -43,6 +44,7 @@ export default async function (config: OmniConfig, iterTactic?: {
   const {
     test = false,
     eslint = false,
+    prettier = false,
     stylelint = false,
     commitlint = false,
     branch
@@ -92,11 +94,15 @@ export default async function (config: OmniConfig, iterTactic?: {
     }
 
     if (verify && eslint) {
-      await exec(['npm run lint:es'], () => logEmph(italic('eslint校验通过！(The eslint passed!)')), handleReleaseErr('eslint校验失败！(The eslint checking failed!)'));
+      await exec(['npm run lint:es'], () => logEmph(italic('eslint校验通过！(The eslint passed!)')), handleReleaseErr(`eslint校验失败！(The eslint checking failed!) \n 尝试执行 (try to exec): ${underline('npm run lint:es_fix')}`));
+    }
+
+    if (verify && prettier) {
+      await exec(['npm run lint:prettier'], () => logEmph(italic('prettier校验通过！(The prettier passed!)')), handleReleaseErr(`prettier校验失败！(The prettier checking failed!) \n 尝试执行 (try to exec): ${underline('npm run lint:prettier_fix')}`));
     }
 
     if (verify && stylelint) {
-      await exec(['npm run lint:style'], () => logEmph(italic('stylelint校验通过！(The stylelint passed!)')), handleReleaseErr('stylelint校验失败！(The stylelint checking failed!)'));
+      await exec(['npm run lint:style'], () => logEmph(italic('stylelint校验通过！(The stylelint passed!)')), handleReleaseErr(`stylelint校验失败！(The stylelint checking failed!) \n 尝试执行 (try to exec): ${underline('npm run lint:style_fix')}`));
     }
 
     await exec(

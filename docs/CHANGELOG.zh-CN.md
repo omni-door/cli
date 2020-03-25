@@ -1,6 +1,9 @@
 # 变更日志
 
 ## v1.2.x
+### v1.2.14
+1. [omni build/release] 支持 prettier 飞行检查
+
 ### v1.2.13
 1. [omni build] 当 catch(try/catch) 到错误时，停止 loading 状态
 

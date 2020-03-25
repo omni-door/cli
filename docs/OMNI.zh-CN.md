@@ -69,6 +69,8 @@ OMNI 会根据不同的项目类型决定整个初始化、构建、创建模板
 
   - eslint - 是否进行eslint检测
 
+  - prettier - 是否进行prettier检测
+
   - stylelint - 是否进行stylelint检测
 
 ## release
@@ -81,9 +83,11 @@ OMNI 会根据不同的项目类型决定整个初始化、构建、创建模板
 
   - eslint - 发布前是否进行eslint检测
 
+  - prettier - 发布前是否进行prettier检测
+
   - stylelint - 发布前是否进行stylelint检测
 
-  - commitlint - 发布前是否进行单元测试commitlint检测
+  - commitlint - 发布前是否进行commitlint检测
 
   - branch - 发布前进行分支检测，设置为空字符串则不会检测
 

@@ -66,6 +66,7 @@ export default async function (config: OmniConfig, buildTactic?: {
     typescript = false,
     test = false,
     eslint = false,
+    prettier = false,
     stylelint = false
   } = preflight || {};
 
@@ -193,6 +194,10 @@ export default async function (config: OmniConfig, buildTactic?: {
 
     if (verify && eslint) {
       await exec(['npm run lint:es'], () => logEmph(italic('eslint校验通过！(The eslint passed!)')), handleBuildErr(`eslint校验失败！(The eslint checking failed!) \n 尝试执行 (try to exec): ${underline('npm run lint:es_fix')}`));
+    }
+
+    if (verify && prettier) {
+      await exec(['npm run lint:prettier'], () => logEmph(italic('prettier校验通过！(The prettier passed!)')), handleBuildErr(`prettier校验失败！(The prettier checking failed!) \n 尝试执行 (try to exec): ${underline('npm run lint:prettier_fix')}`));
     }
 
     if (verify && stylelint) {

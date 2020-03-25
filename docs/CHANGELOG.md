@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ## v1.2.x
+### v1.2.14
+1. [omni build/release] support prettier preflight check
+
 ### v1.2.13
 1. [omni build] stopping loading state when catch(try/catch) error
 

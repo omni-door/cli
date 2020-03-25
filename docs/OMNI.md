@@ -67,9 +67,11 @@ The dev-server based on express, realizing hot-update, api-proxy and other commo
 
   - test - whether or not process unit-test
 
-  - eslint - whether or not process eslint fix and check
+  - eslint - whether or not process eslint check
 
-  - stylelint - whether or not process style lint check
+  - prettier - whether or not process prettier check
+
+  - stylelint - whether or not process stylelint check
 
 ## release
 - git - project git repo url
@@ -79,11 +81,13 @@ The dev-server based on express, realizing hot-update, api-proxy and other commo
 - preflight - the flight check before release
   - test - whether or not process unit-test
 
-  - eslint - whether or not process eslint fix and check
+  - eslint - whether or not process eslint check
 
-  - stylelint - whether or not process style lint check
+  - prettier - whether or not process prettier check
 
-  - commitlint - whether or not process commit lint check
+  - stylelint - whether or not process stylelint check
+
+  - commitlint - whether or not process commitlint check
 
   - branch - only can release in this branch, set empty string to ignore this check
 
