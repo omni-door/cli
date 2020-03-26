@@ -4,6 +4,10 @@
 ### v1.2.14
 1. [omni build/release] support prettier preflight check
 
+2. [omni build] checking exist about the specify config file
+
+3. [omni init] component-library-react project add styleguidist demo-framework
+
 ### v1.2.13
 1. [omni build] stopping loading state when catch(try/catch) error
 

@@ -4,6 +4,10 @@
 ### v1.2.14
 1. [omni build/release] 支持 prettier 飞行检查
 
+2. [omni build] 新增对于自定义配置文件是否存在的校验
+
+3. [omni init] component-library-react项目新增 styleguidist Demo框架的选择
+
 ### v1.2.13
 1. [omni build] 当 catch(try/catch) 到错误时，停止 loading 状态
 

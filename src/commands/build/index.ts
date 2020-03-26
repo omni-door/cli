@@ -71,7 +71,8 @@ export default async function (config: OmniConfig, buildTactic?: {
   } = preflight || {};
 
   const { config: configPath, verify, buildConfig, configFileName } = buildTactic || {};
-  const configurationPath = configPath && path.resolve(process.cwd(), configPath);
+  let configurationPath = configPath && path.resolve(process.cwd(), configPath);
+  if (configurationPath && !fs.existsSync(configurationPath)) configurationPath = void(0);
 
   if (!outDir || !srcDir) {
     handleBuildErr('配置文件中未定义 $srcDir 或 $outDir (The $srcDir or $outDir were missed in configuration file)')();

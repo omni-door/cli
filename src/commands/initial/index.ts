@@ -19,8 +19,6 @@ import {
 } from '@omni-door/tpl-utils';
 import logo from '../../utils/logo';
 
-
-
 enum ProjectType {
   'spa-react (React单页应用)' = 'spa-react',
   'component-library-react (React组件库)' = 'component-library-react',
@@ -147,7 +145,6 @@ export default async function (strategy: STRATEGY, {
     configFileName = 'omni.config.js'
   } = option || {};
 
-
   const tplParams: string[] = [ ...tplPkjParams ];
   const configPath = path.resolve(configFileName);
 
@@ -241,7 +238,7 @@ export default async function (strategy: STRATEGY, {
         },{
           name: 'dev_server',
           type: 'list',
-          choices: [ 'docz', 'storybook', 'bisheng' ],
+          choices: [ 'docz', 'storybook', 'styleguidist', 'bisheng' ],
           default: 'docz',
           message: function (answer: any) {
             return `${logo}[${++currStep}/${totalStep}] 请选择组件库Demo框架 (Please chioce the component-library demonstration frame)：`;
@@ -328,7 +325,7 @@ export default async function (strategy: STRATEGY, {
             const {
               project_type,
               name,
-              dev_server = 'basic',
+              dev_server = 'docz',
               ts = true,
               test = true,
               style = [],
@@ -363,7 +360,7 @@ export default async function (strategy: STRATEGY, {
               `commitlint=${commitlint}`,
               `style=${stylesheet}`,
               `stylelint=${stylelint}`,
-              `devServer=${dev_server === 'none' ? '' : dev_server}`
+              `devServer=${dev_server}`
             );
 
             switch (projectType) {
@@ -408,10 +405,6 @@ export default async function (strategy: STRATEGY, {
         logErr(JSON.stringify(err));
         spinner.state('fail', 'figlet 出现了问题！(Some thing about figlet is wrong!)');
       }
-  
-      
-
-      
 
       return exec(
         [
