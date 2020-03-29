@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ## v1.2.x
+### v1.2.15
+1. optimization exception
+
 ### v1.2.14
 1. [omni build/release] support prettier preflight check
 

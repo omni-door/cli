@@ -14,7 +14,7 @@ import { getHandlers } from '../../utils/tackle_plugins';
 
 function handleException (msg?: string) {
   logWarn(msg || '发生了一些未知错误！(Ops! Some unknown errors have occurred!)');
-  return process.exit(0);
+  process.exit(0);
 }
 
 export default async function (config: OmniConfig, componentName: string, options?: {

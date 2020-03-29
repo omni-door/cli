@@ -1,4 +1,4 @@
-import fs, { readFile } from 'fs';
+import fs from 'fs';
 import path from 'path';
 import fsExtra from 'fs-extra';
 import shelljs from 'shelljs';
@@ -90,9 +90,10 @@ export default async function (config: OmniConfig, buildTactic?: {
     msg = msg || '项目构建失败！(Building failed!)';
 
     return function (err?: string) {
+      type !== 'toolkit' && spinner.state('fail');
       err && logErr(err);
       msg && logErr(msg);
-      return process.exit(1);
+      process.exit(1);
     };
   }
 
@@ -291,17 +292,14 @@ export default async function (config: OmniConfig, buildTactic?: {
         }
       }
 
-      type !== 'toolkit' && spinner.state('stop');
       if (realOutDir && !fs.existsSync(realOutDir)) {
         handleBuildErr(`输出的 ${realOutDir} 文件不存在，构建失败！(The output file ${realOutDir} doesn't exist)`)();
       } else {
+        type !== 'toolkit' && spinner.state('stop');
         logTime('项目构建', true);
         handleBuildSuc()();
       }
-    }, function () {
-      type !== 'toolkit' && spinner.state('stop');
-      handleBuildErr()();
-    });
+    }, handleBuildErr());
 
     if (autoRelease) {
       logInfo('开始自动发布！(Beginning auto release!)');
@@ -313,7 +311,6 @@ export default async function (config: OmniConfig, buildTactic?: {
       }
     }
   } catch (err) {
-    type !== 'toolkit' && spinner.state('stop');
-    logErr(`糟糕！构建过程发生了点意外！(Oops! Building process occured some accidents!) \n👉  ${JSON.stringify(err)}`);
+    handleBuildErr(`糟糕！构建过程发生了点意外！(Oops! Building process occured some accidents!) \n👉  ${JSON.stringify(err)}`)();
   }
 }

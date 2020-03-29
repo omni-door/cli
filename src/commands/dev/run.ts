@@ -35,5 +35,6 @@ export default async function ({
     }
   } catch (err) {
     logErr(err);
+    process.exit(1);
   }
 }

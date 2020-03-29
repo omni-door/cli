@@ -29,7 +29,7 @@
 * 直接用 [npx](https://www.npmjs.com/package/@omni-door/cli) 初始化你的项目：`npx @omni-door/cli init`
 
 ## omni --help
-```sh
+```shell
   Usage: index [command] [options]
 
   Options:
@@ -50,26 +50,26 @@
 ## omni init
 
 ### 初始化一个项目
-```sh
+```shell
 omni init
 ```
 
 ### 用最新的依赖@lastest初始化项目
-```sh
+```shell
 omni init lastest
 ```
 
 ### 套用模板一键初始化项目
-```sh
+```shell
 omni init -t [projectName]
 ```
 or
-```sh
+```shell
 omni init --entire [projectName]
 ```
 
 ### 选项
-```sh
+```shell
 Usage: omni init [strategy] [options]
 
 initialize your project, [strategy] could be stable(default) or latest
@@ -92,7 +92,7 @@ Options:
 ## omni dev
 
 ### 选项
-```sh
+```shell
 Usage: omni dev [options]
 
 omni dev -p [port]
@@ -107,7 +107,7 @@ Options:
 ## omni new
 
 ### 选项
-```sh
+```shell
 Usage: omni new <module> [options]
 
 omni new <module> [-f | -c]
@@ -127,7 +127,7 @@ Options:
 ## omni build
 
 ### 选项
-```sh
+```shell
 Usage: omni build [options]
 
 build your project according to [omni.config.js]
@@ -143,7 +143,7 @@ Options:
 ## omni release
 
 ### 选项
-```sh
+```shell
 Usage: omni release [options]
 
 publish your project according to [omni.config.js]

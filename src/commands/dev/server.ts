@@ -92,6 +92,7 @@ function server ({
     });
   } catch (err) {
     logErr(err);
+    process.exit(1);
   }
 }
 

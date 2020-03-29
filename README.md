@@ -31,7 +31,7 @@ Several options to get up and running:
 * Initial project with [npx](https://www.npmjs.com/package/@omni-door/cli): `npx @omni-door/cli init`
 
 ## omni --help
-```sh
+```shell
   Usage: index [command] [options]
 
   Options:
@@ -52,26 +52,26 @@ Several options to get up and running:
 ## omni init
 
 ### Initial your project by answer several questions
-```sh
+```shell
 omni init
 ```
 
 ### Initial your project with lastest denpendencies
-```sh
+```shell
 omni init lastest
 ```
 
 ### Initial your project according to some template
-```sh
+```shell
 omni init -t [projectName]
 ```
 or
-```sh
+```shell
 omni init --entire [projectName]
 ```
 
 ### options
-```sh
+```shell
 Usage: omni init [strategy] [options]
 
 initialize your project, [strategy] could be stable(default) or latest
@@ -94,7 +94,7 @@ Options:
 ## omni dev
 
 ### options
-```sh
+```shell
 Usage: omni dev [options]
 
 omni dev -p [port]
@@ -109,7 +109,7 @@ Options:
 ## omni new
 
 ### options
-```sh
+```shell
 Usage: omni new <module> [options]
 
 omni new <module> [-f | -c]
@@ -129,7 +129,7 @@ Options:
 ## omni build
 
 ### options
-```sh
+```shell
 Usage: omni build [options]
 
 build your project according to [omni.config.js]
@@ -145,7 +145,7 @@ Options:
 ## omni release
 
 ### options
-```sh
+```shell
 Usage: omni release [options]
 
 publish your project according to [omni.config.js]

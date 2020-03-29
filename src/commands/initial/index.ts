@@ -433,5 +433,6 @@ export default async function (strategy: STRATEGY, {
   } catch (err) {
     logErr(JSON.stringify(err));
     spinner.state('fail', '项目初始化发生错误！(The initializing occurred some accidents!)');
+    process.exit(1);
   }
 }

@@ -78,7 +78,7 @@ export default async function (config: OmniConfig, iterTactic?: {
   function handleReleaseErr (msg?: string) {
     msg = msg || '发布失败！(release failed!)';
 
-    return function (err: any) {
+    return function (err?: string) {
       err && logErr(err);
       msg && logErr(msg);
       process.exit(1);
@@ -213,7 +213,6 @@ export default async function (config: OmniConfig, iterTactic?: {
     logTime('项目发布', true);
     handleReleaseSuc()();
   } catch (err) {
-    logErr(`糟糕！发布过程发生了一点意外 (Oops! release process occured some accidents) \n👉  ${JSON.stringify(err)}`);
-    return process.exit(1);
+    handleReleaseErr(`糟糕！发布过程发生了一点意外 (Oops! release process occured some accidents) \n👉  ${JSON.stringify(err)}`)();
   }
 }

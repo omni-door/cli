@@ -4,7 +4,7 @@ import { OmniConfig } from '../../index.d';
 
 function handleException (msg?: string) {
   logWarn(msg || '发生了一些未知错误！(Ops! Some unknown errors have occurred!)');
-  return process.exit(0);
+  process.exit(0);
 }
 
 export default async function (config: OmniConfig, options: { port?: number | string }) {
