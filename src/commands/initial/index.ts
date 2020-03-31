@@ -16,7 +16,7 @@ import {
   node_version,
   PKJTOOL,
   STRATEGY
-} from '@omni-door/tpl-utils';
+} from '@omni-door/utils';
 import logo from '../../utils/logo';
 
 enum ProjectType {

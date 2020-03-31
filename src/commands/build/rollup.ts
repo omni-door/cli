@@ -17,7 +17,7 @@ const typescript2 = require('rollup-plugin-typescript2');` : ''}
 const json = require('rollup-plugin-json');
 const fs = require('fs');
 const path = require('path');
-const { logErr } = require('@omni-door/tpl-utils').default;
+const { logErr } = require('@omni-door/utils').default;
 const configs = require(path.resolve(process.cwd(), '${configFileName}'));
 ${configurationPath ? `const customConfig = require('${configurationPath}')` : ''}
 

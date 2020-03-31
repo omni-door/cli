@@ -18,9 +18,9 @@ import {
   underline,
   italic,
   output_file,
-  node_version
-} from '@omni-door/tpl-utils';
-import { BUILD } from '@omni-door/tpl-utils';
+  node_version,
+  BUILD
+} from '@omni-door/utils';
 import { OmniConfig, OmniPlugin } from '../../index.d';
 import { getHandlers } from '../../utils/tackle_plugins';
 import dependencies_build from './dependencies_build';

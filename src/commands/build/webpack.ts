@@ -1,5 +1,5 @@
 import path from 'path';
-import { HASH } from '@omni-door/tpl-utils';
+import { HASH } from '@omni-door/utils';
 
 export default function (config: {
   ts: boolean;

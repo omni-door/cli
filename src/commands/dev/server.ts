@@ -1,12 +1,12 @@
 import path from 'path';
-import { logInfo, logErr } from '@omni-door/tpl-utils';
+import { logInfo, logErr, LOGLEVEL } from '@omni-door/utils';
 import { Express, Request, Response, NextFunction } from 'express';
 import { PathParams } from 'express-serve-static-core';
 import { Configuration, Compiler } from 'webpack';
 import { Config } from 'http-proxy-middleware';
 import { WebpackDevMiddleware } from 'webpack-dev-middleware';
 import { NextHandleFunction } from 'connect';
-import { LOGLEVEL } from '@omni-door/tpl-utils';
+import open from './open';
 
 export type ServerOptions = {
   p: number;
@@ -24,7 +24,6 @@ function server ({
   middlewareConfig = []
 }: ServerOptions): void {
   try {
-    const open = require('open');
     const ip = require('ip');
     const express = require('express');
     const proxy = require('http-proxy-middleware');
@@ -79,15 +78,15 @@ function server ({
       });
     });
 
-    app.listen(p, () => {
+    app.listen(p, async () => {
       const url_local = 'http://localhost:' + p;
       const url_ip = 'http://' + ip.address() + ':' + p;
-      open(url_ip);
+      await open(url_ip);
       logInfo('> Ready on local: ' + url_local);
       logInfo('> Ready on ip: ' + url_ip);
     });
 
-    (['SIGINT', 'SIGTERM'] as NodeJS.Signals[]).forEach((sig) => {
+    (['SIGINT', 'SIGQUIT', 'SIGTERM'] as NodeJS.Signals[]).forEach((sig) => {
       process.on(sig, () => process.exit(0));
     });
   } catch (err) {

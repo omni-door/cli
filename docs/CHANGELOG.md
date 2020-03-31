@@ -4,6 +4,10 @@
 ### v1.2.15
 1. optimization exception
 
+2. @omni-door/utils is replace to @omni-door/tpl-utils
+
+3. [omni dev] apply create-react-app [Re-use current tab](https://github.com/facebook/create-react-app/blob/32eebfeb7f5cdf93a790318eb76b81bb2927458e/packages/react-dev-utils/openChrome.applescript)
+
 ### v1.2.14
 1. [omni build/release] support prettier preflight check
 

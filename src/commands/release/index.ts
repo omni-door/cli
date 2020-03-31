@@ -12,7 +12,7 @@ import {
   underline,
   node_version,
   logPrefix
-} from '@omni-door/tpl-utils';
+} from '@omni-door/utils';
 import { OmniConfig, OmniPlugin } from '../../index.d';
 import { getHandlers } from '../../utils/tackle_plugins';
 

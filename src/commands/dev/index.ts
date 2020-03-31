@@ -1,5 +1,5 @@
 import run from './run';
-import { logWarn, node_version } from '@omni-door/tpl-utils';
+import { logWarn, node_version } from '@omni-door/utils';
 import { OmniConfig } from '../../index.d';
 
 function handleException (msg?: string) {

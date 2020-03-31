@@ -6,7 +6,7 @@ import {
   STYLE,
   DEVSERVER,
   PROJECT_TYPE
-} from '@omni-door/tpl-utils';
+} from '@omni-door/utils';
 
 export type GInstallCli = {
   project_type: PROJECT_TYPE;

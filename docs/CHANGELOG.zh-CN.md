@@ -4,6 +4,10 @@
 ### v1.2.15
 1. 优化异常操作处理
 
+2. @omni-door/utils 替换 @omni-door/tpl-utils
+
+3. [omni dev] 采用 create-react-app [复用已打开浏览器的tab策略](https://github.com/facebook/create-react-app/blob/32eebfeb7f5cdf93a790318eb76b81bb2927458e/packages/react-dev-utils/openChrome.applescript)
+
 ### v1.2.14
 1. [omni build/release] 支持 prettier 飞行检查
 

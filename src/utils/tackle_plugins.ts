@@ -1,4 +1,4 @@
-import { logWarn, PLUGINSTAGE } from '@omni-door/tpl-utils';
+import { logWarn, PLUGINSTAGE } from '@omni-door/utils';
 import { HandlerFactory, PluginHandler, OmniPlugin } from '../index.d';
 
 export function getHandlers<T extends PLUGINSTAGE> (plugins: OmniPlugin<T>[], stage: T) {

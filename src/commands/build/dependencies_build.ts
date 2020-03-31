@@ -1,4 +1,4 @@
-import { getDependency, arr2str, BUILD } from '@omni-door/tpl-utils';
+import { getDependency, arr2str, BUILD } from '@omni-door/utils';
 
 export default function (config: {
   build: BUILD;

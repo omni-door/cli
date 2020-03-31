@@ -1,5 +1,5 @@
 import inquirer from 'inquirer';
-import { logErr } from '@omni-door/tpl-utils';
+import { logErr } from '@omni-door/utils';
 import server, { ServerOptions } from './server';
 import logo from '../../utils/logo';
 
