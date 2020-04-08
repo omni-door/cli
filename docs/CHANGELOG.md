@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ## v1.2.x
+### v1.2.16
+1. upgrade @omni-door/utils
+
 ### v1.2.15
 1. optimization exception
 
