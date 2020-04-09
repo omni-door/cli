@@ -129,7 +129,7 @@ export default async function (config: OmniConfig, buildTactic?: {
           return true;
         },
         err => {
-          logWarn(`依赖安装发生了错误 (The dependencies install occured some accidents) \n👉  ${err}`);
+          logWarn(`依赖安装发生了错误 (The dependencies install occured some accidents) \n👉  ${JSON.stringify(err)}`);
           return false;
         });
       } else {
@@ -311,6 +311,6 @@ export default async function (config: OmniConfig, buildTactic?: {
       }
     }
   } catch (err) {
-    handleBuildErr(`糟糕！构建过程发生了点意外！(Oops! Building process occured some accidents!) \n👉  ${err}`)();
+    handleBuildErr(`糟糕！构建过程发生了点意外！(Oops! Building process occured some accidents!) \n👉  ${JSON.stringify(err)}`)();
   }
 }

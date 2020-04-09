@@ -147,7 +147,7 @@ export default async function (config: OmniConfig, componentName: string, option
       process.exit(0);
     },
     function (err: any) {
-      logErr(`完蛋！好像有错误！(Oops! Some error occured) \n👉  ${err}`);
+      logErr(`完蛋！好像有错误！(Oops! Some error occured) \n👉  ${JSON.stringify(err)}`);
       process.exit(1);
     });
 }
