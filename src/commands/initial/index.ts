@@ -188,7 +188,7 @@ export default async function (strategy: STRATEGY, {
             resolve();
           });
         }).catch(err => {
-          logErr(JSON.stringify(err));
+          logErr(err);
           spinner.state('fail', '项目初始化发生错误！(The initializing occurred some accidents!)');
           process.exit(1);
         });
@@ -377,7 +377,7 @@ export default async function (strategy: STRATEGY, {
             resolve();
           });
       }).catch(err => {
-        logErr(JSON.stringify(err));
+        logErr(err);
         spinner.state('fail', '项目初始化发生错误！(The initializing occurred some accidents!)');
         process.exit(1);
       });
@@ -402,7 +402,7 @@ export default async function (strategy: STRATEGY, {
     !configFileExist && create_dir !== false && mkdir(initPath);
     return figlet(getBrand(), function (err, data) {
       if (err) {
-        logErr(JSON.stringify(err));
+        logErr(err.message);
         spinner.state('fail', 'figlet 出现了问题！(Some thing about figlet is wrong!)');
       }
 
@@ -431,7 +431,7 @@ export default async function (strategy: STRATEGY, {
       );
     });
   } catch (err) {
-    logErr(JSON.stringify(err));
+    logErr(err);
     spinner.state('fail', '项目初始化发生错误！(The initializing occurred some accidents!)');
     process.exit(1);
   }

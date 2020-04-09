@@ -4,6 +4,8 @@
 ### v1.2.16
 1. 升级 @omni-door/utils
 
+2. 所有错误的log信息移除 `JSON.stringify`
+
 ### v1.2.15
 1. 优化异常操作处理
 

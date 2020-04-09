@@ -15,7 +15,7 @@ export const handlerFactory: HandlerFactory = (handler, errMsg) => (config, opti
   try {
     return handler(config, options);
   } catch (err) {
-    logWarn(JSON.stringify(err));
+    logWarn(err);
     logWarn(errMsg || '插件执行发生错误，将跳过继续执行剩余操作！(The plugin execution error, will skip to continue the rest of the operaions!)');    
   }
   return Promise.resolve({});

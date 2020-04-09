@@ -4,6 +4,8 @@
 ### v1.2.16
 1. upgrade @omni-door/utils
 
+2. remove all `JSON.stringify` in the error-log output
+
 ### v1.2.15
 1. optimization exception
 
