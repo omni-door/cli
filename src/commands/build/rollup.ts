@@ -9,14 +9,17 @@ export default function (config: {
 }) {
   const { ts, multiOutput, srcDir = 'src', outDir = 'lib', esmDir, configurationPath, configFileName = 'omni.config.js' } = config;
 
-  return `const resolve = require('rollup-plugin-node-resolve');
-const commonjs = require('rollup-plugin-commonjs');
-const babel = require('rollup-plugin-babel');
-${ts ? `const typescript = require('rollup-plugin-typescript');
-const typescript2 = require('rollup-plugin-typescript2');` : ''}
-const json = require('rollup-plugin-json');
+  return `'use strict';
+
 const fs = require('fs');
 const path = require('path');
+const { require_cwd } = require('@omni-door/utils');
+const resolve = require_cwd('rollup-plugin-node-resolve');
+const commonjs = require_cwd('rollup-plugin-commonjs');
+const babel = require_cwd('rollup-plugin-babel');
+${ts ? `const typescript = require_cwd('rollup-plugin-typescript');
+const typescript2 = require_cwd('rollup-plugin-typescript2');` : ''}
+const json = require_cwd('rollup-plugin-json');
 const { logErr } = require('@omni-door/utils').default;
 const configs = require(path.resolve(process.cwd(), '${configFileName}'));
 ${configurationPath ? `const customConfig = require('${configurationPath}')` : ''}

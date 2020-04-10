@@ -1,5 +1,5 @@
 import path from 'path';
-import { logInfo, logErr, LOGLEVEL } from '@omni-door/utils';
+import { logInfo, logErr, LOGLEVEL, require_cwd } from '@omni-door/utils';
 import { Express, Request, Response, NextFunction } from 'express';
 import { PathParams } from 'express-serve-static-core';
 import { Configuration, Compiler } from 'webpack';
@@ -24,16 +24,16 @@ function server ({
   middlewareConfig = []
 }: ServerOptions): void {
   try {
-    const ip = require('ip');
-    const express = require('express');
-    const proxy = require('http-proxy-middleware');
-    const webpack = require('webpack');
+    const ip = require_cwd('ip');
+    const express = require_cwd('express');
+    const proxy = require_cwd('http-proxy-middleware');
+    const webpack = require_cwd('webpack');
     const compiler: Compiler = webpack(webpackConfig);
-    const devMiddleware: WebpackDevMiddleware & NextHandleFunction = require('webpack-dev-middleware')(compiler, {
+    const devMiddleware: WebpackDevMiddleware & NextHandleFunction = require_cwd('webpack-dev-middleware')(compiler, {
       publicPath: '/',
       logLevel: logLevel
     });
-    const hotMiddleware = require('webpack-hot-middleware');
+    const hotMiddleware = require_cwd('webpack-hot-middleware');
 
     const app: Express = express();
 

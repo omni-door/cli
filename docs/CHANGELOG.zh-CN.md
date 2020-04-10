@@ -8,7 +8,7 @@
 
 3. 为 `process` 绑定 `'SIGINT', 'SIGQUIT', 'SIGTERM'` 事件，监听退出程序
 
-4. 将 `process.cwd()` 和其目录下的 `node_modules` 添加到 `module.paths` 中
+4. [omni dev/build] 修复 `require` 无法获取工作路径的依赖的问题
 
 ### v1.2.15
 1. 优化异常操作处理

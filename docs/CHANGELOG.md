@@ -8,7 +8,7 @@
 
 3. `process` bind `'SIGINT', 'SIGQUIT', 'SIGTERM'` event to monitor exit
 
-4. add the `process.cwd()` and the child path `node_modules` to `module.paths`
+4. [omni dev/build] fix the `require` cannot obtain cwd path problem
 
 ### v1.2.15
 1. optimization exception

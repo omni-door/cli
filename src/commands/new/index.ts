@@ -10,7 +10,7 @@ import {
   node_version
 } from '@omni-door/utils';
 import { OmniConfig, OmniPlugin } from '../../index.d';
-import { getHandlers, signal, module_path } from '../../utils';
+import { getHandlers, signal } from '../../utils';
 
 function handleException (msg?: string) {
   logWarn(msg || '发生了一些未知错误！(Ops! Some unknown errors have occurred!)');
@@ -51,8 +51,6 @@ export default async function (config: OmniConfig, componentName: string, option
 
   // bind exit signals
   signal();
-  // add path for module
-  module_path();
 
   // capitalize first character
   componentName = componentName.charAt(0).toUpperCase() + componentName.slice(1);

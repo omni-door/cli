@@ -14,7 +14,7 @@ import {
   logPrefix
 } from '@omni-door/utils';
 import { OmniConfig, OmniPlugin } from '../../index.d';
-import { getHandlers, signal, module_path } from '../../utils';
+import { getHandlers, signal } from '../../utils';
 
 export default async function (config: OmniConfig, iterTactic?: {
   ignore?: boolean;
@@ -36,8 +36,6 @@ export default async function (config: OmniConfig, iterTactic?: {
 
   // bind exit signals
   signal();
-  // add path for module
-  module_path();
 
   logTime('项目发布');
   const { type, template, build, release = {}, plugins } = config;

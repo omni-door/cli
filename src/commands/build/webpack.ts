@@ -22,7 +22,8 @@ export default function (config: {
 
 const fs = require('fs');
 const path = require('path');
-const merge = require('webpack-merge');
+const { require_cwd } = require('@omni-door/utils');
+const merge = require_cwd('webpack-merge');
 
 const configs = require(path.resolve(process.cwd(), '${configFileName}'));
 ${configurationPath ? `const customConfig = require('${configurationPath}')` : ''}

@@ -22,7 +22,7 @@ import {
   BUILD
 } from '@omni-door/utils';
 import { OmniConfig, OmniPlugin } from '../../index.d';
-import { getHandlers, logo, signal, module_path } from '../../utils';
+import { getHandlers, logo, signal } from '../../utils';
 import dependencies_build from './dependencies_build';
 import release from '../release';
 
@@ -46,8 +46,6 @@ export default async function (config: OmniConfig, buildTactic?: {
 
   // bind exit signals
   signal();
-  // add path for module
-  module_path();
 
   const message = '开始构建！(Building process start!)';
   logTime('项目构建');
@@ -152,7 +150,7 @@ export default async function (config: OmniConfig, buildTactic?: {
         if (!/^.*(test|stories).*$/.test(v)) {
           copyStylesheet(filePath, originDir || dir);
         }
-      } else if (/.(css|scss|less)$/.test(v)) {
+      } else if (/.(css|scss|sass|less)$/.test(v)) {
         const relativePath = path.relative(originDir || dir, filePath);
         const destPath = path.resolve(outDir, relativePath);
         const emsPath = esmDir && path.resolve(esmDir, relativePath);

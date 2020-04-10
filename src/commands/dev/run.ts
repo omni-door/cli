@@ -1,5 +1,5 @@
 import inquirer from 'inquirer';
-import { logErr } from '@omni-door/utils';
+import { logErr, require_cwd } from '@omni-door/utils';
 import server, { ServerOptions } from './server';
 import { logo } from '../../utils';
 
@@ -8,7 +8,7 @@ export default async function ({
   ...rest
 }: ServerOptions): Promise<void> {
   try {
-    const detectPort = require('detect-port');
+    const detectPort = require_cwd('detect-port');
 
     const _p = await detectPort(p).catch((err: any) => {
       logErr(err);

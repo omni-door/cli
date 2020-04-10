@@ -1,7 +1,5 @@
-import { addPath } from 'app-module-path';
-
 export default function () {
-  const cwd = process.cwd();
-  addPath(cwd);
-  addPath(`${cwd}/node_modules`);
+  (['SIGINT', 'SIGQUIT', 'SIGTERM'] as NodeJS.Signals[]).forEach((sig) => {
+    process.on(sig, () => process.exit(0));
+  });
 }
