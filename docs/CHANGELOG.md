@@ -6,6 +6,8 @@
 
 2. remove redundant `JSON.stringify` in the error-log output
 
+3. `process` bind `'SIGINT', 'SIGQUIT', 'SIGTERM'` event to monitor exit
+
 ### v1.2.15
 1. optimization exception
 
