@@ -22,10 +22,9 @@ import {
   BUILD
 } from '@omni-door/utils';
 import { OmniConfig, OmniPlugin } from '../../index.d';
-import { getHandlers } from '../../utils/tackle_plugins';
+import { getHandlers, logo, signal, module_path } from '../../utils';
 import dependencies_build from './dependencies_build';
 import release from '../release';
-import logo from '../../utils/logo';
 
 export default async function (config: OmniConfig, buildTactic?: {
   config?: string;
@@ -44,6 +43,11 @@ export default async function (config: OmniConfig, buildTactic?: {
     logWarn('请先初始化项目！(Please initialize project first!)');
     return process.exit(0);
   }
+
+  // bind exit signals
+  signal();
+  // add path for module
+  module_path();
 
   const message = '开始构建！(Building process start!)';
   logTime('项目构建');
@@ -90,9 +94,9 @@ export default async function (config: OmniConfig, buildTactic?: {
     msg = msg || '项目构建失败！(Building failed!)';
 
     return function (err?: string) {
-      type !== 'toolkit' && spinner.state('fail');
       err && logErr(err);
       msg && logErr(msg);
+      type !== 'toolkit' && spinner.state('fail');
       process.exit(1);
     };
   }
@@ -129,7 +133,8 @@ export default async function (config: OmniConfig, buildTactic?: {
           return true;
         },
         err => {
-          logWarn(`依赖安装发生了错误 (The dependencies install occured some accidents) \n👉  ${JSON.stringify(err)}`);
+          logWarn(err);
+          logWarn('👆 依赖安装发生了错误 (The dependencies install occured some accidents)');
           return false;
         });
       } else {
@@ -311,6 +316,7 @@ export default async function (config: OmniConfig, buildTactic?: {
       }
     }
   } catch (err) {
-    handleBuildErr(`糟糕！构建过程发生了点意外！(Oops! Building process occured some accidents!) \n👉  ${JSON.stringify(err)}`)();
+    logErr(err);
+    handleBuildErr('👆 糟糕！构建过程发生了点意外！(Oops! Building process occured some accidents!)')();
   }
 }

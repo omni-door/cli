@@ -8,6 +8,8 @@
 
 3. `process` bind `'SIGINT', 'SIGQUIT', 'SIGTERM'` event to monitor exit
 
+4. add the `process.cwd()` and the child path `node_modules` to `module.paths`
+
 ### v1.2.15
 1. optimization exception
 

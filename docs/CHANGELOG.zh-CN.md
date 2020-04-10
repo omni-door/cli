@@ -6,7 +6,9 @@
 
 2. 移除错误输出信息中多余的 `JSON.stringify`
 
-3. `process` 绑定 `'SIGINT', 'SIGQUIT', 'SIGTERM'` 事件，监听退出程序
+3. 为 `process` 绑定 `'SIGINT', 'SIGQUIT', 'SIGTERM'` 事件，监听退出程序
+
+4. 将 `process.cwd()` 和其目录下的 `node_modules` 添加到 `module.paths` 中
 
 ### v1.2.15
 1. 优化异常操作处理

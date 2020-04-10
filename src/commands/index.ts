@@ -75,8 +75,4 @@ import { OmniConfig } from '../index.d';
   if (!program.args.length) {
     program.help();
   }
-
-  (['SIGINT', 'SIGQUIT', 'SIGTERM'] as NodeJS.Signals[]).forEach((sig) => {
-    process.on(sig, () => process.exit(0));
-  });
 })();

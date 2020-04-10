@@ -14,7 +14,7 @@ import {
   logPrefix
 } from '@omni-door/utils';
 import { OmniConfig, OmniPlugin } from '../../index.d';
-import { getHandlers } from '../../utils/tackle_plugins';
+import { getHandlers, signal, module_path } from '../../utils';
 
 export default async function (config: OmniConfig, iterTactic?: {
   ignore?: boolean;
@@ -33,6 +33,11 @@ export default async function (config: OmniConfig, iterTactic?: {
     logWarn('请先初始化项目！(Please initialize project first!)');
     process.exit(0);
   }
+
+  // bind exit signals
+  signal();
+  // add path for module
+  module_path();
 
   logTime('项目发布');
   const { type, template, build, release = {}, plugins } = config;
@@ -213,6 +218,7 @@ export default async function (config: OmniConfig, iterTactic?: {
     logTime('项目发布', true);
     handleReleaseSuc()();
   } catch (err) {
-    handleReleaseErr(`糟糕！发布过程发生了一点意外 (Oops! release process occured some accidents) \n👉  ${JSON.stringify(err)}`)();
+    logErr(err);
+    handleReleaseErr('👆 糟糕！发布过程发生了一点意外 (Oops! release process occured some accidents)')();
   }
 }

@@ -1,6 +1,7 @@
 import run from './run';
 import { logWarn, node_version } from '@omni-door/utils';
 import { OmniConfig } from '../../index.d';
+import { signal, module_path } from '../../utils';
 
 function handleException (msg?: string) {
   logWarn(msg || '发生了一些未知错误！(Ops! Some unknown errors have occurred!)');
@@ -43,6 +44,11 @@ export default async function (config: OmniConfig, options: { port?: number | st
     if (!webpack) {
       handleException('缺少开发服务webpack配置文件！(Missing the dev-server webpack-config!)');
     }
+
+    // bind exit signals
+    signal();
+    // add path for module
+    module_path();
 
     const _port = !isNaN(+p!)
       ? +p!

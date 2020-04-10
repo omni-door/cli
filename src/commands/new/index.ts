@@ -10,7 +10,7 @@ import {
   node_version
 } from '@omni-door/utils';
 import { OmniConfig, OmniPlugin } from '../../index.d';
-import { getHandlers } from '../../utils/tackle_plugins';
+import { getHandlers, signal, module_path } from '../../utils';
 
 function handleException (msg?: string) {
   logWarn(msg || '发生了一些未知错误！(Ops! Some unknown errors have occurred!)');
@@ -48,6 +48,11 @@ export default async function (config: OmniConfig, componentName: string, option
   if (!/[a-zA-Z\$\_]/.test(componentName.charAt(0))) {
     handleException('请输入合法的模块名称！(Please input a valid module name!)');
   }
+
+  // bind exit signals
+  signal();
+  // add path for module
+  module_path();
 
   // capitalize first character
   componentName = componentName.charAt(0).toUpperCase() + componentName.slice(1);
@@ -147,7 +152,8 @@ export default async function (config: OmniConfig, componentName: string, option
       process.exit(0);
     },
     function (err: any) {
-      logErr(`完蛋！好像有错误！(Oops! Some error occured) \n👉  ${JSON.stringify(err)}`);
+      logErr(err);
+      logErr('👆 完蛋！好像有错误！(Oops! Some error occured)\n');
       process.exit(1);
     });
 }

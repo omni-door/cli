@@ -1,7 +1,7 @@
 import inquirer from 'inquirer';
 import { logErr } from '@omni-door/utils';
 import server, { ServerOptions } from './server';
-import logo from '../../utils/logo';
+import { logo } from '../../utils';
 
 export default async function ({
   p,

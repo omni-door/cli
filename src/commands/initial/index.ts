@@ -17,7 +17,7 @@ import {
   PKJTOOL,
   STRATEGY
 } from '@omni-door/utils';
-import logo from '../../utils/logo';
+import { logo, signal, module_path } from '../../utils';
 
 enum ProjectType {
   'spa-react (React单页应用)' = 'spa-react',
@@ -127,6 +127,11 @@ export default async function (strategy: STRATEGY, {
   } catch (err) {
     logWarn(err);
   }
+
+  // bind exit signals
+  signal();
+  // add path for module
+  module_path();
 
   // whether the config file exsit
   let configFileExist = false;
