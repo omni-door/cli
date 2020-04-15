@@ -6,6 +6,8 @@
 
 2. [omni build] tookit 打包模板修改
 
+3. [omni release] 修复commitlint遗漏verify参数的问题
+
 ### v1.2.16
 1. 升级 @omni-door/utils
 

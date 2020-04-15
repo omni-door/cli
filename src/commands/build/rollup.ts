@@ -75,7 +75,8 @@ function createConfig () {
     plugins: [
       resolve({
         extensions,
-        preferBuiltins: true
+        preferBuiltins: true,
+        browser: true
       }),
       commonjs({
         namedExports: {
@@ -127,7 +128,8 @@ function createConfig () {
           plugins: [
             resolve({
               extensions,
-              preferBuiltins: true
+              preferBuiltins: true,
+              browser: true
             }),
             commonjs({
               namedExports: {
@@ -178,7 +180,8 @@ function createConfig () {
         plugins: [
           resolve({
             extensions,
-            preferBuiltins: true
+            preferBuiltins: true,
+            browser: true
           }),
           commonjs({
             namedExports: {
@@ -225,7 +228,8 @@ function createConfig () {
             plugins: [
               resolve({
                 extensions,
-                preferBuiltins: true
+                preferBuiltins: true,
+                browser: true
               }),
               commonjs({
                 namedExports: {

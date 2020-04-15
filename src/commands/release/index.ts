@@ -158,11 +158,11 @@ export default async function (config: OmniConfig, iterTactic?: {
         pkj = require(pkjPath);
       }
 
-      const commit = commitlint
+      const commit = commitlint && verify
         ? `git commit -m'[${pkj.name.toUpperCase()}]: ${pkj.version}'`
         : `git commit -m'[${pkj.name.toUpperCase()}]: ${pkj.version}' --no-verify`;
 
-      const push = commitlint
+      const push = commitlint && verify
         ? `git push ${remote} ${branch || 'master'}`
         : `git push ${remote} ${branch || 'master'} --no-verify`;
 

@@ -6,6 +6,8 @@
 
 2. [omni build] tookit package template modify
 
+3. [omni release] fix the commitlint omit verify parameters bug
+
 ### v1.2.16
 1. upgrade @omni-door/utils
 
