@@ -4,6 +4,8 @@
 ### v1.2.17
 1. [omni new] remove the logic which automatic transform to uppercase for the component-name's fist letter
 
+2. [omni build] tookit package template modify
+
 ### v1.2.16
 1. upgrade @omni-door/utils
 

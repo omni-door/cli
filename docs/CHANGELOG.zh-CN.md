@@ -4,6 +4,8 @@
 ### v1.2.17
 1. [omni new] 移除组件名自动大写第一个字母的逻辑
 
+2. [omni build] tookit 打包模板修改
+
 ### v1.2.16
 1. 升级 @omni-door/utils
 

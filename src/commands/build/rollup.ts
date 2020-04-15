@@ -13,14 +13,13 @@ export default function (config: {
 
 const fs = require('fs');
 const path = require('path');
-const { require_cwd } = require('@omni-door/utils');
+const { require_cwd, logErr } = require('@omni-door/utils');
 const resolve = require_cwd('rollup-plugin-node-resolve');
 const commonjs = require_cwd('rollup-plugin-commonjs');
 const babel = require_cwd('rollup-plugin-babel');
 ${ts ? `const typescript = require_cwd('rollup-plugin-typescript');
 const typescript2 = require_cwd('rollup-plugin-typescript2');` : ''}
 const json = require_cwd('rollup-plugin-json');
-const { logErr } = require('@omni-door/utils').default;
 const configs = require(path.resolve(process.cwd(), '${configFileName}'));
 ${configurationPath ? `const customConfig = require('${configurationPath}')` : ''}
 
