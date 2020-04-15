@@ -53,7 +53,7 @@ export default async function (config: OmniConfig, componentName: string, option
   signal();
 
   // capitalize first character
-  componentName = componentName.charAt(0).toUpperCase() + componentName.slice(1);
+  // componentName = componentName.charAt(0).toUpperCase() + componentName.slice(1);
 
   let { function: fc, class: cc, tplPkj, before, after } = options || {};
 
