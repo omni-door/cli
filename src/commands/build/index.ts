@@ -104,7 +104,7 @@ export default async function (config: OmniConfig, buildTactic?: {
       {
         name: 'install',
         type: 'confirm',
-        message: `${logo} 自动安装所需要的依赖? (Automatic install dependencies?)`,
+        message: `${logo()} 自动安装所需要的依赖? (Automatic install dependencies?)`,
         default: true
       }
     ]).then(answers => {

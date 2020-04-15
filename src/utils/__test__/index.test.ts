@@ -60,10 +60,11 @@ describe('tackle_plugins test', function () {
 
 describe('logo test', function () {
   it('type checking', function () {
-    expect(logo).to.be.a('string');
+    expect(logo).to.be.a('function');
+    expect(logo()).to.be.a('string');
   });
 
   it('value checking', function () {
-    expect(logo).to.be.equal('🐸  ');
+    expect(logo()).to.be.equal('🐸  ');
   });
 });

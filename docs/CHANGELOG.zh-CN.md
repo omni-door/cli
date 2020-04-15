@@ -1,12 +1,15 @@
 # 变更日志
 
 ## v1.2.x
+### v1.2.18
+1. [fix bug] 修复 logo 未被正确替换的问题
+
 ### v1.2.17
-1. [omni new] 移除组件名自动大写第一个字母的逻辑
+1. (omni new) 移除组件名自动大写第一个字母的逻辑
 
-2. [omni build] tookit 打包模板修改
+2. (omni build) tookit 打包模板修改
 
-3. [omni release] 修复commitlint遗漏verify参数的问题
+3. (omni release) 修复commitlint遗漏verify参数的问题
 
 ### v1.2.16
 1. 升级 @omni-door/utils
@@ -15,89 +18,89 @@
 
 3. 为 `process` 绑定 `'SIGINT', 'SIGQUIT', 'SIGTERM'` 事件，监听退出程序
 
-4. [omni dev/build] 修复 `require` 无法获取工作路径的依赖的问题
+4. (omni dev/build) 修复 `require` 无法获取工作路径的依赖的问题
 
 ### v1.2.15
 1. 优化异常操作处理
 
 2. @omni-door/utils 替换 @omni-door/tpl-utils
 
-3. [omni dev] 采用 create-react-app [复用已打开浏览器的tab策略](https://github.com/facebook/create-react-app/blob/32eebfeb7f5cdf93a790318eb76b81bb2927458e/packages/react-dev-utils/openChrome.applescript)
+3. (omni dev) 采用 create-react-app (复用已打开浏览器的tab策略)[https://github.com/facebook/create-react-app/blob/32eebfeb7f5cdf93a790318eb76b81bb2927458e/packages/react-dev-utils/openChrome.applescript]
 
 ### v1.2.14
-1. [omni build/release] 支持 prettier 飞行检查
+1. (omni build/release) 支持 prettier 飞行检查
 
-2. [omni build] 新增对于自定义配置文件是否存在的校验
+2. (omni build) 新增对于自定义配置文件是否存在的校验
 
-3. [omni init] component-library-react项目新增 styleguidist Demo框架的选择
+3. (omni init) component-library-react项目新增 styleguidist Demo框架的选择
 
 ### v1.2.13
-1. [omni build] 当 catch(try/catch) 到错误时，停止 loading 状态
+1. (omni build) 当 catch[try/catch] 到错误时，停止 loading 状态
 
-2. [omni init] 集成 prettier
+2. (omni init) 集成 prettier
 
 ### v1.2.12
-1. [omni build] 支持自定义配置文件路径
+1. (omni build) 支持自定义配置文件路径
 
-2. [omni build] 修复输出资源是否存在的校验的bug
+2. (omni build) 修复输出资源是否存在的校验的bug
 
 ### v1.2.11
-1. [omni build] 支持 "hash"、"chunkhash"、"contenthash"
+1. (omni build) 支持 "hash"、"chunkhash"、"contenthash"
 
 2. 升级依赖 @omni-door/tpl-utils
 
 ### v1.2.10
-1. (initial) before 和 after 支持异步执行
+1. [initial] before 和 after 支持异步执行
 
-2. (newTpl) 支持 before 和 after 回调
+2. [newTpl] 支持 before 和 after 回调
 
 ### v1.2.9
-1. [omni dev] 新增 Signals listener
+1. (omni dev) 新增 Signals listener
 
 2. 升级依赖 @omni-door/tpl-utils
 
-3. [omni dev] 修复 history API 路由不正确的问题
+3. (omni dev) 修复 history API 路由不正确的问题
 
 ### v1.2.8
 1. 插件新增 `options` 参数，并更新 type 定义
 
 ### v1.2.7
-1. [omni release] 发布过程的异常处理逻辑更改
+1. (omni release) 发布过程的异常处理逻辑更改
 
-2. [omni release] 发布到npm仓库显示指定registry
+2. (omni release) 发布到npm仓库显示指定registry
 
-3. [omni release] 发布到git仓库避免修改origin
+3. (omni release) 发布到git仓库避免修改origin
 
-4. [omni release] 新增 tag 选项
+4. (omni release) 新增 tag 选项
 
 5. 插件运行新增try/catch异常处理
 
 ### v1.2.6
-1. (initial) 支持 tplPkjParams 选项
+1. [initial] 支持 tplPkjParams 选项
 
-2. [omni build] 移除自动发布的时间日志
+2. (omni build) 移除自动发布的时间日志
 
 ### v1.2.5
-1. [omni release] 修复版本检测的问题
+1. (omni release) 修复版本检测的问题
 
 ### v1.2.4
-1. [omni release] 修复 分支检测和npm发布log前缀不正确的问题
+1. (omni release) 修复 分支检测和npm发布log前缀不正确的问题
 
 2. 升级 @omni-door/tpl-utils 依赖
 
 ### v1.2.3
-1. [omni release] 汉化翻译
+1. (omni release) 汉化翻译
 
 2. 升级 @omni-door/tpl-utils 依赖
 
-3. [omni initial/build/release] 新增耗时日志输出
+3. (omni initial/build/release) 新增耗时日志输出
 
 ### v1.2.2
-1. [omni build] rollup 打包新增未正确发现入口文件的提示
+1. (omni build) rollup 打包新增未正确发现入口文件的提示
 
-2. (newTpl、initial) 支持 tplPkj 选项
+2. [newTpl、initial] 支持 tplPkj 选项
 
-3. [omni new] 恢复 plugin 的支持
+3. (omni new) 恢复 plugin 的支持
 
 ### v1.2.1
 1. 拆分模板
@@ -127,23 +130,23 @@
 1. <package.json> 修复函数的调用栈在转化成字符串后丢失，无法正确获取到变量值的问题
 
 ### v1.1.0
-1. <package.json> 新增 resolutions 字段，解决 [依赖重复导致TS报错](https://stackoverflow.com/questions/52399839/duplicate-identifier-librarymanagedattributes) 的问题
+1. <package.json> 新增 resolutions 字段，解决 (依赖重复导致TS报错)[https://stackoverflow.com/questions/52399839/duplicate-identifier-librarymanagedattributes] 的问题
 
-2. [onmi init] stable 策略版本更新
+2. (onmi init) stable 策略版本更新
 
-3. [onmi init] component-library-react 和 toolkit 默认开启单元测试
+3. (onmi init) component-library-react 和 toolkit 默认开启单元测试
 
 ---
 
 ## v1.0.x
 ### v1.0.10
-1. (node-version-check) 修复node版本检测问题
+1. [node-version-check] 修复node版本检测问题
 
-2. [onmi init] 动态更新初始化总步数
+2. (onmi init) 动态更新初始化总步数
 
-3. [onmi build] 修复错误日志丢失的问题
+3. (onmi build) 修复错误日志丢失的问题
 
-4. [onmi release] 修复错误日志丢失的问题
+4. (onmi release) 修复错误日志丢失的问题
 
 ### v1.0.9
 1. <package.json> 新增 stylelint 检测启动参数 {--allow-empty-input}
@@ -156,12 +159,12 @@
 
 5. <.npmignore> 生成基于项目类型
 
-6. [onmi init] 支持样式多选
+6. (onmi init) 支持样式多选
 
 ### v1.0.8
-1. [omni init] 修复自定义Logo显示不正确问题
+1. (omni init) 修复自定义Logo显示不正确问题
 
-2. [omni init] 支持移除内置的依赖项
+2. (omni init) 支持移除内置的依赖项
 
 ### v1.0.7
 1. <tsconfig.json> 模板新增对项目类型判断
@@ -170,9 +173,9 @@
 
 3. <webpack.config.prod.js> 优化生产环境打包
 
-4. (dev-server) 新增运行时错误捕获
+4. [dev-server] 新增运行时错误捕获
 
-5. [omni new] 修复无法识别参数的问题
+5. (omni new) 修复无法识别参数的问题
 
 ### v1.0.6
 1. 新增对 node 版本做检测，要求 node >= 10.13.0
@@ -185,12 +188,12 @@
 3. <omni.config.js>, `dev.webpack_config` 更变为 `dev.webpack`
 
 ### v1.0.4
-1. (dev-server) 启动进程优化
+1. [dev-server] 启动进程优化
 
-2. [omni init] 更改 `omni init -s` 和 `omni init --simple` 为 `omni init -b` 和 `omni init -basic`
+2. (omni init) 更改 `omni init -s` 和 `omni init --simple` 为 `omni init -b` 和 `omni init -basic`
 
 ### v1.0.3
-1. [omni build] 自动发布优化，摆脱依赖npm script，直接调用release方法
+1. (omni build) 自动发布优化，摆脱依赖npm script，直接调用release方法
 
 ### v1.0.2
 1. toolkit 项目支持使用 tsc 打包
@@ -217,6 +220,6 @@
 **标签的含义**：
 - \<xxx> - 模板
 
-- [xxx] - 命令
+- (xxx) - 命令
 
-- (xxx) - 功能
+- [xxx] - 行为、特性、功能
