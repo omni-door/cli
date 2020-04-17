@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ## v1.2.x
+### v1.2.19
+1. upgrade @omni-door/utils
+
 ### v1.2.18
 1. [fix bug] the logo doesn't replace correctly
 
