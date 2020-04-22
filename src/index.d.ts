@@ -12,14 +12,17 @@ export type ANYOBJECT = { [propName: string]: any };
 export type OptionTemplate = {
   componentName: string;
   componentType: 'function' | 'class';
+  tplSource: string;
 };
 
 export type OptionBuild = {
   verify?: boolean;
+  buildConfig?: string;
 };
 
 export type OptionRelease = {
   version: string;
+  versionIterTactic: 'ignore' | 'manual' | 'auto';
   verify?: boolean;
   tag?: string;
 };

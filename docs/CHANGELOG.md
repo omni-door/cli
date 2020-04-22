@@ -4,6 +4,12 @@
 ### v1.2.19
 1. upgrade @omni-door/utils
 
+2. [new plugin] callback arguments add template-source(tplSource)
+
+3. [build plugin] callback arguments add custom-build-configuration(buildConfig)
+
+4. [release plugin] callback arguments add version-iteration-tactic(versionIterTactic)
+
 ### v1.2.18
 1. [fix bug] the logo doesn't replace correctly
 
@@ -12,7 +18,7 @@
 
 2. (omni build) tookit package template modify
 
-3. (omni release) fix the commitlint omit verify parameters bug
+3. (omni release) fix the commitlint omit verify arguments bug
 
 ### v1.2.16
 1. upgrade @omni-door/utils
@@ -65,7 +71,7 @@
 3. (omni dev) fix the history API incorrect router problem
 
 ### v1.2.8
-1. add `options` parameters for plugin and update the type defination
+1. add `options` arguments for plugin and update the type defination
 
 ### v1.2.7
 1. (omni release) The exception handle logic change

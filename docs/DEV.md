@@ -52,16 +52,19 @@ interface PluginHandler<T extends PLUGINSTAGE> {
 type OptionTemplate = {
   componentName: string;
   componentType: 'function' | 'class';
+  tplSource: string;
 };
 
 // stage of "build"
 type OptionBuild = {
   verify?: boolean;
+  buildConfig?: string;
 };
 
 // stage of "release"
 type OptionRelease = {
   version: string;
+  versionIterTactic: 'ignore' | 'manual' | 'auto';
   verify?: boolean;
   tag?: string;
 };

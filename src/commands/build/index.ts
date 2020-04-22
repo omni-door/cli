@@ -290,7 +290,8 @@ export default async function (config: OmniConfig, buildTactic?: {
             build,
             release: configRelease
           }, {
-            verify
+            verify,
+            buildConfig
           });
         }
       }

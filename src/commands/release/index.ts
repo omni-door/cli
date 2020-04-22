@@ -198,6 +198,7 @@ export default async function (config: OmniConfig, iterTactic?: {
     if (plugin_handles) {
       const pkj = require(path.resolve(process.cwd(), 'package.json'));
       const version = pkj ? pkj.version : 'unknown';
+      const versionIterTactic = ignore ? 'ignore' : manual ? 'manual' : 'auto';
       for (const name in plugin_handles) {
         const handler = plugin_handles[name];
         await handler({
@@ -206,7 +207,8 @@ export default async function (config: OmniConfig, iterTactic?: {
           build,
           release
         }, {
-          version: ignore ? 'ignore' : version,
+          version,
+          versionIterTactic,
           verify,
           tag
         });

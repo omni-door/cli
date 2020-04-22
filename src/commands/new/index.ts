@@ -109,6 +109,7 @@ export default async function (config: OmniConfig, componentName: string, option
         newTplPkj = '@omni-door/tpl-component-library-react';
         break;
       case 'toolkit':
+      default:
         newTplPkj = '@omni-door/tpl-toolkit';
         break;
     }
@@ -137,7 +138,8 @@ export default async function (config: OmniConfig, componentName: string, option
             release
           }, {
             componentName,
-            componentType: fc ? 'function' : 'class'
+            componentType: fc ? 'function' : 'class',
+            tplSource: newTplPkj!
           });
         }
       }

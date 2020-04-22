@@ -4,6 +4,12 @@
 ### v1.2.19
 1. 升级 @omni-door/utils
 
+2. [new plugin] 回调参数新增“模板来源”(tplSource)
+
+3. [build plugin] 回调参数新增“自定义的构建配置”(buildConfig)
+
+4. [release plugin] 回调参数新增“版本迭代策略”(versionIterTactic)
+
 ### v1.2.18
 1. [fix bug] 修复 logo 未被正确替换的问题
 
