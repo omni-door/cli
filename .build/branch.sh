@@ -1,7 +1,7 @@
 #! /bin/bash
 
 branch=$1
-name="🐸  [OMNI-DOOR]"
+name="🐸  [OMNI-DOOR/CLI]"
 
 checkBranch () {
   if [ -z "$branch" ]; then
