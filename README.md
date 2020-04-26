@@ -81,11 +81,12 @@ Arguments:
   strategy                 stable or latest
 
 Options:
-  -b, --basic [name]     create a basic React SPA project
-  -s, --standard [name]   create a standard  React SPA project
+  -b, --basic [name]       create a basic React SPA project
+  -s, --standard [name]    create a standard  React SPA project
   -e, --entire [name]      create a most versatile  React SPA project
   -t, --toolkit [name]     create a toolkit project
   -c, --components [name]  create a React component library
+  -w, --no-install         init project without install dependencies
   -h, --help               output usage information
 ```
 
@@ -120,8 +121,8 @@ Arguments:
 
 Options:
   -f, --function    create a functional component
-  -c, --class    create a class component
-  -h, --help  output usage information
+  -c, --class       create a class component
+  -h, --help        output usage information
 ```
 
 ---
@@ -136,8 +137,8 @@ build your project according to [omni.config.js]
 
 Options:
   -c, --config <path>  specify the path of config file
-  -n, --no-verify  bypass all pre-check before building
-  -h, --help       output usage information
+  -n, --no-verify      bypass all pre-check before building
+  -h, --help           output usage information
 ```
 
 ---

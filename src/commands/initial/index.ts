@@ -93,6 +93,7 @@ type OptionType = {
   entire?: boolean | string;
   toolkit?: boolean | string;
   components?: boolean | string;
+  install: boolean;
 };
 
 type BeforeRes = {
@@ -119,7 +120,8 @@ export default async function (strategy: STRATEGY, {
   standard,
   entire,
   toolkit,
-  components
+  components,
+  install
 }: OptionType, option?: OptionCustom) {
   try {
     // node version pre-check
@@ -148,7 +150,7 @@ export default async function (strategy: STRATEGY, {
     configFileName = 'omni.config.js'
   } = option || {};
 
-  const tplParams: string[] = [ ...tplPkjParams ];
+  const tplParams: string[] = [ ...tplPkjParams, `install=${install}` ];
   const configPath = path.resolve(configFileName);
 
   // get project name

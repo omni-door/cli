@@ -30,6 +30,7 @@ import { OmniConfig } from '../index.d';
     .option('-e, --entire [name]', 'create a most versatile  React SPA project')
     .option('-t, --toolkit [name]', 'create a toolkit project')
     .option('-c, --components [name]', 'create a React component library')
+    .option('-n, --no-install', 'init project without install dependencies')
     .description('initialize your project, [strategy] could be stable(default) or latest', {
       strategy: 'stable or latest',
     })

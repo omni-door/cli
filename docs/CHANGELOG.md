@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ## v1.2.x
+### v1.2.20
+1. (omni init) add without install any dependencies when init project
+
 ### v1.2.19
 1. upgrade @omni-door/utils
 

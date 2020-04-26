@@ -84,6 +84,7 @@ Options:
   -e, --entire [name]      创建一个全量的 React 单页应用
   -t, --toolkit [name]     创建一个工具库
   -c, --components [name]  创建一个组件库
+  -w, --no-install         初始化项目不安装任何依赖
   -h, --help               output usage information
 ```
 
@@ -118,8 +119,8 @@ Arguments:
 
 Options:
   -f, --function    创建一个函数组件
-  -c, --class    创建一个类组件
-  -h, --help  output usage information
+  -c, --class       创建一个类组件
+  -h, --help        output usage information
 ```
 
 ---
@@ -134,8 +135,8 @@ build your project according to [omni.config.js]
 
 Options:
   -c, --config <path>  指定构建的配置文件路径
-  -n, --no-verify  绕过所有预检直接构建
-  -h, --help       output usage information
+  -n, --no-verify      绕过所有预检直接构建
+  -h, --help           output usage information
 ```
 
 ---
