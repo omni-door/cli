@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ## v1.2.x
+### v1.2.21
+1. [logic fix] initialization will not ask install tool when choose no-install
+
 ### v1.2.20
 1. (omni init) add without install any dependencies when init project
 

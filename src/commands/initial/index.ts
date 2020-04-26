@@ -231,11 +231,11 @@ export default async function (strategy: STRATEGY, {
           type: 'input',
           message: function (answer: any) {
             if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'spa-react') {
-              totalStep = 7;
+              totalStep = install ? 7 : 6;
             } else if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'component-library-react') {
-              totalStep = 6;
+              totalStep = install ? 6 : 5;
             } else {
-              totalStep = 4;
+              totalStep = install ? 4 : 3;
             }
             return `${logo()}[${++currStep}/${totalStep}] 请输入项目名称 (Please enter your project name)：`;
           },
@@ -310,6 +310,10 @@ export default async function (strategy: STRATEGY, {
           name: 'pkgtool',
           type: 'list',
           choices: [ 'yarn', 'npm', 'cnpm' ],
+          when: function () {
+            if (!install) return false;
+            return true;
+          },
           message: function (answer: any) {
             return `${logo()}[${++currStep}/${totalStep}] 请选择包安装工具，推荐使用yarn (Please choice the package install tool, recommended use yarn)：`;
           },
