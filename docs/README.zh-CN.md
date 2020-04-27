@@ -59,6 +59,11 @@ omni init
 omni init lastest
 ```
 
+### 初始化项目但不安装依赖
+```shell
+omni init -n
+```
+
 ### 套用模板一键初始化项目
 ```shell
 omni init -t [projectName]

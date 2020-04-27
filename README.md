@@ -61,6 +61,11 @@ omni init
 omni init lastest
 ```
 
+### Initial your project without install dependencies
+```shell
+omni init -n
+```
+
 ### Initial your project according to some template
 ```shell
 omni init -t [projectName]
