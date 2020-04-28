@@ -267,7 +267,7 @@ export default async function (strategy: STRATEGY, {
           },
           when: async function (answer: any) {
             const { name } = answer;
-            return await isDir(name);
+            return !configFileExist && await isDir(name);
           }
         },{
           name: 'dev_server',
@@ -434,7 +434,7 @@ export default async function (strategy: STRATEGY, {
     const dirName = dir_name || projectName;
     const initPath = path.resolve(process.cwd(), dirName);
 
-    if (await isDir(dirName)) {
+    if (!configFileExist && await isDir(dirName)) {
       await new Promise((resolve) => {
         inquirer.prompt([{
           name: 'overwrite_dir',
