@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ## v1.2.x
+### v1.2.22
+1. (omni init) add detection and confirmation prompt for duplicate directory when initialization
+
 ### v1.2.21
 1. [logic fix] initialization will not ask install tool when choose no-install
 

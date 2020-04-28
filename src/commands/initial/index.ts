@@ -1,5 +1,6 @@
-import path, { parse } from 'path';
 import fs from 'fs';
+import path, { parse } from 'path';
+import { promisify } from 'util';
 import fsExtra from 'fs-extra';
 import shelljs from 'shelljs';
 import chalk from 'chalk';
@@ -23,6 +24,22 @@ enum ProjectType {
   'spa-react (React单页应用)' = 'spa-react',
   'component-library-react (React组件库)' = 'component-library-react',
   'toolkit (工具库)' = 'toolkit'
+}
+
+const stat = promisify(fs.stat);
+
+async function isDir (dirName: string) {
+  const dirPath = path.resolve(process.cwd(), dirName);
+  if (fs.existsSync(dirPath)) {
+    try {
+      const stats = await stat(dirPath);
+      if (stats.isDirectory()) {
+        return true;
+      }
+    // eslint-disable-next-line no-empty
+    } catch (e) {}
+  }
+  return false;
 }
 
 async function checkPkgTool (pkgtool: PKJTOOL) {
@@ -241,6 +258,18 @@ export default async function (strategy: STRATEGY, {
           },
           default: defaultName
         },{
+          name: 'overwrite_dir',
+          type: 'confirm',
+          default: false,
+          message: async function (answer: any) {
+            const { name } = answer;
+            return `${logo()}[${currStep}/${totalStep}] 确定要覆盖已经存在的 [${name}] 文件夹? (Are you sure to overwrite [${name}] directory?)`;
+          },
+          when: async function (answer: any) {
+            const { name } = answer;
+            return await isDir(name);
+          }
+        },{
           name: 'dev_server',
           type: 'list',
           choices: [ 'docz', 'storybook', 'styleguidist', 'bisheng' ],
@@ -249,6 +278,9 @@ export default async function (strategy: STRATEGY, {
             return `${logo()}[${++currStep}/${totalStep}] 请选择组件库Demo框架 (Please chioce the component-library demonstration frame)：`;
           },
           when: function (answer: any) {
+            if (answer.overwrite_dir === false) {
+              return process.exit(0);
+            }
             if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'component-library-react') {
               return true;
             }
@@ -399,7 +431,28 @@ export default async function (strategy: STRATEGY, {
       stdout
     } = beforeRes || {};
     const isSilent = typeof stdout === 'boolean' ? !stdout : false;
-    const initPath = path.resolve(process.cwd(), dir_name || projectName);
+    const dirName = dir_name || projectName;
+    const initPath = path.resolve(process.cwd(), dirName);
+
+    if (await isDir(dirName)) {
+      await new Promise((resolve) => {
+        inquirer.prompt([{
+          name: 'overwrite_dir',
+          type: 'confirm',
+          message: `${logo()} 确定要覆盖已经存在的 [${dirName}] 文件夹? (Are you sure to overwrite [${dirName}] directory?)`,
+          default: false
+        }]).then(answers => {
+          const { overwrite_dir } = answers;
+          if (!overwrite_dir) return process.exit(0);
+          resolve();
+        });
+      }).catch(err => {
+        logErr(err);
+        spinner.state('fail', '项目初始化发生错误！(The initializing occurred some accidents!)');
+        process.exit(1);
+      });
+    }
+
     tplParams.push(
       `projectName=${dir_name || projectName}`,
       `initPath=${initPath}`,
