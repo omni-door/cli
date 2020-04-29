@@ -4,6 +4,8 @@
 ### v1.2.23
 1. [fix bug] detection duplicate directory bug
 
+2. (omni init) name duplicate support retry up to 10 times
+
 ### v1.2.22
 1. (omni init) add detection and confirmation prompt for duplicate directory when initialization
 
