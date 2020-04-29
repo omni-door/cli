@@ -4,6 +4,8 @@
 ### v1.2.25
 1. [dependency upgrade] commander@4.1.0
 
+2. (omni init) increase the weight of parameter `tplPkjParams`
+
 ### v1.2.24
 1. [fix bug] the dependencies fixed version
 

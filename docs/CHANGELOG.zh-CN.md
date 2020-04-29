@@ -4,6 +4,8 @@
 ### v1.2.25
 1. [dependency upgrade] commander@4.1.0
 
+2. (omni init) 提升参数 `tplPkjParams` 的权重
+
 ### v1.2.24
 1. [fix bug] 依赖固定版本号
 

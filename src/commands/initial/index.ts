@@ -167,7 +167,7 @@ export default async function (strategy: STRATEGY, {
     configFileName = 'omni.config.js'
   } = option || {};
 
-  const tplParams: string[] = [ ...tplPkjParams, `install=${install}` ];
+  const tplParams: string[] = [ `install=${install}` ];
   const configPath = path.resolve(configFileName);
 
   // get project name
@@ -460,7 +460,7 @@ export default async function (strategy: STRATEGY, {
         inquirer.prompt([{
           name: 'overwrite_dir',
           type: 'confirm',
-          message: `${logo()} 确定要覆盖已经存在的 [${dirName}] 文件夹? (Are you sure to overwrite [${dirName}] directory?)`,
+          message: `${logo()} 真的确定要覆盖已经存在的 [${dirName}] 文件夹? (Are you sure to overwrite [${dirName}] directory?)`,
           default: false
         }]).then(answers => {
           const { overwrite_dir } = answers;
@@ -491,7 +491,7 @@ export default async function (strategy: STRATEGY, {
 
       return exec(
         [
-          `npx ${tplPkj || tplPackage}@latest init ${arr2str(tplParams)}`
+          `npx ${tplPkj || tplPackage}@latest init ${arr2str([ ...tplParams, ...tplPkjParams ])}`
         ],
         async function () {
           const afterRes = typeof after === 'function' && await after();
