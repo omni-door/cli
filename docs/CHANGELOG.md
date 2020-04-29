@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ## v1.2.x
+### v1.2.26
+1. [fix bug] remove commandar auto output help information
+
 ### v1.2.25
 1. [dependency upgrade] commander@4.1.0
 

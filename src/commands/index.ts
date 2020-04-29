@@ -72,8 +72,4 @@ import { OmniConfig } from '../index.d';
     .action((iterTactic) => release(config, iterTactic));
 
   program.parse(process.argv);
-
-  if (!program.args.length) {
-    program.help();
-  }
 })();
