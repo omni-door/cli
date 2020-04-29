@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ## v1.2.x
+### v1.2.24
+1. [fix bug] the dependencies fixed version
+
 ### v1.2.23
 1. [fix bug] detection duplicate directory bug
 

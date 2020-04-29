@@ -58,7 +58,6 @@
     "@types/ip": "^1.1.0",
     "@types/mocha": "^5.2.7",
     "@types/node": "^12.11.1",
-    "@types/progress": "^2.0.3",
     "@types/rollup": "^0.54.0",
     "@types/shelljs": "^0.8.5",
     "@types/webpack-env": "^1.15.0",
@@ -101,17 +100,16 @@
   },
   "dependencies": {
     "@omni-door/utils": "^0.1.13",
-    "@types/express": "^4.17.2",
-    "@types/http-proxy-middleware": "^0.19.3",
-    "@types/webpack": "^4.41.2",
-    "@types/webpack-dev-middleware": "^3.7.0",
-    "chalk": "^3.0.0",
-    "commander": "^3.0.2",
-    "del": "^5.1.0",
-    "figlet": "^1.2.4",
-    "fs-extra": "^8.1.0",
-    "inquirer": "^7.0.0",
-    "progress": "^2.0.3",
-    "shelljs": "^0.8.3"
+    "@types/express": "4.17.2",
+    "@types/http-proxy-middleware": "0.19.3",
+    "@types/webpack": "4.41.2",
+    "@types/webpack-dev-middleware": "3.7.0",
+    "chalk": "3.0.0",
+    "commander": "3.0.2",
+    "del": "5.1.0",
+    "figlet": "1.2.4",
+    "fs-extra": "8.1.0",
+    "inquirer": "7.0.0",
+    "shelljs": "0.8.3"
   }
 }

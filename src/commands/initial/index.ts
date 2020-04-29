@@ -238,8 +238,8 @@ export default async function (strategy: STRATEGY, {
             return `${logo()}[${currStep}/${totalStep}] 确定要覆盖已经存在的 [${name}] 文件夹? (Are you sure to overwrite [${name}] directory?)`;
           },
           when: async function (answer: any) {
-            const { name } = answer;
-            return !configFileExist && await isDir(name);
+            const { name, overwrite_dir } = answer;
+            return !configFileExist && !overwrite_dir && await isDir(name);
           }
         }, {
           name: 'name',
@@ -248,7 +248,8 @@ export default async function (strategy: STRATEGY, {
             return `${logo()}[${currStep}/${totalStep}] 请重新输入项目名称 (Please reenter your project name)：`;
           },
           when: async function (answer: any) {
-            return answer.overwrite_dir === false;
+            const { name } = answer;
+            return !configFileExist && answer.overwrite_dir === false && await isDir(name);
           },
           default: defaultName
         }]);
@@ -298,7 +299,7 @@ export default async function (strategy: STRATEGY, {
           when: async function (answer: any) {
             const { overwrite_dir, name, project_type } = answer;
             if (!configFileExist && !overwrite_dir && await isDir(name)) {
-              logWarn('失败次数太多，检查该路径下的文件夹后再试！(Please checking the directory then try again!)');
+              logWarn('失败次数太多，检查该文件夹的内容后再试！(Please checking the directory then try again!)');
               return process.exit(0);
             }
             if (ProjectType[project_type as keyof typeof ProjectType] === 'component-library-react') {
