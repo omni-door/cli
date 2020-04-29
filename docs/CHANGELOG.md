@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ## v1.2.x
+### v1.2.25
+1. [dependency upgrade] commander@4.1.0
+
 ### v1.2.24
 1. [fix bug] the dependencies fixed version
 
