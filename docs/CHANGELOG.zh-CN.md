@@ -1,6 +1,9 @@
 # 变更日志
 
 ## v1.2.x
+### v1.2.27
+1. [dependency upgrade] commander@5.1.0
+
 ### v1.2.26
 1. [fix bug] 移除 commandar 自动输出 help 信息的逻辑
 

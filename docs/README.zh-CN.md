@@ -89,7 +89,7 @@ Options:
   -e, --entire [name]      创建一个全量的 React 单页应用
   -t, --toolkit [name]     创建一个工具库
   -c, --components [name]  创建一个组件库
-  -w, --no-install         初始化项目不安装任何依赖
+  -n, --no-install         初始化项目不安装任何依赖
   -h, --help               output usage information
 ```
 

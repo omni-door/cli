@@ -91,7 +91,7 @@ Options:
   -e, --entire [name]      create a most versatile  React SPA project
   -t, --toolkit [name]     create a toolkit project
   -c, --components [name]  create a React component library
-  -w, --no-install         init project without install dependencies
+  -n, --no-install         init project without install dependencies
   -h, --help               output usage information
 ```
 
