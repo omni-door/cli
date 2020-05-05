@@ -4,20 +4,22 @@ import { Express, Request, Response, NextFunction } from 'express';
 import { PathParams } from 'express-serve-static-core';
 import { Configuration, Compiler } from 'webpack';
 import { Config } from 'http-proxy-middleware';
-import { WebpackDevMiddleware } from 'webpack-dev-middleware';
+import { WebpackDevMiddleware, Options } from 'webpack-dev-middleware';
 import { NextHandleFunction } from 'connect';
 import open from './open';
 
 export type ServerOptions = {
   p: number;
-  logLevel?: LOGLEVEL;
   webpackConfig: Configuration;
+  logLevel?: LOGLEVEL;
+  devMiddlewareOptions?: Partial<Options>;
   proxyConfig?: { route: string; config: Config; }[];
   middlewareConfig?: { route: PathParams; callback: (req: Request, res: Response, next: NextFunction) => void; }[];
 };
 
 function server ({
   p,
+  devMiddlewareOptions = {},
   logLevel = 'error',
   webpackConfig,
   proxyConfig = [],
@@ -31,7 +33,8 @@ function server ({
     const compiler: Compiler = webpack(webpackConfig);
     const devMiddleware: WebpackDevMiddleware & NextHandleFunction = require_cwd('webpack-dev-middleware')(compiler, {
       publicPath: '/',
-      logLevel: logLevel
+      logLevel,
+      ...devMiddlewareOptions
     });
     const hotMiddleware = require_cwd('webpack-hot-middleware');
 

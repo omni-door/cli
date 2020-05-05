@@ -2,6 +2,8 @@ import { Configuration } from 'webpack';
 export { Configuration } from 'webpack';
 import { Config } from 'http-proxy-middleware';
 export { Config } from 'http-proxy-middleware';
+import { Options as DevMiddlewareOptions } from 'webpack-dev-middleware';
+export { Options as DevMiddlewareOptions } from 'webpack-dev-middleware';
 import { Request, Response, NextFunction } from 'express';
 export { Request, Response, NextFunction } from 'express';
 import { PathParams } from 'express-serve-static-core';
@@ -48,6 +50,7 @@ export interface OmniConfig {
   dev?: {
     port?: number;
     logLevel?: LOGLEVEL;
+    devMiddlewareOptions?: Partial<DevMiddlewareOptions>;
     webpack?: Configuration;
     proxy?: {
       route: string;

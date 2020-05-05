@@ -1,6 +1,9 @@
 # 变更日志
 
 ## v1.2.x
+### v1.2.28
+1. <omni.config.js> `dev` 字段新增 `devMiddlewareOptions` 属性，对应 `webpack-dev-middleware` [Options](https://github.com/webpack/webpack-dev-middleware#options)
+
 ### v1.2.27
 1. [dependency upgrade] commander@5.1.0
 
