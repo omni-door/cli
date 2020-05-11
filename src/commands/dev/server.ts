@@ -8,13 +8,21 @@ import { WebpackDevMiddleware, Options } from 'webpack-dev-middleware';
 import { NextHandleFunction } from 'connect';
 import open from './open';
 
+export type ProxyItem = { route: string; config: Config; };
+export type  MiddlewareItem = { route: PathParams; callback: (req: Request, res: Response, next: NextFunction) => void; };
+export type middlewareFn = (params: {
+  ip: string;
+  port: number;
+  logLevel: LOGLEVEL;
+  proxyConfig?: ProxyItem[];
+}) => MiddlewareItem;
 export type ServerOptions = {
   p: number;
   webpackConfig: Configuration;
   logLevel?: LOGLEVEL;
   devMiddlewareOptions?: Partial<Options>;
-  proxyConfig?: { route: string; config: Config; }[];
-  middlewareConfig?: { route: PathParams; callback: (req: Request, res: Response, next: NextFunction) => void; }[];
+  proxyConfig?: ProxyItem[];
+  middlewareConfig?: (MiddlewareItem | middlewareFn)[];
 };
 
 function server ({
@@ -40,6 +48,8 @@ function server ({
 
     const app: Express = express();
 
+    const ipAddress = ip.address();
+
     // dev server middleware
     app.use(devMiddleware);
 
@@ -62,9 +72,16 @@ function server ({
     // custom middleware
     for (let i = 0; i < middlewareConfig.length; i++) {
       const item = middlewareConfig[i];
+      const { route, callback } = typeof item === 'function' ? item({
+        ip: ipAddress,
+        port: p,
+        logLevel,
+        proxyConfig
+      }) : item;
+
       app.use(
-        item.route,
-        item.callback
+        route,
+        callback
       );
     }
 
@@ -83,7 +100,7 @@ function server ({
 
     app.listen(p, async () => {
       const url_local = 'http://localhost:' + p;
-      const url_ip = 'http://' + ip.address() + ':' + p;
+      const url_ip = 'http://' + ipAddress + ':' + p;
       await open(url_ip);
       logInfo('> Ready on local: ' + url_local);
       logInfo('> Ready on ip: ' + url_ip);

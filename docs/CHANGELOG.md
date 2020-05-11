@@ -1,6 +1,11 @@
 # CHANGE LOG
 
 ## v1.2.x
+### v1.2.29
+1. (omni dev) middleware support pass `function` type
+
+2. upgrade @omni-door/utils
+
 ### v1.2.28
 1. <omni.config.js> `dev` field add `devMiddlewareOptions` property which match to `webpack-dev-middleware` [Options](https://github.com/webpack/webpack-dev-middleware#options)
 

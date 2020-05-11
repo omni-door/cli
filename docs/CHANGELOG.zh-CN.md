@@ -1,6 +1,11 @@
 # 变更日志
 
 ## v1.2.x
+### v1.2.29
+1. (omni dev) middleware 支持传入 `function` 类型
+
+2. 升级 @omni-door/utils
+
 ### v1.2.28
 1. <omni.config.js> `dev` 字段新增 `devMiddlewareOptions` 属性，对应 `webpack-dev-middleware` [Options](https://github.com/webpack/webpack-dev-middleware#options)
 
