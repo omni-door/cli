@@ -10,19 +10,28 @@ import open from './open';
 
 export type ProxyItem = { route: string; config: Config; };
 export type  MiddlewareItem = { route: PathParams; callback: (req: Request, res: Response, next: NextFunction) => void; };
-export type middlewareFn = (params: {
+
+export type ProxyFn = (params: {
+  ip: string;
+  port: number;
+  logLevel: LOGLEVEL;
+  middlewareConfig?: MiddlewareItem[];
+}) => ProxyItem;
+
+export type MiddlewareFn = (params: {
   ip: string;
   port: number;
   logLevel: LOGLEVEL;
   proxyConfig?: ProxyItem[];
 }) => MiddlewareItem;
+
 export type ServerOptions = {
   p: number;
   webpackConfig: Configuration;
   logLevel?: LOGLEVEL;
   devMiddlewareOptions?: Partial<Options>;
-  proxyConfig?: ProxyItem[];
-  middlewareConfig?: (MiddlewareItem | middlewareFn)[];
+  proxyConfig?: (ProxyItem | ProxyFn)[];
+  middlewareConfig?: (MiddlewareItem | MiddlewareFn)[];
 };
 
 function server ({

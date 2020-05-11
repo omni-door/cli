@@ -17,31 +17,51 @@ OMNI 会根据不同的项目类型决定整个初始化、构建、创建模板
 - middleware - 中间件配置，参考下面👇的类型：
 
     ```ts
-    type ProxyItem = { route: string; config: Config; };
+    {
+      route: string;
+      callback: (req: any, res: any) => Promise<void>;
+    }
+    ```
 
-    type MiddlewareItem = { route: PathParams; callback: (req: Request, res: Response, next: NextFunction) => void; };
+    or
 
-    export type middlewareFn = (params: {
+    ```ts
+    (params: {
       ip: string;
       port: number;
       logLevel: LOGLEVEL;
-      proxyConfig?: ProxyItem[];
-    }) => MiddlewareItem;
-
-    type Middleware = (MiddlewareItem | middlewareFn)[];
+      proxyConfig?: (ProxyItem | ProxyFn)[];
+    }) => {
+      route: string;
+      callback: (req: any, res: any) => Promise<void>;
+    }
     ```
 
 - webpack - 开发服务端webpack配置
 
 - proxy - 开发服务代理配置
 
-    ```js
+    ```ts
     {
       route: '/api', // 代理API的本地服务的地址
       config: {
         target: 'http://www.api.com/api', // 代理API的实际地址
         changeOrigin: true // 是否改变host
       }
+    }
+    ```
+
+    or
+
+    ```ts
+    (params: {
+      ip: string;
+      port: number;
+      logLevel: LOGLEVEL;
+      middlewareConfig?: (MiddlewareItem | MiddlewareFn)[];
+    }) => {
+      route: string;
+      config: Config;
     }
     ```
 

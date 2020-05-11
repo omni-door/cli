@@ -1,6 +1,9 @@
 # 变更日志
 
 ## v1.2.x
+### v1.2.30
+1. (omni dev) proxy 支持传入 `function` 类型
+
 ### v1.2.29
 1. (omni dev) middleware 支持传入 `function` 类型
 

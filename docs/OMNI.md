@@ -17,31 +17,51 @@ The dev-server based on express, realizing hot-update, api-proxy and other commo
 - middleware - middleware configuration:
 
     ```ts
-    type ProxyItem = { route: string; config: Config; };
+    {
+      route: string;
+      callback: (req: any, res: any) => Promise<void>;
+    }
+    ```
 
-    type MiddlewareItem = { route: PathParams; callback: (req: Request, res: Response, next: NextFunction) => void; };
+    or
 
-    export type middlewareFn = (params: {
+    ```ts
+    (params: {
       ip: string;
       port: number;
       logLevel: LOGLEVEL;
-      proxyConfig?: ProxyItem[];
-    }) => MiddlewareItem;
-
-    type Middleware = (MiddlewareItem | middlewareFn)[];
+      proxyConfig?: (ProxyItem | ProxyFn)[];
+    }) => {
+      route: string;
+      callback: (req: any, res: any) => Promise<void>;
+    }
     ```
 
 - webpack - dev-server webpack configuration
 
 - proxy - dev-server proxy configuration
 
-    ```js
+    ```ts
     {
       route: '/api', // Address of the local service for the proxy API
       config: {
         target: 'http://www.api.com/api', // The actual address of the proxy API
         changeOrigin: true // whether change the host
       }
+    }
+    ```
+
+    or
+
+    ```ts
+    (params: {
+      ip: string;
+      port: number;
+      logLevel: LOGLEVEL;
+      middlewareConfig?: (MiddlewareItem | MiddlewareFn)[];
+    }) => {
+      route: string;
+      config: Config;
     }
     ```
 

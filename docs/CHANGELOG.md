@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ## v1.2.x
+### v1.2.30
+1. (omni dev) proxy support pass `function` type
+
 ### v1.2.29
 1. (omni dev) middleware support pass `function` type
 
