@@ -15,14 +15,14 @@ export type ProxyFn = (params: {
   ip: string;
   port: number;
   logLevel: LOGLEVEL;
-  middlewareConfig?: MiddlewareItem[];
+  middlewareConfig?: (MiddlewareItem | MiddlewareFn)[];
 }) => ProxyItem;
 
 export type MiddlewareFn = (params: {
   ip: string;
   port: number;
   logLevel: LOGLEVEL;
-  proxyConfig?: ProxyItem[];
+  proxyConfig?: (ProxyItem | ProxyFn)[];
 }) => MiddlewareItem;
 
 export type ServerOptions = {
@@ -72,9 +72,16 @@ function server ({
     // http proxy middleware
     for (let i = 0; i < proxyConfig.length; i++) {
       const item = proxyConfig[i];
+      const { route, config } = typeof item === 'function' ? item({
+        ip: ipAddress,
+        port: p,
+        logLevel,
+        middlewareConfig
+      }) : item;
+
       app.use(
-        item.route,
-        proxy(item.config)
+        route,
+        proxy(config)
       );
     }
 
