@@ -7,6 +7,7 @@ then
 fi
 iterate=$2
 dot="."
+OS=`uname`
 
 replaceVersion () {
   if [ "$OS" = "Darwin" ]; then
