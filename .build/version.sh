@@ -3,7 +3,6 @@
 iterate=$1
 name="🐸  [OMNI-DOOR/CLI]"
 dot="."
-OS=`uname`
 
 replaceVersion () {
   if [ "$OS" = "Darwin" ]; then
@@ -44,4 +43,4 @@ updateVersion () {
 
 updateVersion
 
-# exec "./.build/publish.sh"
+exec "./.build/publish.sh"
