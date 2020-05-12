@@ -8,6 +8,14 @@ fi
 iterate=$2
 dot="."
 
+replaceVersion () {
+  if [ "$OS" = "Darwin" ]; then
+    sed -i "" "s/$1/$2/g" "package.json"
+  else
+    sed -i"" "s/$1/$2/g" "package.json"
+  fi
+}
+
 updateVersion () {
   versionLine=$(grep \"version\" package.json)
   version=$(echo ${versionLine} | tr -cd "[0-9].")
@@ -24,13 +32,13 @@ updateVersion () {
     newVersion=$(echo ${version/${dot}${subVersion}${dot}${subSubVersion}/${dot}${subVersion}${dot}${newSubSubVersion}})
     newVersionLine=$(echo "${versionLine/${version}/${newVersion}}")
     echo -e "\033[36m${name} 版本号自动迭代至 ${newVersion} (Auto version iteration to ${newVersion})\033[0m\n"
-    sed -i "s/${versionLine}/${newVersionLine}/g" "package.json"
+    replaceVersion "$versionLine" "$newVersionLine"
   elif [ -n "$manualVersion" ]
     then
     newVersion=$(echo ${version/${version}/${manualVersion}})
     newVersionLine=$(echo "${versionLine/${version}/${newVersion}}")
     echo -e "\033[35m${name} 版本号手动迭代至 ${manualVersion} (Manual version iteration to ${manualVersion})\033[0m\n"
-    sed -i "s/${versionLine}/${newVersionLine}/g" "package.json"
+    replaceVersion "$versionLine" "$newVersionLine"
   else
     echo -e "\033[31m${name} 请输入正确的版本号 (Please input correct version number)\033[0m\n"
     exit 1

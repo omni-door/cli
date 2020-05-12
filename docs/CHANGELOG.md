@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ## v1.2.x
+### v1.2.31
+1. (omni release) fix the version cannot iterate when run in linux env
+
 ### v1.2.30
 1. (omni dev) proxy support pass `function` type
 
