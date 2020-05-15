@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ## v1.2.x
+### v1.2.32
+1. [fix bug] the process not exit when build/release have been finished
+
 ### v1.2.31
 1. (omni release) fix the version cannot iterate when run in linux env
 

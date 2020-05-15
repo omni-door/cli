@@ -83,8 +83,9 @@ export default async function (config: OmniConfig, buildTactic?: {
   function handleBuildSuc (msg?: string) {
     msg = msg || '恭喜！项目构建成功！(Building completed!)';
 
-    return function () {
+    return function (isExit?: boolean) {
       logSuc(msg!);
+      isExit && process.exit(0);
     };
   }
 
@@ -301,15 +302,15 @@ export default async function (config: OmniConfig, buildTactic?: {
       } else {
         type !== 'toolkit' && spinner.state('stop');
         logTime('项目构建', true);
-        handleBuildSuc()();
+        handleBuildSuc()(!autoRelease);
       }
     }, handleBuildErr());
 
     if (autoRelease) {
       logInfo('开始自动发布！(Beginning auto release!)');
       try {
-        await release(config, { verify: false });
-        handleBuildSuc('自动发布成功！(Auto release success!)')();
+        await release(config, { verify: false }, autoRelease);
+        handleBuildSuc('自动发布成功！(Auto release success!)')(true);
       } catch (err) {
         handleBuildErr('自动发布失败！(Auto release failed!)')();
       }

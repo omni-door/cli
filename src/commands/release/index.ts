@@ -16,12 +16,16 @@ import {
 import { OmniConfig, OmniPlugin } from '../../index.d';
 import { getHandlers, signal } from '../../utils';
 
-export default async function (config: OmniConfig, iterTactic?: {
-  ignore?: boolean;
-  manual?: string;
-  verify?: boolean;
-  tag?: string;
-}) {
+export default async function (
+  config: OmniConfig,
+  iterTactic?: {
+    ignore?: boolean;
+    manual?: string;
+    verify?: boolean;
+    tag?: string;
+  },
+  autoRelease?: boolean
+) {
   try {
     // node version pre-check
     await node_version('8');
@@ -73,8 +77,9 @@ export default async function (config: OmniConfig, iterTactic?: {
   function handleReleaseSuc (msg?: string) {
     msg = msg || '恭喜！发布完成！(The release process completed!)';
 
-    return function () {
+    return function (isExit?: boolean) {
       logSuc(msg!);
+      isExit && process.exit(0);
     };
   }
 
@@ -216,7 +221,7 @@ export default async function (config: OmniConfig, iterTactic?: {
     }
 
     logTime('项目发布', true);
-    handleReleaseSuc()();
+    handleReleaseSuc()(!autoRelease);
   } catch (err) {
     logErr(err);
     handleReleaseErr('👆 糟糕！发布过程发生了一点意外 (Oops! release process occured some accidents)')();
