@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ## v1.2.x
+### v1.2.33
+1. (omni release) delete cache to avoid version incorrect
+
 ### v1.2.32
 1. [fix bug] the process not exit when build/release have been finished
 

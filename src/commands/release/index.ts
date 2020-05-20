@@ -160,16 +160,17 @@ export default async function (
         version: '0.0.1'
       };
       if (fs.existsSync(pkjPath)) {
+        delete require.cache[pkjPath]; // 删除缓存避免版本号不正确
         pkj = require(pkjPath);
       }
 
-      const commit = commitlint && verify
-        ? `git commit -m'[${pkj.name.toUpperCase()}]: ${pkj.version}'`
-        : `git commit -m'[${pkj.name.toUpperCase()}]: ${pkj.version}' --no-verify`;
+      const commit = commitlint && !verify
+        ? `git commit -m'[${pkj.name.toUpperCase()}]: ${pkj.version}' --no-verify`
+        : `git commit -m'[${pkj.name.toUpperCase()}]: ${pkj.version}'`;
 
-      const push = commitlint && verify
-        ? `git push ${remote} ${branch || 'master'}`
-        : `git push ${remote} ${branch || 'master'} --no-verify`;
+      const push = commitlint && !verify
+        ? `git push ${remote} ${branch || 'master'} --no-verify`
+        : `git push ${remote} ${branch || 'master'}`;
 
       canPush && await exec(
         [
