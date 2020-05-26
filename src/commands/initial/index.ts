@@ -130,6 +130,7 @@ type OptionCustom = {
   tplPkj?: string;
   tplPkjParams?: string[];
   configFileName?: string;
+  initPath?: string;
 };
 
 export default async function (strategy: STRATEGY, {
@@ -164,7 +165,8 @@ export default async function (strategy: STRATEGY, {
     after,
     tplPkj,
     tplPkjParams = [],
-    configFileName = 'omni.config.js'
+    configFileName = 'omni.config.js',
+    initPath: customInitPath
   } = option || {};
 
   const tplParams: string[] = [ `install=${install}` ];
@@ -453,7 +455,7 @@ export default async function (strategy: STRATEGY, {
     } = beforeRes || {};
     const isSilent = typeof stdout === 'boolean' ? !stdout : false;
     const dirName = dir_name || projectName;
-    const initPath = path.resolve(process.cwd(), dirName);
+    const initPath = customInitPath || path.resolve(process.cwd(), dirName);
 
     if (!configFileExist && await isDir(dirName)) {
       await new Promise((resolve) => {
@@ -498,9 +500,9 @@ export default async function (strategy: STRATEGY, {
           const { success, msg } = afterRes || {};
     
           if (success === false) {
-            spinner.state('fail', msg || '初始化项目失败 (Initialize project failed)');
+            spinner.state('fail', msg || '初始化项目失败！(Initialize project failed!)');
           } else {
-            spinner.state('succeed', msg || '初始化项目完成 (Initialize project success)');
+            spinner.state('succeed', msg || '初始化项目完成！(Initialize project success!)');
           }
     
           data && console.info(chalk.yellow(data));
@@ -508,7 +510,7 @@ export default async function (strategy: STRATEGY, {
         },
         async function (err: any) {
           logErr(err);
-          spinner.state('fail', '初始化项目失败 (Initialize project failed)');
+          spinner.state('fail', '初始化项目失败！(Initialize project failed!)');
           process.exit(1);
         }
       );

@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ## v1.2.x
+### v1.2.34
+1. [initial] support custom initPath
+
 ### v1.2.33
 1. (omni release) delete cache to avoid version incorrect
 

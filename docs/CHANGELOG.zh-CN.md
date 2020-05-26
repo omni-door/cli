@@ -1,6 +1,9 @@
 # 变更日志
 
 ## v1.2.x
+### v1.2.34
+1. [initial] 支持 custom initPath
+
 ### v1.2.33
 1. (omni release) 删除会导致版本号不正确的缓存
 
