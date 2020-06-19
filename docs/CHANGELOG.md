@@ -1,6 +1,15 @@
 # CHANGE LOG
 
 ## v1.2.x
+### v1.2.35
+1. (omni new) add check for module name:
+
+    - module name must greater-or-equal 2;
+
+    - the first character can only be underscore or upper/lower case letter;
+
+    - subsequent characters can only be numberm, underscore, upper and lower case letter!
+
 ### v1.2.34
 1. [initial] support custom initPath
 
