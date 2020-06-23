@@ -1,6 +1,11 @@
 # CHANGE LOG
 
 ## v1.2.x
+### v1.2.36
+1. upgrade @omni-door/utils
+
+2. support omni field in package.json which can specify config-path(omni.config.js)
+
 ### v1.2.35
 1. (omni new) add check for module name:
 

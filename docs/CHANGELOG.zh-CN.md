@@ -1,6 +1,11 @@
 # 变更日志
 
 ## v1.2.x
+### v1.2.36
+1. 升级 @omni-door/utils
+
+2. 在 package.json 中支持 omni 字段，使之能够自定义配置文件(omni.config.js)的路径
+
 ### v1.2.35
 1. (omni new) 新增对传入的模块名做校验：
 
