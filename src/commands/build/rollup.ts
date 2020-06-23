@@ -6,8 +6,9 @@ export default function (config: {
   esmDir: string;
   configurationPath?: string;
   configFileName?: string;
+  pkjFieldName?: string;
 }) {
-  const { ts, multiOutput, srcDir = 'src', outDir = 'lib', esmDir, configurationPath, configFileName = 'omni.config.js' } = config;
+  const { ts, multiOutput, srcDir = 'src', outDir = 'lib', esmDir, configurationPath, pkjFieldName = 'omni', configFileName = 'omni.config.js' } = config;
 
   return `'use strict';
 
@@ -23,7 +24,7 @@ const json = require_cwd('rollup-plugin-json');
 
 const cwd = process.cwd();
 const ppkj = require(path.resolve(cwd, 'package.json'));
-const configFilePath = path.resolve(cwd, (ppkj && ppkj.omni && ppkj.omni.filePath) || '${configFileName}');
+const configFilePath = path.resolve(cwd, (ppkj && ppkj.${pkjFieldName} && ppkj.${pkjFieldName}.filePath) || '${configFileName}');
 const configs = require(configFilePath);
 ${configurationPath ? `const customConfig = require('${configurationPath}')` : ''}
 

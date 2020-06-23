@@ -30,6 +30,7 @@ export default async function (config: OmniConfig, buildTactic?: {
   config?: string;
   verify?: boolean;
   buildConfig?: string;
+  pkjFieldName?: string;
   configFileName?: string;
 }) {
   try {
@@ -72,7 +73,7 @@ export default async function (config: OmniConfig, buildTactic?: {
     stylelint = false
   } = preflight || {};
 
-  const { config: configPath, verify, buildConfig, configFileName } = buildTactic || {};
+  const { config: configPath, verify, buildConfig, pkjFieldName, configFileName } = buildTactic || {};
   let configurationPath = configPath && path.resolve(process.cwd(), configPath);
   if (configurationPath && !fs.existsSync(configurationPath)) configurationPath = void(0);
 
@@ -224,8 +225,8 @@ export default async function (config: OmniConfig, buildTactic?: {
       }
       realOutDir = outDir;
     } else {
-      const content_rollup = !buildConfig && type === 'toolkit' && rollupConfig({ ts: typescript, multiOutput: true, srcDir, outDir, esmDir, configurationPath, configFileName });
-      const content_webpack = !buildConfig && type === 'spa-react' && webpackConfig({ ts: typescript, multiOutput: false, srcDir, outDir, configurationPath, configFileName, hash });
+      const content_rollup = !buildConfig && type === 'toolkit' && rollupConfig({ ts: typescript, multiOutput: true, srcDir, outDir, esmDir, configurationPath, pkjFieldName, configFileName });
+      const content_webpack = !buildConfig && type === 'spa-react' && webpackConfig({ ts: typescript, multiOutput: false, srcDir, outDir, configurationPath, pkjFieldName, configFileName, hash });
       const content_config = buildConfig || content_rollup || content_webpack;
 
       // put temporary file for build process

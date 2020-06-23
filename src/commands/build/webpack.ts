@@ -7,10 +7,11 @@ export default function (config: {
   srcDir: string;
   outDir: string;
   configurationPath?: string;
+  pkjFieldName?: string;
   configFileName?: string;
   hash?: boolean | HASH;
 }) {
-  const { multiOutput, srcDir = path.resolve(__dirname, '../src/'), outDir = path.resolve(__dirname, '../lib/'), configurationPath, configFileName = 'omni.config.js', hash } = config;
+  const { multiOutput, srcDir = path.resolve(__dirname, '../src/'), outDir = path.resolve(__dirname, '../lib/'), configurationPath, pkjFieldName = 'omni', configFileName = 'omni.config.js', hash } = config;
   const hashType = 
     typeof hash === 'string'
       ? hash
@@ -27,7 +28,7 @@ const merge = require_cwd('webpack-merge');
 
 const cwd = process.cwd();
 const ppkj = require(path.resolve(cwd, 'package.json'));
-const configFilePath = path.resolve(cwd, (ppkj && ppkj.omni && ppkj.omni.filePath) || '${configFileName}');
+const configFilePath = path.resolve(cwd, (ppkj && ppkj.${pkjFieldName} && ppkj.${pkjFieldName}.filePath) || '${configFileName}');
 const configs = require(configFilePath);
 ${configurationPath ? `const customConfig = require('${configurationPath}')` : ''}
 

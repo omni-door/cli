@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ## v1.2.x
+### v1.2.37
+1. (omni build) support pkjFieldName field
+
 ### v1.2.36
 1. upgrade @omni-door/utils
 

@@ -1,6 +1,9 @@
 # 变更日志
 
 ## v1.2.x
+### v1.2.37
+1. (omni build) 新增支持 pkjFieldName 字段
+
 ### v1.2.36
 1. 升级 @omni-door/utils
 
