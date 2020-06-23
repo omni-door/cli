@@ -129,6 +129,7 @@ type OptionCustom = {
   after?: () => (void | AfterRes | Promise<AfterRes>);
   tplPkj?: string;
   tplPkjParams?: string[];
+  pkjFieldName?: string;
   configFileName?: string;
   initPath?: string;
 };
@@ -144,8 +145,8 @@ export default async function (strategy: STRATEGY, {
   try {
     // node version pre-check
     await node_version('10.13.0');
-  } catch (err) {
-    logWarn(err);
+  } catch (e) {
+    logWarn(e);
   }
 
   // bind exit signals
@@ -165,12 +166,25 @@ export default async function (strategy: STRATEGY, {
     after,
     tplPkj,
     tplPkjParams = [],
+    pkjFieldName = 'omni',
     configFileName = 'omni.config.js',
     initPath: customInitPath
   } = option || {};
 
   const tplParams: string[] = [ `install=${install}` ];
-  const configPath = path.resolve(configFileName);
+  let configPath = path.resolve(configFileName);
+
+  try {
+    const cwd = process.cwd();
+
+    let ppkj;
+    const ppkjPath = path.resolve(cwd, 'package.json');
+    if (fs.existsSync(ppkjPath)) ppkj = require(ppkjPath);
+
+    configPath = path.resolve(cwd, (ppkj && ppkj[pkjFieldName] && ppkj[pkjFieldName]['filePath']) || configFileName);
+  } catch (e) {
+    logWarn(e);
+  }
 
   // get project name
   const { name: defaultName } = parse(process.cwd());

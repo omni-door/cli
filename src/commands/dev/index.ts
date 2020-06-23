@@ -12,8 +12,8 @@ export default async function (config: OmniConfig, options: { port?: number | st
   try {
     // node version pre-check
     await node_version('8');
-  } catch (err) {
-    logWarn(err);
+  } catch (e) {
+    logWarn(e);
   }
 
   if (JSON.stringify(config) === '{}') {

@@ -36,8 +36,8 @@ export default async function (config: OmniConfig, buildTactic?: {
   try {
     // node version pre-check
     await node_version('10.13.0');
-  } catch (err) {
-    logWarn(err);
+  } catch (e) {
+    logWarn(e);
   }
 
   if (!config || JSON.stringify(config) === '{}') {

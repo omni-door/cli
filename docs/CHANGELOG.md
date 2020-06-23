@@ -1,6 +1,11 @@
 # CHANGE LOG
 
 ## v1.2.x
+### v1.2.38
+1. [fix bug] the project package.json maybe non-exist situation
+
+2. (omni init) support pkjFieldName field
+
 ### v1.2.37
 1. (omni build) support pkjFieldName field
 

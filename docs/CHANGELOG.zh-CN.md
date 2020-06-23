@@ -1,6 +1,11 @@
 # 变更日志
 
 ## v1.2.x
+### v1.2.38
+1. [fix bug] 修复项目 package.json 可能不存在的问题
+
+2. (omni init) 新增支持 pkjFieldName 字段
+
 ### v1.2.37
 1. (omni build) 新增支持 pkjFieldName 字段
 

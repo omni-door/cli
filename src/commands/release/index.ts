@@ -29,8 +29,8 @@ export default async function (
   try {
     // node version pre-check
     await node_version('8');
-  } catch (err) {
-    logWarn(err);
+  } catch (e) {
+    logWarn(e);
   }
 
   if (!config || JSON.stringify(config) === '{}') {

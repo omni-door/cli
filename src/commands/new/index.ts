@@ -33,8 +33,8 @@ export default async function (config: OmniConfig, componentName: string, option
   try {
     // node version pre-check
     await node_version('8');
-  } catch (err) {
-    logWarn(err);
+  } catch (e) {
+    logWarn(e);
   }
 
   if (!config || JSON.stringify(config) === '{}') {

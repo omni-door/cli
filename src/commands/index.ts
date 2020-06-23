@@ -13,12 +13,18 @@ import { OmniConfig } from '../index.d';
 
   const { initial, dev, newTpl, build, release } = require('./commands');
   const pkj = require('../../package.json');
-  const cwd = process.cwd();
-  const ppkj = require(path.resolve(cwd, 'package.json'));
   let config: OmniConfig | {} = {};
-  const configFilePath = path.resolve(cwd, (ppkj && ppkj.omni && ppkj.omni.filePath) || 'omni.config.js');
-  if (fs.existsSync(configFilePath)) {
-    config = require(configFilePath);
+  try {
+    const cwd = process.cwd();
+
+    let ppkj;
+    const ppkjPath = path.resolve(cwd, 'package.json');
+    if (fs.existsSync(ppkjPath)) ppkj = require(ppkjPath);
+
+    const configFilePath = path.resolve(cwd, (ppkj && ppkj.omni && ppkj.omni.filePath) || 'omni.config.js');
+    if (fs.existsSync(configFilePath)) config = require(configFilePath);
+  } catch (e) {
+    logWarn(e);
   }
 
   program
