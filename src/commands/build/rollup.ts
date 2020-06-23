@@ -20,7 +20,11 @@ const babel = require_cwd('rollup-plugin-babel');
 ${ts ? `const typescript = require_cwd('rollup-plugin-typescript');
 const typescript2 = require_cwd('rollup-plugin-typescript2');` : ''}
 const json = require_cwd('rollup-plugin-json');
-const configs = require(path.resolve(process.cwd(), '${configFileName}'));
+
+const cwd = process.cwd();
+const ppkj = require(path.resolve(cwd, 'package.json'));
+const configFilePath = path.resolve(cwd, (ppkj && ppkj.omni && ppkj.omni.filePath) || '${configFileName}');
+const configs = require(configFilePath);
 ${configurationPath ? `const customConfig = require('${configurationPath}')` : ''}
 
 const { build } = configs || {};

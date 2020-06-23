@@ -25,7 +25,10 @@ const path = require('path');
 const { require_cwd } = require('@omni-door/utils');
 const merge = require_cwd('webpack-merge');
 
-const configs = require(path.resolve(process.cwd(), '${configFileName}'));
+const cwd = process.cwd();
+const ppkj = require(path.resolve(cwd, 'package.json'));
+const configFilePath = path.resolve(cwd, (ppkj && ppkj.omni && ppkj.omni.filePath) || '${configFileName}');
+const configs = require(configFilePath);
 ${configurationPath ? `const customConfig = require('${configurationPath}')` : ''}
 
 const { build } = configs || {};
