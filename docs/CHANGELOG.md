@@ -1,5 +1,11 @@
 # CHANGE LOG
 
+## v1.3.x
+### v1.3.0
+1. (omni dev) omni dev -p <port> - port change to required option
+
+2. (omni new) omni new [name] [option] - name change to optional and support REPL(read-eval-print loop)
+
 ## v1.2.x
 ### v1.2.38
 1. [fix bug] the project package.json maybe non-exist situation

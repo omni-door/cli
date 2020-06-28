@@ -103,10 +103,10 @@ Options:
 ```shell
 Usage: omni dev [options]
 
-omni dev -p [port]
+omni dev -p <port>
 
 Options:
-  -p, --port [port]  start the dev-server according to the specified port
+  -p, --port <port>  start the dev-server according to the specified port
   -h, --help         output usage information
 ```
 
@@ -116,13 +116,13 @@ Options:
 
 ### options
 ```shell
-Usage: omni new <module> [options]
+Usage: omni new [name] [options]
 
-omni new <module> [-f | -c]
+omni new [name] [-f | -c]
 
 Arguments:
 
-  module           required! The first letter will be capitalizing.
+  name              optional! The name of component.
 
 Options:
   -f, --function    create a functional component

@@ -48,20 +48,20 @@ import { OmniConfig } from '../index.d';
 
   program
     .command('dev')
-    .option('-p, --port [port]', 'start the dev-server according to the specified port')
-    .description('omni dev -p [port]', {
-      port: 'optional! The dev-server run port.',
+    .option('-p, --port <port>', 'start the dev-server according to the specified port')
+    .description('omni dev -p <port>', {
+      port: 'required! The dev-server run port.',
     })
     .action((options) => dev(config, options));
 
   program
-    .command('new <module>')
+    .command('new [name]')
     .option('-f, --function', 'create a functional component')
     .option('-c, --class', 'create a class component')
-    .description('omni new <module> [-f | -c]', {
-      module: 'required! The first letter will be capitalizing.',
+    .description('omni new [name] [-f | -c]', {
+      name: 'optional! The name of component.',
     })
-    .usage('<module> [options]')
+    .usage('[name] [options]')
     .action((componentName, options) => newTpl(config, componentName, options));
 
   program

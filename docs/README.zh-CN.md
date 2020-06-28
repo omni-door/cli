@@ -101,10 +101,10 @@ Options:
 ```shell
 Usage: omni dev [options]
 
-omni dev -p [port]
+omni dev -p <port>
 
 Options:
-  -p, --port [port]  根据指定的端口号启动开发服务
+  -p, --port <port>  根据指定的端口号启动开发服务
   -h, --help         output usage information
 ```
 
@@ -114,13 +114,13 @@ Options:
 
 ### 选项
 ```shell
-Usage: omni new <module> [options]
+Usage: omni new [name] [options]
 
-omni new <module> [-f | -c]
+omni new [name] [-f | -c]
 
 Arguments:
 
-  module           必填！第一个字母会变成大写。
+  module           可选！组件名称。
 
 Options:
   -f, --function    创建一个函数组件

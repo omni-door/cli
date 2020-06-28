@@ -1,5 +1,11 @@
 # 变更日志
 
+## v1.3.x
+### v1.3.0
+1. (omni dev) omni dev -p <port> - port 改为必填
+
+2. (omni new) omni new [name] [option] - name 改为选填，并支持REPL(read-eval-print loop)
+
 ## v1.2.x
 ### v1.2.38
 1. [fix bug] 修复项目 package.json 可能不存在的问题

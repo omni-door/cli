@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import inquirer from 'inquirer';
 import {
   exec,
   arr2str,
@@ -10,7 +11,7 @@ import {
   node_version
 } from '@omni-door/utils';
 import { OmniConfig, OmniPlugin } from '../../index.d';
-import { getHandlers, signal } from '../../utils';
+import { getHandlers, signal, logo } from '../../utils';
 
 function handleException (msg?: string) {
   logWarn(msg || '发生了一些未知错误！(Ops! Some unknown errors have occurred!)');
@@ -41,15 +42,90 @@ export default async function (config: OmniConfig, componentName: string, option
     handleException('请先初始化项目！(Please initialize an omni-project first!)');
   }
 
-  if (!componentName) {
-    handleException('请输入创建的模块名称！(Please input the module name!)');
+  const {
+    type = 'spa-react',
+    template,
+    build,
+    release,
+    plugins
+  } = config;
+
+  const {
+    root,
+    test,
+    typescript = false,
+    stylesheet = '',
+    readme = [false, 'md']
+  } = template;
+
+  let module_cn = '组件';
+  let module_en = 'component';
+  if (type === 'toolkit') {
+    module_cn = '模块';
+    module_en = 'module';
+  }
+
+  let { function: fc, class: cc, tplPkj, before, after } = options || {};
+
+  if (!root) {
+    handleException(`生成${module_cn}的路径缺失！(Missing the path for generate template!)`);
+  }
+
+  if (!componentName || (!fc && !cc)) {
+    const moduleType = {
+      fc: `函数${module_cn} (functional-${module_en})`,
+      cc: `类${module_cn} (class-${module_en})`
+    };
+    const questions = [
+      {
+        name: 'name',
+        type: 'input',
+        when: (answer: any) => {
+          if (componentName) {
+            return false;
+          }
+          return true;
+        },
+        message: `${logo()}请输入${module_cn}名称 (Please enter ${module_en} name)：`
+      },
+      {
+        name: 'type',
+        type: 'list',
+        when: (answer: any) => {
+          if (!answer.name && !componentName) {
+            handleException(`请输入创建的${module_cn}名称！(Please input the ${module_en} name!)`);
+          }
+          if (type === 'toolkit' || fc || cc) {
+            return false;
+          }
+          return true;
+        },
+        choices: [ moduleType.fc, moduleType.cc ],
+        message: `${logo()}选择${module_cn}类型 (Please choose the type of ${module_en})`
+      }      
+    ];
+    await new Promise((resolve) => {
+      inquirer.prompt(questions)
+        .then(answers => {
+          const { name, type } = answers;
+          componentName = name;
+          if (type === moduleType.fc) {
+            fc = true;
+          } else if (type === moduleType.cc) {
+            cc = true;
+          }
+          resolve();
+        });
+    }).catch(err => {
+      handleException(err);
+    });
   }
 
   if (!/^[a-zA-Z\_]\w+$/g.test(componentName)) {
     handleException(
-      `请输入合法的模块名称！(Please input a valid module name!)\n
+      `请输入合法的${module_cn}名称！(Please input a valid module name!)\n
       规则：\n
-        1. 模块名大于等于2个字符；(module name must greater-or-equal 2)\n
+        1. ${module_cn}名大于等于2个字符；(module name must greater-or-equal 2)\n
         2. 第一个字符只能由 下划线_ 或 大小写字母 组成；(the first character can only be underscore or upper/lower case letter)\n
         3. 后续字符只能由 数字、下划线_、大小写字母 组成！(subsequent characters can only be numberm, underscore, upper and lower case letter)\n
       `
@@ -59,39 +135,12 @@ export default async function (config: OmniConfig, componentName: string, option
   // bind exit signals
   signal();
 
-  // capitalize first character
-  // componentName = componentName.charAt(0).toUpperCase() + componentName.slice(1);
-
-  let { function: fc, class: cc, tplPkj, before, after } = options || {};
-
-  // default create class component
-  if (!fc && !cc) cc = true;
-
-  const {
-    type = 'spa-react',
-    template,
-    build,
-    release,
-    plugins
-  } = config;
-  const {
-    root,
-    test,
-    typescript = false,
-    stylesheet = '',
-    readme = [false, 'md']
-  } = template;
-
-  if (!root) {
-    handleException('生成模板的路径缺失！(Missing the path for generate template!)');
-  }
-
   const mdx = readme[1] === 'mdx';
   const path_cp = path.resolve(root, componentName);
   const path_cp_rel = path.relative(process.cwd(), path_cp);
 
   if (fs.existsSync(path_cp)) {
-    handleException(`模块 ${componentName} 已存在！(The ${componentName} module had been existed!)`);
+    handleException(`${module_cn} ${componentName} 已存在！(The ${componentName} module had been existed!)`);
   }
 
   const hasStorybook = fs.existsSync(path.resolve(process.cwd(), '.storybook'));
@@ -100,7 +149,7 @@ export default async function (config: OmniConfig, componentName: string, option
     `newPath=${path_cp}`,
     `stylesheet=${stylesheet}`,
     `ts=${typescript}`,
-    `type=${fc ? 'fc' : 'cc'}`,
+    `type=${cc ? 'cc' : 'fc'}`,
     `test=${!!test}`,
     `hasStorybook=${hasStorybook}`,
     readme[0] ? `md=${mdx ? 'mdx' : 'md'}` : ''
@@ -145,7 +194,7 @@ export default async function (config: OmniConfig, componentName: string, option
             release
           }, {
             componentName,
-            componentType: fc ? 'function' : 'class',
+            componentType: cc ? 'class' : 'function',
             tplSource: newTplPkj!
           });
         }
