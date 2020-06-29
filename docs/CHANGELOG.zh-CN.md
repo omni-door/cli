@@ -1,6 +1,13 @@
 # 变更日志
 
 ## v1.3.x
+### v1.3.1
+1. (omni build) 支持使用 gulp 来打包组件库项目
+
+2. 升级 @omni-door/utils
+
+3. [fix bug] omni new [name] - name 可能是 undefined 的问题
+
 ### v1.3.0
 1. (omni dev) omni dev -p <port> - port 改为必填
 

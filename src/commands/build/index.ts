@@ -6,6 +6,7 @@ import inquirer from 'inquirer';
 import del from 'del';
 import rollupConfig from './rollup';
 import webpackConfig from './webpack';
+import gulpConfig from './gulp';
 import {
   spinner,
   exec,
@@ -73,8 +74,9 @@ export default async function (config: OmniConfig, buildTactic?: {
     stylelint = false
   } = preflight || {};
 
+  const CWD = process.cwd();
   const { config: configPath, verify, buildConfig, pkjFieldName, configFileName } = buildTactic || {};
-  let configurationPath = configPath && path.resolve(process.cwd(), configPath);
+  let configurationPath = configPath && path.resolve(CWD, configPath);
   if (configurationPath && !fs.existsSync(configurationPath)) configurationPath = void(0);
 
   if (!outDir || !srcDir) {
@@ -213,10 +215,16 @@ export default async function (config: OmniConfig, buildTactic?: {
 
     let realOutDir: string = '';
     const buildCliArr = [];
-    if (type === 'component-library-react' || (tool === 'tsc' && type === 'toolkit')) {
-      const tscPath = path.resolve(process.cwd(), 'node_modules/typescript/bin/tsc');
-      buildCliArr.push(`${tscPath} --outDir ${outDir} --project ${configurationPath || path.resolve(process.cwd(), 'tsconfig.json')}`);
-      esmDir && buildCliArr.push(`${tscPath} --module ES6 --target ES6 --outDir ${esmDir} --project ${configurationPath || path.resolve(process.cwd(), 'tsconfig.json')}`);
+    const buildCliPath = {
+      tsc: path.resolve(CWD, 'node_modules/typescript/bin/tsc'),
+      rollup: path.resolve(CWD, 'node_modules/rollup/dist/bin/rollup'),
+      webpack: path.resolve(CWD, 'node_modules/webpack-cli/bin/cli.js'),
+      gulp: path.resolve(CWD, 'node_modules/gulp/bin/gulp.js')
+    };
+    if (tool === 'tsc') {
+      const tscPath = buildCliPath.tsc;
+      buildCliArr.push(`${tscPath} --outDir ${outDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')}`);
+      esmDir && buildCliArr.push(`${tscPath} --module ES6 --target ES6 --outDir ${esmDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')}`);
 
       if (!fs.existsSync(tscPath)) {
         logWarn('请先安装 typescript! (Please install typescript first!)');
@@ -227,7 +235,8 @@ export default async function (config: OmniConfig, buildTactic?: {
     } else {
       const content_rollup = !buildConfig && type === 'toolkit' && rollupConfig({ ts: typescript, multiOutput: true, srcDir, outDir, esmDir, configurationPath, pkjFieldName, configFileName });
       const content_webpack = !buildConfig && type === 'spa-react' && webpackConfig({ ts: typescript, multiOutput: false, srcDir, outDir, configurationPath, pkjFieldName, configFileName, hash });
-      const content_config = buildConfig || content_rollup || content_webpack;
+      const content_gulp = !buildConfig && type === 'component-library-react' && gulpConfig({ srcDir, outDir, esmDir });
+      const content_config = buildConfig || content_rollup || content_webpack || content_gulp;
 
       // put temporary file for build process
       if (content_config) {
@@ -235,7 +244,7 @@ export default async function (config: OmniConfig, buildTactic?: {
 
         let is_go_on = true;
         if (type === 'toolkit') {
-          const rollupPath = path.resolve(process.cwd(), 'node_modules/rollup/dist/bin/rollup');
+          const rollupPath = buildCliPath.rollup;
           buildCliArr.push(`${rollupPath} -c ${buildConfigPath}`);
 
           if (!fs.existsSync(rollupPath)) {
@@ -243,12 +252,30 @@ export default async function (config: OmniConfig, buildTactic?: {
             is_go_on = await installDenpendencies('rollup');
           }
         } else if (type === 'spa-react') {
-          const webpackPath = path.resolve(process.cwd(), 'node_modules/webpack-cli/bin/cli.js');
+          const webpackPath = buildCliPath.webpack;
           buildCliArr.push(`${webpackPath} --config ${buildConfigPath}`);
 
           if (!fs.existsSync(webpackPath)) {
-            logWarn('请先安装 webpack-cli! (Please install webpack-cli first!)');
+            logWarn('请先安装 webpack! (Please install webpack first!)');
             is_go_on = await installDenpendencies('webpack');
+          }
+        } else if (type === 'component-library-react') {
+          const tscPath = buildCliPath.tsc;
+          const gulpPath = buildCliPath.gulp;
+          buildCliArr.push(
+            `${tscPath} --outDir ${outDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --emitDeclarationOnly`,
+            `${tscPath} --module ES6 --target ES6 --outDir ${esmDir || path.resolve(CWD, 'es')} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --emitDeclarationOnly`,
+            `${gulpPath} --gulpfile ${buildConfigPath}`
+          );
+
+          if (!fs.existsSync(tscPath)) {
+            logWarn('请先安装 typescript! (Please install typescript first!)');
+            is_go_on = await installDenpendencies('tsc');
+          }
+
+          if (is_go_on && !fs.existsSync(gulpPath)) {
+            logWarn('请先安装 gulp! (Please install gulp first!)');
+            is_go_on = await installDenpendencies('gulp');
           }
         }
 
@@ -278,7 +305,7 @@ export default async function (config: OmniConfig, buildTactic?: {
 
     await exec(buildCliArr, async function () {
       const { style, assets = [] } = reserve;
-      style && copyStylesheet(srcDir);
+      if (type !== 'component-library-react' && style) copyStylesheet(srcDir);
       copyReserves(assets);
 
       // handle build plugins
@@ -307,6 +334,7 @@ export default async function (config: OmniConfig, buildTactic?: {
       }
     }, handleBuildErr());
 
+    // auto release
     if (autoRelease) {
       logInfo('开始自动发布！(Beginning auto release!)');
       try {

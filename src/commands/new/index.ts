@@ -108,7 +108,7 @@ export default async function (config: OmniConfig, componentName: string, option
       inquirer.prompt(questions)
         .then(answers => {
           const { name, type } = answers;
-          componentName = name;
+          componentName = name || componentName;
           if (type === moduleType.fc) {
             fc = true;
           } else if (type === moduleType.cc) {

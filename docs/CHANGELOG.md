@@ -1,6 +1,13 @@
 # CHANGE LOG
 
 ## v1.3.x
+### v1.3.1
+1. (omni build) support gulp to build component-libaray project
+
+2. upgrade @omni-door/utils
+
+3. [fix bug] omni new [name] - name maybe undefined
+
 ### v1.3.0
 1. (omni dev) omni dev -p <port> - port change to required option
 
