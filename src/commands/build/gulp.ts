@@ -8,23 +8,24 @@ export default function (config: {
   return `'use strict';
 
 const path = require('path');
-const gulp = require('gulp');
-const babel = require('gulp-babel');
-const less = require('gulp-less');
-const sass = require('gulp-sass');
-const autoprefixer = require('gulp-autoprefixer');
-const cssnano = require('gulp-cssnano');
-const through2 = require('through2');
+const { require_cwd } = require('@omni-door/utils');
+const gulp = require_cwd('gulp');
+const babel = require_cwd('gulp-babel');
+const less = require_cwd('gulp-less');
+const sass = require_cwd('gulp-sass');
+const autoprefixer = require_cwd('gulp-autoprefixer');
+const cssnano = require_cwd('gulp-cssnano');
+const through2 = require_cwd('through2');
 
 const params = {
   dest: {
     lib: '${outDir}',
     es: '${esmDir}'
   },
-  styles: '${srcDir}/components/**/*.{less,scss,sass}',
+  styles: '${srcDir}/**/*.{less,scss,sass}',
   scripts: [
-    '${srcDir}/components/**/*.{ts,tsx,js,jsx}',
-    '!${srcDir}/components/**/{demo,__demo__,test,__test__,stories,__stories__}/*.{ts,tsx,js,jsx}'
+    '${srcDir}/**/*.{ts,tsx,js,jsx}',
+    '!${srcDir}/**/{demo,__demo__,test,__test__,stories,__stories__}/*.{ts,tsx,js,jsx}'
   ]
 };
 
@@ -46,7 +47,7 @@ function compileScripts (babelEnv, destDir) {
     .pipe(
       through2.obj(function (file, encoding, next) {
         this.push(file.clone());
-        if (file.path.match(/(\\/|\\\)style(\\/|\\\)index\\.js/)) {
+        if (file.path.match(/(\\/|\\\\)style(\\/|\\\\)index\\.js/)) {
           const content = file.contents.toString(encoding);
           file.contents = Buffer.from(cssInjection(content));
           file.path = file.path.replace(/index\\.js/, 'css.js');

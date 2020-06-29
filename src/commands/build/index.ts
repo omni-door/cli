@@ -265,7 +265,7 @@ export default async function (config: OmniConfig, buildTactic?: {
           buildCliArr.push(
             `${tscPath} --outDir ${outDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --emitDeclarationOnly`,
             `${tscPath} --module ES6 --target ES6 --outDir ${esmDir || path.resolve(CWD, 'es')} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --emitDeclarationOnly`,
-            `${gulpPath} --gulpfile ${buildConfigPath}`
+            `${gulpPath} --gulpfile ${buildConfigPath} --cwd ${CWD}`
           );
 
           if (!fs.existsSync(tscPath)) {
