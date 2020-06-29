@@ -18,8 +18,8 @@ const through2 = require('through2');
 
 const params = {
   dest: {
-    lib: path.resolve('${outDir}'),
-    es: path.resolve('${esmDir}')
+    lib: '${outDir}',
+    es: '${esmDir}'
   },
   styles: '${srcDir}/components/**/*.{less,scss,sass}',
   scripts: [
@@ -30,9 +30,9 @@ const params = {
 
 function cssInjection (content) {
   return content
-    .replace(/\/style\/?'/g, "/style/css'")
-    .replace(/\/style\/?"/g, '/style/css"')
-    .replace(/\.(less|scss|sass)/g, '.css');
+    .replace(/\\/style\\/?'/g, "/style/css\'")
+    .replace(/\\/style\\/?"/g, '/style/css\"')
+    .replace(/\\.(less|scss|sass)/g, '.css');
 }
 
 function compileScripts (babelEnv, destDir) {
@@ -46,10 +46,10 @@ function compileScripts (babelEnv, destDir) {
     .pipe(
       through2.obj(function (file, encoding, next) {
         this.push(file.clone());
-        if (file.path.match(/(\/|\\)style(\/|\\)index\.js/)) {
+        if (file.path.match(/(\\/|\\\)style(\\/|\\\)index\\.js/)) {
           const content = file.contents.toString(encoding);
           file.contents = Buffer.from(cssInjection(content));
-          file.path = file.path.replace(/index\.js/, 'css.js');
+          file.path = file.path.replace(/index\\.js/, 'css.js');
           this.push(file);
           next();
         } else {
