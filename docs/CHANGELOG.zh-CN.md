@@ -1,6 +1,9 @@
 # 变更日志
 
 ## v1.3.x
+### v1.3.3
+1. (omni dev) 整合 toolkit 和 component-library 项目的开发服务
+
 ### v1.3.2
 1. (omni build) 固定 gulp 构建的 cwd 路径 同时支持 component-libaray 输出全量的css
 

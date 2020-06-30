@@ -21,10 +21,7 @@ export default async function (config: OmniConfig, options: { port?: number | st
   }
 
   const p = options.port;
-  const {
-    type,
-    dev
-  } = config as OmniConfig;
+  const { dev } = config as OmniConfig;
 
   if (!dev || JSON.stringify(dev) === '{}') {
     handleException('配置文件 dev 字段缺失！(The dev field is missing in config file!)');
@@ -36,32 +33,31 @@ export default async function (config: OmniConfig, options: { port?: number | st
     devMiddlewareOptions,
     webpack,
     proxy,
-    middleware
+    middleware,
+    serverType = 'default'
   } = dev!;
 
-  if (type === 'component-library-react') {
-    handleException('请直接执行 npm start 启动开发服务！(Please exec npm start to run dev-server!)');
-  } else {
-    if (!webpack) {
-      handleException('缺少开发服务webpack配置文件！(Missing the dev-server webpack-config!)');
-    }
+  // bind exit signals
+  signal();
 
-    // bind exit signals
-    signal();
-
-    const _port = !isNaN(+p!)
-      ? +p!
-      : !isNaN(+port!)
-        ? +port!
-        : 6200;
-
-    run({
-      p: _port,
-      webpackConfig: webpack!,
-      logLevel,
-      devMiddlewareOptions, 
-      proxyConfig: proxy,
-      middlewareConfig: middleware
-    });
+  if (serverType === 'default' && !webpack) {
+    handleException('缺少开发服务webpack配置文件！(Missing the dev-server webpack-config!)'); 
   }
+
+  const _port = !isNaN(+p!)
+    ? +p!
+    : !isNaN(+port!)
+      ? +port!
+      : 6200;
+
+  run({
+    p: _port,
+    webpackConfig: webpack!,
+    logLevel,
+    devMiddlewareOptions, 
+    proxyConfig: proxy,
+    middlewareConfig: middleware,
+    serverType
+  });
+
 }

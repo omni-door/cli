@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ## v1.3.x
+### v1.3.3
+1. (omni dev) integration toolkit and component-library project dev server
+
 ### v1.3.2
 1. (omni build) fixed gulp-build cwd path and support component-libaray total output css
 
