@@ -1,6 +1,9 @@
 # 变更日志
 
 ## v1.3.x
+### v1.3.4
+1. (omni dev) storybook 启动开发服务添加 --quiet 选项
+
 ### v1.3.3
 1. (omni dev) 整合 toolkit 和 component-library 项目的开发服务
 

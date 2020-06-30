@@ -50,7 +50,7 @@ function server ({
     const ip = require_cwd('ip');
     const ipAddress = ip.address();
     const ServerStartCli = {
-      storybook: `${path.resolve(CWD, 'node_modules/.bin/start-storybook')} -p ${p} -h ${ipAddress}`,
+      storybook: `${path.resolve(CWD, 'node_modules/.bin/start-storybook')} -p ${p} -h ${ipAddress} --quiet`,
       docz: `${path.resolve(CWD, 'node_modules/.bin/docz')} dev -p ${p} --host ${ipAddress}`,
       bisheng: `${path.resolve(CWD, 'node_modules/.bin/bisheng')} start`,
       styleguidist: `${path.resolve(CWD, 'node_modules/.bin/styleguidist')} server --port ${p}`,

@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ## v1.3.x
+### v1.3.4
+1. (omni dev) storybook dev server start add --quiet option
+
 ### v1.3.3
 1. (omni dev) integration toolkit and component-library project dev server
 
