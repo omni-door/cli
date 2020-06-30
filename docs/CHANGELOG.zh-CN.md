@@ -1,6 +1,9 @@
 # 变更日志
 
 ## v1.3.x
+### v1.3.2
+1. (omni build) 固定 gulp 构建的 cwd 路径 同时支持 component-libaray 输出全量的css
+
 ### v1.3.1
 1. (omni build) 支持使用 gulp 来打包组件库项目
 

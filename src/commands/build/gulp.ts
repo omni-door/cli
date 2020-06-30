@@ -15,6 +15,8 @@ const less = require_cwd('gulp-less');
 const sass = require_cwd('gulp-sass');
 const autoprefixer = require_cwd('gulp-autoprefixer');
 const cssnano = require_cwd('gulp-cssnano');
+const concat = require_cwd('gulp-concat');
+const minifycss = require_cwd('gulp-minify-css');
 const through2 = require_cwd('through2');
 
 const params = {
@@ -31,9 +33,9 @@ const params = {
 
 function cssInjection (content) {
   return content
-    .replace(/\\/style\\/?'/g, "/style/css\'")
-    .replace(/\\/style\\/?"/g, '/style/css\"')
-    .replace(/\\.(less|scss|sass)/g, '.css');
+    .replace(/\\\/style\\\/?'/g, "/style/css\'")
+    .replace(/\\\/style\\\/?"/g, '/style/css\"')
+    .replace(/\\\.(less|scss|sass)/g, '.css');
 }
 
 function compileScripts (babelEnv, destDir) {
@@ -41,16 +43,14 @@ function compileScripts (babelEnv, destDir) {
   process.env.BABEL_ENV = babelEnv;
   return gulp
     .src(scripts)
-    .pipe(babel({
-      configFile: path.resolve(process.cwd(), 'babel.config.js')
-    }))
+    .pipe(babel({ root: process.cwd() }))
     .pipe(
       through2.obj(function (file, encoding, next) {
         this.push(file.clone());
-        if (file.path.match(/(\\/|\\\\)style(\\/|\\\\)index\\.js/)) {
+        if (file.path.match(/(\\\/|\\\\\)style(\\\/|\\\\\)index\\\.js/)) {
           const content = file.contents.toString(encoding);
           file.contents = Buffer.from(cssInjection(content));
-          file.path = file.path.replace(/index\\.js/, 'css.js');
+          file.path = file.path.replace(/index\\\.js/, 'css.js');
           this.push(file);
           next();
         } else {
@@ -87,6 +87,10 @@ function trans2css() {
     .pipe(sass())
     .pipe(autoprefixer())
     .pipe(cssnano({ zindex: false, reduceIdents: false }))
+    .pipe(gulp.dest(dest.lib))
+    .pipe(gulp.dest(dest.es))
+    .pipe(concat('index.css'))
+    .pipe(minifycss())
     .pipe(gulp.dest(dest.lib))
     .pipe(gulp.dest(dest.es));
 }

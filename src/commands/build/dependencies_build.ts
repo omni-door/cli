@@ -43,8 +43,10 @@ export default function (config: {
     'gulp': '4.0.2',
     'gulp-autoprefixer': '7.0.1',
     'gulp-babel': '8.0.0',
+    'gulp-concat': '2.6.1',
     'gulp-cssnano': '2.1.3',
     'gulp-less': '4.0.1',
+    'gulp-minify-css': '1.2.4',
     'gulp-sass': '4.1.0',
     'through2': '4.0.1'
   });
@@ -93,8 +95,10 @@ export default function (config: {
     dependency('gulp'),
     dependency('gulp-autoprefixer'),
     dependency('gulp-babel'),
+    dependency('gulp-concat'),
     dependency('gulp-cssnano'),
     dependency('gulp-less'),
+    dependency('gulp-minify-css'),
     dependency('gulp-sass'),
     dependency('through2'),
     dependency('@babel/core'),
