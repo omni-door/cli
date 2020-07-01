@@ -29,6 +29,7 @@ export default async function (config: OmniConfig, options: { port?: number | st
 
   const {
     port,
+    host,
     logLevel,
     devMiddlewareOptions,
     webpack,
@@ -52,6 +53,7 @@ export default async function (config: OmniConfig, options: { port?: number | st
 
   run({
     p: _port,
+    host,
     webpackConfig: webpack!,
     logLevel,
     devMiddlewareOptions, 

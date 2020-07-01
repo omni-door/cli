@@ -74,12 +74,18 @@ type OptionRelease = {
 ```ts
 import { Configuration } from 'webpack';
 import { Config } from 'http-proxy-middleware';
+import { Options as DevMiddlewareOptions } from 'webpack-dev-middleware';
+
+type LOGLEVEL = 'debug' | 'info' | 'warn' | 'error' | 'silent';
+type ServerType = 'storybook' | 'docz' | 'dumi' | 'bisheng' | 'styleguidist' | 'default';
 
 interface OmniConfig {
   type: PROJECT_TYPE;
   dev?: {
     port?: number;
+    host?: string;
     logLevel?: LOGLEVEL;
+    devMiddlewareOptions?: Partial<DevMiddlewareOptions>;
     webpack?: Configuration;
     proxy?: {
       route: string;
@@ -88,7 +94,8 @@ interface OmniConfig {
     middleware?: {
       route: PathParams;
       callback: MiddleWareCallback;
-    }[]
+    }[];
+    serverType?: ServerType;
   };
   build: {
     autoRelease?: boolean;

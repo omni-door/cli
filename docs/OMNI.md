@@ -29,6 +29,7 @@ The dev-server based on express, realizing hot-update, api-proxy and other commo
     (params: {
       ip: string;
       port: number;
+      host?: string;
       logLevel: LOGLEVEL;
       proxyConfig?: (ProxyItem | ProxyFn)[];
     }) => {
@@ -57,6 +58,7 @@ The dev-server based on express, realizing hot-update, api-proxy and other commo
     (params: {
       ip: string;
       port: number;
+      host?: string;
       logLevel: LOGLEVEL;
       middlewareConfig?: (MiddlewareItem | MiddlewareFn)[];
     }) => {
@@ -68,6 +70,10 @@ The dev-server based on express, realizing hot-update, api-proxy and other commo
     For more configuration, see [http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware)
 
 - port - dev-server port
+
+- host - dev-server host
+
+- serverType - dev-server type
 
 - logLevel - The log-level which dev-server will apply, optional 'debug', 'info', 'warn', 'error', 'silent'
 

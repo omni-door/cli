@@ -15,6 +15,7 @@ export type  MiddlewareItem = { route: PathParams; callback: (req: Request, res:
 export type ProxyFn = (params: {
   ip: string;
   port: number;
+  host?: string;
   logLevel: LOGLEVEL;
   middlewareConfig?: (MiddlewareItem | MiddlewareFn)[];
 }) => ProxyItem;
@@ -22,12 +23,14 @@ export type ProxyFn = (params: {
 export type MiddlewareFn = (params: {
   ip: string;
   port: number;
+  host?: string;
   logLevel: LOGLEVEL;
   proxyConfig?: (ProxyItem | ProxyFn)[];
 }) => MiddlewareItem;
 
 export type ServerOptions = {
   p: number;
+  host?: string;
   webpackConfig: Configuration;
   logLevel?: LOGLEVEL;
   devMiddlewareOptions?: Partial<Options>;
@@ -38,6 +41,7 @@ export type ServerOptions = {
 
 function server ({
   p,
+  host,
   serverType,
   devMiddlewareOptions = {},
   logLevel = 'error',
@@ -48,14 +52,22 @@ function server ({
   try {
     const CWD = process.cwd();
     const ip = require_cwd('ip');
-    const ipAddress = ip.address();
+    const ipAddress: string = ip.address();
+    const serverHost = host || ipAddress || 'localhost';
+    const serverUrl = 'http://' + serverHost + ':' + p;
+
     const ServerStartCli = {
-      storybook: `${path.resolve(CWD, 'node_modules/.bin/start-storybook')} -p ${p} -h ${ipAddress} --quiet`,
-      docz: `${path.resolve(CWD, 'node_modules/.bin/docz')} dev -p ${p} --host ${ipAddress}`,
+      storybook: `${path.resolve(CWD, 'node_modules/.bin/start-storybook')} -p ${p} -h ${serverHost} --quiet`,
+      docz: `${path.resolve(CWD, 'node_modules/.bin/docz')} dev -p ${p} --host ${serverHost}`,
       bisheng: `${path.resolve(CWD, 'node_modules/.bin/bisheng')} start`,
-      styleguidist: `${path.resolve(CWD, 'node_modules/.bin/styleguidist')} server --port ${p}`,
-      dumi: `${path.resolve(CWD, 'node_modules/.bin/dumi')} dev --port ${p}`
+      styleguidist: `${path.resolve(CWD, 'node_modules/.bin/styleguidist')} server --port ${p} --host ${serverHost}`,
+      dumi: `${path.resolve(CWD, 'node_modules/.bin/dumi')} dev --port ${p} --host ${serverHost}`
     };
+    const autoOpenServer = [
+      'docz',
+      'styleguidist',
+      'dumi'
+    ];
 
     if (serverType === 'default') {
       const express = require_cwd('express');
@@ -87,6 +99,7 @@ function server ({
         const { route, config } = typeof item === 'function' ? item({
           ip: ipAddress,
           port: p,
+          host,
           logLevel,
           middlewareConfig
         }) : item;
@@ -103,6 +116,7 @@ function server ({
         const { route, callback } = typeof item === 'function' ? item({
           ip: ipAddress,
           port: p,
+          host,
           logLevel,
           proxyConfig
         }) : item;
@@ -126,19 +140,15 @@ function server ({
         });
       });
 
-      app.listen(p, async () => {
-        const url_local = 'http://localhost:' + p;
-        const url_ip = 'http://' + ipAddress + ':' + p;
-        await open(url_ip);
-        logInfo('> Ready on local: ' + url_local);
-        logInfo('> Ready on ip: ' + url_ip);
+      app.listen(p, serverHost, async () => {
+        await open(serverUrl);
+        logInfo('> Ready on ip: ' + serverUrl);
       });
     } else {
-      exec([
-        ServerStartCli[serverType]
-      ]);
+      exec([ServerStartCli[serverType]]);
+      if (~autoOpenServer.indexOf(serverType)) setTimeout(() => open(serverUrl), 8000);  
     }
-    
+
   } catch (err) {
     logErr(err);
     process.exit(1);

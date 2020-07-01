@@ -51,6 +51,7 @@ export interface OmniConfig {
   type: PROJECT_TYPE;
   dev?: {
     port?: number;
+    host?: string;
     logLevel?: LOGLEVEL;
     devMiddlewareOptions?: Partial<DevMiddlewareOptions>;
     webpack?: Configuration;

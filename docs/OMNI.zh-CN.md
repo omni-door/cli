@@ -29,6 +29,7 @@ OMNI 会根据不同的项目类型决定整个初始化、构建、创建模板
     (params: {
       ip: string;
       port: number;
+      host?: string;
       logLevel: LOGLEVEL;
       proxyConfig?: (ProxyItem | ProxyFn)[];
     }) => {
@@ -57,6 +58,7 @@ OMNI 会根据不同的项目类型决定整个初始化、构建、创建模板
     (params: {
       ip: string;
       port: number;
+      host?: string;
       logLevel: LOGLEVEL;
       middlewareConfig?: (MiddlewareItem | MiddlewareFn)[];
     }) => {
@@ -68,6 +70,10 @@ OMNI 会根据不同的项目类型决定整个初始化、构建、创建模板
     更多配置详见 [http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware)
 
 - port - 开发服务启动的端口号
+
+- host - 开发服务启动的host
+
+- serverType - 开发服务的类型
 
 - logLevel - 开发服务日志输出等级，可选 'debug'、'info'、'warn'、'error'、'silent'
 
