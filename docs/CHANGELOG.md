@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ## v1.3.x
+### v1.3.5
+1. (omni release) add -a/--automatic options and support REPL(read-eval-print loop)
+
 ### v1.3.4
 1. (omni dev) storybook dev server start add --quiet option
 

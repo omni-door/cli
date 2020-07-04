@@ -1,6 +1,9 @@
 # 变更日志
 
 ## v1.3.x
+### v1.3.5
+1. (omni release) 新增 -a / --automatic 选项，并支持REPL(read-eval-print loop)
+
 ### v1.3.4
 1. (omni dev) storybook 启动开发服务添加 --quiet 选项
 

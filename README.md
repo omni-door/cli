@@ -157,6 +157,7 @@ Usage: omni release [options]
 publish your project according to [omni.config.js]
 
 Options:
+  -a, --automatic         automatic iteration version
   -i, --ignore            ignore automatic iteration version
   -m, --manual <version>  manual iteration version
   -t, --tag <tag>         the tag will add to npm-package

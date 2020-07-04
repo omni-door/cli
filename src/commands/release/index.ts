@@ -1,5 +1,7 @@
 import fs from 'fs';
 import path from 'path';
+import inquirer from 'inquirer';
+import semver from 'semver';
 import {
   exec, 
   logErr,
@@ -14,11 +16,18 @@ import {
   logPrefix
 } from '@omni-door/utils';
 import { OmniConfig, OmniPlugin } from '../../index.d';
-import { getHandlers, signal } from '../../utils';
+import { getHandlers, signal, logo } from '../../utils';
+
+const iterDict = {
+  automatic: '自动迭代 (automatic)',
+  manual: '手动迭代 (manual)',
+  ignore: '忽视迭代 (ignore)'
+};
 
 export default async function (
   config: OmniConfig,
   iterTactic?: {
+    automatic?: boolean;
     ignore?: boolean;
     manual?: string;
     verify?: boolean;
@@ -41,7 +50,6 @@ export default async function (
   // bind exit signals
   signal();
 
-  logTime('项目发布');
   const { type, template, build, release = {}, plugins } = config;
   const {
     git,
@@ -71,9 +79,6 @@ export default async function (
     }
   }
 
-  const message = '开始发布！(Starting release process!)';
-  logInfo(message);
-
   function handleReleaseSuc (msg?: string) {
     msg = msg || '恭喜！发布完成！(The release process completed!)';
 
@@ -94,9 +99,70 @@ export default async function (
   }
 
   try {
-    const { ignore, manual, tag = 'latest', verify } = iterTactic || {};
-    const versionShellSuffix = ignore ? 'i' : manual ? manual : '';
+    let { automatic, ignore, manual, tag, verify } = iterTactic || {};
+    const hasIter = !(ignore === void 0 && manual === void 0 && automatic === void 0);
+    const versionErrMsg = `请输入有效的版本号 (Please input valid version)\n
+    版本号规则可参考: https://semver.org/ (Reference to: https://semver.org/)`;
 
+    if (!hasIter || (npm && !tag)) {
+      await new Promise((resolve, reject) => {
+        inquirer.prompt([
+          {
+            name: 'iter',
+            type: 'list',
+            when: () => !hasIter,
+            choices: [ iterDict.automatic, iterDict.manual, iterDict.ignore ],
+            message: `${logo()}请选择迭代策略 (Please choice iteration strategy)：`
+          },
+          {
+            name: 'version',
+            type: 'input',
+            when: answer => answer.iter === iterDict.manual,
+            validate: val => {
+              if (!semver.valid(val)) {
+                console.info('\n');
+                logWarn(versionErrMsg);
+                return false;
+              }
+              return true;
+            },
+            message: `${logo()}请输入迭代的版本号 (Please input the iteration version):`
+          },
+          {
+            name: 'label',
+            type: 'input',
+            when: () => npm && !tag,
+            default: 'latest',
+            message: `${logo()}请输入迭代的标签 (Please input the iteration tag):`
+          }
+        ])
+          .then(answers => {
+            const { iter, version, label } = answers;
+            if (label) tag = label;
+            switch (iter) {
+              case iterDict.automatic:
+                automatic = true;
+                break;
+              case iterDict.manual:
+                manual = version;
+                break;
+              case iterDict.ignore:
+                ignore = true;
+                break;
+            }
+            resolve();
+          })
+          .catch(handleReleaseErr());
+      });
+    }
+
+    if (manual && !semver.valid(manual)) {
+      logWarn(versionErrMsg);
+      process.exit(0);
+    }
+
+    logTime('项目发布');
+    logInfo('开始发布！(Starting release process!)');
     if (verify && test) {
       await exec(['npm test'], () => logEmph(italic('单元测试通过！(The unit test passed!)')), handleReleaseErr('单元测试失败！(The unit test failed!)'));
     }
@@ -113,6 +179,7 @@ export default async function (
       await exec(['npm run lint:style'], () => logEmph(italic('stylelint校验通过！(The stylelint passed!)')), handleReleaseErr(`stylelint校验失败！(The stylelint checking failed!) \n 尝试执行 (try to exec): ${underline('npm run lint:style_fix')}`));
     }
 
+    const versionShellSuffix = ignore ? 'i' : manual ? manual : '';
     await exec(
       [`${path.resolve(__dirname, 'version.sh')} "${logPrefix()}" ${versionShellSuffix}`],
       () => logEmph('版本迭代成功！(The version iteration success!)'),

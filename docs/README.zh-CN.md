@@ -155,6 +155,7 @@ Usage: omni release [options]
 publish your project according to [omni.config.js]
 
 Options:
+  -a, --automatic         发布并自动迭代版本号
   -i, --ignore            发布并忽视版本号的迭代
   -m, --manual <version>  发布并手动指定版本号
   -t, --tag <tag>         发布时指定tag
