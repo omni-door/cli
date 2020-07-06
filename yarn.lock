@@ -321,7 +321,7 @@
 
 "@omni-door/utils@^0.1.17":
   version "0.1.17"
-  resolved "http://hnpm.hupu.io/@omni-door%2futils/-/utils-0.1.17.tgz#46ac05091f696107330684cd1b6d8aa9e61f6ea3"
+  resolved "https://registry.npmjs.org/@omni-door/utils/-/utils-0.1.17.tgz#46ac05091f696107330684cd1b6d8aa9e61f6ea3"
   integrity sha512-STi5tV7zXKSuC84v2axX1xTiWwO2CTMa/uumb17z0WtWU0JdwDKFlIh6/NJMtfaG0DsTWEUkeDUYgJP6aocAWQ==
   dependencies:
     "@types/signale" "^1.2.1"
