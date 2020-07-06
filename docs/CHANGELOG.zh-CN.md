@@ -1,6 +1,9 @@
 # 变更日志
 
 ## v1.3.x
+### v1.3.6
+1. 升级 @omni-door/utils，解决 logTime 前缀不正确的问题
+
 ### v1.3.5
 1. (omni release) 新增 -a / --automatic 选项，并支持REPL(read-eval-print loop)
 

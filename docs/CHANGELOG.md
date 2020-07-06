@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ## v1.3.x
+### v1.3.6
+1. upgrade @omni-door/utils to resolve logTime prefix bug
+
 ### v1.3.5
 1. (omni release) add -a/--automatic options and support REPL(read-eval-print loop)
 

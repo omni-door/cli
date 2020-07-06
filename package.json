@@ -99,7 +99,7 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
-    "@omni-door/utils": "^0.1.16",
+    "@omni-door/utils": "^0.1.17",
     "@types/express": "4.17.2",
     "@types/http-proxy-middleware": "0.19.3",
     "@types/webpack": "4.41.2",
