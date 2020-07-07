@@ -73,9 +73,9 @@ import { OmniConfig } from '../index.d';
 
   program
     .command('release')
-    .option('-a, --automatic', 'automatic iteration version')
-    .option('-i, --ignore', 'ignore iteration version')
-    .option('-m, --manual <version>', 'manual iteration version')
+    .option('-a, --automatic', 'auto-increase the version of iteration')
+    .option('-i, --ignore', 'ignoring the version of iteration')
+    .option('-m, --manual <version>', 'manual specify the version of iteration')
     .option('-t, --tag <tag>', 'the tag will add to npm-package')
     .option('-n, --no-verify', 'bypass all pre-check before release')
     .description('publish your project according to [omni.config.js]')
