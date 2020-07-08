@@ -4,6 +4,8 @@
 ### v1.3.7
 1. (omni release) 文本调整
 
+2. (omni build) gulp 打包优化
+
 ### v1.3.6
 1. 升级 @omni-door/utils，解决 logTime 前缀不正确的问题
 

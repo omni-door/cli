@@ -24,7 +24,10 @@ const params = {
     lib: '${outDir}',
     es: '${esmDir}'
   },
-  styles: '${srcDir}/**/*.{less,scss,sass}',
+  styles: [
+    '${srcDir}/**/*.{css,less,scss,sass}',
+    '!${srcDir}/**/{demo,__demo__,test,__test__,stories,__stories__}/*.{css,less,scss,sass}'
+  ],
   scripts: [
     '${srcDir}/**/*.{ts,tsx,js,jsx}',
     '!${srcDir}/**/{demo,__demo__,test,__test__,stories,__stories__}/*.{ts,tsx,js,jsx}'

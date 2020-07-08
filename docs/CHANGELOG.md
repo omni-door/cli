@@ -4,6 +4,8 @@
 ### v1.3.7
 1. (omni release) text adjustment
 
+2. (omni build) gulp-build optimization
+
 ### v1.3.6
 1. upgrade @omni-door/utils to resolve logTime prefix bug
 
