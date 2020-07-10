@@ -113,7 +113,7 @@ interface OmniConfig {
     };
     reserve?: {
       style?: boolean;
-      assets?: string[];
+      assets?: (string | { srcPath: string; relativePath?: string; })[];
     };
   };
   release: {

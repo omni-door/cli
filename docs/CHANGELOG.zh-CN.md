@@ -1,6 +1,9 @@
 # 变更日志
 
 ## v1.3.x
+### v1.3.8
+1. (omni build) reserve.assets 字段的类型更变为: (string | { srcPath: string; relativePath?: string; })[]
+
 ### v1.3.7
 1. (omni release) 文本调整
 

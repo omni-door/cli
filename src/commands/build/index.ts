@@ -168,17 +168,27 @@ export default async function (config: OmniConfig, buildTactic?: {
     });
   }
 
-  function copyReserves (reserves: string[]) {
+  function copyReserves (reserves: (string | { srcPath: string; relativePath?: string; })[]) {
     for (let i = 0, len = reserves.length; i < len; i++) {
       const reserveItem = reserves[i];
+      let srcPath = '';
+      let relativePath = '';
+      if (typeof reserveItem === 'string') {
+        srcPath = reserveItem;
+      } else {
+        srcPath = reserveItem.srcPath;
+        relativePath = reserveItem.relativePath || '';
+      }
+
       let stats;
       try {
-        stats = fs.statSync(reserveItem);
+        stats = fs.statSync(srcPath);
       } catch (error) {
-        logWarn(`"${reserveItem}" 是一个无效的路径！(The path "${reserveItem}" is invaild!)`);
+        logWarn(`"${srcPath}" 是一个无效的路径！(The path of "${srcPath}" is invaild!)`);
         continue;
       }
-      const relativePath = path.relative(srcDir, reserveItem);
+
+      relativePath = relativePath || path.relative(srcDir, srcPath);
       const destPath = path.resolve(outDir, relativePath);
       const emsPath = esmDir && path.resolve(esmDir, relativePath);
       if (stats.isDirectory()) {
@@ -188,11 +198,11 @@ export default async function (config: OmniConfig, buildTactic?: {
         fsExtra.ensureDirSync(path.resolve(destPath, '..'));
         emsPath && fsExtra.ensureDirSync(path.resolve(emsPath, '..'));
       } else {
-        logWarn(`"${reserveItem}" 不是有效的文件或文件夹路径！(The file or directory path which is "${reserveItem}" cannot be found!)`);
+        logWarn(`"${srcPath}" 不是有效的文件或文件夹路径！(The file or directory path which is "${srcPath}" cannot be found!)`);
         continue;
       }
-      fsExtra.copySync(reserveItem, destPath);
-      emsPath && fsExtra.copySync(reserveItem, emsPath);
+      fsExtra.copySync(srcPath, destPath);
+      emsPath && fsExtra.copySync(srcPath, emsPath);
     }
   }
 

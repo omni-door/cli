@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ## v1.3.x
+### v1.3.8
+1. (omni build) The reserve.assets field type change to: (string | { srcPath: string; relativePath?: string; })[]
+
 ### v1.3.7
 1. (omni release) text adjustment
 
