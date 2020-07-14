@@ -1,6 +1,9 @@
 # 变更日志
 
 ## v1.3.x
+### v1.3.9
+1. (omni dev) 开发服务 host 默认更变为 `0.0.0.0`
+
 ### v1.3.8
 1. (omni build) reserve.assets 字段的类型更变为: (string | { srcPath: string; relativePath?: string; })[]
 

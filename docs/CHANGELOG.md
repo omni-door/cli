@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ## v1.3.x
+### v1.3.9
+1. (omni dev) The default dev-server host change to `0.0.0.0`
+
 ### v1.3.8
 1. (omni build) The reserve.assets field type change to: (string | { srcPath: string; relativePath?: string; })[]
 

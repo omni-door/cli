@@ -53,8 +53,9 @@ function server ({
     const CWD = process.cwd();
     const ip = require_cwd('ip');
     const ipAddress: string = ip.address();
-    const serverHost = host || ipAddress || 'localhost';
-    const serverUrl = 'http://' + serverHost + ':' + p;
+    const serverHost = host || '0.0.0.0';
+    const openHost = host || ipAddress || '0.0.0.0';
+    const serverUrl = 'http://' + openHost + ':' + p;
 
     const ServerStartCli = {
       storybook: `${path.resolve(CWD, 'node_modules/.bin/start-storybook')} -p ${p} -h ${serverHost} --quiet`,
