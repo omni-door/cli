@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ## v1.4.x
+### v1.4.1
+1. fixed dependencies version
+
 ### v1.4.0
 1. (omni dev) support `https` protocol for dev-server
 

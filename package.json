@@ -111,8 +111,8 @@
     "figlet": "1.2.4",
     "fs-extra": "8.1.0",
     "inquirer": "7.0.0",
-    "mkcert": "^1.3.0",
-    "semver": "^7.3.2",
+    "mkcert": "1.3.0",
+    "semver": "7.3.2",
     "shelljs": "0.8.3"
   }
 }
