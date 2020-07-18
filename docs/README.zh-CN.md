@@ -165,7 +165,7 @@ Options:
 
 ---
 
-## 接入文档
+## API文档
 点 [这里](./DEV.zh-CN.md)
 
 ## License

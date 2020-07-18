@@ -29,13 +29,13 @@ export default async function (config: OmniConfig, options: { port?: number | st
 
   const {
     port,
-    host,
     logLevel,
     devMiddlewareOptions,
     webpack,
     proxy,
     middleware,
-    serverType = 'default'
+    serverType = 'default',
+    ...rest
   } = dev!;
 
   // bind exit signals
@@ -52,8 +52,8 @@ export default async function (config: OmniConfig, options: { port?: number | st
       : 6200;
 
   run({
+    ...rest,
     p: _port,
-    host,
     webpackConfig: webpack!,
     logLevel,
     devMiddlewareOptions, 

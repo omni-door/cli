@@ -52,6 +52,14 @@ export interface OmniConfig {
   dev?: {
     port?: number;
     host?: string;
+    https?: boolean | { key: string; cert: string; };
+    CA?: {
+      organization?: string;
+      countryCode?: string;
+      state?: string;
+      locality?: string;
+      validityDays?: number;
+    };
     logLevel?: LOGLEVEL;
     devMiddlewareOptions?: Partial<DevMiddlewareOptions>;
     webpack?: Configuration;

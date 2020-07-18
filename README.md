@@ -169,7 +169,7 @@ Options:
 
 ---
 
-## Accessible Docs
+## API Docs
 click [here](./docs/DEV.md)
 
 ## License

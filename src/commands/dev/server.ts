@@ -1,5 +1,9 @@
+import fs from 'fs';
+import http from 'http';
+import https from 'https';
 import path from 'path';
-import { logInfo, logErr, LOGLEVEL, require_cwd, exec } from '@omni-door/utils';
+import * as mkcert from 'mkcert';
+import { logInfo, logWarn, logErr, LOGLEVEL, require_cwd, exec, output_file } from '@omni-door/utils';
 import { Express, Request, Response, NextFunction } from 'express';
 import { PathParams } from 'express-serve-static-core';
 import { Configuration, Compiler } from 'webpack';
@@ -31,6 +35,14 @@ export type MiddlewareFn = (params: {
 export type ServerOptions = {
   p: number;
   host?: string;
+  https?: boolean | { key: string; cert: string; };
+  CA?: {
+    organization?: string;
+    countryCode?: string;
+    state?: string;
+    locality?: string;
+    validityDays?: number;
+  };
   webpackConfig: Configuration;
   logLevel?: LOGLEVEL;
   devMiddlewareOptions?: Partial<Options>;
@@ -39,23 +51,25 @@ export type ServerOptions = {
   serverType: ServerType
 };
 
-function server ({
+async function server ({
   p,
   host,
+  https: httpsConfig,
+  CA,
   serverType,
   devMiddlewareOptions = {},
   logLevel = 'error',
   webpackConfig,
   proxyConfig = [],
   middlewareConfig = []
-}: ServerOptions): void {
+}: ServerOptions): Promise<void> {
   try {
     const CWD = process.cwd();
     const ip = require_cwd('ip');
     const ipAddress: string = ip.address();
     const serverHost = host || '0.0.0.0';
     const openHost = host || ipAddress || '0.0.0.0';
-    const serverUrl = 'http://' + openHost + ':' + p;
+    let serverUrl = openHost + ':' + p;
 
     const ServerStartCli = {
       storybook: `${path.resolve(CWD, 'node_modules/.bin/start-storybook')} -p ${p} -h ${serverHost} --quiet`,
@@ -141,11 +155,86 @@ function server ({
         });
       });
 
-      app.listen(p, serverHost, async () => {
+      let isHttps = false;
+      let key, cert;
+      if (httpsConfig) {
+        if (typeof httpsConfig === 'boolean') {
+          try {
+            const cacheDirPath = path.resolve(__dirname, '../../../.omni_cache');
+            const keyPath = path.resolve(cacheDirPath, `${openHost}-key.pem`);
+            const certPath = path.resolve(cacheDirPath, `${openHost}-cert.pem`);
+
+            if (fs.existsSync(keyPath)) {
+              key = fs.readFileSync(keyPath);
+              cert = fs.readFileSync(certPath);
+            } else {
+              const ca = await mkcert.createCA({
+                organization: 'OMNI-DOOR',
+                countryCode: 'CN',
+                state: 'SHANGHAI',
+                locality: 'SONGJIANG',
+                validityDays: 365,
+                ...CA
+              });
+  
+              const certificate = await mkcert.createCert({
+                domains: [openHost, '127.0.0.1', 'localhost'],
+                validityDays: 365,
+                caKey: ca.key,
+                caCert: ca.cert
+              });
+              key = certificate.key;
+              cert = certificate.cert;
+              output_file({
+                file_path: keyPath,
+                file_content: key
+              });
+              output_file({
+                file_path: certPath,
+                file_content: cert
+              });
+            }
+
+            isHttps = true;
+          } catch (err) {
+            logWarn(err);
+            logWarn(`生成证书失败！(Failing to generate the certificate!)\n
+            可通过以下方式手动指定证书:
+            https: {
+              key: fs.readFileSync(path.resolve(\${your_path_to_key})),
+              cert: fs.readFileSync(path.resolve(\${your_path_to_cert}))
+            }`);
+            isHttps = false;
+          }
+        } else {
+          key = httpsConfig.key;
+          cert = httpsConfig.cert;
+        }
+      }
+
+      if (isHttps && (!key || !cert)) {
+        logWarn('证书缺失，将以http启动开发服务！(Missing the certificate, start the dev-server with http!)');
+        isHttps = false;
+      }
+
+      let server;
+      if (isHttps) {
+        server = https.createServer({
+          key,
+          cert
+        }, app);
+        serverUrl = 'https://' + serverUrl;
+      } else {
+        server = http.createServer(app);
+        serverUrl = 'http://' + serverUrl;
+      }
+
+      server.listen(p, serverHost, async () => {
         await open(serverUrl);
         logInfo('> Ready on ip: ' + serverUrl);
       });
     } else {
+      serverUrl = 'http://' + serverUrl;
       exec([ServerStartCli[serverType]]);
       if (~autoOpenServer.indexOf(serverType)) setTimeout(() => open(serverUrl), 8000);  
     }

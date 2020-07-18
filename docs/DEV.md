@@ -84,6 +84,7 @@ interface OmniConfig {
   dev?: {
     port?: number;
     host?: string;
+    https?: boolean | { key: string; cert: string; };
     logLevel?: LOGLEVEL;
     devMiddlewareOptions?: Partial<DevMiddlewareOptions>;
     webpack?: Configuration;

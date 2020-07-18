@@ -1,5 +1,9 @@
 # CHANGE LOG
 
+## v1.4.x
+### v1.4.0
+1. (omni dev) support `https` protocol for dev-server
+
 ## v1.3.x
 ### v1.3.9
 1. (omni dev) The default dev-server host change to `0.0.0.0`

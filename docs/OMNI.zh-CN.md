@@ -73,6 +73,8 @@ OMNI 会根据不同的项目类型决定整个初始化、构建、创建模板
 
 - host - 开发服务启动的host
 
+- https - 开发服务以https协议启动，可自定义 `key` 和 `cert`
+
 - serverType - 开发服务的类型
 
 - logLevel - 开发服务日志输出等级，可选 'debug'、'info'、'warn'、'error'、'silent'

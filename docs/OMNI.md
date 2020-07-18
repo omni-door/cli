@@ -73,6 +73,8 @@ The dev-server based on express, realizing hot-update, api-proxy and other commo
 
 - host - dev-server host
 
+- https - start dev-server with https protocol which could custom `key` and `cert`
+
 - serverType - dev-server type
 
 - logLevel - The log-level which dev-server will apply, optional 'debug', 'info', 'warn', 'error', 'silent'
