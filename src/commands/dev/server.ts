@@ -234,9 +234,11 @@ async function server ({
         logInfo('> Ready on ip: ' + serverUrl);
       });
     } else {
+      let delay = 5000;
+      if (serverType === 'docz') delay = 12000;
       serverUrl = 'http://' + serverUrl;
       exec([ServerStartCli[serverType]]);
-      if (~autoOpenServer.indexOf(serverType)) setTimeout(() => open(serverUrl), 8000);  
+      if (~autoOpenServer.indexOf(serverType)) setTimeout(() => open(serverUrl), delay);  
     }
 
   } catch (err) {
