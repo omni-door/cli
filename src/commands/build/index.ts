@@ -232,9 +232,13 @@ export default async function (config: OmniConfig, buildTactic?: {
       gulp: path.resolve(CWD, 'node_modules/gulp/bin/gulp.js')
     };
     if (tool === 'tsc') {
+      if (!typescript) {
+        handleBuildErr('已禁用 typescript，无法完成构建！(The typescript had been forbidden!)')();
+      }
+
       const tscPath = buildCliPath.tsc;
-      buildCliArr.push(`${tscPath} --outDir ${outDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')}`);
-      esmDir && buildCliArr.push(`${tscPath} --module ES6 --target ES6 --outDir ${esmDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')}`);
+      buildCliArr.push(`${tscPath} --outDir ${outDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --rootDir ${srcDir}`);
+      esmDir && buildCliArr.push(`${tscPath} --module ES6 --target ES6 --outDir ${esmDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --rootDir ${srcDir}`);
 
       if (!fs.existsSync(tscPath)) {
         logWarn('请先安装 typescript! (Please install typescript first!)');
@@ -273,12 +277,12 @@ export default async function (config: OmniConfig, buildTactic?: {
           const tscPath = buildCliPath.tsc;
           const gulpPath = buildCliPath.gulp;
           buildCliArr.push(
-            `${tscPath} --outDir ${outDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --emitDeclarationOnly`,
-            `${tscPath} --module ES6 --target ES6 --outDir ${esmDir || path.resolve(CWD, 'es')} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --emitDeclarationOnly`,
+            typescript ? `${tscPath} --outDir ${outDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --emitDeclarationOnly --rootDir ${srcDir}` : '',
+            typescript && esmDir ? `${tscPath} --module ES6 --target ES6 --outDir ${esmDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --emitDeclarationOnly --rootDir ${srcDir}` : '',
             `${gulpPath} --gulpfile ${buildConfigPath} --cwd ${CWD}`
           );
 
-          if (!fs.existsSync(tscPath)) {
+          if (typescript && !fs.existsSync(tscPath)) {
             logWarn('请先安装 typescript! (Please install typescript first!)');
             is_go_on = await installDenpendencies('tsc');
           }
