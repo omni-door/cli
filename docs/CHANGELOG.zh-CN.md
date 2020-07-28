@@ -4,6 +4,8 @@
 ### v1.4.1
 1. 固定依赖的版本号
 
+2. fix(omni build): typescript 被禁用的情况处理
+
 ### v1.4.0
 1. (omni dev) 开发服务支持 `https` 的协议
 

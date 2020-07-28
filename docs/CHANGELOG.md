@@ -4,6 +4,8 @@
 ### v1.4.1
 1. fixed dependencies version
 
+2. fix(omni build): typescript had been forbidden situation tackle
+
 ### v1.4.0
 1. (omni dev) support `https` protocol for dev-server
 
