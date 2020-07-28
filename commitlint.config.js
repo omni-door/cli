@@ -20,7 +20,10 @@ const Configuration = {
       'modify',
       'merge',
       'chore',
-      'optimization'
+      'optimization',
+      'build',
+      'test',
+      'perf'
     ]]
   },
   /*

@@ -17,7 +17,7 @@
     "build:branch": "./.build/branch.sh",
     "build:version": "./.build/version.sh",
     "build:copy": "./.build/copy.sh",
-    "changelog": "standard-version",
+    "changelog": "node ./build/changelog.js",
     "release": "npm run build:branch master && npm run build && npm run build:version"
   },
   "repository": {
