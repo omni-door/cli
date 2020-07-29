@@ -22,7 +22,6 @@ const Configuration = {
       'chore',
       'optimization',
       'build',
-      'test',
       'perf'
     ]]
   },

@@ -98,11 +98,24 @@ export default async function (
     };
   }
 
+  function getPkjData (pkjPath: string) {
+    let pkj = {
+      name: 'OMNI-PROJECT',
+      version: '0.0.1'
+    };
+    if (fs.existsSync(pkjPath)) {
+      delete require.cache[pkjPath]; // 删除缓存避免版本号不正确
+      pkj = require(pkjPath);
+    }
+    return pkj;
+  }
+
   try {
     let { automatic, ignore, manual, tag, verify } = iterTactic || {};
     const hasIter = !(ignore === void 0 && manual === void 0 && automatic === void 0);
     const versionErrMsg = `请输入有效的版本号 (Please input valid version)\n
     版本号规则可参考: https://semver.org/ (Reference to: https://semver.org/)`;
+    const pkjPath = path.resolve(process.cwd(), 'package.json');
 
     if (!hasIter || (npm && !tag)) {
       await new Promise((resolve, reject) => {
@@ -221,15 +234,7 @@ export default async function (
         );
       }
 
-      const pkjPath = path.resolve(process.cwd(), 'package.json');
-      let pkj = {
-        name: 'OMNI-PROJECT',
-        version: '0.0.1'
-      };
-      if (fs.existsSync(pkjPath)) {
-        delete require.cache[pkjPath]; // 删除缓存避免版本号不正确
-        pkj = require(pkjPath);
-      }
+      const pkj = getPkjData(pkjPath);
 
       const commit = commitlint && !verify
         ? `git commit -m'[${pkj.name.toUpperCase()}]: ${pkj.version}' --no-verify`
@@ -269,7 +274,7 @@ export default async function (
     // handle release plugins
     const plugin_handles = plugins && plugins.length > 0 && getHandlers<'release'>(plugins as OmniPlugin<'release'>[], 'release');
     if (plugin_handles) {
-      const pkj = require(path.resolve(process.cwd(), 'package.json'));
+      const pkj = getPkjData(pkjPath);
       const version = pkj ? pkj.version : 'unknown';
       const versionIterTactic = ignore ? 'ignore' : manual ? 'manual' : 'auto';
       for (const name in plugin_handles) {
