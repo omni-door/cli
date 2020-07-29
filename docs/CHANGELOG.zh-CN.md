@@ -1,6 +1,11 @@
 # 变更日志
 
 ## v1.4.x
+### v1.4.2
+1. perf(omni release): 优化了 require package.json 的过程
+    
+2. 升级 @omni-door/utils
+
 ### v1.4.1
 1. 固定依赖的版本号
 
