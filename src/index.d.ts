@@ -45,7 +45,7 @@ export interface OmniPlugin<T extends PLUGINSTAGE> {
 
 export type MiddleWareCallback = (req: Request, res: Response, next: NextFunction) => void;
 
-export type ServerType = 'storybook' | 'docz' | 'dumi' | 'bisheng' | 'styleguidist' | 'default';
+export type ServerType = 'next' | 'storybook' | 'docz' | 'dumi' | 'bisheng' | 'styleguidist' | 'default';
 
 export interface OmniConfig {
   type: PROJECT_TYPE;

@@ -77,39 +77,45 @@ function mkdir (dirPath: string) {
   dirPath && fsExtra.ensureDirSync(dirPath, { mode: 0o2777 });
 }
 
-function presetTpl (type: 'basic' | 'standard' | 'entire' | 'toolkit' | 'components') {
+function presetTpl (type: Exclude<keyof OptionType, 'install'>) {
   let cli, pkj = '';
   switch(type) {
-    case 'basic':
-      cli = presetCli.cli_basic;
+    case 'react_basic':
+      cli = presetCli.cli_basic_react;
       pkj = '@omni-door/tpl-spa-react';
       break;
-    case 'standard':
-      cli = presetCli.cli_standard;
+    case 'react_standard':
+      cli = presetCli.cli_standard_react;
       pkj = '@omni-door/tpl-spa-react';
       break;
-    case 'entire':
-      cli = presetCli.cli_entire;
+    case 'react_entire':
+      cli = presetCli.cli_entire_react;
       pkj = '@omni-door/tpl-spa-react';
+      break;
+    case 'react_ssr':
+      cli = presetCli.cli_ssr_react;
+      pkj = '@omni-door/tpl-ssr-react';
+      break;
+    case 'react_components':
+      cli = presetCli.cli_components_react;
+      pkj = '@omni-door/tpl-component-library-react';
       break;
     case 'toolkit':
-      cli = presetCli.cli_lib_toolkit;
+      cli = presetCli.cli_toolkit;
       pkj = '@omni-door/tpl-toolkit';
       break;
-    case 'components':
-      cli = presetCli.cli_lib_components;
-      pkj = '@omni-door/tpl-component-library-react';
   }
 
   return { cli, pkj };
 }
 
 type OptionType = {
-  basic?: boolean | string;
-  standard?: boolean | string;
-  entire?: boolean | string;
+  react_basic?: boolean | string;
+  react_standard?: boolean | string;
+  react_entire?: boolean | string;
+  react_ssr?: boolean | string;
+  react_components?: boolean | string;
   toolkit?: boolean | string;
-  components?: boolean | string;
   install: boolean;
 };
 
@@ -135,11 +141,12 @@ type OptionCustom = {
 };
 
 export default async function (strategy: STRATEGY, {
-  basic,
-  standard,
-  entire,
+  react_basic,
+  react_standard,
+  react_entire,
+  react_ssr,
+  react_components,
   toolkit,
-  components,
   install
 }: OptionType, option?: OptionCustom) {
   try {
@@ -191,11 +198,12 @@ export default async function (strategy: STRATEGY, {
   let presetType: keyof typeof types | '' = '';
   let projectName = defaultName;
   const types = {
-    basic,
-    standard,
-    entire,
-    toolkit,
-    components
+    react_basic,
+    react_standard,
+    react_entire,
+    react_ssr,
+    react_components,
+    toolkit
   };
   for (const k in types) {
     const type = k as keyof typeof types;

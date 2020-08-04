@@ -22,7 +22,7 @@ export type GInstallCli = {
   devServer?: DEVSERVER;
 };
 
-export const cli_basic: GInstallCli = {
+export const cli_basic_react: GInstallCli = {
   project_type: 'spa-react',
   pkgtool: 'yarn',
   build: 'webpack',
@@ -35,7 +35,7 @@ export const cli_basic: GInstallCli = {
   stylelint: false
 };
 
-export const cli_standard: GInstallCli = {
+export const cli_standard_react: GInstallCli = {
   project_type: 'spa-react',
   pkgtool: 'yarn',
   build: 'webpack',
@@ -48,7 +48,7 @@ export const cli_standard: GInstallCli = {
   stylelint: true
 };
 
-export const cli_entire: GInstallCli = {
+export const cli_entire_react: GInstallCli = {
   project_type: 'spa-react',
   pkgtool: 'yarn',
   build: 'webpack',
@@ -61,21 +61,21 @@ export const cli_entire: GInstallCli = {
   stylelint: true
 };
 
-export const cli_lib_toolkit: GInstallCli = {
-  project_type: 'toolkit',
+export const cli_ssr_react: GInstallCli = {
+  project_type: 'ssr-react',
   pkgtool: 'yarn',
-  build: 'rollup',
+  build: 'next',
   ts: true,
-  testFrame: 'mocha',
+  testFrame: 'jest',
   eslint: true,
   prettier: true,
   commitlint: true,
-  style: '',
-  stylelint: false
+  style: 'all',
+  stylelint: true
 };
 
-export const cli_lib_components: GInstallCli = {
-  project_type: 'component-library-react',
+export const cli_components_react: GInstallCli = {
+  project_type: 'component-react',
   pkgtool: 'yarn',
   build: 'tsc',
   ts: true,
@@ -88,10 +88,24 @@ export const cli_lib_components: GInstallCli = {
   devServer: 'docz'
 };
 
+export const cli_toolkit: GInstallCli = {
+  project_type: 'toolkit',
+  pkgtool: 'yarn',
+  build: 'rollup',
+  ts: true,
+  testFrame: 'mocha',
+  eslint: true,
+  prettier: true,
+  commitlint: true,
+  style: '',
+  stylelint: false
+};
+
 export default {
-  cli_basic,
-  cli_standard,
-  cli_entire,
-  cli_lib_toolkit,
-  cli_lib_components
+  cli_basic_react,
+  cli_standard_react,
+  cli_entire_react,
+  cli_ssr_react,
+  cli_components_react,
+  cli_toolkit
 };

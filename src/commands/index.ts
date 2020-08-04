@@ -34,11 +34,12 @@ import { OmniConfig } from '../index.d';
 
   program
     .command('init [strategy]')
-    .option('-b, --basic [name]', 'create a basic React SPA project')
-    .option('-s, --standard [name]', 'create a standard  React SPA project')
-    .option('-e, --entire [name]', 'create a most versatile  React SPA project')
+    .option('-rb, --react_basic [name]', 'create a basic React SPA project')
+    .option('-rs, --react_standard [name]', 'create a standard React SPA project')
+    .option('-re, --react_entire [name]', 'create a most versatile React SPA project')
+    .option('-rS, --react_ssr [name]', 'create a React component library')
+    .option('-rc, --react_components [name]', 'create a React component library')
     .option('-t, --toolkit [name]', 'create a toolkit project')
-    .option('-c, --components [name]', 'create a React component library')
     .option('-n, --no-install', 'init project without install dependencies')
     .description('initialize your project, [strategy] could be stable(default) or latest', {
       strategy: 'stable or latest',
@@ -49,8 +50,12 @@ import { OmniConfig } from '../index.d';
   program
     .command('dev')
     .option('-p, --port <port>', 'start the dev-server according to the specified port')
+    .option('-H, --hostname <host>', 'start the dev-server according to the specified hostname')
     .description('omni dev -p <port>', {
       port: 'required! The dev-server run port.',
+    })
+    .description('omni dev -H <host>', {
+      host: 'required! The dev-server run hostname.',
     })
     .action((options) => dev(config, options));
 
