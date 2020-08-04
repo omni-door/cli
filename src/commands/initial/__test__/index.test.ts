@@ -120,7 +120,7 @@ describe('initial preset test', function () {
     expect(cli_lib_components.pkgtool).to.be.equal('yarn');
 
     expect(cli_lib_components['project_type']).to.be.a('string');
-    expect(cli_lib_components['project_type']).to.be.equal('component-library-react');
+    expect(cli_lib_components['project_type']).to.be.equal('component-react');
 
     expect(cli_lib_components.ts).to.be.a('boolean');
     expect(cli_lib_components.ts).to.be.true;

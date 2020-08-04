@@ -245,7 +245,7 @@
 
   - @omni-door/tpl-toolkit
 
-  - @omni-door/tpl-component-library-react
+  - @omni-door/tpl-component-react
 
 ### v1.2.0
 1. 命名规范
@@ -271,7 +271,7 @@
 
 2. (onmi init) stable 策略版本更新
 
-3. (onmi init) component-library-react 和 toolkit 默认开启单元测试
+3. (onmi init) component-react 和 toolkit 默认开启单元测试
 
 ---
 

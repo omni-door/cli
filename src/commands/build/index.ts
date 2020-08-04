@@ -249,7 +249,7 @@ export default async function (config: OmniConfig, buildTactic?: {
     } else {
       const content_rollup = !buildConfig && type === 'toolkit' && rollupConfig({ ts: typescript, multiOutput: true, srcDir, outDir, esmDir, configurationPath, pkjFieldName, configFileName });
       const content_webpack = !buildConfig && type === 'spa-react' && webpackConfig({ ts: typescript, multiOutput: false, srcDir, outDir, configurationPath, pkjFieldName, configFileName, hash });
-      const content_gulp = !buildConfig && type === 'component-library-react' && gulpConfig({ srcDir, outDir, esmDir });
+      const content_gulp = !buildConfig && type === 'component-react' && gulpConfig({ srcDir, outDir, esmDir });
       const content_config = buildConfig || content_rollup || content_webpack || content_gulp;
 
       // put temporary file for build process
@@ -273,7 +273,7 @@ export default async function (config: OmniConfig, buildTactic?: {
             logWarn('请先安装 webpack! (Please install webpack first!)');
             is_go_on = await installDenpendencies('webpack');
           }
-        } else if (type === 'component-library-react') {
+        } else if (type === 'component-react') {
           const tscPath = buildCliPath.tsc;
           const gulpPath = buildCliPath.gulp;
           buildCliArr.push(
@@ -319,7 +319,7 @@ export default async function (config: OmniConfig, buildTactic?: {
 
     await exec(buildCliArr, async function () {
       const { style, assets = [] } = reserve;
-      if (type !== 'component-library-react' && style) copyStylesheet(srcDir);
+      if (type !== 'component-react' && style) copyStylesheet(srcDir);
       copyReserves(assets);
 
       // handle build plugins

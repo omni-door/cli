@@ -7,7 +7,7 @@ OMNI 会根据不同的项目类型决定整个初始化、构建、创建模板
 
 - spa-react - React单页应用
 
-- component-library-react - React组件库
+- component-react - React组件库
 
 - toolkit - SDK工具包
 

@@ -7,7 +7,7 @@ The project types:
 
 - spa-react - React single-page-application
 
-- component-library-react - React Component Library
+- component-react - React Component Library
 
 - toolkit - SDK Library 
 

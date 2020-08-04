@@ -169,7 +169,7 @@
 
 2. (omni build) checking exist about the specify config file
 
-3. (omni init) component-library-react project add styleguidist demo-framework
+3. (omni init) component-react project add styleguidist demo-framework
 
 ### v1.2.13
 1. (omni build) stopping loading state when catch error
@@ -245,7 +245,7 @@
 
   - @omni-door/tpl-toolkit
 
-  - @omni-door/tpl-component-library-react
+  - @omni-door/tpl-component-react
 
 ### v1.2.0
 1. naming conventions
@@ -271,7 +271,7 @@
 
 2. (onmi init) strategy-stable update dependencies version
 
-3. (onmi init) component-library-react and toolkit set unit-test by default
+3. (onmi init) component-react and toolkit set unit-test by default
 
 ---
 

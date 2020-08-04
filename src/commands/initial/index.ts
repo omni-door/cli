@@ -22,7 +22,7 @@ import { logo, signal } from '../../utils';
 
 enum ProjectType {
   'spa-react (React单页应用)' = 'spa-react',
-  'component-library-react (React组件库)' = 'component-library-react',
+  'component-react (React组件库)' = 'component-react',
   'toolkit (工具库)' = 'toolkit'
 }
 
@@ -98,7 +98,7 @@ function presetTpl (type: Exclude<keyof OptionType, 'install'>) {
       break;
     case 'react_components':
       cli = presetCli.cli_components_react;
-      pkj = '@omni-door/tpl-component-library-react';
+      pkj = '@omni-door/tpl-component-react';
       break;
     case 'toolkit':
       cli = presetCli.cli_toolkit;
@@ -288,7 +288,7 @@ export default async function (strategy: STRATEGY, {
         },{
           name: 'project_type',
           type: 'list',
-          choices: [ 'spa-react (React单页应用)', 'component-library-react (React组件库)', 'toolkit (工具库)' ],
+          choices: [ 'spa-react (React单页应用)', 'component-react (React组件库)', 'toolkit (工具库)' ],
           message: `${logo()}[${currStep}/${totalStep}] 请选择项目类型 (Please choose the type of project)：`,
           when: function (answer: any) {
             if (answer.overwrite === false) {
@@ -302,7 +302,7 @@ export default async function (strategy: STRATEGY, {
           message: function (answer: any) {
             if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'spa-react') {
               totalStep = install ? 7 : 6;
-            } else if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'component-library-react') {
+            } else if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'component-react') {
               totalStep = install ? 6 : 5;
             } else {
               totalStep = install ? 4 : 3;
@@ -326,7 +326,7 @@ export default async function (strategy: STRATEGY, {
               logWarn('失败次数太多，检查该文件夹的内容后再试！(Please checking the directory then try again!)');
               return process.exit(0);
             }
-            if (ProjectType[project_type as keyof typeof ProjectType] === 'component-library-react') {
+            if (ProjectType[project_type as keyof typeof ProjectType] === 'component-react') {
               return true;
             }
             return false;
@@ -453,8 +453,8 @@ export default async function (strategy: STRATEGY, {
               case 'spa-react':
                 tplPackage = '@omni-door/tpl-spa-react';
                 break;
-              case 'component-library-react':
-                tplPackage = '@omni-door/tpl-component-library-react';
+              case 'component-react':
+                tplPackage = '@omni-door/tpl-component-react';
                 break;
               case 'toolkit':
                 tplPackage = '@omni-door/tpl-toolkit';
