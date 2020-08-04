@@ -51,11 +51,19 @@ import { OmniConfig } from '../index.d';
     .command('dev')
     .option('-p, --port <port>', 'start the dev-server according to the specified port')
     .option('-H, --hostname <host>', 'start the dev-server according to the specified hostname')
-    .description('omni dev -p <port>', {
-      port: 'required! The dev-server run port.',
+    .description('omni dev -p <port> -H <host>', {
+      port: 'The dev-server listen port.',
+      host: 'The dev-server running hostname.'
     })
-    .description('omni dev -H <host>', {
-      host: 'required! The dev-server run hostname.',
+    .action((options) => dev(config, options));
+
+  program
+    .command('start')
+    .option('-p, --port <port>', 'start the node-server according to the specified port')
+    .option('-H, --hostname <host>', 'start the node-server according to the specified hostname')
+    .description('omni dev -p <port> -H <host>', {
+      port: 'The node-server listen port.',
+      host: 'The node-server running hostname.'
     })
     .action((options) => dev(config, options));
 
@@ -64,7 +72,7 @@ import { OmniConfig } from '../index.d';
     .option('-f, --function', 'create a functional component')
     .option('-c, --class', 'create a class component')
     .description('omni new [name] [-f | -c]', {
-      name: 'optional! The name of component.',
+      name: 'The name of component.',
     })
     .usage('[name] [options]')
     .action((componentName, options) => newTpl(config, componentName, options));
@@ -73,7 +81,7 @@ import { OmniConfig } from '../index.d';
     .command('build')
     .option('-c, --config <path>', 'specify the path of config file')
     .option('-n, --no-verify', 'bypass all pre-check before building')
-    .description('build your project according to [omni.config.js]')
+    .description('build your project according to [omni.config.js] build field')
     .action((buildTactic) => build(config, buildTactic));
 
   program
@@ -83,7 +91,7 @@ import { OmniConfig } from '../index.d';
     .option('-m, --manual <version>', 'manual specify the version of iteration')
     .option('-t, --tag <tag>', 'the tag will add to npm-package')
     .option('-n, --no-verify', 'bypass all pre-check before release')
-    .description('publish your project according to [omni.config.js]')
+    .description('publish your project according to [omni.config.js] release field')
     .action((iterTactic) => release(config, iterTactic));
 
   program.parse(process.argv);
