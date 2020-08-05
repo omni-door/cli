@@ -82,7 +82,8 @@ async function server ({
     const autoOpenServer = [
       'docz',
       'styleguidist',
-      'dumi'
+      'dumi',
+      'next'
     ];
 
     if (serverType === 'default') {

@@ -14,9 +14,9 @@
     "build": "npm run build:rm && npm run build:tsc && npm run build:copy",
     "build:rm": "rm -rf lib/*",
     "build:tsc": "tsc --build",
-    "build:branch": "./.build/branch.sh",
-    "build:version": "./.build/version.sh",
-    "build:copy": "./.build/copy.sh",
+    "build:branch": "./scripts/branch.sh",
+    "build:version": "./scripts/version.sh",
+    "build:copy": "./scripts/copy.sh",
     "release": "npm run build:branch master && npm run build && npm run build:version"
   },
   "repository": {
@@ -102,7 +102,7 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
-    "@omni-door/utils": "~1.0.0",
+    "@omni-door/utils": "~1.0.1",
     "@types/express": "4.17.2",
     "@types/http-proxy-middleware": "0.19.3",
     "@types/webpack": "4.41.2",

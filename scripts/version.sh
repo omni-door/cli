@@ -44,4 +44,4 @@ updateVersion () {
 
 updateVersion
 
-exec "./.build/publish.sh"
+exec "./scripts/publish.sh"
