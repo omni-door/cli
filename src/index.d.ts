@@ -6,10 +6,11 @@ import { Options as DevMiddlewareOptions } from 'webpack-dev-middleware';
 export { Options as DevMiddlewareOptions } from 'webpack-dev-middleware';
 import { Request, Response, NextFunction } from 'express';
 export { Request, Response, NextFunction } from 'express';
-import { PathParams } from 'express-serve-static-core';
-export { PathParams } from 'express-serve-static-core';
 import { BUILD, PROJECT_TYPE, STYLE, PLUGINSTAGE, LOGLEVEL, HASH } from '@omni-door/utils';
+
 export type ANYOBJECT = { [propName: string]: any };
+
+export type PathParams = string | RegExp | (string | RegExp)[];
 
 export type OptionTemplate = {
   componentName: string;
@@ -73,6 +74,13 @@ export interface OmniConfig {
       callback: MiddleWareCallback;
     }[];
     serverType?: DevServerType;
+    routes: {
+      page: string;
+      prettyUrl: (params: ANYOBJECT) => string;
+      prettyUrlPatterns: { pattern: PathParams; defaultParams?: ANYOBJECT }[];
+      loginRequired?: boolean;
+      shouldRender?: () => boolean;
+    }[];
   };
   start?: {
     port?: number;
@@ -88,6 +96,13 @@ export interface OmniConfig {
       callback: MiddleWareCallback;
     }[];
     serverType?: ProdServerType;
+    routes: {
+      page: string;
+      prettyUrl: (params: ANYOBJECT) => string;
+      prettyUrlPatterns: { pattern: PathParams; defaultParams?: ANYOBJECT }[];
+      loginRequired?: boolean;
+      shouldRender?: () => boolean;
+    }[];
   };
   build: {
     autoRelease?: boolean;

@@ -19,12 +19,10 @@ import {
   KNServer,
   KNMiddleWareCallback
 } from '../servers';
-import { DevServerType } from '../../index.d';
-
-export type RoutePath = string | RegExp | (string | RegExp)[];
+import { DevServerType, PathParams } from '../../index.d';
 
 // types-proxy
-export type ProxyItem = { route: RoutePath; config: Config; };
+export type ProxyItem = { route: PathParams; config: Config; };
 export type ProxyConfig = (ProxyItem | ProxyFn)[];
 export type ProxyFn = (params: {
   ip: string;
@@ -35,7 +33,7 @@ export type ProxyFn = (params: {
 }) => ProxyItem;
 
 // types-middleware
-export type MiddlewareItem = { route: RoutePath; callback: EWMiddleWareCallback | KNMiddleWareCallback; };
+export type MiddlewareItem = { route: PathParams; callback: EWMiddleWareCallback | KNMiddleWareCallback; };
 export type MiddlewareConfig = (MiddlewareItem | MiddlewareFn)[];
 export type MiddlewareFn = (params: {
   ip: string;
