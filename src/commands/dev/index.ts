@@ -8,7 +8,10 @@ function handleException (msg?: string) {
   process.exit(0);
 }
 
-export default async function (config: OmniConfig, options: { port?: number | string }) {
+export default async function (config: OmniConfig, options: {
+  port?: number | string;
+  hostname?: string;
+}) {
   try {
     // node version pre-check
     await node_version('8');
@@ -21,7 +24,8 @@ export default async function (config: OmniConfig, options: { port?: number | st
   }
 
   const p = options.port;
-  const { dev } = config as OmniConfig;
+  const h = options.hostname;
+  const { type, dev } = config as OmniConfig;
 
   if (!dev || JSON.stringify(dev) === '{}') {
     handleException('配置文件 dev 字段缺失！(The dev field is missing in config file!)');
@@ -29,6 +33,7 @@ export default async function (config: OmniConfig, options: { port?: number | st
 
   const {
     port,
+    host,
     logLevel,
     devMiddlewareOptions,
     webpack,
@@ -54,12 +59,13 @@ export default async function (config: OmniConfig, options: { port?: number | st
   run({
     ...rest,
     p: _port,
+    host: h || host,
     webpackConfig: webpack!,
     logLevel,
     devMiddlewareOptions, 
     proxyConfig: proxy,
     middlewareConfig: middleware,
-    serverType
+    serverType,
+    projectType: type
   });
-
 }

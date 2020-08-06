@@ -22,6 +22,7 @@ import { logo, signal } from '../../utils';
 
 enum ProjectType {
   'spa-react (React单页应用)' = 'spa-react',
+  'ssr-react (React服务端渲染应用)' = 'ssr-react',
   'component-react (React组件库)' = 'component-react',
   'toolkit (工具库)' = 'toolkit'
 }
@@ -45,7 +46,7 @@ async function isDir (dirName: string) {
 async function checkPkgTool (pkgtool: PKJTOOL) {
   // install tool precheck
   return new Promise((resolve, reject) => {
-    let iToolCheck = shelljs.exec(`${pkgtool} -v`, { async: false });
+    const iToolCheck = shelljs.exec(`${pkgtool} -v`, { async: false });
 
     if (~iToolCheck.stderr.indexOf('command not found')) {
       if (pkgtool === 'npm') {
@@ -250,7 +251,7 @@ export default async function (strategy: STRATEGY, {
     } else {
       let currStep = 1;
       let totalStep: string | number = '?';
-      let dupDirQuestions = [];
+      const dupDirQuestions = [];
       const retryTimes = 10; // reenter name limit
       while (dupDirQuestions.length < retryTimes * 2) {
         dupDirQuestions.push(...[{
@@ -279,6 +280,9 @@ export default async function (strategy: STRATEGY, {
         }]);
       }
 
+      const getProjectType = (answer: any) => {
+        return ProjectType[answer.project_type as keyof typeof ProjectType];
+      };
       const questions = [
         {
           name: 'overwrite',
@@ -288,7 +292,7 @@ export default async function (strategy: STRATEGY, {
         },{
           name: 'project_type',
           type: 'list',
-          choices: [ 'spa-react (React单页应用)', 'component-react (React组件库)', 'toolkit (工具库)' ],
+          choices: [ 'spa-react (React单页应用)', 'ssr-react (React服务端渲染应用)', 'component-react (React组件库)', 'toolkit (工具库)' ],
           message: `${logo()}[${currStep}/${totalStep}] 请选择项目类型 (Please choose the type of project)：`,
           when: function (answer: any) {
             if (answer.overwrite === false) {
@@ -300,12 +304,19 @@ export default async function (strategy: STRATEGY, {
           name: 'name',
           type: 'input',
           message: function (answer: any) {
-            if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'spa-react') {
-              totalStep = install ? 7 : 6;
-            } else if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'component-react') {
-              totalStep = install ? 6 : 5;
-            } else {
-              totalStep = install ? 4 : 3;
+            const projectType = getProjectType(answer);
+            switch (projectType) {
+              case 'spa-react':
+                totalStep = install ? 7 : 6;
+                break;
+              case 'ssr-react':
+                totalStep = install ? 8 : 7;
+                break;
+              case 'component-react':
+                totalStep = install ? 6 : 5;
+                break;
+              default:
+                totalStep = install ? 4 : 3;
             }
             return `${logo()}[${++currStep}/${totalStep}] 请输入项目名称 (Please enter your project name)：`;
           },
@@ -313,20 +324,35 @@ export default async function (strategy: STRATEGY, {
         },
         ...dupDirQuestions,
         {
-          name: 'dev_server',
+          name: 'server',
           type: 'list',
-          choices: [ 'docz', 'storybook', 'styleguidist', 'bisheng' ],
-          default: 'docz',
+          choices: function (answer: any) {
+            const projectType = getProjectType(answer);
+            if (projectType === 'ssr-react') {
+              return [ 'next (serverless + vercel)', 'koa-next (pm2)' ];
+            }
+            return [ 'docz', 'storybook', 'styleguidist', 'bisheng' ];
+          },
+          default: function (answer: any) {
+            const projectType = getProjectType(answer);
+            if (projectType === 'ssr-react') {
+              return 'next (serverless + vercel)';
+            }
+            return 'docz';
+          },
           message: function (answer: any) {
-            return `${logo()}[${++currStep}/${totalStep}] 请选择组件库Demo框架 (Please chioce the component-library demonstration frame)：`;
+            const projectType = getProjectType(answer);
+            const msg = projectType === 'ssr-react' ? '请选择SSR服务类型 (Please chioce the SSR server type)' : '请选择组件库Demo框架 (Please chioce the component-library demonstration frame)';
+            return `${logo()}[${++currStep}/${totalStep}] ${msg}：`;
           },
           when: async function (answer: any) {
-            const { overwrite_dir, name, project_type } = answer;
+            const { overwrite_dir, name } = answer;
             if (!configFileExist && !overwrite_dir && await isDir(name)) {
               logWarn('失败次数太多，检查该文件夹的内容后再试！(Please checking the directory then try again!)');
               return process.exit(0);
             }
-            if (ProjectType[project_type as keyof typeof ProjectType] === 'component-react') {
+            const projectType = getProjectType(answer);
+            if (projectType === 'component-react') {
               return true;
             }
             return false;
@@ -339,7 +365,8 @@ export default async function (strategy: STRATEGY, {
           },
           default: true,
           when: function (answer: any) {
-            if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'spa-react') {
+            const projectType = getProjectType(answer);
+            if (projectType === 'spa-react' || projectType === 'ssr-react') {
               return true;
             }
             return false;
@@ -350,9 +377,10 @@ export default async function (strategy: STRATEGY, {
           message: function (answer: any) {
             return `${logo()}[${++currStep}/${totalStep}] 是否开启单元测试? (Whether or not apply unit-test?)`;
           },
-          default: (answer: any) => ProjectType[answer.project_type as keyof typeof ProjectType] !== 'spa-react',
+          default: (answer: any) => getProjectType(answer) !== 'spa-react',
           when: function (answer: any) {
-            if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'spa-react') {
+            const projectType = getProjectType(answer);
+            if (projectType === 'spa-react' || projectType === 'ssr-react') {
               return true;
             }
             return false;
@@ -366,7 +394,7 @@ export default async function (strategy: STRATEGY, {
           },
           default: [ 'css' ],
           when: function (answer: any) {
-            if (ProjectType[answer.project_type as keyof typeof ProjectType] === 'toolkit') {
+            if (getProjectType(answer) === 'toolkit') {
               return false;
             }
             return true;
@@ -376,7 +404,7 @@ export default async function (strategy: STRATEGY, {
           type: 'checkbox',
           choices: (answer: any) => {
             const lintArr = [ 'eslint', 'prettier', 'commitlint', 'stylelint' ];
-            (answer.style === 'none' || ProjectType[answer.project_type as keyof typeof ProjectType] === 'toolkit') && lintArr.pop();
+            (answer.style === 'none' || getProjectType(answer) === 'toolkit') && lintArr.pop();
             return lintArr;
           },
           message: function (answer: any) {
@@ -411,7 +439,7 @@ export default async function (strategy: STRATEGY, {
             const {
               project_type,
               name,
-              dev_server = 'docz',
+              server = '',
               ts = true,
               test = true,
               style = [],
@@ -446,12 +474,15 @@ export default async function (strategy: STRATEGY, {
               `commitlint=${commitlint}`,
               `style=${stylesheet}`,
               `stylelint=${stylelint}`,
-              `devServer=${dev_server}`
+              `devServer=${server}`
             );
 
             switch (projectType) {
               case 'spa-react':
                 tplPackage = '@omni-door/tpl-spa-react';
+                break;
+              case 'ssr-react':
+                tplPackage = '@omni-door/tpl-ssr-react';
                 break;
               case 'component-react':
                 tplPackage = '@omni-door/tpl-component-react';

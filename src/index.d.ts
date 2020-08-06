@@ -45,7 +45,8 @@ export interface OmniPlugin<T extends PLUGINSTAGE> {
 
 export type MiddleWareCallback = (req: Request, res: Response, next: NextFunction) => void;
 
-export type ServerType = 'next' | 'storybook' | 'docz' | 'dumi' | 'bisheng' | 'styleguidist' | 'default';
+export type DevServerType = 'next' | 'storybook' | 'docz' | 'dumi' | 'bisheng' | 'styleguidist' | 'default';
+export type ProdServerType = 'next' | 'koa-next' | 'nuxt' | 'koa-nuxt';
 
 export interface OmniConfig {
   type: PROJECT_TYPE;
@@ -71,7 +72,22 @@ export interface OmniConfig {
       route: PathParams;
       callback: MiddleWareCallback;
     }[];
-    serverType?: ServerType;
+    serverType?: DevServerType;
+  };
+  start?: {
+    port?: number;
+    host?: string;
+    https?: boolean | { key: string; cert: string; };
+    logLevel?: LOGLEVEL;
+    proxy?: {
+      route: string;
+      config: Config;
+    }[];
+    middleware?: {
+      route: PathParams;
+      callback: MiddleWareCallback;
+    }[];
+    serverType?: ProdServerType;
   };
   build: {
     autoRelease?: boolean;

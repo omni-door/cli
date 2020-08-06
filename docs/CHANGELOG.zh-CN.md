@@ -1,5 +1,11 @@
 # 变更日志
 
+## v2.0.x
+### v2.0.0
+1. (omni init)
+
+---
+
 ## v1.4.x
 ### v1.4.2
 1. perf(omni release): 优化了 require package.json 的过程

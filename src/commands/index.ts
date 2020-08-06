@@ -11,7 +11,7 @@ import { OmniConfig } from '../index.d';
     logWarn(e);
   }
 
-  const { initial, dev, newTpl, build, release } = require('./commands');
+  const { initial, dev, start, newTpl, build, release } = require('./commands');
   const pkj = require('../../package.json');
   let config: OmniConfig | {} = {};
   try {
@@ -59,13 +59,13 @@ import { OmniConfig } from '../index.d';
 
   program
     .command('start')
-    .option('-p, --port <port>', 'start the node-server according to the specified port')
+    .option('-p, --port <port>', 'start the prod-server according to the specified port')
     .option('-H, --hostname <host>', 'start the node-server according to the specified hostname')
-    .description('omni dev -p <port> -H <host>', {
-      port: 'The node-server listen port.',
-      host: 'The node-server running hostname.'
+    .description('omni start -p <port> -H <host>', {
+      port: 'The prod-server listen port.',
+      host: 'The prod-server running hostname.'
     })
-    .action((options) => dev(config, options));
+    .action((options) => start(config, options));
 
   program
     .command('new [name]')

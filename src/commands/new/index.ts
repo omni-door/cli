@@ -65,6 +65,7 @@ export default async function (config: OmniConfig, componentName: string, option
     module_en = 'module';
   }
 
+  // eslint-disable-next-line prefer-const
   let { function: fc, class: cc, tplPkj, before, after } = options || {};
 
   if (!root) {

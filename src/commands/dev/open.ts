@@ -1,4 +1,5 @@
 import { execSync } from 'child_process';
+import { require_cwd } from '@omni-door/utils';
 
 export default async function (url: string) {
   if (process.platform === 'darwin') {
@@ -12,7 +13,7 @@ export default async function (url: string) {
       'Chromium',
     ];
 
-    for (let chromiumBrowser of supportedChromiumBrowsers) {
+    for (const chromiumBrowser of supportedChromiumBrowsers) {
       try {
         // Try our best to reuse existing tab
         // on OSX Chromium-based browser with AppleScript
@@ -38,7 +39,7 @@ export default async function (url: string) {
   // Fallback to open
   // (It will always open new tab)
   try {
-    const open = require('open');
+    const open = require_cwd('open');
     await open(url, { wait: false, url: true });
     return true;
   } catch (err) {

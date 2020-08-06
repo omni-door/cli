@@ -23,9 +23,9 @@ const typescript2 = require_cwd('rollup-plugin-typescript2');` : ''}
 const json = require_cwd('rollup-plugin-json');
 
 const cwd = process.cwd();
-const ppkj = require(path.resolve(cwd, 'package.json'));
-const configFilePath = path.resolve(cwd, (ppkj && ppkj.${pkjFieldName} && ppkj.${pkjFieldName}.filePath) || '${configFileName}');
-const configs = require(configFilePath);
+const ppkj = require_cwd('./package.json');
+const configFilePath = (ppkj && ppkj.${pkjFieldName} && ppkj.${pkjFieldName}.filePath) || './${configFileName}';
+const configs = require_cwd(configFilePath);
 ${configurationPath ? `const customConfig = require('${configurationPath}')` : ''}
 
 const { build } = configs || {};

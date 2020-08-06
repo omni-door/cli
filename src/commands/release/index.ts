@@ -111,6 +111,7 @@ export default async function (
   }
 
   try {
+    // eslint-disable-next-line prefer-const
     let { automatic, ignore, manual, tag, verify } = iterTactic || {};
     const hasIter = !(ignore === void 0 && manual === void 0 && automatic === void 0);
     const versionErrMsg = `请输入有效的版本号 (Please input valid version)\n

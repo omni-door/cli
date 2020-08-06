@@ -1,37 +1,52 @@
 import fs from 'fs';
-import http from 'http';
-import https from 'https';
 import path from 'path';
 import * as mkcert from 'mkcert';
-import { logInfo, logWarn, logErr, LOGLEVEL, require_cwd, exec, output_file } from '@omni-door/utils';
-import { Express, Request, Response, NextFunction } from 'express';
-import { PathParams } from 'express-serve-static-core';
-import { Configuration, Compiler } from 'webpack';
+import {
+  logWarn,
+  logErr,
+  LOGLEVEL,
+  require_cwd,
+  exec,
+  output_file,
+  PROJECT_TYPE
+} from '@omni-door/utils';
 import { Config } from 'http-proxy-middleware';
-import { WebpackDevMiddleware, Options } from 'webpack-dev-middleware';
-import { NextHandleFunction } from 'connect';
 import open from './open';
-import { ServerType } from '../../index.d';
+import {
+  EWServer,
+  EWServerParams,
+  EWMiddleWareCallback,
+  KNServer,
+  KNMiddleWareCallback
+} from '../servers';
+import { DevServerType } from '../../index.d';
 
-export type ProxyItem = { route: string; config: Config; };
-export type  MiddlewareItem = { route: PathParams; callback: (req: Request, res: Response, next: NextFunction) => void; };
+export type RoutePath = string | RegExp | (string | RegExp)[];
 
+// types-proxy
+export type ProxyItem = { route: RoutePath; config: Config; };
+export type ProxyConfig = (ProxyItem | ProxyFn)[];
 export type ProxyFn = (params: {
   ip: string;
   port: number;
   host?: string;
   logLevel: LOGLEVEL;
-  middlewareConfig?: (MiddlewareItem | MiddlewareFn)[];
+  middlewareConfig?: MiddlewareConfig;
 }) => ProxyItem;
 
+// types-middleware
+export type MiddlewareItem = { route: RoutePath; callback: EWMiddleWareCallback | KNMiddleWareCallback; };
+export type MiddlewareConfig = (MiddlewareItem | MiddlewareFn)[];
 export type MiddlewareFn = (params: {
   ip: string;
   port: number;
   host?: string;
   logLevel: LOGLEVEL;
-  proxyConfig?: (ProxyItem | ProxyFn)[];
+  proxyConfig?: ProxyConfig;
 }) => MiddlewareItem;
 
+// types-server
+type EWServerOptions = Pick<EWServerParams, 'webpackConfig' | 'devMiddlewareOptions'>
 export type ServerOptions = {
   p: number;
   host?: string;
@@ -43,13 +58,12 @@ export type ServerOptions = {
     locality?: string;
     validityDays?: number;
   };
-  webpackConfig: Configuration;
   logLevel?: LOGLEVEL;
-  devMiddlewareOptions?: Partial<Options>;
-  proxyConfig?: (ProxyItem | ProxyFn)[];
-  middlewareConfig?: (MiddlewareItem | MiddlewareFn)[];
-  serverType: ServerType
-};
+  proxyConfig?: ProxyConfig;
+  middlewareConfig?: MiddlewareConfig;
+  serverType: DevServerType;
+  projectType: PROJECT_TYPE;
+} & EWServerOptions;
 
 async function server ({
   p,
@@ -57,6 +71,7 @@ async function server ({
   https: httpsConfig,
   CA,
   serverType,
+  projectType,
   devMiddlewareOptions = {},
   logLevel = 'error',
   webpackConfig,
@@ -71,7 +86,7 @@ async function server ({
     const openHost = host || ipAddress || '0.0.0.0';
     let serverUrl = openHost + ':' + p;
 
-    const ServerStartCli = {
+    const ServerDevCli = {
       storybook: `${path.resolve(CWD, 'node_modules/.bin/start-storybook')} -p ${p} -h ${serverHost} --quiet`,
       docz: `${path.resolve(CWD, 'node_modules/.bin/docz')} dev -p ${p} --host ${serverHost}`,
       bisheng: `${path.resolve(CWD, 'node_modules/.bin/bisheng')} start`,
@@ -87,76 +102,6 @@ async function server ({
     ];
 
     if (serverType === 'default') {
-      const express = require_cwd('express');
-      const proxy = require_cwd('http-proxy-middleware');
-      const webpack = require_cwd('webpack');
-      const compiler: Compiler = webpack(webpackConfig);
-      const devMiddleware: WebpackDevMiddleware & NextHandleFunction = require_cwd('webpack-dev-middleware')(compiler, {
-        publicPath: '/',
-        logLevel,
-        ...devMiddlewareOptions
-      });
-      const hotMiddleware = require_cwd('webpack-hot-middleware');
-
-      const app: Express = express();
-
-      // dev server middleware
-      app.use(devMiddleware);
-
-      // hot refresh middleware
-      app.use(hotMiddleware(compiler, {
-        log: logInfo, 
-        path: '/__webpack_hmr', 
-        heartbeat: 10 * 1000
-      }));
-
-      // http proxy middleware
-      for (let i = 0; i < proxyConfig.length; i++) {
-        const item = proxyConfig[i];
-        const { route, config } = typeof item === 'function' ? item({
-          ip: ipAddress,
-          port: p,
-          host,
-          logLevel,
-          middlewareConfig
-        }) : item;
-
-        app.use(
-          route,
-          proxy(config)
-        );
-      }
-
-      // custom middleware
-      for (let i = 0; i < middlewareConfig.length; i++) {
-        const item = middlewareConfig[i];
-        const { route, callback } = typeof item === 'function' ? item({
-          ip: ipAddress,
-          port: p,
-          host,
-          logLevel,
-          proxyConfig
-        }) : item;
-
-        app.use(
-          route,
-          callback
-        );
-      }
-
-      // index.html for SPA history router
-      app.use('*', function (req, res, next) {
-        const filename = path.join(compiler.outputPath, 'index.html');
-        devMiddleware.fileSystem.readFile(filename, function (err, result) {
-          if (err) {
-            return next(err);
-          }
-          res.set('content-type', 'text/html');
-          res.send(result);
-          res.end();
-        });
-      });
-
       let isHttps = false;
       let key, cert;
       if (httpsConfig) {
@@ -219,27 +164,49 @@ async function server ({
         isHttps = false;
       }
 
-      let server;
-      if (isHttps) {
-        server = https.createServer({
-          key,
-          cert
-        }, app);
-        serverUrl = 'https://' + serverUrl;
-      } else {
-        server = http.createServer(app);
-        serverUrl = 'http://' + serverUrl;
-      }
+      const serverBasicOptions = {
+        logLevel,
+        middlewareConfig,
+        proxyConfig,
+        ipAddress,
+        host: serverHost,
+        port: p,
+        httpsConfig: isHttps ? { key, cert } : void 0
+      };
 
-      server.listen(p, serverHost, async () => {
-        await open(serverUrl);
-        logInfo('> Ready on ip: ' + serverUrl);
-      });
+      switch (projectType) {
+        case 'ssr-react':
+          KNServer({
+            dev: process.env.NODE_ENV === 'production' ? false : true,
+            ...serverBasicOptions
+          });
+          break;
+        case 'ssr-vue':
+          logWarn('暂不支持 ssr-vue 项目!');
+          break;
+        case 'spa-react':
+        case 'spa-vue':
+        default:
+          EWServer({
+            webpackConfig,
+            devMiddlewareOptions,
+            ...serverBasicOptions
+          });
+      }
     } else {
-      let delay = 5000;
-      if (serverType === 'docz') delay = 12000;
+      let delay = 0;
+      switch (serverType) {
+        case 'docz':
+          delay = 12000;
+          break;
+        case 'next':
+          delay = 8000;
+          break;
+        default:
+          delay = 5000;
+      }
       serverUrl = 'http://' + serverUrl;
-      exec([ServerStartCli[serverType]]);
+      exec([ServerDevCli[serverType]]);
       if (~autoOpenServer.indexOf(serverType)) setTimeout(() => open(serverUrl), delay);  
     }
 
