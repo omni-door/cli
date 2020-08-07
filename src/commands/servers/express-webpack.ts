@@ -18,6 +18,7 @@ export interface EWServerParams {
   middlewareConfig?: MiddlewareConfig;
   ipAddress: string;
   host: string;
+  listenHost: string;
   port: number;
   httpsConfig?: {
     key?: string | Buffer;
@@ -33,6 +34,7 @@ export default function ({
   middlewareConfig = [],
   ipAddress,
   host,
+  listenHost,
   port,
   httpsConfig
 }: EWServerParams) {
@@ -119,7 +121,7 @@ export default function ({
     serverUrl = 'http://' + serverUrl;
   }
 
-  server.listen(port, host, async () => {
+  server.listen(port, listenHost, async () => {
     await open(serverUrl);
     logInfo('> Ready on: ' + serverUrl);
   });

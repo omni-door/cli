@@ -165,7 +165,8 @@ async function server ({
         middlewareConfig,
         proxyConfig,
         ipAddress,
-        host: serverHost,
+        host: openHost,
+        listenHost: serverHost,
         port: p,
         httpsConfig: isHttps ? { key, cert } : void 0
       };
