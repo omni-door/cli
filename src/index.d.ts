@@ -79,7 +79,6 @@ export type OmniServer = {
     route: PathParams;
     callback: MiddleWareCallback;
   }[];
-  serverType?: ProdServerType;
   routes?: OmniRouter;
 };
 export interface OmniConfig {
@@ -89,7 +88,7 @@ export interface OmniConfig {
     webpack?: Configuration;
     serverType?: DevServerType;
   };
-  server?: OmniServer;
+  server?: OmniServer & { serverType?: ProdServerType; };
   build: {
     autoRelease?: boolean;
     srcDir: string;

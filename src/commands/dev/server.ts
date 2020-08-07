@@ -88,7 +88,7 @@ async function server ({
       bisheng: `${path.resolve(CWD, 'node_modules/.bin/bisheng')} start`,
       styleguidist: `${path.resolve(CWD, 'node_modules/.bin/styleguidist')} server --port ${p} --host ${serverHost}`,
       dumi: `${path.resolve(CWD, 'node_modules/.bin/dumi')} dev --port ${p} --host ${serverHost}`,
-      next: `${path.resolve(CWD, 'node_modules/.bin/next')} dev --port ${p} --host ${serverHost}`
+      next: `${path.resolve(CWD, 'node_modules/.bin/next')} dev --port ${p} --hostname ${serverHost}`
     };
     const autoOpenServer = [
       'docz',
@@ -196,7 +196,7 @@ async function server ({
           delay = 12000;
           break;
         case 'next':
-          delay = 8000;
+          delay = 3000;
           break;
         default:
           delay = 5000;

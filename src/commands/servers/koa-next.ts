@@ -1,6 +1,6 @@
 import http from 'http';
 import https from 'https';
-import { logInfo, logWarn, require_cwd, _typeof, LOGLEVEL } from '@omni-door/utils';
+import { logInfo, logWarn, logErr, require_cwd, _typeof, LOGLEVEL } from '@omni-door/utils';
 import * as KoaApp from 'koa';
 import * as KoaRouter from 'koa-router';
 import NextServer from 'next-server/dist/server/next-server';
@@ -107,7 +107,12 @@ export default function ({
             new RegExp(`^${route}`).test(path)
           ) {
             needProxy = true;
-            await k2c(proxy(path, config))(ctx, next);
+            try {
+              await k2c(proxy(path, config))(ctx, next);
+            } catch (err) {
+              logWarn(`http-proxy「${route}」匹配异常！(The http-proxy「${route})」match occur error!):\n ${err}`);
+            }
+
             break;
           }
         }
@@ -127,7 +132,11 @@ export default function ({
           const { req, res, query, params } = ctx;
 
           if (typeof beforeRender === 'function') {
-            shouldRender = await beforeRender(ctx, next);
+            try {
+              shouldRender = await beforeRender(ctx, next);
+            } catch (err) {
+              logWarn(`「${page}」页面 beforeRender 异常！(The「${page})」beforeRender error!):\n ${err}`);
+            }
           }
 
           shouldRender && nextApp.render(req, res, `/${page}`, Object.assign(Object.create(null), defaultParams, query, params, _typeof(shouldRender) === 'object' ? shouldRender : null));
@@ -160,7 +169,7 @@ export default function ({
       }
 
       // other source redirect to '/'
-      router.get('*', async ctx => {
+      router.get('(.*)', async ctx => {
         await nextApp.render(ctx.req, ctx.res, '/', ctx.query);
         ctx.status = 200;
         ctx.respond = false;
@@ -185,8 +194,12 @@ export default function ({
 
       server.listen(port, host, async () => {
         dev && await open(serverUrl);
-        logInfo(`The server running with ${dev ? 'dev' : 'prod'}-mode!`);
+        logInfo(`The server running with ${dev ? 'DEV' : 'PROD'}-MODE!`);
         logInfo('> Ready on: ' + serverUrl);
       });
+    })
+    .catch(err => {
+      const error = new Error(err);
+      logErr(`${error}\nThe Error stack: ${error.stack}`);
     });
 }

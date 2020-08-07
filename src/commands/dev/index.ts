@@ -47,7 +47,8 @@ export default async function (config: OmniConfig, options: {
   // bind exit signals
   signal();
 
-  if (serverType === 'default' && !webpack) {
+  const EWServerList = [ 'spa-react', 'spa-vue' ];
+  if (~EWServerList.indexOf(type) && !webpack) {
     handleException('缺少开发服务webpack配置文件！(Missing the dev-server webpack-config!)'); 
   }
 
