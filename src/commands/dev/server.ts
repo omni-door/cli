@@ -15,11 +15,9 @@ import open from './open';
 import {
   EWServer,
   EWServerParams,
-  EWMiddleWareCallback,
-  KNServer,
-  KNMiddleWareCallback
+  KNServer
 } from '../servers';
-import { DevServerType, PathParams } from '../../index.d';
+import { DevServerType, PathParams, MiddleWareCallback } from '../../index.d';
 
 // types-proxy
 export type ProxyItem = { route: PathParams; config: Config; };
@@ -33,7 +31,7 @@ export type ProxyFn = (params: {
 }) => ProxyItem;
 
 // types-middleware
-export type MiddlewareItem = { route: PathParams; callback: EWMiddleWareCallback | KNMiddleWareCallback; };
+export type MiddlewareItem = { route: PathParams; callback: MiddleWareCallback; };
 export type MiddlewareConfig = (MiddlewareItem | MiddlewareFn)[];
 export type MiddlewareFn = (params: {
   ip: string;

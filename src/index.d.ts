@@ -6,6 +6,7 @@ import { Options as DevMiddlewareOptions } from 'webpack-dev-middleware';
 export { Options as DevMiddlewareOptions } from 'webpack-dev-middleware';
 import { Request, Response, NextFunction } from 'express';
 export { Request, Response, NextFunction } from 'express';
+import * as KoaApp from 'koa';
 import { BUILD, PROJECT_TYPE, STYLE, PLUGINSTAGE, LOGLEVEL, HASH } from '@omni-door/utils';
 
 export type ANYOBJECT = { [propName: string]: any };
@@ -44,66 +45,51 @@ export interface OmniPlugin<T extends PLUGINSTAGE> {
   handler: PluginHandler<T>;
 }
 
-export type MiddleWareCallback = (req: Request, res: Response, next: NextFunction) => void;
+export type EWMiddleWareCallback = (req: Request, res: Response, next: NextFunction) => void;
+export type KNMiddleWareCallback = KoaApp.Middleware;
+export type MiddleWareCallback = EWMiddleWareCallback | KNMiddleWareCallback;
 
 export type DevServerType = 'next' | 'storybook' | 'docz' | 'dumi' | 'bisheng' | 'styleguidist' | 'default';
 export type ProdServerType = 'next' | 'koa-next' | 'nuxt' | 'koa-nuxt';
 
+export type OmniRouter = {
+  page: string;
+  prettyUrl: (params: ANYOBJECT) => string;
+  prettyUrlPatterns: { pattern: PathParams; defaultParams?: ANYOBJECT }[];
+  beforeRender?: (ctx: KoaApp.ParameterizedContext, next: KoaApp.Next) => boolean;
+}[];
+
+export type OmniServer = {
+  port?: number;
+  host?: string;
+  https?: boolean | { key: string; cert: string; };
+  CA?: {
+    organization?: string;
+    countryCode?: string;
+    state?: string;
+    locality?: string;
+    validityDays?: number;
+  };
+  logLevel?: LOGLEVEL;
+  proxy?: {
+    route: string;
+    config: Config;
+  }[];
+  middleware?: {
+    route: PathParams;
+    callback: MiddleWareCallback;
+  }[];
+  serverType?: ProdServerType;
+  routes?: OmniRouter;
+};
 export interface OmniConfig {
   type: PROJECT_TYPE;
-  dev?: {
-    port?: number;
-    host?: string;
-    https?: boolean | { key: string; cert: string; };
-    CA?: {
-      organization?: string;
-      countryCode?: string;
-      state?: string;
-      locality?: string;
-      validityDays?: number;
-    };
-    logLevel?: LOGLEVEL;
+  dev?: OmniServer & {
     devMiddlewareOptions?: Partial<DevMiddlewareOptions>;
     webpack?: Configuration;
-    proxy?: {
-      route: string;
-      config: Config;
-    }[];
-    middleware?: {
-      route: PathParams;
-      callback: MiddleWareCallback;
-    }[];
     serverType?: DevServerType;
-    routes: {
-      page: string;
-      prettyUrl: (params: ANYOBJECT) => string;
-      prettyUrlPatterns: { pattern: PathParams; defaultParams?: ANYOBJECT }[];
-      loginRequired?: boolean;
-      shouldRender?: () => boolean;
-    }[];
   };
-  start?: {
-    port?: number;
-    host?: string;
-    https?: boolean | { key: string; cert: string; };
-    logLevel?: LOGLEVEL;
-    proxy?: {
-      route: string;
-      config: Config;
-    }[];
-    middleware?: {
-      route: PathParams;
-      callback: MiddleWareCallback;
-    }[];
-    serverType?: ProdServerType;
-    routes: {
-      page: string;
-      prettyUrl: (params: ANYOBJECT) => string;
-      prettyUrlPatterns: { pattern: PathParams; defaultParams?: ANYOBJECT }[];
-      loginRequired?: boolean;
-      shouldRender?: () => boolean;
-    }[];
-  };
+  server?: OmniServer;
   build: {
     autoRelease?: boolean;
     srcDir: string;

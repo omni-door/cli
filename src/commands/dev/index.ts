@@ -1,6 +1,6 @@
 import run from './run';
 import { logWarn, node_version } from '@omni-door/utils';
-import { OmniConfig } from '../../index.d';
+import { OmniConfig, DevServerType } from '../../index.d';
 import { signal } from '../../utils';
 
 function handleException (msg?: string) {
@@ -25,12 +25,13 @@ export default async function (config: OmniConfig, options: {
 
   const p = options.port;
   const h = options.hostname;
-  const { type, dev } = config as OmniConfig;
+  const { type, dev, server } = config as OmniConfig;
 
   if (!dev || JSON.stringify(dev) === '{}') {
     handleException('配置文件 dev 字段缺失！(The dev field is missing in config file!)');
   }
 
+  const { serverType: server_type, ...serverOptions } = server || {};
   const {
     port,
     host,
@@ -41,7 +42,7 @@ export default async function (config: OmniConfig, options: {
     middleware,
     serverType = 'default',
     ...rest
-  } = dev!;
+  } = { ...serverOptions, ...dev };
 
   // bind exit signals
   signal();

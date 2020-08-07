@@ -1,13 +1,13 @@
 import http from 'http';
 import https from 'https';
-import { logInfo, require_cwd, LOGLEVEL } from '@omni-door/utils';
+import { logInfo, logWarn, require_cwd, _typeof, LOGLEVEL } from '@omni-door/utils';
 import * as KoaApp from 'koa';
 import * as KoaRouter from 'koa-router';
 import NextServer from 'next-server/dist/server/next-server';
 import open from '../dev/open';
 import { ProxyConfig, MiddlewareConfig } from '../dev/server';
+import { OmniRouter, ANYOBJECT, KNMiddleWareCallback } from '../../index.d';
 
-export type KNMiddleWareCallback = KoaApp.Middleware;
 export interface KNServerParams {
   dev: boolean;
   logLevel: LOGLEVEL;
@@ -20,6 +20,7 @@ export interface KNServerParams {
     key?: string | Buffer;
     cert?: string | Buffer;
   };
+  routes?: OmniRouter;
 }
 
 export default function ({
@@ -30,7 +31,8 @@ export default function ({
   middlewareConfig = [],
   host,
   port,
-  httpsConfig
+  httpsConfig,
+  routes = []
 }: KNServerParams) {
   const Koa = require_cwd('koa');
   const next = require_cwd('next');
@@ -39,6 +41,44 @@ export default function ({
   const k2c = require_cwd('koa2-connect');
   const proxy = require_cwd('http-proxy-middleware');
   const pathToRegexp = require_cwd('path-to-regexp');
+  const UrlPrettifier = require_cwd('next-url-prettifier').default;
+
+  class NextUrlRouter extends UrlPrettifier {
+    constructor (routes: OmniRouter, options: { root?: string; } = {}) {
+      super(routes, options);
+      this.root = options.root || '';
+      this.linkPage = this.linkPage.bind(this);
+      this.forEachPattern = this.forEachPattern.bind(this);
+    }
+  
+    linkPage (pageName: string, params: { [param: string]: string; }) {
+      const route = this.routes.find((currentRoute: OmniRouter[0]) => currentRoute.page === pageName);
+  
+      const obj = {
+        as: '',
+        href: `/${pageName}${this.paramsToQueryString(params)}`
+      };
+  
+      if (route && route.prettyUrl) {
+        obj.as = this.root + (typeof route.prettyUrl === 'string' ? route.prettyUrl : route.prettyUrl(params));
+      }
+  
+      return obj;
+    }
+  
+    forEachPattern (apply: (params: Pick<OmniRouter[0], 'page' | 'beforeRender'> & { pattern: string; defaultParams: ANYOBJECT; }) => any) {
+      this.routes.forEach((route: OmniRouter[0]) => {
+        this.getPrettyUrlPatterns(route).forEach((pattern: any) =>
+          apply({
+            page: route.page,
+            beforeRender: route.beforeRender,
+            pattern: this.root + pattern.pattern,
+            defaultParams: pattern.defaultParams
+          })
+        );
+      });
+    }
+  }
 
   const nextApp: NextServer = next({ dev });
   nextApp
@@ -78,6 +118,29 @@ export default function ({
           return;
         }
       });
+
+      // inject routes
+      new NextUrlRouter(routes).forEachPattern(({ page, pattern, defaultParams, beforeRender }) => router.get(pattern, async (ctx, next) => {
+        let shouldRender = true;
+
+        try {
+          const { req, res, query, params } = ctx;
+
+          if (typeof beforeRender === 'function') {
+            shouldRender = await beforeRender(ctx, next);
+          }
+
+          shouldRender && nextApp.render(req, res, `/${page}`, Object.assign(Object.create(null), defaultParams, query, params, _typeof(shouldRender) === 'object' ? shouldRender : null));
+        } catch (err) {
+          shouldRender = false;
+          logWarn(`页面 ${page} 路由出错：${JSON.stringify(err)}`);
+        }
+
+        if (shouldRender) {
+          ctx.status = 200;
+          ctx.respond = false;
+        }
+      }));
 
       // middleware: custom
       for (let i = 0; i < middlewareConfig.length; i++) {

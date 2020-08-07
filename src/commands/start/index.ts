@@ -22,9 +22,9 @@ export default async function (config: OmniConfig, options: {
   if (JSON.stringify(config) === '{}') {
     handleException('请先初始化项目！(Please initialize project first!)');
   }
-  const { start } = config as OmniConfig;
+  const { server } = config as OmniConfig;
 
-  if (!start || JSON.stringify(start) === '{}') {
+  if (!server || JSON.stringify(server) === '{}') {
     handleException('配置文件 start 字段缺失！(The start field is missing in config file!)');
   }
   const {
@@ -32,7 +32,7 @@ export default async function (config: OmniConfig, options: {
     host,
     serverType,
     ...rest
-  } = start || {};
+  } = server || {};
   if (!serverType) {
     handleException('请指定 server 类型！(Please specify server-type!)');
   }

@@ -8,8 +8,8 @@ import { WebpackDevMiddleware, Options } from 'webpack-dev-middleware';
 import { NextHandleFunction } from 'connect';
 import open from '../dev/open';
 import { ProxyConfig, MiddlewareConfig } from '../dev/server';
+import { EWMiddleWareCallback } from '../../index.d';
 
-export type EWMiddleWareCallback = (req: Request, res: Response, next: NextFunction) => void;
 export interface EWServerParams {
   webpackConfig: Configuration;
   logLevel: LOGLEVEL;
@@ -45,8 +45,8 @@ export default function ({
     logLevel,
     ...devMiddlewareOptions
   });
-  const hotMiddleware = require_cwd('webpack-hot-middleware');
-
+  const hotMiddleware= require_cwd('webpack-hot-middleware');
+ 
   const app: Express = express();
 
   // dev server middleware

@@ -1,10 +1,8 @@
 export {
   default as EWServer,
-  EWServerParams,
-  EWMiddleWareCallback
+  EWServerParams
 } from './express-webpack';
 export {
   default as KNServer,
-  KNServerParams,
-  KNMiddleWareCallback
+  KNServerParams
 } from './koa-next';
