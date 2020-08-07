@@ -247,6 +247,9 @@ export default async function (config: OmniConfig, buildTactic?: {
         if (!is_go_on) return process.exit(0);
       }
       realOutDir = outDir;
+    } else if (type === 'ssr-react') {
+      const nextPath = buildCliPath.next;
+      buildCliArr.push(`${nextPath} build`);
     } else {
       const content_rollup = !buildConfig && type === 'toolkit' && rollupConfig({ ts: typescript, multiOutput: true, srcDir, outDir, esmDir, configurationPath, pkjFieldName, configFileName });
       const content_webpack = !buildConfig && type === 'spa-react' && webpackConfig({ ts: typescript, multiOutput: false, srcDir, outDir, configurationPath, pkjFieldName, configFileName, hash });
@@ -292,9 +295,6 @@ export default async function (config: OmniConfig, buildTactic?: {
             logWarn('请先安装 gulp! (Please install gulp first!)');
             is_go_on = await installDenpendencies('gulp');
           }
-        } else if (type === 'ssr-react') {
-          const nextPath = buildCliPath.next;
-          buildCliArr.push(`${nextPath} build`);
         }
 
         if (!is_go_on) return process.exit(0);
