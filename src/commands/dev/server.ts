@@ -17,7 +17,7 @@ import {
   EWServerParams,
   KNServer
 } from '../servers';
-import { DevServerType, PathParams, MiddleWareCallback } from '../../index.d';
+import { OmniRouter, DevServerType, PathParams, MiddleWareCallback } from '../../index.d';
 
 // types-proxy
 export type ProxyItem = { route: PathParams; config: Config; };
@@ -59,6 +59,7 @@ export type ServerOptions = {
   middlewareConfig?: MiddlewareConfig;
   serverType: DevServerType;
   projectType: PROJECT_TYPE;
+  routes?: OmniRouter
 } & EWServerOptions;
 
 async function server ({
@@ -72,7 +73,8 @@ async function server ({
   logLevel = 'error',
   webpackConfig,
   proxyConfig = [],
-  middlewareConfig = []
+  middlewareConfig = [],
+  routes
 }: ServerOptions): Promise<void> {
   try {
     const CWD = process.cwd();
@@ -175,6 +177,7 @@ async function server ({
         case 'ssr-react':
           KNServer({
             dev: process.env.NODE_ENV === 'production' ? false : true,
+            routes,
             ...serverBasicOptions
           });
           break;
