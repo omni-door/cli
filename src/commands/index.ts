@@ -1,7 +1,7 @@
 import program from 'commander';
 import fs from 'fs';
 import path from 'path';
-import { node_version, logWarn } from '@omni-door/utils';
+import { node_version, logWarn, require_cwd } from '@omni-door/utils';
 import { OmniConfig } from '../index.d';
 
 (async function () {
@@ -15,16 +15,12 @@ import { OmniConfig } from '../index.d';
   const pkj = require('../../package.json');
   let config: OmniConfig | {} = {};
   try {
-    const cwd = process.cwd();
-
-    let ppkj;
-    const ppkjPath = path.resolve(cwd, 'package.json');
-    if (fs.existsSync(ppkjPath)) ppkj = require(ppkjPath);
-
-    const configFilePath = path.resolve(cwd, (ppkj && ppkj.omni && ppkj.omni.filePath) || 'omni.config.js');
-    if (fs.existsSync(configFilePath)) config = require(configFilePath);
+    const ppkj = require_cwd('./package.json');
+    const configFilePath = (ppkj && ppkj.omni && ppkj.omni.filePath) || './omni.config.js';
+    config = require_cwd(configFilePath);
   } catch (e) {
     logWarn(e);
+    process.exit(0);
   }
 
   program
