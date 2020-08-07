@@ -15,7 +15,7 @@ export interface KNServerParams {
   middlewareConfig?: MiddlewareConfig;
   ipAddress: string;
   host: string;
-  listenHost: string;
+  listenHost?: string;
   port: number;
   httpsConfig?: {
     key?: string | Buffer;
@@ -194,7 +194,7 @@ export default function ({
         serverUrl = 'http://' + serverUrl;
       }
 
-      server.listen(port, listenHost, async () => {
+      server.listen(port, listenHost || host, async () => {
         dev && await open(serverUrl);
         logInfo(`The server running with ${dev ? 'DEV' : 'PROD'}-MODE!`);
         logInfo('> Ready on: ' + serverUrl);
