@@ -1,6 +1,4 @@
 import program from 'commander';
-import fs from 'fs';
-import path from 'path';
 import { node_version, logWarn, require_cwd } from '@omni-door/utils';
 import { OmniConfig } from '../index.d';
 
@@ -18,7 +16,7 @@ import { OmniConfig } from '../index.d';
     const ppkj = require_cwd('./package.json');
     const configFilePath = (ppkj && ppkj.omni && ppkj.omni.filePath) || './omni.config.js';
     config = require_cwd(configFilePath);
-    if (!config) throw new Error('Missing omni-configs!');
+    if (!config) throw new Error(`请检查「${configFilePath}」配置文件！(Please checking 「${configFilePath}」config file!)`);
   } catch (e) {
     logWarn(e);
     process.exit(0);
