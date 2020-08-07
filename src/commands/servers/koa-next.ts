@@ -114,12 +114,47 @@ export default function ({
             } catch (err) {
               logWarn(`http-proxy「${route}」匹配异常！(The http-proxy「${route})」match occur error!):\n ${err}`);
             }
-
             break;
           }
         }
 
         if (!needProxy) {
+          await next();
+        } else {
+          return;
+        }
+      });
+
+      // middleware: custom
+      app.use(async (ctx, next) => {
+        const { path } = ctx;
+        let isMatch = false;
+
+        for (let i = 0; i < middlewareConfig.length; i++) {
+          const item = middlewareConfig[i];
+          const { route, callback } = typeof item === 'function' ? item({
+            ip: ipAddress,
+            port,
+            host,
+            logLevel,
+            proxyConfig
+          }) : item;
+      
+          if (
+            pathToRegexp(route).test(path) ||
+            new RegExp(`^${route}`).test(path)
+          ) {
+            isMatch = true;
+            try {
+              await (<KNMiddleWareCallback>callback)(ctx, next);
+            } catch (err) {
+              logWarn(`中间件「${route}」匹配异常！(The middleware「${route})」match occur error!):\n ${err}`);
+            }
+            break;
+          }
+        }
+
+        if (!isMatch) {
           await next();
         } else {
           return;
@@ -144,7 +179,7 @@ export default function ({
           shouldRender && nextApp.render(req, res, `/${page}`, Object.assign(Object.create(null), defaultParams, query, params, _typeof(shouldRender) === 'object' ? shouldRender : null));
         } catch (err) {
           shouldRender = false;
-          logWarn(`页面 ${page} 路由出错：${JSON.stringify(err)}`);
+          logWarn(`页面「${page}」路由出错：${JSON.stringify(err)}`);
         }
 
         if (shouldRender) {
@@ -152,23 +187,6 @@ export default function ({
           ctx.respond = false;
         }
       }));
-
-      // middleware: custom
-      for (let i = 0; i < middlewareConfig.length; i++) {
-        const item = middlewareConfig[i];
-        const { route, callback } = typeof item === 'function' ? item({
-          ip: ipAddress,
-          port,
-          host,
-          logLevel,
-          proxyConfig
-        }) : item;
-    
-        router.use(
-          route as any,
-          callback as KNMiddleWareCallback
-        );
-      }
 
       // other source redirect to '/'
       router.get('(.*)', async ctx => {
