@@ -352,7 +352,7 @@ export default async function (strategy: STRATEGY, {
               return process.exit(0);
             }
             const projectType = getProjectType(answer);
-            if (projectType === 'component-react') {
+            if (projectType === 'component-react' || projectType === 'ssr-react') {
               return true;
             }
             return false;
@@ -377,7 +377,7 @@ export default async function (strategy: STRATEGY, {
           message: function (answer: any) {
             return `${logo()}[${++currStep}/${totalStep}] 是否开启单元测试? (Whether or not apply unit-test?)`;
           },
-          default: (answer: any) => getProjectType(answer) !== 'spa-react',
+          default: (answer: any) => getProjectType(answer) !== 'spa-react' && getProjectType(answer) !== 'ssr-react',
           when: function (answer: any) {
             const projectType = getProjectType(answer);
             if (projectType === 'spa-react' || projectType === 'ssr-react') {
