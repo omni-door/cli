@@ -46,7 +46,7 @@ export default async function (config: OmniConfig, options: {
   const _host = h || host || '0.0.0.0';
 
   const ServerStartCli = {
-    next: `${path.resolve(CWD, 'node_modules/.bin/next')} start --port ${_port} --host ${_host}`
+    next: `${path.resolve(CWD, 'node_modules/.bin/next')} start --port ${_port} --hostname ${_host}`
   };
 
   switch (serverType) {
