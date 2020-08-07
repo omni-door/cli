@@ -18,6 +18,7 @@ import { OmniConfig } from '../index.d';
     const ppkj = require_cwd('./package.json');
     const configFilePath = (ppkj && ppkj.omni && ppkj.omni.filePath) || './omni.config.js';
     config = require_cwd(configFilePath);
+    if (!config) throw new Error('Missing omni-configs!');
   } catch (e) {
     logWarn(e);
     process.exit(0);
