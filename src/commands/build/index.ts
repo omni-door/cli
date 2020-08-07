@@ -229,7 +229,8 @@ export default async function (config: OmniConfig, buildTactic?: {
       tsc: path.resolve(CWD, 'node_modules/typescript/bin/tsc'),
       rollup: path.resolve(CWD, 'node_modules/rollup/dist/bin/rollup'),
       webpack: path.resolve(CWD, 'node_modules/webpack-cli/bin/cli.js'),
-      gulp: path.resolve(CWD, 'node_modules/gulp/bin/gulp.js')
+      gulp: path.resolve(CWD, 'node_modules/gulp/bin/gulp.js'),
+      next: path.resolve(CWD, 'node_modules/next/dist/bin/next')
     };
     if (tool === 'tsc') {
       if (!typescript) {
@@ -291,6 +292,9 @@ export default async function (config: OmniConfig, buildTactic?: {
             logWarn('请先安装 gulp! (Please install gulp first!)');
             is_go_on = await installDenpendencies('gulp');
           }
+        } else if (type === 'ssr-react') {
+          const nextPath = buildCliPath.next;
+          buildCliArr.push(`${nextPath} build`);
         }
 
         if (!is_go_on) return process.exit(0);
