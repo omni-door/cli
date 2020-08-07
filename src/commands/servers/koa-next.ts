@@ -40,7 +40,7 @@ export default function ({
   const bodyParser = require_cwd('koa-bodyparser');
   const k2c = require_cwd('koa2-connect');
   const proxy = require_cwd('http-proxy-middleware');
-  const pathToRegexp = require_cwd('path-to-regexp');
+  const { pathToRegexp } = require_cwd('path-to-regexp');
   const UrlPrettifier = require_cwd('next-url-prettifier').default;
 
   class NextUrlRouter extends UrlPrettifier {
