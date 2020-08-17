@@ -1,3 +1,4 @@
+import path from 'path';
 import http from 'http';
 import https from 'https';
 import { logInfo, logWarn, logErr, require_cwd, _typeof, LOGLEVEL } from '@omni-door/utils';
@@ -41,9 +42,11 @@ export default function ({
   const Router = require_cwd('koa-router');
   const bodyParser = require_cwd('koa-bodyparser');
   const k2c = require_cwd('koa2-connect');
+  const statics = require('koa-static');
   const proxy = require_cwd('http-proxy-middleware');
   const { pathToRegexp } = require_cwd('path-to-regexp');
   const UrlPrettifier = require_cwd('next-url-prettifier').default;
+  const publicPath = path.resolve(process.cwd(), 'public');
 
   class NextUrlRouter extends UrlPrettifier {
     constructor (routes: OmniRouter, options: { root?: string; } = {}) {
@@ -195,7 +198,8 @@ export default function ({
         ctx.respond = false;
       });
 
-      // middleware: body-parser and router
+      // middleware: static-server, body-parser and router
+      app.use(statics(publicPath));
       app.use(bodyParser());
       app.use(router.routes());
 

@@ -1,6 +1,6 @@
 import run from './run';
 import { logWarn, node_version } from '@omni-door/utils';
-import { OmniConfig, DevServerType } from '../../index.d';
+import { OmniConfig } from '../../index.d';
 import { signal } from '../../utils';
 
 function handleException (msg?: string) {
@@ -49,7 +49,7 @@ export default async function (config: OmniConfig, options: {
 
   const EWServerList = [ 'spa-react', 'spa-vue' ];
   if (~EWServerList.indexOf(type) && !webpack) {
-    handleException('缺少开发服务webpack配置文件！(Missing the dev-server webpack-config!)'); 
+    handleException(`${type} 应用缺少开发服务webpack配置文件！(The ${type} app missing the dev-server webpack-config!)`); 
   }
 
   const _port = !isNaN(+p!)
