@@ -1,5 +1,7 @@
-import { logWarn, PLUGINSTAGE } from '@omni-door/utils';
-import { HandlerFactory, PluginHandler, OmniPlugin } from '../index.d';
+import { logWarn } from '@omni-door/utils';
+/* import types */
+import type { PLUGINSTAGE } from '@omni-door/utils';
+import type { HandlerFactory, PluginHandler, OmniPlugin } from '../index.d';
 
 export function getHandlers<T extends PLUGINSTAGE> (plugins: OmniPlugin<T>[], stage: T) {
   const handlers: { [pluginName: string]: PluginHandler<T> } = {};

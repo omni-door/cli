@@ -1,5 +1,5 @@
 
-import {
+import type {
   BUILD,
   TESTFRAME,
   PKJTOOL,

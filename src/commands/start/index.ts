@@ -1,7 +1,8 @@
 import path from 'path';
 import { logWarn, node_version, require_cwd, exec } from '@omni-door/utils';
-import { OmniConfig } from '../../index.d';
 import { KNServer } from '../servers';
+/* import types */
+import type { OmniConfig } from '../../index.d';
 
 function handleException (msg?: string) {
   logWarn(msg || '发生了一些未知错误！(Ops! Some unknown errors have occurred!)');

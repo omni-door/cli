@@ -1,5 +1,6 @@
 import path from 'path';
-import { HASH } from '@omni-door/utils';
+/* import types */
+import type { HASH } from '@omni-door/utils';
 
 export default function (config: {
   ts: boolean;

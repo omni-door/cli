@@ -1,4 +1,6 @@
-import { getDependency, arr2str, BUILD } from '@omni-door/utils';
+import { getDependency, arr2str } from '@omni-door/utils';
+/* import types */
+import type { BUILD } from '@omni-door/utils';
 
 export default function (config: {
   build: BUILD;

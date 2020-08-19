@@ -19,13 +19,14 @@ import {
   underline,
   italic,
   output_file,
-  node_version,
-  BUILD
+  node_version
 } from '@omni-door/utils';
-import { OmniConfig, OmniPlugin } from '../../index.d';
 import { getHandlers, logo, signal } from '../../utils';
 import dependencies_build from './dependencies_build';
 import release from '../release';
+/* import types */
+import type { BUILD } from '@omni-door/utils';
+import type { OmniConfig, OmniPlugin } from '../../index.d';
 
 export default async function (config: OmniConfig, buildTactic?: {
   config?: string;

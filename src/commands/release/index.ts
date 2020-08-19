@@ -15,8 +15,9 @@ import {
   node_version,
   logPrefix
 } from '@omni-door/utils';
-import { OmniConfig, OmniPlugin } from '../../index.d';
 import { getHandlers, signal, logo } from '../../utils';
+/* import types */
+import type { OmniConfig, OmniPlugin } from '../../index.d';
 
 const iterDict = {
   automatic: '自动迭代 (automatic)',

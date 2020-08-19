@@ -1,14 +1,16 @@
 import path from 'path';
 import http from 'http';
 import https from 'https';
-import { logInfo, require_cwd, LOGLEVEL } from '@omni-door/utils';
-import { Express, Request, Response, NextFunction } from 'express';
-import { Configuration, Compiler } from 'webpack';
-import { WebpackDevMiddleware, Options } from 'webpack-dev-middleware';
-import { NextHandleFunction } from 'connect';
+import { logInfo, require_cwd } from '@omni-door/utils';
 import open from '../dev/open';
-import { ProxyConfig, MiddlewareConfig } from '../dev/server';
-import { EWMiddleWareCallback } from '../../index.d';
+/* import types */
+import type { LOGLEVEL } from '@omni-door/utils';
+import type { Express } from 'express';
+import type { Configuration, Compiler } from 'webpack';
+import type { WebpackDevMiddleware, Options } from 'webpack-dev-middleware';
+import type { NextHandleFunction } from 'connect';
+import type { ProxyConfig, MiddlewareConfig } from '../dev/server';
+import type { EWMiddleWareCallback } from '../../index.d';
 
 export interface EWServerParams {
   webpackConfig: Configuration;

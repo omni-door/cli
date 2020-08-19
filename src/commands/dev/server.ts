@@ -7,17 +7,15 @@ import {
   LOGLEVEL,
   require_cwd,
   exec,
-  output_file,
-  PROJECT_TYPE
+  output_file
 } from '@omni-door/utils';
-import { Config } from 'http-proxy-middleware';
+import { EWServer, KNServer } from '../servers';
 import open from './open';
-import {
-  EWServer,
-  EWServerParams,
-  KNServer
-} from '../servers';
-import { OmniRouter, DevServerType, PathParams, MiddleWareCallback } from '../../index.d';
+/* import types */
+import type { Config } from 'http-proxy-middleware';
+import type { EWServerParams } from '../servers';
+import type { PROJECT_TYPE } from '@omni-door/utils';
+import type { OmniRouter, DevServerType, PathParams, MiddleWareCallback } from '../../index.d';
 
 // types-proxy
 export type ProxyItem = { route: PathParams; config: Config; };

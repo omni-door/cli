@@ -1,7 +1,8 @@
 import run from './run';
 import { logWarn, node_version } from '@omni-door/utils';
-import { OmniConfig } from '../../index.d';
 import { signal } from '../../utils';
+/* import types */
+import type { OmniConfig } from '../../index.d';
 
 function handleException (msg?: string) {
   logWarn(msg || '发生了一些未知错误！(Ops! Some unknown errors have occurred!)');

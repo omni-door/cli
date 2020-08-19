@@ -10,8 +10,9 @@ import {
   logSuc,
   node_version
 } from '@omni-door/utils';
-import { OmniConfig, OmniPlugin } from '../../index.d';
 import { getHandlers, signal, logo } from '../../utils';
+/* import types */
+import type { OmniConfig, OmniPlugin } from '../../index.d';
 
 function handleException (msg?: string) {
   logWarn(msg || '发生了一些未知错误！(Ops! Some unknown errors have occurred!)');

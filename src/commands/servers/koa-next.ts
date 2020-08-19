@@ -1,13 +1,15 @@
 import path from 'path';
 import http from 'http';
 import https from 'https';
-import { logInfo, logWarn, logErr, require_cwd, _typeof, LOGLEVEL } from '@omni-door/utils';
+import { logInfo, logWarn, logErr, require_cwd, _typeof } from '@omni-door/utils';
 import * as KoaApp from 'koa';
 import * as KoaRouter from 'koa-router';
 import NextServer from 'next-server/dist/server/next-server';
 import open from '../dev/open';
-import { ProxyConfig, MiddlewareConfig } from '../dev/server';
-import { OmniRouter, ANYOBJECT, KNMiddleWareCallback } from '../../index.d';
+/* import types */
+import type { LOGLEVEL } from '@omni-door/utils';
+import type { ProxyConfig, MiddlewareConfig } from '../dev/server';
+import type { OmniRouter, ANYOBJECT, KNMiddleWareCallback } from '../../index.d';
 
 export interface KNServerParams {
   dev: boolean;

@@ -1,6 +1,7 @@
 import program from 'commander';
 import { node_version, logWarn, require_cwd } from '@omni-door/utils';
-import { OmniConfig } from '../index.d';
+/* import types */
+import type { OmniConfig } from '../index.d';
 
 (async function () {
   try {

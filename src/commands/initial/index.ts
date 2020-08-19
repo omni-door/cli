@@ -14,11 +14,11 @@ import {
   logErr,
   logWarn,
   getBrand,
-  node_version,
-  PKJTOOL,
-  STRATEGY
+  node_version
 } from '@omni-door/utils';
 import { logo, signal } from '../../utils';
+/* import types */
+import type { PKJTOOL, STRATEGY } from '@omni-door/utils';
 
 enum ProjectType {
   'spa-react (React单页应用)' = 'spa-react',
