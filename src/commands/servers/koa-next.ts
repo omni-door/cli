@@ -60,27 +60,24 @@ export default function ({
   
     linkPage (pageName: string, params: { [param: string]: string; }) {
       const route = this.routes.find((currentRoute: OmniRouter[0]) => currentRoute.page === pageName);
-  
       const obj = {
         as: '',
         href: `/${pageName}${this.paramsToQueryString(params)}`
       };
-  
       if (route && route.prettyUrl) {
         obj.as = this.root + (typeof route.prettyUrl === 'string' ? route.prettyUrl : route.prettyUrl(params));
       }
-  
       return obj;
     }
   
-    forEachPattern (apply: (params: Pick<OmniRouter[0], 'page' | 'beforeRender'> & { pattern: string; defaultParams: ANYOBJECT; }) => any) {
+    forEachPattern (apply: (params: Pick<OmniRouter[0], 'page' | 'beforeRender'> & { pattern: string; defaultParams?: ANYOBJECT; }) => any) {
       this.routes.forEach((route: OmniRouter[0]) => {
-        this.getPrettyUrlPatterns(route).forEach((pattern: any) =>
+        this.getPrettyUrlPatterns(route).forEach((prettyPattern: { pattern: string, defaultParams?: ANYOBJECT }) =>
           apply({
             page: route.page,
             beforeRender: route.beforeRender,
-            pattern: this.root + pattern.pattern,
-            defaultParams: pattern.defaultParams
+            pattern: this.root + prettyPattern.pattern,
+            defaultParams: prettyPattern.defaultParams
           })
         );
       });
