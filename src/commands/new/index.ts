@@ -163,6 +163,9 @@ export default async function (config: OmniConfig, componentName: string, option
       case 'spa-react':
         newTplPkj = '@omni-door/tpl-spa-react';
         break;
+      case 'ssr-react':
+        newTplPkj = '@omni-door/tpl-ssr-react';
+        break;
       case 'component-react':
         newTplPkj = '@omni-door/tpl-component-react';
         break;
