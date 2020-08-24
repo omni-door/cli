@@ -2,14 +2,12 @@ import path from 'path';
 import http from 'http';
 import https from 'https';
 import { logInfo, logWarn, logErr, require_cwd, _typeof } from '@omni-door/utils';
-import * as KoaApp from 'koa';
-import * as KoaRouter from 'koa-router';
-import NextServer from 'next-server/dist/server/next-server';
 import open from '../dev/open';
 /* import types */
+import type * as KoaRouter from 'koa-router';
 import type { LOGLEVEL } from '@omni-door/utils';
 import type { ProxyConfig, MiddlewareConfig } from '../dev/server';
-import type { NextRouter, KNMiddleWareCallback, ANYOBJECT } from '../../index.d';
+import type { NextRouter, KNMiddleWareCallback, KoaApp, NextServer } from '../../index.d';
 
 export interface KNServerParams {
   dev: boolean;
@@ -131,7 +129,7 @@ export default function ({
       // inject routes
       // based on next-router
       // https://github.com/fridays/next-routes
-      const handler = nextRouter && nextRouter(app);
+      const handler = nextRouter && nextRouter(nextApp);
       handler && app.use(ctx => {
         const { req, res } = ctx;
         ctx.status = 200;

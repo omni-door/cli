@@ -1,13 +1,16 @@
 import type { IncomingMessage, ServerResponse } from 'http';
 import type { Configuration } from 'webpack';
-export { Configuration } from 'webpack';
+export type { Configuration } from 'webpack';
 import type { Config } from 'http-proxy-middleware';
-export { Config } from 'http-proxy-middleware';
+export type { Config } from 'http-proxy-middleware';
 import type { Options as DevMiddlewareOptions } from 'webpack-dev-middleware';
-export { Options as DevMiddlewareOptions } from 'webpack-dev-middleware';
+export type { Options as DevMiddlewareOptions } from 'webpack-dev-middleware';
 import type { Request, Response, NextFunction } from 'express';
-export { Request, Response, NextFunction } from 'express';
+export type { Request, Response, NextFunction } from 'express';
 import type * as KoaApp from 'koa';
+export type { default as KoaApp } from 'koa';
+import type NextServer from 'next-server/dist/server/next-server';
+export type { default as NextServer } from 'next-server/dist/server/next-server';
 import type { BUILD, PROJECT_TYPE, STYLE, PLUGINSTAGE, LOGLEVEL, HASH } from '@omni-door/utils';
 
 export type ANYOBJECT = { [propName: string]: any };
@@ -53,7 +56,7 @@ export type MiddleWareCallback = EWMiddleWareCallback | KNMiddleWareCallback;
 export type DevServerType = 'next' | 'storybook' | 'docz' | 'dumi' | 'bisheng' | 'styleguidist' | 'default';
 export type ProdServerType = 'next' | 'koa-next' | 'nuxt' | 'koa-nuxt';
 
-export type NextRouter = (app: KoaApp) => (
+export type NextRouter = (app: NextServer) => (
   request: IncomingMessage,
   response: ServerResponse
 ) => any;
