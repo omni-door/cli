@@ -129,32 +129,15 @@ export default function ({
       });
 
       // inject routes
-      
-      nextRouter && nextRouter?.forEachPattern(({ page, pattern, defaultParams, beforeRender }) => router.get(pattern, async (ctx, next) => {
-        let shouldRender: boolean | ANYOBJECT = true;
-
-        try {
-          const { req, res, query, params } = ctx;
-
-          if (typeof beforeRender === 'function') {
-            try {
-              shouldRender = await beforeRender(ctx, next);
-            } catch (err) {
-              logWarn(`「${page}」页面 beforeRender 异常！(The「${page})」beforeRender error!):\n ${err}`);
-            }
-          }
-
-          shouldRender && nextApp.render(req, res, `/${page}`, Object.assign(Object.create(null), defaultParams, query, params, _typeof(shouldRender) === 'object' ? shouldRender : null));
-        } catch (err) {
-          shouldRender = false;
-          logWarn(`页面「${page}」路由出错：${JSON.stringify(err)}`);
-        }
-
-        if (shouldRender) {
-          ctx.status = 200;
-          ctx.respond = false;
-        }
-      }));
+      // based on next-router
+      // https://github.com/fridays/next-routes
+      const handler = nextRouter && nextRouter(app);
+      handler && app.use(ctx => {
+        const { req, res } = ctx;
+        ctx.status = 200;
+        ctx.respond = false;
+        handler(req, res);
+      });
 
       // other source redirect to '/'
       router.get('(.*)', async ctx => {
