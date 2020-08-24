@@ -52,12 +52,14 @@ export type MiddleWareCallback = EWMiddleWareCallback | KNMiddleWareCallback;
 export type DevServerType = 'next' | 'storybook' | 'docz' | 'dumi' | 'bisheng' | 'styleguidist' | 'default';
 export type ProdServerType = 'next' | 'koa-next' | 'nuxt' | 'koa-nuxt';
 
-export type OmniRouter = {
-  page: string;
-  prettyUrl: (params: ANYOBJECT) => string;
-  prettyUrlPatterns: { pattern: PathParams; defaultParams?: ANYOBJECT }[];
-  beforeRender?: (ctx: KoaApp.ParameterizedContext, next: KoaApp.Next) => boolean;
-}[];
+export interface NextRouter {
+  forEachPattern: (apply: (params: {
+    page: string;
+    pattern: string;
+    defaultParams?: ANYOBJECT;
+    beforeRender?: (ctx: KoaApp.ParameterizedContext, next: KoaApp.Next) => boolean | ANYOBJECT;
+  }) => any) => void;
+}
 
 export type OmniServer = {
   port?: number;
@@ -79,7 +81,7 @@ export type OmniServer = {
     route: PathParams;
     callback: MiddleWareCallback;
   }[];
-  routes?: OmniRouter;
+  nextRouter?: NextRouter;
 };
 export interface OmniConfig {
   type: PROJECT_TYPE;

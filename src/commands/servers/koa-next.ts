@@ -9,7 +9,7 @@ import open from '../dev/open';
 /* import types */
 import type { LOGLEVEL } from '@omni-door/utils';
 import type { ProxyConfig, MiddlewareConfig } from '../dev/server';
-import type { OmniRouter, ANYOBJECT, KNMiddleWareCallback } from '../../index.d';
+import type { NextRouter, KNMiddleWareCallback, ANYOBJECT } from '../../index.d';
 
 export interface KNServerParams {
   dev: boolean;
@@ -24,7 +24,7 @@ export interface KNServerParams {
     key?: string | Buffer;
     cert?: string | Buffer;
   };
-  routes?: OmniRouter;
+  nextRouter?: NextRouter;
 }
 
 export default function ({
@@ -37,7 +37,7 @@ export default function ({
   listenHost,
   port,
   httpsConfig,
-  routes = []
+  nextRouter
 }: KNServerParams) {
   const Koa = require_cwd('koa');
   const next = require_cwd('next');
@@ -47,42 +47,7 @@ export default function ({
   const statics = require('koa-static');
   const proxy = require_cwd('http-proxy-middleware');
   const { pathToRegexp } = require_cwd('path-to-regexp');
-  const UrlPrettifier = require_cwd('next-url-prettifier').default;
   const publicPath = path.resolve(process.cwd(), 'public');
-
-  class NextUrlRouter extends UrlPrettifier {
-    constructor (routes: OmniRouter, options: { root?: string; } = {}) {
-      super(routes, options);
-      this.root = options.root || '';
-      this.linkPage = this.linkPage.bind(this);
-      this.forEachPattern = this.forEachPattern.bind(this);
-    }
-  
-    linkPage (pageName: string, params: { [param: string]: string; }) {
-      const route = this.routes.find((currentRoute: OmniRouter[0]) => currentRoute.page === pageName);
-      const obj = {
-        as: '',
-        href: `/${pageName}${this.paramsToQueryString(params)}`
-      };
-      if (route && route.prettyUrl) {
-        obj.as = this.root + (typeof route.prettyUrl === 'string' ? route.prettyUrl : route.prettyUrl(params));
-      }
-      return obj;
-    }
-  
-    forEachPattern (apply: (params: Pick<OmniRouter[0], 'page' | 'beforeRender'> & { pattern: string; defaultParams?: ANYOBJECT; }) => any) {
-      this.routes.forEach((route: OmniRouter[0]) => {
-        this.getPrettyUrlPatterns(route).forEach((prettyPattern: { pattern: string, defaultParams?: ANYOBJECT }) =>
-          apply({
-            page: route.page,
-            beforeRender: route.beforeRender,
-            pattern: this.root + prettyPattern.pattern,
-            defaultParams: prettyPattern.defaultParams
-          })
-        );
-      });
-    }
-  }
 
   const nextApp: NextServer = next({ dev });
   nextApp
@@ -164,8 +129,9 @@ export default function ({
       });
 
       // inject routes
-      new NextUrlRouter(routes).forEachPattern(({ page, pattern, defaultParams, beforeRender }) => router.get(pattern, async (ctx, next) => {
-        let shouldRender = true;
+      
+      nextRouter && nextRouter?.forEachPattern(({ page, pattern, defaultParams, beforeRender }) => router.get(pattern, async (ctx, next) => {
+        let shouldRender: boolean | ANYOBJECT = true;
 
         try {
           const { req, res, query, params } = ctx;

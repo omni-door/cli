@@ -15,7 +15,7 @@ import open from './open';
 import type { Config } from 'http-proxy-middleware';
 import type { EWServerParams } from '../servers';
 import type { PROJECT_TYPE } from '@omni-door/utils';
-import type { OmniRouter, DevServerType, PathParams, MiddleWareCallback } from '../../index.d';
+import type { NextRouter, DevServerType, PathParams, MiddleWareCallback } from '../../index.d';
 
 // types-proxy
 export type ProxyItem = { route: PathParams; config: Config; };
@@ -57,7 +57,7 @@ export type ServerOptions = {
   middlewareConfig?: MiddlewareConfig;
   serverType: DevServerType;
   projectType: PROJECT_TYPE;
-  routes?: OmniRouter
+  nextRouter?: NextRouter
 } & EWServerOptions;
 
 async function server ({
@@ -72,7 +72,7 @@ async function server ({
   webpackConfig,
   proxyConfig = [],
   middlewareConfig = [],
-  routes
+  nextRouter
 }: ServerOptions): Promise<void> {
   try {
     const CWD = process.cwd();
@@ -175,7 +175,7 @@ async function server ({
         case 'ssr-react':
           KNServer({
             dev: process.env.NODE_ENV === 'production' ? false : true,
-            routes,
+            nextRouter,
             ...serverBasicOptions
           });
           break;
