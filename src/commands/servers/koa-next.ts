@@ -7,7 +7,7 @@ import open from '../dev/open';
 import type * as KoaRouter from 'koa-router';
 import type { LOGLEVEL } from '@omni-door/utils';
 import type { ProxyConfig, MiddlewareConfig } from '../dev/server';
-import type { NextRouter, KNMiddleWareCallback, KoaApp, NextServer } from '../../index.d';
+import type { NextRouter, KNMiddleWareCallback, KoaApp, NextServer, ANYOBJECT } from '../../index.d';
 
 export interface KNServerParams {
   dev: boolean;
@@ -127,15 +127,33 @@ export default function ({
       });
 
       // inject routes
-      // based on next-router
-      // https://github.com/fridays/next-routes
-      const handler = nextRouter && nextRouter(nextApp);
-      handler && app.use(ctx => {
-        const { req, res } = ctx;
-        ctx.status = 200;
-        ctx.respond = false;
-        handler(req, res);
-      });
+      // based on next-url-prettifier
+      // https://github.com/BDav24/next-url-prettifier
+      nextRouter && nextRouter?.forEachPattern(({ page, pattern, defaultParams, beforeRender }) => router.get(pattern, async (ctx, next) => {
+        let shouldRender: boolean | ANYOBJECT = true;
+
+        try {
+          const { req, res, query, params } = ctx;
+
+          if (typeof beforeRender === 'function') {
+            try {
+              shouldRender = await beforeRender(ctx, next);
+            } catch (err) {
+              logWarn(`「${page}」页面 beforeRender 异常！(The「${page})」beforeRender error!):\n ${err}`);
+            }
+          }
+
+          shouldRender && nextApp.render(req, res, `/${page}`, Object.assign(Object.create(null), defaultParams, query, params, _typeof(shouldRender) === 'object' ? shouldRender : null));
+        } catch (err) {
+          shouldRender = false;
+          logWarn(`页面「${page}」路由出错：${JSON.stringify(err)}`);
+        }
+
+        if (shouldRender) {
+          ctx.status = 200;
+          ctx.respond = false;
+        }
+      }));
 
       // other source redirect to '/'
       router.get('(.*)', async ctx => {
