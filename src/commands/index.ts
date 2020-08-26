@@ -14,14 +14,11 @@ import type { OmniConfig } from '../index.d';
   const pkj = require('../../package.json');
   let config: OmniConfig | {} = {};
   try {
-    const ppkj = require_cwd('./package.json');
+    const ppkj = require_cwd('./package.json', true);
     const configFilePath = (ppkj && ppkj.omni && ppkj.omni.filePath) || './omni.config.js';
-    config = require_cwd(configFilePath);
-    if (!config) throw new Error(`请检查「${configFilePath}」配置文件！(Please checking 「${configFilePath}」config file!)`);
-  } catch (e) {
-    logWarn(e);
-    process.exit(0);
-  }
+    config = require_cwd(configFilePath, true);
+  // eslint-disable-next-line no-empty
+  } catch (e) {}
 
   program
     .version(pkj.version, '-v, --version')
