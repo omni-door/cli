@@ -1,6 +1,6 @@
 {
   "name": "@omni-door/cli",
-  "version": "2.0.0-next.17",
+  "version": "2.0.0-next.18",
   "description": "A tool set for set up the standard JS project",
   "bin": {
     "omni": "./bin/omni-door.js"
@@ -56,8 +56,10 @@
     "@types/fs-extra": "^8.0.1",
     "@types/inquirer": "^6.5.0",
     "@types/ip": "^1.1.0",
+    "@types/koa-router": "^7.4.1",
     "@types/mkcert": "^1.2.0",
     "@types/mocha": "^5.2.7",
+    "@types/next-server": "^9.0.0",
     "@types/node": "^12.11.1",
     "@types/rollup": "^0.54.0",
     "@types/semver": "^7.3.1",
@@ -108,8 +110,6 @@
     "@types/express-serve-static-core": "4.17.9",
     "@types/http-proxy-middleware": "0.19.3",
     "@types/koa": "2.11.3",
-    "@types/koa-router": "7.4.1",
-    "@types/next-server": "9.0.0",
     "@types/webpack": "4.41.2",
     "@types/webpack-dev-middleware": "3.7.0",
     "chalk": "3.0.0",

@@ -9,8 +9,6 @@ import type { Request, Response, NextFunction } from 'express';
 export type { Request, Response, NextFunction } from 'express';
 import type * as KoaApp from 'koa';
 export type { default as KoaApp } from 'koa';
-import type NextServer from 'next-server/dist/server/next-server';
-export type { default as NextServer } from 'next-server/dist/server/next-server';
 import type { BUILD, PROJECT_TYPE, STYLE, PLUGINSTAGE, LOGLEVEL, HASH } from '@omni-door/utils';
 
 export type ANYOBJECT = { [propName: string]: any };
