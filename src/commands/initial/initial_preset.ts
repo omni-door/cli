@@ -4,9 +4,13 @@ import type {
   TESTFRAME,
   PKJTOOL,
   STYLE,
-  DEVSERVER,
+  SPASERVER,
+  COMPONENTSERVER,
+  SSRSERVER,
   PROJECT_TYPE
 } from '@omni-door/utils';
+
+type DEVSERVER = SPASERVER | COMPONENTSERVER;
 
 export type GInstallCli = {
   project_type: PROJECT_TYPE;
@@ -20,6 +24,7 @@ export type GInstallCli = {
   style: STYLE;
   stylelint: boolean;
   devServer?: DEVSERVER;
+  serverType?: SSRSERVER;
 };
 
 export const cli_basic_react: GInstallCli = {
@@ -71,7 +76,8 @@ export const cli_ssr_react: GInstallCli = {
   prettier: true,
   commitlint: true,
   style: 'all',
-  stylelint: true
+  stylelint: true,
+  serverType: 'next'
 };
 
 export const cli_components_react: GInstallCli = {

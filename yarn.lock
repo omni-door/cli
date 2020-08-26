@@ -387,10 +387,10 @@
     "@nodelib/fs.scandir" "2.1.3"
     fastq "^1.6.0"
 
-"@omni-door/utils@~1.0.6":
-  version "1.0.6"
-  resolved "https://registry.npmjs.org/@omni-door/utils/-/utils-1.0.6.tgz#33913350ca73697ac9eddbcbe0b11dc997b3b09d"
-  integrity sha512-e8ttJaWKvAvZ/49jHoTVMhthPmjn5wQiaFLXcdze2K1nMhzsg9c468x+9KG8KPEaZvL4DarRYKy3gyNbj6BDlw==
+"@omni-door/utils@~1.0.7":
+  version "1.0.7"
+  resolved "https://registry.npmjs.org/@omni-door/utils/-/utils-1.0.7.tgz#bebc1c0a4e4ef3a2f27e2edc9d0e056a4e5203ca"
+  integrity sha512-S2cQl4mUoXPPyZqAF/tHyx2AXWmi9HD1LyAhZQVokLBFLrV23hbZOELSbXJR/lVlELyYmE+N1u07DaYdn9cdsg==
   dependencies:
     "@types/signale" "1.4.0"
     chalk "3.0.0"

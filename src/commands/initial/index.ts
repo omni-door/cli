@@ -329,14 +329,14 @@ export default async function (strategy: STRATEGY, {
           choices: function (answer: any) {
             const projectType = getProjectType(answer);
             if (projectType === 'ssr-react') {
-              return [ 'next (serverless + vercel)', 'koa-next (pm2)' ];
+              return [ 'next', 'koa-next' ];
             }
             return [ 'docz', 'storybook', 'styleguidist', 'bisheng' ];
           },
           default: function (answer: any) {
             const projectType = getProjectType(answer);
             if (projectType === 'ssr-react') {
-              return 'next (serverless + vercel)';
+              return 'next';
             }
             return 'docz';
           },
@@ -474,7 +474,10 @@ export default async function (strategy: STRATEGY, {
               `commitlint=${commitlint}`,
               `style=${stylesheet}`,
               `stylelint=${stylelint}`,
-              `devServer=${server}`
+              `devServer=${server}`,
+              `spaServer=${server}`,
+              `ssrServer=${server}`,
+              `componentServer=${server}`
             );
 
             switch (projectType) {
