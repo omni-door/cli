@@ -1,5 +1,7 @@
 # 变更日志
 
+[English](./CHANGELOG.md) | 简体中文
+
 ## v2.0.x
 ### v2.0.0
 1. (omni init)

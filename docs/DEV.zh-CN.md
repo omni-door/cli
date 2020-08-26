@@ -1,4 +1,7 @@
 # 接入文档
+
+[English](./DEV.md) | 简体中文
+
 @omni-door/cli 提供了二次开发的能力，通过 plugin 或者 import 到项目中实现。
 
 ---

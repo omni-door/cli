@@ -1,4 +1,7 @@
 # 🐸 @omni-door/cli
+
+https://www.omnidoor.cn
+
 一个能创建标准的 javascript 项目的脚手架。
 
 [![NPM downloads](http://img.shields.io/npm/dm/%40omni-door%2Fcli.svg?style=flat-square)](https://www.npmjs.com/package/@omni-door/cli)

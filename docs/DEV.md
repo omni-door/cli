@@ -1,4 +1,7 @@
 # Docs
+
+English | [简体中文](./DEV.zh-CN.md)
+
 **@omni-door/cli** provides the ability of secondary development, which is implemented through plug-in or import form。
 
 ---

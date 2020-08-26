@@ -1,5 +1,7 @@
 # CHANGE LOG
 
+English | [简体中文](./CHANGELOG.zh-CN.md)
+
 ## v1.4.x
 ### v1.4.2
 1. perf(omni release): the optimization for require package.json module

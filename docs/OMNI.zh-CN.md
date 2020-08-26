@@ -1,5 +1,7 @@
 # omni.config.js 详解
 
+[English](./OMNI.md) | 简体中文
+
 ## type 项目类型
 OMNI 会根据不同的项目类型决定整个初始化、构建、创建模板的过程
 

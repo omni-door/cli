@@ -1,5 +1,7 @@
 # omni.config.js Detail
 
+English | [简体中文](./OMNI.zh-CN.md)
+
 ## type
 OMNI will process of initialization, construction and template creation according to different project types
 
