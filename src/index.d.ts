@@ -1,4 +1,3 @@
-import type { IncomingMessage, ServerResponse } from 'http';
 import type { Configuration } from 'webpack';
 export type { Configuration } from 'webpack';
 import type { Config } from 'http-proxy-middleware';
