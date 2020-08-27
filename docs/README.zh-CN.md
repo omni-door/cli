@@ -87,11 +87,12 @@ Arguments:
   strategy                 stable or latest
 
 Options:
-  -b, --basic [name]       创建一个最基本的 React 单页应用
-  -s, --standard [name]    创建一个标准的 React 单页应用
-  -e, --entire [name]      创建一个全量的 React 单页应用
-  -t, --toolkit [name]     创建一个工具库
-  -c, --components [name]  创建一个组件库
+  -rb, --react_basic [name]       创建一个最基本的 React 单页应用
+  -rs, --react_standard [name]    创建一个标准的 React 单页应用
+  -re, --react_entire [name]      创建一个全量的 React 单页应用
+  -rS, --react_ssr [name]         创建一个 React SSR 应用
+  -rc, --react_components [name]  创建一个 React 组件库
+  -t, --toolkit [name]            创建一个工具库
   -n, --no-install         初始化项目不安装任何依赖
   -h, --help               output usage information
 ```
@@ -107,8 +108,9 @@ Usage: omni dev [options]
 omni dev -p <port>
 
 Options:
-  -p, --port <port>  根据指定的端口号启动开发服务
-  -h, --help         output usage information
+  -p, --port <port>      根据指定的端口号启动开发服务
+  -H, --hostname <host>  根据指定的hostname启动开发服务
+  -h, --help             output usage information
 ```
 
 ---
@@ -164,6 +166,22 @@ Options:
   -t, --tag <tag>         发布时指定tag
   -n, --no-verify         绕过所有的预检直接发布
   -h, --help              output usage information
+```
+
+---
+
+## omni start
+
+### 选项
+```shell
+Usage: omni start [options]
+
+omni start -p <port>
+
+Options:
+  -p, --port <port>      根据指定的端口号启动生产服务
+  -H, --hostname <host>  根据指定的hostname启动生产服务
+  -h, --help             output usage information
 ```
 
 ---

@@ -78,7 +78,7 @@ omni init -t [projectName]
 ```
 or
 ```shell
-omni init --entire [projectName]
+omni init --react_entire [projectName]
 ```
 
 ### options
@@ -92,13 +92,14 @@ Arguments:
   strategy                 stable or latest
 
 Options:
-  -b, --basic [name]       create a basic React SPA project
-  -s, --standard [name]    create a standard  React SPA project
-  -e, --entire [name]      create a most versatile  React SPA project
-  -t, --toolkit [name]     create a toolkit project
-  -c, --components [name]  create a React component library
-  -n, --no-install         init project without install dependencies
-  -h, --help               output usage information
+  -rb, --react_basic [name]       create a basic React SPA project
+  -rs, --react_standard [name]    create a standard React SPA project
+  -re, --react_entire [name]      create a most versatile React SPA project
+  -rS, --react_ssr [name]         create a React component library
+  -rc, --react_components [name]  create a React component library
+  -t, --toolkit [name]            create a toolkit project
+  -n, --no-install                init project without install dependencies
+  -h, --help                      output usage information
 ```
 
 ---
@@ -112,8 +113,9 @@ Usage: omni dev [options]
 omni dev -p <port>
 
 Options:
-  -p, --port <port>  start the dev-server according to the specified port
-  -h, --help         output usage information
+  -p, --port <port>      start the dev-server according to the specified port
+  -H, --hostname <host>  start the dev-server according to the specified hostname
+  -h, --help             output usage information
 ```
 
 ---
@@ -169,6 +171,22 @@ Options:
   -t, --tag <tag>         the tag will add to npm-package
   -n, --no-verify         bypass unit-test eslint and stylelint check
   -h, --help              output usage information
+```
+
+---
+
+## omni start
+
+### options
+```shell
+Usage: omni start [options]
+
+omni start -p <port>
+
+Options:
+  -p, --port <port>      start the prod-server according to the specified port
+  -H, --hostname <host>  start the prod-server according to the specified hostname
+  -h, --help             output usage information
 ```
 
 ---

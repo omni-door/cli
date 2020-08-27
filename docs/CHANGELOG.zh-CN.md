@@ -4,7 +4,11 @@
 
 ## v2.0.x
 ### v2.0.0
-1. (omni init)
+1. feat(omni init) 支持 ssr-react 项目类型
+
+2. feat(omni init) 优化
+
+3. feat(omni start) 新增 `start` 命令
 
 ---
 

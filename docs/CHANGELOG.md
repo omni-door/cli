@@ -2,6 +2,16 @@
 
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
+## v2.0.x
+### v2.0.0
+1. feat(omni init) support ssr-react project
+
+2. feat(omni init) optimize
+
+3. feat(omni start) add `start` command
+
+---
+
 ## v1.4.x
 ### v1.4.2
 1. perf(omni release): the optimization for require package.json module
