@@ -18,12 +18,13 @@ import type { OmniConfig } from '../index.d';
     const ppkj = require_cwd('./package.json', true);
     configFilePath = ppkj?.omni?.filePath || configFilePath;
     config = require_cwd(configFilePath, true);
-  // eslint-disable-next-line no-empty
-  } catch (e) {}
+  } catch (e) {
+    logWarn(e);
+  }
 
   function checkConfig () {
     if (!config) {
-      logWarn(`请检查「${configFilePath}」配置文件！(Please checking 「${configFilePath}」config file!)`);
+      logWarn(`请先初始化项目或检查「 ${configFilePath} 」配置文件是否存在！(Please initialize project first or checking 「 ${configFilePath} 」config file whether or not exist!)`);
       process.exit(0);
     }
   }
