@@ -9,7 +9,7 @@ function handleException (msg?: string) {
   process.exit(0);
 }
 
-export default async function (config: OmniConfig, options: {
+export default async function (config: OmniConfig | null, options: {
   port?: number | string;
   hostname?: string;
 }) {
@@ -20,10 +20,10 @@ export default async function (config: OmniConfig, options: {
     logWarn(e);
   }
 
-  if (JSON.stringify(config) === '{}') {
+  if (!config || JSON.stringify(config) === '{}') {
     handleException('请先初始化项目！(Please initialize project first!)');
   }
-  const { server } = config as OmniConfig;
+  const { server } = config!;
 
   if (!server || JSON.stringify(server) === '{}') {
     handleException('配置文件 start 字段缺失！(The start field is missing in config file!)');

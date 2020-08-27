@@ -28,7 +28,7 @@ import release from '../release';
 import type { BUILD } from '@omni-door/utils';
 import type { OmniConfig, OmniPlugin } from '../../index.d';
 
-export default async function (config: OmniConfig, buildTactic?: {
+export default async function (config: OmniConfig | null, buildTactic?: {
   config?: string;
   verify?: boolean;
   buildConfig?: string;
@@ -54,7 +54,7 @@ export default async function (config: OmniConfig, buildTactic?: {
   logTime('项目构建');
   logInfo(message);
 
-  const { type, template, build, release: configRelease, plugins } = config || {};
+  const { type, template, build, release: configRelease, plugins } = config;
 
   const {
     autoRelease,

@@ -19,7 +19,7 @@ function handleException (msg?: string) {
   process.exit(0);
 }
 
-export default async function (config: OmniConfig, componentName: string, options?: {
+export default async function (config: OmniConfig | null, componentName: string, options?: {
   function?: boolean;
   class?: boolean;
   tplPkj?: string;
@@ -49,7 +49,7 @@ export default async function (config: OmniConfig, componentName: string, option
     build,
     release,
     plugins
-  } = config;
+  } = config!;
 
   const {
     root,
@@ -57,7 +57,7 @@ export default async function (config: OmniConfig, componentName: string, option
     typescript = false,
     stylesheet = '',
     readme = [false, 'md']
-  } = template;
+  } = template!;
 
   let module_cn = '组件';
   let module_en = 'component';

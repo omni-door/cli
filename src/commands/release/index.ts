@@ -26,7 +26,7 @@ const iterDict = {
 };
 
 export default async function (
-  config: OmniConfig,
+  config: OmniConfig | null,
   iterTactic?: {
     automatic?: boolean;
     ignore?: boolean;

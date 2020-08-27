@@ -9,7 +9,7 @@ function handleException (msg?: string) {
   process.exit(0);
 }
 
-export default async function (config: OmniConfig, options: {
+export default async function (config: OmniConfig | null, options: {
   port?: number | string;
   hostname?: string;
 }) {
@@ -20,13 +20,13 @@ export default async function (config: OmniConfig, options: {
     logWarn(e);
   }
 
-  if (JSON.stringify(config) === '{}') {
+  if (!config || JSON.stringify(config) === '{}') {
     handleException('请先初始化项目！(Please initialize project first!)');
   }
 
   const p = options.port;
   const h = options.hostname;
-  const { type, dev, server } = config as OmniConfig;
+  const { type, dev, server } = config!;
 
   if (!dev || JSON.stringify(dev) === '{}') {
     handleException('配置文件 dev 字段缺失！(The dev field is missing in config file!)');

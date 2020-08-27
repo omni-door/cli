@@ -12,13 +12,21 @@ import type { OmniConfig } from '../index.d';
 
   const { initial, dev, start, newTpl, build, release } = require('./commands');
   const pkj = require('../../package.json');
-  let config: OmniConfig | {} = {};
+  let config: OmniConfig | null = null;
+  let configFilePath = './omni.config.js';
   try {
     const ppkj = require_cwd('./package.json', true);
-    const configFilePath = (ppkj && ppkj.omni && ppkj.omni.filePath) || './omni.config.js';
+    configFilePath = ppkj?.omni?.filePath || configFilePath;
     config = require_cwd(configFilePath, true);
   // eslint-disable-next-line no-empty
   } catch (e) {}
+
+  function checkConfig () {
+    if (!config) {
+      logWarn(`请检查「${configFilePath}」配置文件！(Please checking 「${configFilePath}」config file!)`);
+      process.exit(0);
+    }
+  }
 
   program
     .version(pkj.version, '-v, --version')
@@ -48,7 +56,10 @@ import type { OmniConfig } from '../index.d';
       port: 'The dev-server listen port.',
       host: 'The dev-server running hostname.'
     })
-    .action((options) => dev(config, options));
+    .action((options) => {
+      checkConfig();
+      dev(config, options);
+    });
 
   program
     .command('start')
@@ -58,7 +69,10 @@ import type { OmniConfig } from '../index.d';
       port: 'The prod-server listen port.',
       host: 'The prod-server running hostname.'
     })
-    .action((options) => start(config, options));
+    .action((options) => {
+      checkConfig();
+      start(config, options);
+    });
 
   program
     .command('new [name]')
@@ -68,14 +82,20 @@ import type { OmniConfig } from '../index.d';
       name: 'The name of component.',
     })
     .usage('[name] [options]')
-    .action((componentName, options) => newTpl(config, componentName, options));
+    .action((componentName, options) => {
+      checkConfig();
+      newTpl(config, componentName, options);
+    });
 
   program
     .command('build')
     .option('-c, --config <path>', 'specify the path of config file')
     .option('-n, --no-verify', 'bypass all pre-check before building')
     .description('build your project according to [omni.config.js] build field')
-    .action((buildTactic) => build(config, buildTactic));
+    .action((buildTactic) => {
+      checkConfig();
+      build(config, buildTactic);
+    });
 
   program
     .command('release')
@@ -85,7 +105,10 @@ import type { OmniConfig } from '../index.d';
     .option('-t, --tag <tag>', 'the tag will add to npm-package')
     .option('-n, --no-verify', 'bypass all pre-check before release')
     .description('publish your project according to [omni.config.js] release field')
-    .action((iterTactic) => release(config, iterTactic));
+    .action((iterTactic) => {
+      checkConfig();
+      release(config, iterTactic);
+    });
 
   program.parse(process.argv);
   if (!program.args.length) {
