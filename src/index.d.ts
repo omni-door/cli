@@ -8,7 +8,7 @@ import type { Request, Response, NextFunction } from 'express';
 export type { Request, Response, NextFunction } from 'express';
 import type * as KoaApp from 'koa';
 export type { default as KoaApp } from 'koa';
-import type { BUILD, PROJECT_TYPE, STYLE, PLUGINSTAGE, LOGLEVEL, HASH } from '@omni-door/utils';
+import type { BUILD, PROJECT_TYPE, STYLE, PLUGINSTAGE, LOGLEVEL, HASH, SPASERVER, COMPONENTSERVER, SSRSERVER } from '@omni-door/utils';
 
 export type ANYOBJECT = { [propName: string]: any };
 
@@ -50,8 +50,7 @@ export type EWMiddleWareCallback = (req: Request, res: Response, next: NextFunct
 export type KNMiddleWareCallback = KoaApp.Middleware;
 export type MiddleWareCallback = EWMiddleWareCallback | KNMiddleWareCallback;
 
-export type DevServerType = 'next' | 'storybook' | 'docz' | 'dumi' | 'bisheng' | 'styleguidist' | 'default';
-export type ProdServerType = 'next' | 'koa-next' | 'nuxt' | 'koa-nuxt';
+export type ServerType = SPASERVER | COMPONENTSERVER | SSRSERVER | 'default';
 
 export interface NextRouter {
   forEachPattern: (apply: (params: {
@@ -89,9 +88,9 @@ export interface OmniConfig {
   dev?: OmniServer & {
     devMiddlewareOptions?: Partial<DevMiddlewareOptions>;
     webpack?: Configuration;
-    serverType?: DevServerType;
+    serverType?: ServerType;
   };
-  server?: OmniServer & { serverType?: ProdServerType; };
+  server?: OmniServer & { serverType?: SSRSERVER; };
   build: {
     autoRelease?: boolean;
     srcDir: string;

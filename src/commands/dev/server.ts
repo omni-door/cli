@@ -15,7 +15,7 @@ import open from './open';
 import type { Config } from 'http-proxy-middleware';
 import type { EWServerParams } from '../servers';
 import type { PROJECT_TYPE } from '@omni-door/utils';
-import type { NextRouter, DevServerType, PathParams, MiddleWareCallback } from '../../index.d';
+import type { NextRouter, ServerType, PathParams, MiddleWareCallback } from '../../index.d';
 
 // types-proxy
 export type ProxyItem = { route: PathParams; config: Config; };
@@ -55,7 +55,7 @@ export type ServerOptions = {
   logLevel?: LOGLEVEL;
   proxyConfig?: ProxyConfig;
   middlewareConfig?: MiddlewareConfig;
-  serverType: DevServerType;
+  serverType: ServerType;
   projectType: PROJECT_TYPE;
   nextRouter?: NextRouter
 } & EWServerOptions;
@@ -88,7 +88,8 @@ async function server ({
       bisheng: `${path.resolve(CWD, 'node_modules/.bin/bisheng')} start`,
       styleguidist: `${path.resolve(CWD, 'node_modules/.bin/styleguidist')} server --port ${p} --host ${serverHost}`,
       dumi: `${path.resolve(CWD, 'node_modules/.bin/dumi')} dev --port ${p} --host ${serverHost}`,
-      next: `${path.resolve(CWD, 'node_modules/.bin/next')} dev --port ${p} --hostname ${serverHost}`
+      next: `${path.resolve(CWD, 'node_modules/.bin/next')} dev --port ${p} --hostname ${serverHost}`,
+      nuxt: `${path.resolve(CWD, 'node_modules/.bin/nuxt')} dev --port ${p} --hostname ${serverHost}`
     };
     const autoOpenServer = [
       'docz',
@@ -97,7 +98,7 @@ async function server ({
       'next'
     ];
 
-    if (serverType === 'default') {
+    if (!serverType || serverType === 'default' || serverType === 'express-webpack' || serverType === 'koa-next' || serverType === 'koa-nuxt') {
       let isHttps = false;
       let key, cert;
       if (httpsConfig) {
@@ -173,11 +174,15 @@ async function server ({
 
       switch (projectType) {
         case 'ssr-react':
-          KNServer({
-            dev: process.env.NODE_ENV === 'production' ? false : true,
-            nextRouter,
-            ...serverBasicOptions
-          });
+          if (serverType === 'koa-next') {
+            KNServer({
+              dev: process.env.NODE_ENV === 'production' ? false : true,
+              nextRouter,
+              ...serverBasicOptions
+            });
+          } else {
+            logWarn('暂不支持 ssr-vue 项目!');
+          }
           break;
         case 'ssr-vue':
           logWarn('暂不支持 ssr-vue 项目!');
@@ -198,6 +203,7 @@ async function server ({
           delay = 12000;
           break;
         case 'next':
+        case 'nuxt':
           delay = 3000;
           break;
         default:

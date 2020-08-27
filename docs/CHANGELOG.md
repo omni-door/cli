@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.0.x
+### v2.0.1
+1. fix(omni dev) fix ssr-react project cannot start bug
+
 ### v2.0.0
 1. feat(omni init) support ssr-react project
 

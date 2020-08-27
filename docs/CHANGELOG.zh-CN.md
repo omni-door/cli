@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.0.x
+### v2.0.1
+1. fix(omni dev) 修复 ssr-react 项目无法启动的问题
+
 ### v2.0.0
 1. feat(omni init) 支持 ssr-react 项目类型
 
