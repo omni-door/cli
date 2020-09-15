@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ## v1.4.x
+### v1.4.3
+1. [newTpl initial] support tplPkjTag option
+
 ### v1.4.2
 1. perf(omni release): the optimization for require package.json module
     

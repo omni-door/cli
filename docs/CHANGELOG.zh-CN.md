@@ -1,6 +1,9 @@
 # 变更日志
 
 ## v1.4.x
+### v1.4.3
+1. [newTpl initial] 支持 tplPkjTag 选项
+
 ### v1.4.2
 1. perf(omni release): 优化了 require package.json 的过程
     

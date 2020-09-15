@@ -128,6 +128,7 @@ type OptionCustom = {
   before?: (dirName: string) => (void | BeforeRes | Promise<BeforeRes>);
   after?: () => (void | AfterRes | Promise<AfterRes>);
   tplPkj?: string;
+  tplPkjTag?: string;
   tplPkjParams?: string[];
   pkjFieldName?: string;
   configFileName?: string;
@@ -165,6 +166,7 @@ export default async function (strategy: STRATEGY, {
     before,
     after,
     tplPkj,
+    tplPkjTag,
     tplPkjParams = [],
     pkjFieldName = 'omni',
     configFileName = 'omni.config.js',
@@ -507,7 +509,7 @@ export default async function (strategy: STRATEGY, {
 
       return exec(
         [
-          `npx ${tplPkj || tplPackage}@latest init ${arr2str([ ...tplParams, ...tplPkjParams ])}`
+          `npx ${tplPkj || tplPackage}@${tplPkjTag || 'latest'} init ${arr2str([ ...tplParams, ...tplPkjParams ])}`
         ],
         async function () {
           const afterRes = typeof after === 'function' && await after();
