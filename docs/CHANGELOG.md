@@ -3,89 +3,94 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.0.x
+### v2.0.2
+1. 「fix」fix express typescript problem, [more detail in this issue](https://github.com/DefinitelyTyped/DefinitelyTyped/issues/47339#issuecomment-691800846)
+
+2. 「docs」CHANGELOG optimization
+
 ### v2.0.1
-1. fix(omni dev) fix ssr-react project cannot start bug
+1. 「fix」`omni dev` fix ssr-react project cannot start bug
 
 ### v2.0.0
-1. feat(omni init) support ssr-react project
+1. 「feat」`omni init` support ssr-react project
 
-2. feat(omni init) optimize
+2. 「optimization」`omni init` optimize
 
-3. feat(omni start) add `start` command
+3. 「feat」`omni start` add `start` command
 
 ---
 
 ## v1.4.x
 ### v1.4.2
-1. perf(omni release): the optimization for require package.json module
+1. 「perf」`omni release`: the optimization for require package.json module
     
-2. upgrade @omni-door/utils
+2. 「chore」upgrade @omni-door/utils
 
 ### v1.4.1
-1. fixed dependencies version
+1. 「chore」fixed dependencies version
 
-2. fix(omni build): typescript had been forbidden situation tackle
+2. 「fix」`omni build`: typescript had been forbidden situation tackle
 
 ### v1.4.0
-1. (omni dev) support `https` protocol for dev-server
+1. 「feat」`omni dev` support `https` protocol for dev-server
 
 ## v1.3.x
 ### v1.3.9
-1. (omni dev) The default dev-server host change to `0.0.0.0`
+1. 「update」`omni dev` The default dev-server host change to `0.0.0.0`
 
 ### v1.3.8
-1. (omni build) The reserve.assets field type change to: (string | { srcPath: string; relativePath?: string; })[]
+1. 「update」`omni build` The reserve.assets field type change to: `(string | { srcPath: string; relativePath?: string; })[]`
 
 ### v1.3.7
-1. (omni release) text adjustment
+1. 「docs」`omni release` text adjustment
 
-2. (omni build) gulp-build optimization
+2. 「optimization」`omni build` gulp-build optimization
 
 ### v1.3.6
-1. upgrade @omni-door/utils to resolve logTime prefix bug
+1. 「fix」upgrade @omni-door/utils to resolve logTime prefix bug
 
 ### v1.3.5
-1. (omni release) add -a/--automatic options and support REPL(read-eval-print loop)
+1. 「feat」`omni release` add -a/--automatic options and support REPL(read-eval-print loop)
 
 ### v1.3.4
-1. (omni dev) storybook dev server start add --quiet option
+1. 「feat」`omni dev` storybook dev server start add --quiet option
 
-2. (omni dev) support custom host
+2. 「feat」`omni dev` support custom host
 
 ### v1.3.3
-1. (omni dev) integration toolkit and component-library project dev server
+1. 「chore」`omni dev` integration toolkit and component-library project dev server
 
 ### v1.3.2
-1. (omni build) fixed gulp-build cwd path and support component-libaray total output css
+1. 「chore」`omni build` fixed gulp-build cwd path and support component-libaray total output css
 
 ### v1.3.1
-1. (omni build) support gulp to build component-libaray project
+1. 「feat」`omni build` support gulp to build component-libaray project
 
-2. upgrade @omni-door/utils
+2. 「chore」upgrade @omni-door/utils
 
-3. [fix bug] omni new [name] - name maybe undefined
+3. 「fix」`omni new [name]` - name maybe undefined
 
 ### v1.3.0
-1. (omni dev) omni dev -p <port> - port change to required option
+1. 「update」`omni dev -p <port>` - port change to required option
 
-2. (omni new) omni new [name] [option] - name change to optional and support REPL(read-eval-print loop)
+2. 「update」`omni new [name] [option]` - name change to optional and support REPL(read-eval-print loop)
 
 ## v1.2.x
 ### v1.2.38
-1. [fix bug] the project package.json maybe non-exist situation
+1. 「fix」the project package.json maybe non-exist situation
 
-2. (omni init) support pkjFieldName field
+2. 「feat」`omni init` support pkjFieldName field
 
 ### v1.2.37
-1. (omni build) support pkjFieldName field
+1. 「feat」`omni build` support pkjFieldName field
 
 ### v1.2.36
-1. upgrade @omni-door/utils
+1. 「chore」upgrade @omni-door/utils
 
-2. support omni field in package.json which can specify config-path(omni.config.js)
+2. 「feat」support omni field in package.json which can specify config-path(omni.config.js)
 
 ### v1.2.35
-1. (omni new) add check for module name:
+1. 「feat」`omni new` add check for module name:
 
     - module name must greater-or-equal 2;
 
@@ -94,168 +99,168 @@ English | [简体中文](./CHANGELOG.zh-CN.md)
     - subsequent characters can only be numberm, underscore, upper and lower case letter!
 
 ### v1.2.34
-1. [initial] support custom initPath
+1. 「feat」[initial] support custom `initPath`
 
 ### v1.2.33
-1. (omni release) delete cache to avoid version incorrect
+1. 「fix」`omni release` delete cache to avoid version incorrect
 
 ### v1.2.32
-1. [fix bug] the process not exit when build/release have been finished
+1. 「fix」the process not exit when build/release have been finished
 
 ### v1.2.31
-1. (omni release) fix the version cannot iterate when run in linux env
+1. 「fix」`omni release` fix the version cannot iterate when run in linux env
 
 ### v1.2.30
-1. (omni dev) proxy support pass `function` type
+1. 「feat」`omni dev` proxy support pass `function` type
 
 ### v1.2.29
-1. (omni dev) middleware support pass `function` type
+1. 「feat」`omni dev` middleware support pass `function` type
 
-2. upgrade @omni-door/utils
+2. 「chore」upgrade @omni-door/utils
 
 ### v1.2.28
-1. <omni.config.js> `dev` field add `devMiddlewareOptions` property which match to `webpack-dev-middleware` [Options](https://github.com/webpack/webpack-dev-middleware#options)
+1. 「update」<omni.config.js> `dev` field add `devMiddlewareOptions` property which match to `webpack-dev-middleware` [Options](https://github.com/webpack/webpack-dev-middleware#options)
 
 ### v1.2.27
-1. [dependency upgrade] commander@5.1.0
+1. 「chore」dependency upgrade commander@5.1.0
 
 ### v1.2.26
-1. [fix bug] remove commandar auto output help information
+1. 「fix」remove commandar auto output help information
 
 ### v1.2.25
-1. [dependency upgrade] commander@4.1.0
+1. 「chore」dependency upgrade commander@4.1.0
 
-2. (omni init) increase the weight of parameter `tplPkjParams`
+2. 「fix」`omni init` increase the weight of parameter `tplPkjParams`
 
 ### v1.2.24
-1. [fix bug] the dependencies fixed version
+1. 「fix」the dependencies fixed version
 
 ### v1.2.23
-1. [fix bug] detection duplicate directory bug
+1. 「fix」detection duplicate directory bug
 
-2. (omni init) name duplicate support retry up to 10 times
+2. 「feat」`omni init` name duplicate support retry up to 10 times
 
 ### v1.2.22
-1. (omni init) add detection and confirmation prompt for duplicate directory when initialization
+1. 「feat」`omni init` add detection and confirmation prompt for duplicate directory when initialization
 
 ### v1.2.21
-1. [logic fix] initialization will not ask install tool when choose no-install
+1. 「fix」initialization will not ask install tool when choose no-install
 
 ### v1.2.20
-1. (omni init) add without install any dependencies when init project
+1. 「feat」`omni init` add without install any dependencies when init project
 
 ### v1.2.19
-1. upgrade @omni-door/utils
+1. 「chore」upgrade @omni-door/utils
 
-2. [new plugin] callback arguments add template-source(tplSource)
+2. 「feat」plugin-new callback arguments add `template-source(tplSource)` field
 
-3. [build plugin] callback arguments add custom-build-configuration(buildConfig)
+3. 「feat」plugin-build callback arguments add `custom-build-configuration(buildConfig)` field
 
-4. [release plugin] callback arguments add version-iteration-tactic(versionIterTactic)
+4. 「feat」plugin-release callback arguments add `version-iteration-tactic(versionIterTactic)` field
 
 ### v1.2.18
-1. [fix bug] the logo doesn't replace correctly
+1. 「fix」the logo doesn't replace correctly
 
 ### v1.2.17
-1. (omni new) remove the logic which automatic transform to uppercase for the component-name's fist letter
+1. 「feat」`omni new` remove the logic which automatic transform to uppercase for the component-name's fist letter
 
-2. (omni build) tookit package template modify
+2. 「chore」`omni build` tookit package template modify
 
-3. (omni release) fix the commitlint omit verify arguments bug
+3. 「fix」`omni release` fix the commitlint omit verify arguments bug
 
 ### v1.2.16
-1. upgrade @omni-door/utils
+1. 「chore」upgrade @omni-door/utils
 
-2. remove redundant `JSON.stringify` in the error-log output
+2. 「chore」remove redundant `JSON.stringify` in the error-log output
 
-3. `process` bind `'SIGINT', 'SIGQUIT', 'SIGTERM'` event to monitor exit
+3. 「update」`process` bind `'SIGINT', 'SIGQUIT', 'SIGTERM'` event to monitor exit
 
-4. (omni dev/build) fix the `require` cannot obtain cwd path problem
+4. 「fix」`omni dev/build` fix the `require` cannot obtain cwd path problem
 
 ### v1.2.15
-1. optimization exception
+1. 「update」optimization exception
 
-2. @omni-door/utils is replace to @omni-door/tpl-utils
+2. 「chore」@omni-door/utils is replace to @omni-door/tpl-utils
 
-3. (omni dev) apply create-react-app (Re-use current tab)[https://github.com/facebook/create-react-app/blob/32eebfeb7f5cdf93a790318eb76b81bb2927458e/packages/react-dev-utils/openChrome.applescript]
+3. 「feat」(omni dev) apply create-react-app [Re-use current tab](https://github.com/facebook/create-react-app/blob/32eebfeb7f5cdf93a790318eb76b81bb2927458e/packages/react-dev-utils/openChrome.applescript)
 
 ### v1.2.14
-1. (omni build/release) support prettier preflight check
+1. 「update」`omni build/release` support prettier preflight check
 
-2. (omni build) checking exist about the specify config file
+2. 「update」`omni build` checking exist about the specify config file
 
-3. (omni init) component-react project add styleguidist demo-framework
+3. 「feat」`omni init` component-react project add styleguidist demo-framework
 
 ### v1.2.13
-1. (omni build) stopping loading state when catch error
+1. 「fix」`omni build` stopping loading state when catch error
 
-2. (omni init) integrate prettier
+2. 「update」`omni init` integrate prettier
 
 ### v1.2.12
-1. (omni build) support specify the path of config file
+1. 「feat」`omni build` support specify the path of config file
 
-2. (omni build) the checking of output-result bug fixed
+2. 「fix」`omni build` the checking of output-result bug fixed
 
 ### v1.2.11
-1. (omni build) support "hash", "chunkhash" and "contenthash"
+1. 「feat」`omni build` support "hash", "chunkhash" and "contenthash"
 
-2. upgrade the @omni-door/tpl-utils dependency
+2. 「update」upgrade the @omni-door/tpl-utils dependency
 
 ### v1.2.10
-1. [initial] before and after support asynchronous execution
+1. 「feat」[initial] before and after support asynchronous execution
 
-2. [newTpl] support before and after callbacks
+2. 「feat」[newTpl] support before and after callbacks
 
 ### v1.2.9
-1. (omni dev) add Signals listener
+1. 「feat」`omni dev` add Signals listener
 
-2. upgrade the @omni-door/tpl-utils dependency
+2. 「update」upgrade the @omni-door/tpl-utils dependency
 
-3. (omni dev) fix the history API incorrect router problem
+3. 「feat」`omni dev` fix the history API incorrect router problem
 
 ### v1.2.8
-1. add `options` arguments for plugin and update the type defination
+1. 「update」add `options` arguments for plugin and update the type defination
 
 ### v1.2.7
-1. (omni release) The exception handle logic change
+1. 「update」`omni release` The exception handle logic change
 
-2. (omni release) Explicit sticking npm registry address
+2. 「update」`omni release` Explicit sticking npm registry address
 
-3. (omni release) Publish to git repositor without modify remote origin
+3. 「update」`omni release` Publish to git repositor without modify remote origin
 
-5. (omni release) Adding tag option
+5. 「feat」`omni release` Adding tag option
 
-4. Adding try/catch handle when exec plugin
+4. 「update」Adding try/catch handle when exec plugin
 
 ### v1.2.6
-1. [initial] support tplPkjParams option
+1. 「feat」[initial] support `tplPkjParams` option
 
-2. (omni build) remove auto-release time log
+2. 「update」`omni build` remove auto-release time log
 
 ### v1.2.5
-1. (omni release) version-check bug fixed
+1. 「fix」`omni release` version-check bug fixed
 
 ### v1.2.4
-1. (omni release) branch-check and npm-publish log prefix fixed
+1. 「fix」`omni release` branch-check and npm-publish log prefix fixed
 
-2. upgrade @omni-door/tpl-utils dependency
+2. 「fix」upgrade @omni-door/tpl-utils dependency
 
 ### v1.2.3
-1. (omni release) Chinese Translation
+1. 「docs」(omni release) Chinese Translation
 
-2. upgrade @omni-door/tpl-utils dependency
+2. 「update」upgrade @omni-door/tpl-utils dependency
 
-3. (omni initial/build/release) add time log
+3. 「feat」`omni initial/build/release` add time log
 
 ### v1.2.2
-1. (omni build) add not found the entry file hint when process rollup-build
+1. 「fix」`omni build` add not found the entry file hint when process rollup-build
 
-2. [newTpl initial] support tplPkj option
+2. 「feat」[newTpl initial] support `tplPkj` option
 
-3. (omni new) restore plugin
+3. 「update」`omni new` restore plugin
 
 ### v1.2.1
-1. split templates
+1. 「update」split templates
   - @omni-door/tpl-spa-react
 
   - @omni-door/tpl-toolkit
@@ -263,103 +268,103 @@ English | [简体中文](./CHANGELOG.zh-CN.md)
   - @omni-door/tpl-component-react
 
 ### v1.2.0
-1. naming conventions
+1. 「update」naming conventions
 
 ## v1.1.x
 ### v1.1.3
-1. <omni.config.js> fix webpack configuration file cannot get correct value due to circular references problem
+1. 「update」<omni.config.js> fix webpack configuration file cannot get correct value due to circular references problem
 
-2. <webpack.config.prod.js> add html-webpack-plugin
+2. 「update」<webpack.config.prod.js> add html-webpack-plugin
 
-3. <webpack.config.dev.js> migrate into css, less and scss stylesheet procession
+3. 「update」<webpack.config.dev.js> migrate into css, less and scss stylesheet procession
 
 ### v1.1.2
-1. <omni.config.js> add hash field for control whether add to hash-tag to building result
+1. 「update」<omni.config.js> add hash field for control whether add to hash-tag to building result
 
-2. add omni.config.js detail docs
+2. 「docs」add omni.config.js detail docs
 
 ### v1.1.1
-1. <package.json> fix the call-stack will be lost when the function convert to string which will cause the variable become undefined
+1. 「update」<package.json> fix the call-stack will be lost when the function convert to string which will cause the variable become undefined
 
 ### v1.1.0
-1. <package.json> add resolutions field, resolve (Duplicate identifier 'LibraryManagedAttributes')[https://stackoverflow.com/questions/52399839/duplicate-identifier-librarymanagedattributes] problem
+1. 「update」<package.json> add resolutions field, resolve (Duplicate identifier 'LibraryManagedAttributes')[https://stackoverflow.com/questions/52399839/duplicate-identifier-librarymanagedattributes] problem
 
-2. (onmi init) strategy-stable update dependencies version
+2. 「update」`onmi init` strategy-stable update dependencies version
 
-3. (onmi init) component-react and toolkit set unit-test by default
+3. 「update」`onmi init` component-react and toolkit set unit-test by default
 
 ---
 
 ## v1.0.x
 ### v1.0.10
-1. [node-version-check] fix the version check bug
+1. 「fix」[node-version-check] fix the version check bug
 
-2. (onmi init) dynamic update the total-step of initial project
+2. 「feat」(onmi init) dynamic update the total-step of initial project
 
-3. (onmi build) fix miss of error log problem
+3. 「fix」(onmi build) fix miss of error log problem
 
-4. (onmi release) fix miss of error log problem
+4. 「fix」(onmi release) fix miss of error log problem
 
 ### v1.0.9
-1. <package.json> add stylelint check paramter {--allow-empty-input}
+1. 「update」<package.json> add stylelint check paramter {--allow-empty-input}
 
-2. <package.json> add jest test paramter {--passWithNoTests}
+2. 「update」<package.json> add jest test paramter {--passWithNoTests}
 
-3. <tsconfig.json> remove annotation of allowJs and experimentalDecorators, updating {exclude} field
+3. 「update」<tsconfig.json> remove annotation of allowJs and experimentalDecorators, updating {exclude} field
 
-4. <webpack.config.prod.js> add webpack-bundle-analyzer plugin
+4. 「update」<webpack.config.prod.js> add webpack-bundle-analyzer plugin
 
-5. <.npmignore> generate by project-type
+5. 「update」<.npmignore> generate by project-type
 
-6. (onmi init) support multiple select stylesheet
+6. 「update」`onmi init` support multiple select stylesheet
 
 ### v1.0.8
-1. (omni init) fix incorrect display of custom logo
+1. 「fix」`omni init` fix incorrect display of custom logo
 
-2. (omni init) support remove origin dependencies
+2. 「chore」`omni init` support remove origin dependencies
 
 ### v1.0.7
-1. <tsconfig.json> template add project_type judgement
+1. 「update」<tsconfig.json> template add project_type judgement
 
-2. <omni.config.js> annotation change
+2. 「update」<omni.config.js> annotation change
 
-3. <webpack.config.prod.js> optimize production environment packing
+3. 「update」<webpack.config.prod.js> optimize production environment packing
 
-4. [dev-server] add run-time try/exception
+4. 「update」[dev-server] add run-time try/exception
 
-5. (omni new) fix cannot identify options bug
+5. 「fix」`omni new` fix cannot identify options bug
 
 ### v1.0.6
-1. pre-check node version，demand node >= 10.13.0
+1. 「feat」pre-check node version，demand node >= 10.13.0
 
 ### v1.0.5
-1. <omni.config.js>, add `dev.middleware` field
+1. 「update」<omni.config.js>, add `dev.middleware` field
 
-2. <omni.config.js>, add `dev.logLevel` field
+2. 「update」<omni.config.js>, add `dev.logLevel` field
 
-3. <omni.config.js>, `dev.webpack_config` change to `dev.webpack`
+3. 「update」<omni.config.js>, `dev.webpack_config` change to `dev.webpack`
 
 ### v1.0.4
-1. [dev-server] start process optimization
+1. 「feat」[dev-server] start process optimization
 
-2. (omni init) change `omni init -s` and `omni init --simple` to `omni init -b` and `omni init --basic`
+2. 「feat」`omni init` change `omni init -s` and `omni init --simple` to `omni init -b` and `omni init --basic`
 
 ### v1.0.3
-1. (omni build) auto-release optimization, get rid of relying on NPM script and call release method directly
+1. 「optimization」`omni build` auto-release optimization, get rid of relying on NPM script and call release method directly
 
 ### v1.0.2
-1. toolkit-project support tsc build
+1. 「feat」toolkit-project support tsc build
 
 ### v1.0.1
-1. optimized log output
+1. 「chore」optimized log output
 
 ### v1.0.0
-1. add `omni dev` command that support the development server which powered by Express and webpack-dev-server 
+1. 「feat」add `omni dev` command that support the development server which powered by Express and webpack-dev-server
 
 ---
 
 ## v0.2.x
-1. stable version
+1. available version, please upgrade the latest version
 
 ## v0.1.x
 1. available version, please upgrade the latest version
@@ -370,8 +375,8 @@ English | [简体中文](./CHANGELOG.zh-CN.md)
 ---
 
 **The Meaning of Tags**：
-- \<xxx> - template
+- 「xxx」 - type
 
-- (xxx) - command
+- \<xxx> - template
 
 - [xxx] - behavior or feature or function
