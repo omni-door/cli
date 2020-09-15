@@ -23,6 +23,7 @@ export default async function (config: OmniConfig | null, componentName: string,
   function?: boolean;
   class?: boolean;
   tplPkj?: string;
+  tplPkjTag?: string;
   before?: (params: {
     root: string;
     componentName: string;
@@ -67,7 +68,7 @@ export default async function (config: OmniConfig | null, componentName: string,
   }
 
   // eslint-disable-next-line prefer-const
-  let { function: fc, class: cc, tplPkj, before, after } = options || {};
+  let { function: fc, class: cc, tplPkj, tplPkjTag, before, after } = options || {};
 
   if (!root) {
     handleException(`生成${module_cn}的路径缺失！(Missing the path for generate template!)`);
@@ -184,7 +185,7 @@ export default async function (config: OmniConfig | null, componentName: string,
   logInfo(`正在下载 ${newTplPkj} 模板，请稍后... (Downloading the templates, please wait patiently…)`);
   exec(
     [
-      `npx ${newTplPkj}@latest new ${arr2str(params)}`
+      `npx ${newTplPkj}@${tplPkjTag || 'latest'} new ${arr2str(params)}`
     ],
     async function () {
       // handle new plugins

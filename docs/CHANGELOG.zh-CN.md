@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.0.x
+### v2.0.3
+1. 「update」[newTpl、initial] 支持 `tplPkjTag` 选项
+
 ### v2.0.2
 1. 「fix」修复 express typescript 的问题，[点击详见issue](https://github.com/DefinitelyTyped/DefinitelyTyped/issues/47339#issuecomment-691800846)
 
