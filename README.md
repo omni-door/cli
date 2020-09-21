@@ -1,6 +1,6 @@
 # 🐸 @omni-door/cli
 
-https://www.omnidoor.cn
+https://www.omnidoor.org
 
 The CLI Tool for set up standard javascript project.
 

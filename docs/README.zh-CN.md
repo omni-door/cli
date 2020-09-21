@@ -1,6 +1,6 @@
 # 🐸 @omni-door/cli
 
-https://www.omnidoor.cn
+https://www.omnidoor.org
 
 一个能创建标准的 javascript 项目的脚手架。
 
