@@ -1,5 +1,5 @@
 import program from 'commander';
-import { node_version, logWarn, require_cwd } from '@omni-door/utils';
+import { node_version, logWarn, require_cwd, logEmph } from '@omni-door/utils';
 /* import types */
 import type { OmniConfig } from '../index.d';
 
@@ -14,17 +14,31 @@ import type { OmniConfig } from '../index.d';
   const pkj = require('../../package.json');
   let config: OmniConfig | null = null;
   let configFilePath = './omni.config.js';
-  try {
-    const ppkj = require_cwd('./package.json', true);
-    configFilePath = ppkj?.omni?.filePath || configFilePath;
-    config = require_cwd(configFilePath);
-  } catch (e) {
-    logWarn(e);
+  getConfig();
+
+  function getConfig () {
+    try {
+      const ppkj = require_cwd('./package.json', true);
+      configFilePath = ppkj?.omni?.filePath || configFilePath;
+      config = require_cwd(configFilePath, true);
+    } catch (e) {
+      logWarn(e);
+    }
   }
 
   function checkConfig () {
     if (!config) {
       logWarn(`请先初始化项目或检查「 ${configFilePath} 」配置文件是否存在问题！(Please initialize project first or checking is there a problem with the「 ${configFilePath} 」config file!)`);
+      process.exit(0);
+    }
+  }
+
+  function changeCWD (workPath: string) {
+    try {
+      process.chdir(workPath);
+      logEmph(`工作路径更新为「 ${workPath} 」(The work path change to 「 ${process.cwd()} 」)`);
+    } catch (err) {
+      logWarn(`工作路径更新失败，请检查「 ${workPath} 」是否存在！(Please checking the「 ${workPath} 」had existed!)`);
       process.exit(0);
     }
   }
@@ -43,21 +57,37 @@ import type { OmniConfig } from '../index.d';
     .option('-rc, --react_components [name]', 'create a React component library')
     .option('-t, --toolkit [name]', 'create a toolkit project')
     .option('-n, --no-install', 'init project without install dependencies')
+    .option('-P, --path <path>', 'the workpath for init the project')
     .description('initialize your project, [strategy] could be stable(default) or latest', {
       strategy: 'stable or latest',
     })
     .usage('[strategy] [options]')
-    .action((strategy, options) => initial(strategy, options));
+    .action((strategy, options) => {
+      const workPath = options.path;
+      if (workPath) {
+        changeCWD(workPath);
+      }
+
+      initial(strategy, options);
+    });
 
   program
     .command('dev')
     .option('-p, --port <port>', 'start the dev-server according to the specified port')
     .option('-H, --hostname <host>', 'start the dev-server according to the specified hostname')
-    .description('omni dev -p <port> -H <host>', {
+    .option('-P, --path <path>', 'the workpath for start the dev-server')
+    .description('omni dev [-p <port>] [-H <host>] [-P <path>]', {
       port: 'The dev-server listen port.',
-      host: 'The dev-server running hostname.'
+      host: 'The dev-server running hostname.',
+      path: 'The cli workpath for running dev-server.'
     })
     .action((options) => {
+      const workPath = options.path;
+      if (workPath) {
+        changeCWD(workPath);
+        getConfig();
+      }
+
       checkConfig();
       dev(config, options);
     });
@@ -65,12 +95,20 @@ import type { OmniConfig } from '../index.d';
   program
     .command('start')
     .option('-p, --port <port>', 'start the prod-server according to the specified port')
-    .option('-H, --hostname <host>', 'start the node-server according to the specified hostname')
-    .description('omni start -p <port> -H <host>', {
+    .option('-H, --hostname <host>', 'start the prod-server according to the specified hostname')
+    .option('-P, --path <path>', 'the workpath for start the prod-server')
+    .description('omni start [-p <port>] [-H <host>] [-P <path>]', {
       port: 'The prod-server listen port.',
-      host: 'The prod-server running hostname.'
+      host: 'The prod-server running hostname.',
+      path: 'The cli workpath for running prod-server.'
     })
     .action((options) => {
+      const workPath = options.path;
+      if (workPath) {
+        changeCWD(workPath);
+        getConfig();
+      }
+
       checkConfig();
       start(config, options);
     });
@@ -79,11 +117,18 @@ import type { OmniConfig } from '../index.d';
     .command('new [name]')
     .option('-f, --function', 'create a functional component')
     .option('-c, --class', 'create a class component')
-    .description('omni new [name] [-f | -c]', {
+    .option('-P, --path <path>', 'the workpath for create component')
+    .description('omni new [name] [-f | -c] [-P <path>]', {
       name: 'The name of component.',
     })
     .usage('[name] [options]')
     .action((componentName, options) => {
+      const workPath = options.path;
+      if (workPath) {
+        changeCWD(workPath);
+        getConfig();
+      }
+
       checkConfig();
       newTpl(config, componentName, options);
     });
@@ -92,8 +137,15 @@ import type { OmniConfig } from '../index.d';
     .command('build')
     .option('-c, --config <path>', 'specify the path of config file')
     .option('-n, --no-verify', 'bypass all pre-check before building')
-    .description('build your project according to [omni.config.js] build field')
+    .option('-P, --path <path>', 'the workpath for build project')
+    .description('build your project according to the [omni.config.js]\'s build field')
     .action((buildTactic) => {
+      const workPath = buildTactic.path;
+      if (workPath) {
+        changeCWD(workPath);
+        getConfig();
+      }
+
       checkConfig();
       build(config, buildTactic);
     });
@@ -105,8 +157,15 @@ import type { OmniConfig } from '../index.d';
     .option('-m, --manual <version>', 'manual specify the version of iteration')
     .option('-t, --tag <tag>', 'the tag will add to npm-package')
     .option('-n, --no-verify', 'bypass all pre-check before release')
-    .description('publish your project according to [omni.config.js] release field')
+    .option('-P, --path <path>', 'the workpath for release project')
+    .description('publish your project according to the [omni.config.js]\'s release field')
     .action((iterTactic) => {
+      const workPath = iterTactic.path;
+      if (workPath) {
+        changeCWD(workPath);
+        getConfig();
+      }
+
       checkConfig();
       release(config, iterTactic);
     });

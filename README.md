@@ -47,11 +47,12 @@ Several options to get up and running:
 
   Commands:
 
-    init [strategy] [options]  initialize your project, [strategy] could be stable(default) or latest
-    dev [options]              omni dev -p [port]
-    new <module> [options]     omni new [module] [-f | -c]
-    build                      build your project according to [omni.config.js]
-    release [options]          publish your project according to [omni.config.js]
+    init [options] [strategy]  initialize your project, [strategy] could be stable(default) or latest
+    dev [options]              omni dev [-p <port>] [-H <host>] [-P <path>]
+    start [options]            omni start [-p <port>] [-H <host>] [-P <path>]
+    new [options] [name]       omni new [name] [-f | -c] [-P <path>]
+    build [options]            build your project according to the [omni.config.js]'s build field
+    release [options]          publish your project according to the [omni.config.js]'s release field
 
 ```
 
@@ -99,6 +100,7 @@ Options:
   -rc, --react_components [name]  create a React component library
   -t, --toolkit [name]            create a toolkit project
   -n, --no-install                init project without install dependencies
+  -P, --path <path>               the workpath for init the project
   -h, --help                      output usage information
 ```
 
@@ -110,11 +112,29 @@ Options:
 ```shell
 Usage: omni dev [options]
 
-omni dev -p <port>
+omni dev [-p <port>] [-H <host>] [-P <path>]
 
 Options:
   -p, --port <port>      start the dev-server according to the specified port
   -H, --hostname <host>  start the dev-server according to the specified hostname
+  -P, --path <path>      the workpath for start the dev-server
+  -h, --help             output usage information
+```
+
+---
+
+## omni start
+
+### options
+```shell
+Usage: omni start [options]
+
+omni start [-p <port>] [-H <host>] [-P <path>]
+
+Options:
+  -p, --port <port>      start the prod-server according to the specified port
+  -H, --hostname <host>  start the prod-server according to the specified hostname
+  -P, --path <path>      the workpath for start the prod-server
   -h, --help             output usage information
 ```
 
@@ -126,7 +146,7 @@ Options:
 ```shell
 Usage: omni new [name] [options]
 
-omni new [name] [-f | -c]
+omni new [name] [-f | -c] [-P <path>]
 
 Arguments:
 
@@ -135,6 +155,7 @@ Arguments:
 Options:
   -f, --function    create a functional component
   -c, --class       create a class component
+  -P, --path <path>  the workpath for create component
   -h, --help        output usage information
 ```
 
@@ -146,11 +167,12 @@ Options:
 ```shell
 Usage: omni build [options]
 
-build your project according to [omni.config.js]
+build your project according to the [omni.config.js]'s build field
 
 Options:
   -c, --config <path>  specify the path of config file
   -n, --no-verify      bypass all pre-check before building
+  -P, --path <path>    the workpath for build project
   -h, --help           output usage information
 ```
 
@@ -162,7 +184,7 @@ Options:
 ```shell
 Usage: omni release [options]
 
-publish your project according to [omni.config.js]
+publish your project according to the [omni.config.js]'s release field
 
 Options:
   -a, --automatic         automatic iteration version
@@ -170,23 +192,8 @@ Options:
   -m, --manual <version>  manual iteration version
   -t, --tag <tag>         the tag will add to npm-package
   -n, --no-verify         bypass unit-test eslint and stylelint check
+  -P, --path <path>       the workpath for release project
   -h, --help              output usage information
-```
-
----
-
-## omni start
-
-### options
-```shell
-Usage: omni start [options]
-
-omni start -p <port>
-
-Options:
-  -p, --port <port>      start the prod-server according to the specified port
-  -H, --hostname <host>  start the prod-server according to the specified hostname
-  -h, --help             output usage information
 ```
 
 ---

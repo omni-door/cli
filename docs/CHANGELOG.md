@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.0.x
+### v2.0.4
+1. 「feat」`omni *` all commands is support `-P <path>` option which be used for specify workpath
+
 ### v2.0.3
 1. 「update」[newTpl、initial] support `tplPkjTag` option
 

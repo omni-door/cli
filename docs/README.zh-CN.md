@@ -78,7 +78,7 @@ omni init --entire [projectName]
 
 ### 选项
 ```shell
-Usage: omni init [strategy] [options]
+使用: omni init [strategy] [options]
 
 initialize your project, [strategy] could be stable(default) or latest
 
@@ -93,7 +93,8 @@ Options:
   -rS, --react_ssr [name]         创建一个 React SSR 应用
   -rc, --react_components [name]  创建一个 React 组件库
   -t, --toolkit [name]            创建一个工具库
-  -n, --no-install         初始化项目不安装任何依赖
+  -n, --no-install                初始化项目不安装任何依赖
+  -P, --path <path>               创建项目的工作路径
   -h, --help               output usage information
 ```
 
@@ -103,13 +104,31 @@ Options:
 
 ### 选项
 ```shell
-Usage: omni dev [options]
+使用: omni dev [options]
 
-omni dev -p <port>
+omni dev [-p <port>] [-H <host>] [-P <path>]
 
 Options:
   -p, --port <port>      根据指定的端口号启动开发服务
   -H, --hostname <host>  根据指定的hostname启动开发服务
+  -P, --path <path>      启动开发服务的工作路径
+  -h, --help             output usage information
+```
+
+---
+
+## omni start
+
+### 选项
+```shell
+使用: omni start [options]
+
+omni start [-p <port>] [-H <host>] [-P <path>]
+
+Options:
+  -p, --port <port>      根据指定的端口号启动生产服务
+  -H, --hostname <host>  根据指定的hostname启动生产服务
+  -P, --path <path>      启动生产服务的工作路径
   -h, --help             output usage information
 ```
 
@@ -119,17 +138,18 @@ Options:
 
 ### 选项
 ```shell
-Usage: omni new [name] [options]
+使用: omni new [name] [options]
 
-omni new [name] [-f | -c]
+omni new [name] [-f | -c] [-P <path>]
 
 Arguments:
 
   module           可选！组件名称。
 
 Options:
-  -f, --function    创建一个函数组件
-  -c, --class       创建一个类组件
+  -f, --function     创建一个函数组件
+  -c, --class        创建一个类组件
+  -P, --path <path>  创建组件的工作路径
   -h, --help        output usage information
 ```
 
@@ -139,13 +159,14 @@ Options:
 
 ### 选项
 ```shell
-Usage: omni build [options]
+使用: omni build [options]
 
-build your project according to [omni.config.js]
+根据 [omni.config.js] 的 build 字段构建项目
 
 Options:
   -c, --config <path>  指定构建的配置文件路径
   -n, --no-verify      绕过所有预检直接构建
+  -P, --path <path>    构建的工作路径
   -h, --help           output usage information
 ```
 
@@ -155,9 +176,9 @@ Options:
 
 ### 选项
 ```shell
-Usage: omni release [options]
+使用: omni release [options]
 
-publish your project according to [omni.config.js]
+根据 [omni.config.js] 的 release 字段发布项目
 
 Options:
   -a, --automatic         发布并自动迭代版本号
@@ -165,23 +186,8 @@ Options:
   -m, --manual <version>  发布并手动指定版本号
   -t, --tag <tag>         发布时指定tag
   -n, --no-verify         绕过所有的预检直接发布
+  -P, --path <path>       发布的工作路径
   -h, --help              output usage information
-```
-
----
-
-## omni start
-
-### 选项
-```shell
-Usage: omni start [options]
-
-omni start -p <port>
-
-Options:
-  -p, --port <port>      根据指定的端口号启动生产服务
-  -H, --hostname <host>  根据指定的hostname启动生产服务
-  -h, --help             output usage information
 ```
 
 ---

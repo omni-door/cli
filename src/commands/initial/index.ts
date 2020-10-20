@@ -184,20 +184,20 @@ export default async function (strategy: STRATEGY, {
   const tplParams: string[] = [ `install=${install}` ];
   let configPath = path.resolve(configFileName);
 
+  const CWD = process.cwd();
+  const realCWD = customInitPath || CWD;
   try {
-    const cwd = process.cwd();
-
     let ppkj;
-    const ppkjPath = path.resolve(cwd, 'package.json');
+    const ppkjPath = path.resolve(realCWD, 'package.json');
     if (fs.existsSync(ppkjPath)) ppkj = require(ppkjPath);
 
-    configPath = path.resolve(cwd, (ppkj && ppkj[pkjFieldName] && ppkj[pkjFieldName]['filePath']) || configFileName);
+    configPath = path.resolve(realCWD, (ppkj && ppkj[pkjFieldName] && ppkj[pkjFieldName]['filePath']) || configFileName);
   } catch (e) {
     logWarn(e);
   }
 
   // get project name
-  const { name: defaultName } = parse(process.cwd());
+  const { name: defaultName } = parse(realCWD);
   let presetType: keyof typeof types | '' = '';
   let projectName = defaultName;
   const types = {
@@ -513,7 +513,7 @@ export default async function (strategy: STRATEGY, {
     } = beforeRes || {};
     const isSilent = typeof stdout === 'boolean' ? !stdout : false;
     const dirName = dir_name || projectName;
-    const initPath = customInitPath || path.resolve(process.cwd(), dirName);
+    const initPath = customInitPath || path.resolve(CWD, dirName);
 
     if (!configFileExist && await isDir(dirName)) {
       await new Promise((resolve) => {
