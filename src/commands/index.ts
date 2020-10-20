@@ -36,7 +36,8 @@ import type { OmniConfig } from '../index.d';
   function changeCWD (workPath: string) {
     try {
       process.chdir(workPath);
-      logEmph(`工作路径更新为「 ${workPath} 」(The work path change to 「 ${process.cwd()} 」)`);
+      const cwd = process.cwd();
+      logEmph(`工作路径更新为「 ${cwd} 」(The work path change to 「 ${cwd} 」)`);
     } catch (err) {
       logWarn(`工作路径更新失败，请检查「 ${workPath} 」是否存在！(Please checking the「 ${workPath} 」had existed!)`);
       process.exit(0);
