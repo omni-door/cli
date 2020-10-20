@@ -4,7 +4,7 @@
 
 ## v2.0.x
 ### v2.0.4
-1. 「feat」`omni *` 所有命令均支持 `-P / --path` 选项用于自定义工作路径
+1. 「feat」`omni *` 所有命令均支持 `-P <path>` 选项用于自定义工作路径
 
 ### v2.0.3
 1. 「update」[newTpl、initial] 支持 `tplPkjTag` 选项
