@@ -33,7 +33,7 @@ https://www.omnidoor.org
 
 ## omni --help
 ```shell
-  Usage: index [command] [options]
+  使用: index [command] [options]
 
   Options:
 
@@ -86,16 +86,16 @@ Arguments:
 
   strategy                 stable or latest
 
-Options:
-  -rb, --react_basic [name]       创建一个最基本的 React 单页应用
-  -rs, --react_standard [name]    创建一个标准的 React 单页应用
-  -re, --react_entire [name]      创建一个全量的 React 单页应用
-  -rS, --react_ssr [name]         创建一个 React SSR 应用
-  -rc, --react_components [name]  创建一个 React 组件库
-  -t, --toolkit [name]            创建一个工具库
-  -n, --no-install                初始化项目不安装任何依赖
-  -P, --path <path>               创建项目的工作路径
-  -h, --help               output usage information
+  Options:
+    -rb, --react_basic [name]       创建一个最基本的 React 单页应用
+    -rs, --react_standard [name]    创建一个标准的 React 单页应用
+    -re, --react_entire [name]      创建一个全量的 React 单页应用
+    -rS, --react_ssr [name]         创建一个 React SSR 应用
+    -rc, --react_components [name]  创建一个 React 组件库
+    -t, --toolkit [name]            创建一个工具库
+    -n, --no-install                初始化项目不安装任何依赖
+    -P, --path <path>               创建项目的工作路径
+    -h, --help               output usage information
 ```
 
 ---
