@@ -9,6 +9,8 @@ The project types:
 
 - spa-react - React single-page-application
 
+- ssr-react - React sever-side-render application
+
 - component-react - React Component Library
 
 - toolkit - SDK Library 
