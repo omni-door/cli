@@ -28,7 +28,7 @@ import type { OmniConfig } from '../index.d';
 
   function checkConfig () {
     if (!config) {
-      logWarn(`请先初始化项目或检查「 ${configFilePath} 」配置文件是否存在问题！(Please initialize project first or checking is there a problem with the「 ${configFilePath} 」config file!)`);
+      logWarn(`请先初始化项目或检查「${configFilePath}」配置文件是否存在问题！(Please initialize project first or checking is there a problem with the「${configFilePath}」config file!)`);
       process.exit(0);
     }
   }
@@ -37,9 +37,9 @@ import type { OmniConfig } from '../index.d';
     try {
       process.chdir(workPath);
       const cwd = process.cwd();
-      logEmph(`工作路径更新为「 ${cwd} 」(The work path change to 「 ${cwd} 」)`);
+      logEmph(`工作路径更新为「${cwd}」(The work path change to 「${cwd}」)`);
     } catch (err) {
-      logWarn(`工作路径更新失败，请检查「 ${workPath} 」是否存在！(Please checking the「 ${workPath} 」had existed!)`);
+      logWarn(`工作路径更新失败，请检查「${workPath}」是否存在！(Please checking the「${workPath}」had existed!)`);
       process.exit(0);
     }
   }

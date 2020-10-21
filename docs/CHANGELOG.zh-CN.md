@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.0.x
+### v2.0.5
+1. 「fix」`omni dev` 对于 react-ssr 项目的错误判断
+
 ### v2.0.4
 1. 「feat」`omni *` 所有命令均支持 `-P <path>` 选项用于自定义工作路径
 

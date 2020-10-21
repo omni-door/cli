@@ -98,7 +98,8 @@ async function server ({
       'next'
     ];
 
-    if (!serverType || serverType === 'default' || serverType === 'express-webpack' || serverType === 'koa-next' || serverType === 'koa-nuxt') {
+    const needCustomServer = !serverType || serverType === 'default' || serverType === 'express-webpack' || serverType === 'koa-next' || serverType === 'koa-nuxt';
+    if (needCustomServer) {
       let isHttps = false;
       let key, cert;
       if (httpsConfig) {
@@ -174,15 +175,11 @@ async function server ({
 
       switch (projectType) {
         case 'ssr-react':
-          if (serverType === 'koa-next') {
-            KNServer({
-              dev: process.env.NODE_ENV === 'production' ? false : true,
-              nextRouter,
-              ...serverBasicOptions
-            });
-          } else {
-            logWarn('暂不支持 ssr-vue 项目!');
-          }
+          KNServer({
+            dev: process.env.NODE_ENV === 'production' ? false : true,
+            nextRouter,
+            ...serverBasicOptions
+          });
           break;
         case 'ssr-vue':
           logWarn('暂不支持 ssr-vue 项目!');
@@ -210,7 +207,7 @@ async function server ({
           delay = 5000;
       }
       serverUrl = 'http://' + serverUrl;
-      exec([ServerDevCli[serverType]]);
+      exec([ServerDevCli[serverType as keyof typeof ServerDevCli]]);
       if (~autoOpenServer.indexOf(serverType)) setTimeout(() => open(serverUrl), delay);  
     }
 
