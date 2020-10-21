@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.0.x
+### v2.0.6
+1. 「fix」`omni start` refer to dependencies bug
+
 ### v2.0.5
 1. 「fix」`omni dev` wrong judgement with react-ssr project
 

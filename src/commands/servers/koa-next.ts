@@ -43,7 +43,7 @@ export default function ({
   const Router = require_cwd('koa-router');
   const bodyParser = require_cwd('koa-bodyparser');
   const k2c = require_cwd('koa2-connect');
-  const statics = require('koa-static');
+  const statics = require_cwd('koa-static');
   const proxy = require_cwd('http-proxy-middleware');
   const { pathToRegexp } = require_cwd('path-to-regexp');
   const publicPath = path.resolve(process.cwd(), 'public');

@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.0.x
+### v2.0.6
+1. 「fix」`omni start` 依赖引用的问题
+
 ### v2.0.5
 1. 「fix」`omni dev` 对于 react-ssr 项目的错误判断
 
