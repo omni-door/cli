@@ -33,7 +33,7 @@ https://www.omnidoor.org
 
 ## omni --help
 ```shell
-  使用: index [command] [options]
+  使用: omni [command] [options]
 
   Options:
 
