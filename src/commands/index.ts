@@ -20,7 +20,7 @@ import type { OmniConfig } from '../index.d';
     try {
       const ppkj = require_cwd('./package.json', true);
       configFilePath = ppkj?.omni?.filePath || configFilePath;
-      config = require_cwd(configFilePath, true);
+      config = require_cwd(configFilePath);
     } catch (e) {
       logWarn(e);
     }
