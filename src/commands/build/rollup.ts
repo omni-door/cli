@@ -85,7 +85,7 @@ function createConfig () {
       }),
       commonjs({
         namedExports: {
-          'node_modules/react/react.js': [
+          'react': [
             'Children',
             'Component',
             'PropTypes',
@@ -93,17 +93,38 @@ function createConfig () {
             'createRef',
             'createContext',
             'PureComponent',
+            'cloneElement',
+            'memo',
+            'createFactory',
+            'isValidElement',
+            'forwardRef',
+            'Fragment',
+            'lazy',
+            'Suspense',
             'SFC',
+            'FC',
             'useState',
             'useEffect',
-            'useLayoutEffect',
-            'useCallback',
             'useContext',
-            'useMemo',
             'useReducer',
-            'useRef'
+            'useCallback',
+            'useMemo',
+            'useRef',
+            'useImperativeHandle',
+            'useLayoutEffect',
+            'useDebugValue'
           ],
-          'node_modules/react-dom/index.js': ['render', 'createPortal']
+          'react-dom': [
+            'render',
+            'hydrate',
+            'unmountComponentAtNode',
+            'findDOMNode',
+            'createPortal',
+            'renderToString',
+            'renderToStaticMarkup',
+            'renderToNodeStream',
+            'renderToStaticNodeStream'
+          ]
         }
       }),
       ${ts ? `typescript2({
@@ -138,7 +159,7 @@ function createConfig () {
             }),
             commonjs({
               namedExports: {
-                'node_modules/react/react.js': [
+                'react': [
                   'Children',
                   'Component',
                   'PropTypes',
@@ -146,17 +167,38 @@ function createConfig () {
                   'createRef',
                   'createContext',
                   'PureComponent',
+                  'cloneElement',
+                  'memo',
+                  'createFactory',
+                  'isValidElement',
+                  'forwardRef',
+                  'Fragment',
+                  'lazy',
+                  'Suspense',
                   'SFC',
+                  'FC',
                   'useState',
                   'useEffect',
-                  'useLayoutEffect',
-                  'useCallback',
                   'useContext',
-                  'useMemo',
                   'useReducer',
-                  'useRef'
+                  'useCallback',
+                  'useMemo',
+                  'useRef',
+                  'useImperativeHandle',
+                  'useLayoutEffect',
+                  'useDebugValue'
                 ],
-                'node_modules/react-dom/index.js': ['render', 'createPortal']
+                'react-dom': [
+                  'render',
+                  'hydrate',
+                  'unmountComponentAtNode',
+                  'findDOMNode',
+                  'createPortal',
+                  'renderToString',
+                  'renderToStaticMarkup',
+                  'renderToNodeStream',
+                  'renderToStaticNodeStream'
+                ]
               }
             }),
             json(),
@@ -190,7 +232,7 @@ function createConfig () {
           }),
           commonjs({
             namedExports: {
-              'node_modules/react/react.js': [
+              'react': [
                 'Children',
                 'Component',
                 'PropTypes',
@@ -198,17 +240,38 @@ function createConfig () {
                 'createRef',
                 'createContext',
                 'PureComponent',
+                'cloneElement',
+                'memo',
+                'createFactory',
+                'isValidElement',
+                'forwardRef',
+                'Fragment',
+                'lazy',
+                'Suspense',
                 'SFC',
+                'FC',
                 'useState',
                 'useEffect',
-                'useLayoutEffect',
-                'useCallback',
                 'useContext',
-                'useMemo',
                 'useReducer',
-                'useRef'
+                'useCallback',
+                'useMemo',
+                'useRef',
+                'useImperativeHandle',
+                'useLayoutEffect',
+                'useDebugValue'
               ],
-              'node_modules/react-dom/index.js': ['render', 'createPortal']
+              'react-dom': [
+                'render',
+                'hydrate',
+                'unmountComponentAtNode',
+                'findDOMNode',
+                'createPortal',
+                'renderToString',
+                'renderToStaticMarkup',
+                'renderToNodeStream',
+                'renderToStaticNodeStream'
+              ]
             }
           }),
           ${ts ? `typescript({
@@ -238,7 +301,7 @@ function createConfig () {
               }),
               commonjs({
                 namedExports: {
-                  'node_modules/react/react.js': [
+                  'react': [
                     'Children',
                     'Component',
                     'PropTypes',
@@ -246,17 +309,38 @@ function createConfig () {
                     'createRef',
                     'createContext',
                     'PureComponent',
+                    'cloneElement',
+                    'memo',
+                    'createFactory',
+                    'isValidElement',
+                    'forwardRef',
+                    'Fragment',
+                    'lazy',
+                    'Suspense',
                     'SFC',
+                    'FC',
                     'useState',
                     'useEffect',
-                    'useLayoutEffect',
-                    'useCallback',
                     'useContext',
-                    'useMemo',
                     'useReducer',
-                    'useRef'
+                    'useCallback',
+                    'useMemo',
+                    'useRef',
+                    'useImperativeHandle',
+                    'useLayoutEffect',
+                    'useDebugValue'
                   ],
-                  'node_modules/react-dom/index.js': ['render', 'createPortal']
+                  'react-dom': [
+                    'render',
+                    'hydrate',
+                    'unmountComponentAtNode',
+                    'findDOMNode',
+                    'createPortal',
+                    'renderToString',
+                    'renderToStaticMarkup',
+                    'renderToNodeStream',
+                    'renderToStaticNodeStream'
+                  ]
                 }
               }),
               json(),

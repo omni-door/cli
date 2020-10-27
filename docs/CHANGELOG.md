@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.0.x
+### v2.0.7
+1. 「fix」`omni build` rollup.config.js namedExports completion react and react-dom's API
+
 ### v2.0.6
 1. 「fix」`omni start` refer to dependencies bug
 
