@@ -3,6 +3,7 @@ scripts
 src
 docs
 
+.editorconfig
 .eslintignore
 .eslintrc.js
 tsconfig.json
