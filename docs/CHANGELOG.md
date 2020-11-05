@@ -3,6 +3,11 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.0.x
+### v2.0.8
+1. 「fix」`omni release` custom version number will invaild due to RegExp matching bug
+
+2. 「optimization」`omni release` default tag now is taken from the letter suffix of the current version
+
 ### v2.0.7
 1. 「fix」`omni build` rollup.config.js namedExports completion react and react-dom's API
 

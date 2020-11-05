@@ -118,6 +118,8 @@ export default async function (
     const versionErrMsg = `请输入有效的版本号 (Please input valid version)\n
     版本号规则可参考: https://semver.org/ (Reference to: https://semver.org/)`;
     const pkjPath = path.resolve(process.cwd(), 'package.json');
+    const pkj = getPkjData(pkjPath);
+    const defaultTag = pkj?.version?.match(/[a-zA-Z]+/g)?.[0] ?? 'latest';
 
     if (!hasIter || (npm && !tag)) {
       await new Promise((resolve, reject) => {
@@ -147,7 +149,7 @@ export default async function (
             name: 'label',
             type: 'input',
             when: () => npm && !tag,
-            default: 'latest',
+            default: defaultTag,
             message: `${logo()}请输入迭代的标签 (Please input the iteration tag):`
           }
         ])
@@ -235,8 +237,6 @@ export default async function (
           }
         );
       }
-
-      const pkj = getPkjData(pkjPath);
 
       const commit = commitlint && !verify
         ? `git commit -m'[${pkj.name.toUpperCase()}]: ${pkj.version}' --no-verify`

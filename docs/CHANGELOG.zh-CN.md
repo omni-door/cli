@@ -3,6 +3,11 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.0.x
+### v2.0.8
+1. 「fix」`omni release` 自定义版本号因正则匹配失效的问题
+
+2. 「optimization」`omni release` 默认 tag 取自现版本号的字母后缀
+
 ### v2.0.7
 1. 「fix」`omni build` rollup.config.js namedExports 补全 react 和 react-dom 的 API
 
