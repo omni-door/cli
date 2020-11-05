@@ -118,7 +118,7 @@ export default async function (
     const versionErrMsg = `请输入有效的版本号 (Please input valid version)\n
     版本号规则可参考: https://semver.org/ (Reference to: https://semver.org/)`;
     const pkjPath = path.resolve(process.cwd(), 'package.json');
-    const pkj = getPkjData(pkjPath);
+    let pkj = getPkjData(pkjPath);
     const defaultTag = pkj?.version?.match(/[a-zA-Z]+/g)?.[0] ?? 'latest';
 
     if (!hasIter || (npm && !tag)) {
@@ -238,6 +238,7 @@ export default async function (
         );
       }
 
+      pkj = getPkjData(pkjPath); // re-require for cache problem
       const commit = commitlint && !verify
         ? `git commit -m'[${pkj.name.toUpperCase()}]: ${pkj.version}' --no-verify`
         : `git commit -m'[${pkj.name.toUpperCase()}]: ${pkj.version}'`;
@@ -276,7 +277,7 @@ export default async function (
     // handle release plugins
     const plugin_handles = plugins && plugins.length > 0 && getHandlers<'release'>(plugins as OmniPlugin<'release'>[], 'release');
     if (plugin_handles) {
-      const pkj = getPkjData(pkjPath); // re-require for cache problem
+      pkj = getPkjData(pkjPath); // re-require for cache problem
       const version = pkj ? pkj.version : 'unknown';
       const versionIterTactic = ignore ? 'ignore' : manual ? 'manual' : 'auto';
       for (const name in plugin_handles) {
