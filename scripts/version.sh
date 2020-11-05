@@ -15,7 +15,7 @@ replaceVersion () {
 
 updateVersion () {
   versionLine=$(grep \"version\" package.json)
-  version=$(echo ${versionLine} | tr -cd "[0-9].")
+  version=$(echo ${versionLine} | tr -cd "[0-9-a-zA-Z]." | sed -ne "s/[^0-9]*\(\([0-9a-zA-Z]\.\)\)/\1/p")
   prevSubVersion=$(echo ${version#*.})
   subVersion=$(echo ${prevSubVersion%.*})
   subSubVersion=$(echo ${version##*.})
