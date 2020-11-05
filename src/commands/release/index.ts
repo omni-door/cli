@@ -149,7 +149,12 @@ export default async function (
             name: 'label',
             type: 'input',
             when: () => npm && !tag,
-            default: defaultTag,
+            default: (answer: any) => {
+              if (answer.version) {
+                return answer.version.match(/[a-zA-Z]+/g)?.[0] ?? 'latest';
+              }
+              return defaultTag;
+            },
             message: `${logo()}请输入迭代的标签 (Please input the iteration tag):`
           }
         ])

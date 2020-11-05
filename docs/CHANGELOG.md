@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.0.x
+### v2.0.9
+1. 「optimization」`omni release` custom version number will automatically determine then default tag
+
 ### v2.0.8
 1. 「fix」`omni release` custom version number will invaild due to RegExp matching bug
 

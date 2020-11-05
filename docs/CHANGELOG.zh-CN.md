@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.0.x
+### v2.0.9
+1. 「optimization」`omni release` 自定义版本号会自动根据含带的字母确定默认的 tag
+
 ### v2.0.8
 1. 「fix」`omni release` 自定义版本号因正则匹配失效的问题
 
