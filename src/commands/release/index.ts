@@ -276,7 +276,7 @@ export default async function (
     // handle release plugins
     const plugin_handles = plugins && plugins.length > 0 && getHandlers<'release'>(plugins as OmniPlugin<'release'>[], 'release');
     if (plugin_handles) {
-      const pkj = getPkjData(pkjPath);
+      const pkj = getPkjData(pkjPath); // re-require for cache problem
       const version = pkj ? pkj.version : 'unknown';
       const versionIterTactic = ignore ? 'ignore' : manual ? 'manual' : 'auto';
       for (const name in plugin_handles) {
