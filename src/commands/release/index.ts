@@ -280,7 +280,7 @@ export default async function (
 
       await exec(
         [`npm publish --registry=${npm || npmUrl} --tag=${tag}`],
-        () => logEmph('npm包发布成功！(The npm-package publish success!)'),
+        () => logEmph(`npm包发布成功, 版本号为 ${pkj.version}@${tag}！(The npm-package publish success!)`),
         handleReleaseErr('npm包发布失败！(The npm-package publish failed!)')
       );
     }
