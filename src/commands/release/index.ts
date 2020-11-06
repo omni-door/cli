@@ -55,6 +55,7 @@ export default async function (
   const {
     git,
     npm,
+    autoTag,
     preflight
   } = release;
   const {
@@ -148,7 +149,7 @@ export default async function (
           {
             name: 'label',
             type: 'input',
-            when: () => npm && !tag,
+            when: () => npm && !tag && !autoTag,
             default: (answer: any) => {
               if (answer.version) {
                 return answer.version.match(/[a-zA-Z]+/g)?.[0] ?? 'latest';
@@ -160,7 +161,12 @@ export default async function (
         ])
           .then(answers => {
             const { iter, version, label } = answers;
-            if (label) tag = label;
+            if (label) {
+              tag = label;
+            } else if (autoTag && npm) {
+              tag = version ? version.match(/[a-zA-Z]+/g)?.[0] ?? 'latest' : defaultTag;
+            }
+
             switch (iter) {
               case iterDict.automatic:
                 automatic = true;

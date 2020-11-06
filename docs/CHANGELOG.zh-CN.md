@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.0.x
+### v2.0.10
+1. 「optimization」<omni.config.js> `release` 新增 `autoTag` 字段，设置为 `true` 时，发布到npm仓库时会自动根据当前版本号设定tag
+
 ### v2.0.9
 1. 「optimization」`omni release` 自定义版本号会自动根据含带的字母确定默认的 tag
 

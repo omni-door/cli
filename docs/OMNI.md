@@ -118,6 +118,8 @@ The dev-server based on express, realizing hot-update, api-proxy and other commo
 
 - npm - npm depository url
 
+- autoTag - npm publish will auto set tag according to the current version
+
 - preflight - the flight check before release
   - test - whether or not process unit-test
 

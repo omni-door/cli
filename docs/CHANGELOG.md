@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.0.x
+### v2.0.10
+1. 「optimization」<omni.config.js> `release` add `autoTag` field which can automatically set tag according to the current version when it be setted to `true`
+
 ### v2.0.9
 1. 「optimization」`omni release` custom version number will automatically determine then default tag
 
