@@ -218,6 +218,9 @@ export default async function (
       handleReleaseErr('版本迭代失败！(The version iteration failed!)')
     );
 
+    // re-require to get correct version
+    pkj = getPkjData(pkjPath);
+
     if (git) {
       const gitUrl = git.trim();
       let gitOriginUrl = '';
@@ -253,7 +256,6 @@ export default async function (
         );
       }
 
-      pkj = getPkjData(pkjPath); // re-require for cache problem
       const commit = commitlint && !verify
         ? `git commit -m'[${pkj.name.toUpperCase()}]: ${pkj.version}' --no-verify`
         : `git commit -m'[${pkj.name.toUpperCase()}]: ${pkj.version}'`;
@@ -292,7 +294,6 @@ export default async function (
     // handle release plugins
     const plugin_handles = plugins && plugins.length > 0 && getHandlers<'release'>(plugins as OmniPlugin<'release'>[], 'release');
     if (plugin_handles) {
-      pkj = getPkjData(pkjPath); // re-require for cache problem
       const version = pkj ? pkj.version : 'unknown';
       const versionIterTactic = ignore ? 'ignore' : manual ? 'manual' : 'auto';
       for (const name in plugin_handles) {

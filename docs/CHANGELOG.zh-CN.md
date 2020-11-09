@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.0.x
+### v2.0.12
+1. 「fix」`omni release` 因为 cache 导致获取当前版本号不正确的问题
+
 ### v2.0.11
 1. 「fix」`omni release` 在命令行中自定义版本号，自动设置 `tag` 的优先级问题，如在 package.json 中原来的版本号为 `0.0.19`，而后用命令行迭代 `omni release -m 0.0.20-alpha.1`，此时自动判断 `tag` 应为 `alpha` 而非 `latest`
 
