@@ -3,6 +3,11 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.0.x
+### v2.0.11
+1. 「fix」`omni release` 在命令行中自定义版本号，自动设置 `tag` 的优先级问题，如在 package.json 中原来的版本号为 `0.0.19`，而后用命令行迭代 `omni release -m 0.0.20-alpha.1`，此时自动判断 `tag` 应为 `alpha` 而非 `latest`
+
+2. 「optimization」`omni release` publish 到 npm 仓库的日志优化
+
 ### v2.0.10
 1. 「optimization」<omni.config.js> `release` 新增 `autoTag` 字段，设置为 `true` 时，发布到npm仓库时会自动根据当前版本号设定tag
 

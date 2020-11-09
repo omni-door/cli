@@ -120,7 +120,9 @@ export default async function (
     版本号规则可参考: https://semver.org/ (Reference to: https://semver.org/)`;
     const pkjPath = path.resolve(process.cwd(), 'package.json');
     let pkj = getPkjData(pkjPath);
-    const defaultTag = pkj?.version?.match(/[a-zA-Z]+/g)?.[0] ?? 'latest';
+    const defaultTag = manual
+      ? manual.match(/[a-zA-Z]+/g)?.[0] ?? 'latest'
+      : pkj?.version?.match(/[a-zA-Z]+/g)?.[0] ?? 'latest';
 
     if (!hasIter || (npm && !tag)) {
       await new Promise((resolve, reject) => {
@@ -164,7 +166,9 @@ export default async function (
             if (label) {
               tag = label;
             } else if (autoTag && npm) {
-              tag = version ? version.match(/[a-zA-Z]+/g)?.[0] ?? 'latest' : defaultTag;
+              tag = version
+                ? version.match(/[a-zA-Z]+/g)?.[0] ?? 'latest'
+                : defaultTag;
             }
 
             switch (iter) {
@@ -264,8 +268,8 @@ export default async function (
           `${commit}`,
           `${push}`
         ],
-        () => logEmph('git仓库push成功！(Pushing to git-repo success!)'),
-        handleReleaseErr('git仓库push失败！(Pushing to git-repo failed!)')
+        () => logEmph('git仓库推送成功！(Pushing to git-repo success!)'),
+        handleReleaseErr('git仓库推送失败！(Pushing to git-repo failed!)')
       );
     }
 
@@ -280,7 +284,7 @@ export default async function (
 
       await exec(
         [`npm publish --registry=${npm || npmUrl} --tag=${tag}`],
-        () => logEmph(`npm包发布成功, 版本号为 ${pkj.version}@${tag}！(The npm-package publish success!)`),
+        () => logEmph(`npm包发布成功, 版本号为 ${pkj.version}@${tag}！(The npm-package publish success with version ${pkj.version}@${tag}!)`),
         handleReleaseErr('npm包发布失败！(The npm-package publish failed!)')
       );
     }

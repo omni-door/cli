@@ -3,6 +3,10 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.0.x
+1. 「fix」`omni release` customize the version in the command line, and the priority of auto set the `tag`. For example, in the package.json the version is `0.0.19` and then use the command line to iterate `omni release -m 0.0.20-alpha.1`. At this time, it should automatically determined that `tag` is `alpha` instead of `latest`
+
+2. 「optimization」log opt for `omni release` publish to npm-repo
+
 ### v2.0.10
 1. 「optimization」<omni.config.js> `release` add `autoTag` field which can automatically set tag according to the current version when it be setted to `true`
 
