@@ -520,8 +520,8 @@ export default async function (strategy: STRATEGY, {
         inquirer.prompt([{
           name: 'overwrite_dir',
           type: 'confirm',
-          message: `${logo()} 真的确定要覆盖已经存在的 [${dirName}] 文件夹? (Are you sure to overwrite [${dirName}] directory?)`,
-          default: false
+          message: `${logo()} 请再次确认覆盖 [${dirName}] 文件夹! (Please confirm overwrite the [${dirName}] directory again!)`,
+          default: true
         }]).then(answers => {
           const { overwrite_dir } = answers;
           if (!overwrite_dir) return process.exit(0);
