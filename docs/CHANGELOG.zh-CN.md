@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.0.x
+### v2.0.13
+1. 「optimization」调用`omni *(commands)` 的日志输出
+
 ### v2.0.12
 1. 「fix」`omni release` 因为 cache 导致获取当前版本号不正确的问题
 

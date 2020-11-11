@@ -3,11 +3,26 @@ import { node_version, logWarn, require_cwd, logEmph } from '@omni-door/utils';
 /* import types */
 import type { OmniConfig } from '../index.d';
 
+const commandDicts = {
+  init: 'init',
+  dev: 'dev',
+  start: 'start',
+  new: 'new',
+  build: 'build',
+  release: 'release'
+};
+
 (async function () {
   try {
     await node_version('10.13.0');
   } catch (e) {
     logWarn(e);
+  }
+
+  let isSlient = true;
+  const args = process.argv.slice(2);
+  if (args && args.length > 0 && args[0] !== 'init') {
+    isSlient = !~Object.keys(commandDicts).indexOf(args[0]);
   }
 
   const { initial, dev, start, newTpl, build, release } = require('./commands');
@@ -20,7 +35,7 @@ import type { OmniConfig } from '../index.d';
     try {
       const ppkj = require_cwd('./package.json', true);
       configFilePath = ppkj?.omni?.filePath || configFilePath;
-      config = require_cwd(configFilePath);
+      config = require_cwd(configFilePath, isSlient);
     } catch (e) {
       logWarn(e);
     }
@@ -50,7 +65,7 @@ import type { OmniConfig } from '../index.d';
     .usage('[command] [options]');
 
   program
-    .command('init [strategy]')
+    .command(`${commandDicts.init} [strategy]`)
     .option('-rb, --react_basic [name]', 'create a basic React SPA project')
     .option('-rs, --react_standard [name]', 'create a standard React SPA project')
     .option('-re, --react_entire [name]', 'create a most versatile React SPA project')
@@ -73,7 +88,7 @@ import type { OmniConfig } from '../index.d';
     });
 
   program
-    .command('dev')
+    .command(commandDicts.dev)
     .option('-p, --port <port>', 'start the dev-server according to the specified port')
     .option('-H, --hostname <host>', 'start the dev-server according to the specified hostname')
     .option('-P, --path <path>', 'the workpath for start the dev-server')
@@ -94,7 +109,7 @@ import type { OmniConfig } from '../index.d';
     });
 
   program
-    .command('start')
+    .command(commandDicts.start)
     .option('-p, --port <port>', 'start the prod-server according to the specified port')
     .option('-H, --hostname <host>', 'start the prod-server according to the specified hostname')
     .option('-P, --path <path>', 'the workpath for start the prod-server')
@@ -115,7 +130,7 @@ import type { OmniConfig } from '../index.d';
     });
 
   program
-    .command('new [name]')
+    .command(`${commandDicts.new} [name]`)
     .option('-f, --function', 'create a functional component')
     .option('-c, --class', 'create a class component')
     .option('-P, --path <path>', 'the workpath for create component')
@@ -135,7 +150,7 @@ import type { OmniConfig } from '../index.d';
     });
 
   program
-    .command('build')
+    .command(commandDicts.build)
     .option('-c, --config <path>', 'specify the path of config file')
     .option('-n, --no-verify', 'bypass all pre-check before building')
     .option('-P, --path <path>', 'the workpath for build project')
@@ -152,7 +167,7 @@ import type { OmniConfig } from '../index.d';
     });
 
   program
-    .command('release')
+    .command(commandDicts.release)
     .option('-a, --automatic', 'auto-increase the version of iteration')
     .option('-i, --ignore', 'ignoring the version of iteration')
     .option('-m, --manual <version>', 'manual specify the version of iteration')

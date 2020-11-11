@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.0.x
+### v2.0.13
+1. 「optimization」`omni *(commands)` log output
+
 ### v2.0.12
 1. 「fix」`omni release` the cache problem which cause the current version is incorrect
 
