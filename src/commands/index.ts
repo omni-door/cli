@@ -44,7 +44,7 @@ import { OmniConfig } from '../index.d';
       strategy: 'stable or latest',
     })
     .usage('[strategy] [options]')
-    .action((strategy, options) => initial(strategy, options));
+    .action((strategy, options) => initial(strategy, options, { tplPkjTag: '~1.0' }));
 
   program
     .command('dev')

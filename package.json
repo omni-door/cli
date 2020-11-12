@@ -17,7 +17,7 @@
     "build:branch": "./.build/branch.sh",
     "build:version": "./.build/version.sh",
     "build:copy": "./.build/copy.sh",
-    "release": "npm run build:branch master && npm run build && npm run build:version"
+    "release": "npm run build:branch v1 && npm run build && npm run build:version"
   },
   "repository": {
     "type": "git",
