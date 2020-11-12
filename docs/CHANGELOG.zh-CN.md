@@ -1,6 +1,9 @@
 # 变更日志
 
 ## v1.4.x
+### v1.4.4
+1. (omni init) 固定 template 的版本号
+
 ### v1.4.3
 1. [newTpl initial] 支持 tplPkjTag 选项
 

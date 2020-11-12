@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ## v1.4.x
+### v1.4.4
+1. (omni init) fixed template version
+
 ### v1.4.3
 1. [newTpl initial] support tplPkjTag option
 
