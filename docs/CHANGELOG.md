@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.0.x
+### v2.0.15
+1. 「optimization」`omni init` template version will auto match the cli version
+
 ### v2.0.14
 1. 「optimization」`omni init/release` log output
 

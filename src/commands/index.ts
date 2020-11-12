@@ -84,7 +84,8 @@ const commandDicts = {
         changeCWD(workPath);
       }
 
-      initial(strategy, options);
+      const tplPkjTag = pkj?.version?.match(/[0-9]\.[0-9]/g)?.[0];
+      initial(strategy, options, { tplPkjTag: tplPkjTag ? `~${tplPkjTag}` : 'latest' });
     });
 
   program

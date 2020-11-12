@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.0.x
+### v2.0.15
+1. 「optimization」`omni init` 模板的版本自动对齐脚手架的版本
+
 ### v2.0.14
 1. 「optimization」优化 `omni init/release` 的日志输出
 
