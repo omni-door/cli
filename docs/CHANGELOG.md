@@ -64,6 +64,12 @@ English | [简体中文](./CHANGELOG.zh-CN.md)
 ---
 
 ## v1.4.x
+### v1.4.4
+1. 「optimization」 `omni init` fixed template version
+
+### v1.4.3
+1. 「feat」 `omni init` support tplPkjTag option
+
 ### v1.4.2
 1. 「perf」`omni release`: the optimization for require package.json module
     

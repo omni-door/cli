@@ -64,6 +64,12 @@
 ---
 
 ## v1.4.x
+### v1.4.4
+1. 「optimization」 `omni init` 固定 template 的版本号
+
+### v1.4.3
+1. 「feat」 `omni init` 支持 `tplPkjTag` 选项
+
 ### v1.4.2
 1. 「perf」`omni release` 优化了 require package.json 的过程
     
