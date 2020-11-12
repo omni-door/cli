@@ -214,12 +214,13 @@ export default async function (
     const versionShellSuffix = ignore ? 'i' : manual ? manual : '';
     await exec(
       [`${path.resolve(__dirname, 'version.sh')} "${logPrefix()}" ${versionShellSuffix}`],
-      () => logEmph('版本迭代成功！(The version iteration success!)'),
+      () => {
+        // re-require to get correct version
+        pkj = getPkjData(pkjPath);
+        logEmph(`当前版本号为 ${pkj.version}！(The current version is ${pkj.version}!)`);
+      },
       handleReleaseErr('版本迭代失败！(The version iteration failed!)')
     );
-
-    // re-require to get correct version
-    pkj = getPkjData(pkjPath);
 
     if (git) {
       const gitUrl = git.trim();

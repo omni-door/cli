@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.0.x
+### v2.0.14
+1. 「optimization」`omni init/release` log output
+
 ### v2.0.13
 1. 「optimization」`omni *(commands)` log output
 

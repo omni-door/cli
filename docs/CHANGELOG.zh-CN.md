@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.0.x
+### v2.0.14
+1. 「optimization」优化 `omni init/release` 的日志输出
+
 ### v2.0.13
 1. 「optimization」调用`omni *(commands)` 的日志输出
 
