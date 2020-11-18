@@ -238,7 +238,7 @@
 
 2. 「update」`omni build` 新增对于自定义配置文件是否存在的校验
 
-3. 「feat」`omni init`component-library-react项目新增 styleguidist Demo框架的选择
+3. 「feat」`omni init` component-react项目新增 styleguidist Demo框架的选择
 
 ### v1.2.13
 1. 「fix」`omni build` 当 catch[try/catch] 到错误时，停止 loading 状态
