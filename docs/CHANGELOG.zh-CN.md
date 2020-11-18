@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.0.x
+### v2.0.16
+1. 「fix」`omni build` 组件项目不兼容同时存在 scss less 文件的问题
+
 ### v2.0.15
 1. 「optimization」`omni init` 模板的版本自动对齐脚手架的版本
 

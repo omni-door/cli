@@ -13,6 +13,7 @@ const gulp = require_cwd('gulp');
 const babel = require_cwd('gulp-babel');
 const less = require_cwd('gulp-less');
 const sass = require_cwd('gulp-sass');
+const gulpif = require_cwd('gulp-if');
 const autoprefixer = require_cwd('gulp-autoprefixer');
 const cssnano = require_cwd('gulp-cssnano');
 const concat = require_cwd('gulp-concat');
@@ -82,12 +83,32 @@ function copyStylesheet () {
     .pipe(gulp.dest(dest.es));
 }
 
+function handleLess (file) {
+  let result = false;
+  if (!less) return result;
+  if (file.path.match(/.less$/)) {
+    result = true;
+  }
+
+  return result;
+}
+
+function handleSass (file) {
+  let result = false;
+  if (!sass) return result;
+  if (file.path.match(/.(scss|sass)$/)) {
+    result = true;
+  }
+
+  return result;
+}
+
 function trans2css() {
   const { dest, styles } = params;
   return gulp
     .src(styles)
-    .pipe(less())
-    .pipe(sass())
+    .pipe(gulpif(handleLess, less()))
+    .pipe(gulpif(handleSass, sass()))
     .pipe(autoprefixer())
     .pipe(cssnano({ zindex: false, reduceIdents: false }))
     .pipe(gulp.dest(dest.lib))
