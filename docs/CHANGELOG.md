@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.0.x
+### v2.0.17
+1. 「fix」`omni build` the bug of component-project gulp configuration file
+
 ### v2.0.16
 1. 「fix」`omni build` the component-project exsit both scss and less file not compatible
 

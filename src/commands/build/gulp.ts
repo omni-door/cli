@@ -11,8 +11,8 @@ const path = require('path');
 const { require_cwd } = require('@omni-door/utils');
 const gulp = require_cwd('gulp');
 const babel = require_cwd('gulp-babel');
-const less = require_cwd('gulp-less');
-const sass = require_cwd('gulp-sass');
+const less = require_cwd('gulp-less', true);
+const sass = require_cwd('gulp-sass', true);
 const gulpif = require_cwd('gulp-if');
 const autoprefixer = require_cwd('gulp-autoprefixer');
 const cssnano = require_cwd('gulp-cssnano');
@@ -107,8 +107,8 @@ function trans2css() {
   const { dest, styles } = params;
   return gulp
     .src(styles)
-    .pipe(gulpif(handleLess, less()))
-    .pipe(gulpif(handleSass, sass()))
+    .pipe(gulpif(handleLess, less ? less() : through2.obj()))
+    .pipe(gulpif(handleSass, sass ? sass() : through2.obj()))
     .pipe(autoprefixer())
     .pipe(cssnano({ zindex: false, reduceIdents: false }))
     .pipe(gulp.dest(dest.lib))

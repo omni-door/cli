@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.0.x
+### v2.0.17
+1. 「fix」`omni build` 组件项目gulp配置文件bug
+
 ### v2.0.16
 1. 「fix」`omni build` 组件项目不兼容同时存在 scss less 文件的问题
 
