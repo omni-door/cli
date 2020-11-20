@@ -1,6 +1,6 @@
 {
   "name": "@omni-door/cli",
-  "version": "2.0.18",
+  "version": "2.1.0",
   "description": "A tool set for set up the standard JS project",
   "bin": {
     "omni": "./bin/omni-door.js"
