@@ -228,6 +228,7 @@ export default async function (config: OmniConfig | null, buildTactic?: {
     const buildCliArr = [];
     const buildCliPath = {
       tsc: path.resolve(CWD, 'node_modules/typescript/bin/tsc'),
+      ttsc: path.resolve(CWD, 'node_modules/ttypescript/bin/tsc'),
       rollup: path.resolve(CWD, 'node_modules/rollup/dist/bin/rollup'),
       webpack: path.resolve(CWD, 'node_modules/webpack-cli/bin/cli.js'),
       gulp: path.resolve(CWD, 'node_modules/gulp/bin/gulp.js'),
@@ -238,18 +239,29 @@ export default async function (config: OmniConfig | null, buildTactic?: {
         handleBuildErr('已禁用 typescript，无法完成构建！(The typescript had been forbidden!)')();
       }
 
-      const tscPath = buildCliPath.tsc;
-      buildCliArr.push(`${tscPath} --outDir ${outDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --rootDir ${srcDir}`);
-      esmDir && buildCliArr.push(`${tscPath} --module ES6 --target ES6 --outDir ${esmDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --rootDir ${srcDir}`);
+      let tscPath = buildCliPath.tsc;
+      // ttypescript is preferred
+      if (fs.existsSync(buildCliPath.ttsc)) tscPath = buildCliPath.ttsc;
 
       if (!fs.existsSync(tscPath)) {
-        logWarn('请先安装 typescript! (Please install typescript first!)');
+        logWarn('请先安装 typescript 相关依赖! (Please install typescript first!)');
         const is_go_on = await installDenpendencies('tsc');
         if (!is_go_on) return process.exit(0);
+        tscPath = buildCliPath.ttsc;
       }
+
+      buildCliArr.push(`${tscPath} --outDir ${outDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --rootDir ${srcDir}`);
+      esmDir && buildCliArr.push(`${tscPath} --module ES6 --target ES6 --outDir ${esmDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --rootDir ${srcDir}`);
       realOutDir = outDir;
     } else if (type === 'ssr-react') {
       const nextPath = buildCliPath.next;
+
+      if (!fs.existsSync(nextPath)) {
+        logWarn('请先安装 webpack 相关依赖! (Please install webpack first!)');
+        const is_go_on = await installDenpendencies('next');
+        if (!is_go_on) return process.exit(0);
+      }
+
       buildCliArr.push(`${nextPath} build`);
     } else {
       const content_rollup = !buildConfig && type === 'toolkit' && rollupConfig({ ts: typescript, multiOutput: true, srcDir, outDir, esmDir, configurationPath, pkjFieldName, configFileName });
@@ -264,38 +276,43 @@ export default async function (config: OmniConfig | null, buildTactic?: {
         let is_go_on = true;
         if (type === 'toolkit') {
           const rollupPath = buildCliPath.rollup;
-          buildCliArr.push(`${rollupPath} -c ${buildConfigPath}`);
 
           if (!fs.existsSync(rollupPath)) {
-            logWarn('请先安装 rollup! (Please install rollup first!)');
+            logWarn('请先安装 rollup 相关依赖! (Please install rollup first!)');
             is_go_on = await installDenpendencies('rollup');
           }
+
+          buildCliArr.push(`${rollupPath} -c ${buildConfigPath}`);
         } else if (type === 'spa-react') {
           const webpackPath = buildCliPath.webpack;
-          buildCliArr.push(`${webpackPath} --config ${buildConfigPath}`);
 
           if (!fs.existsSync(webpackPath)) {
-            logWarn('请先安装 webpack! (Please install webpack first!)');
+            logWarn('请先安装 webpack 相关依赖! (Please install webpack first!)');
             is_go_on = await installDenpendencies('webpack');
           }
+
+          buildCliArr.push(`${webpackPath} --config ${buildConfigPath}`);
         } else if (type === 'component-react') {
-          const tscPath = buildCliPath.tsc;
+          let tscPath = buildCliPath.tsc;
           const gulpPath = buildCliPath.gulp;
+          // ttypescript is preferred
+          if (fs.existsSync(buildCliPath.ttsc)) tscPath = buildCliPath.ttsc;
+
+          if (typescript && !fs.existsSync(tscPath)) {
+            logWarn('请先安装 typescript 相关依赖! (Please install typescript first!)');
+            is_go_on = await installDenpendencies('tsc');
+            if (is_go_on) tscPath = buildCliPath.ttsc;
+          }
+          if (is_go_on && !fs.existsSync(gulpPath)) {
+            logWarn('请先安装 gulp 相关依赖! (Please install gulp first!)');
+            is_go_on = await installDenpendencies('gulp');
+          }
+
           buildCliArr.push(
             typescript ? `${tscPath} --outDir ${outDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --emitDeclarationOnly --rootDir ${srcDir}` : '',
             typescript && esmDir ? `${tscPath} --module ES6 --target ES6 --outDir ${esmDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --emitDeclarationOnly --rootDir ${srcDir}` : '',
             `${gulpPath} --gulpfile ${buildConfigPath} --cwd ${CWD}`
           );
-
-          if (typescript && !fs.existsSync(tscPath)) {
-            logWarn('请先安装 typescript! (Please install typescript first!)');
-            is_go_on = await installDenpendencies('tsc');
-          }
-
-          if (is_go_on && !fs.existsSync(gulpPath)) {
-            logWarn('请先安装 gulp! (Please install gulp first!)');
-            is_go_on = await installDenpendencies('gulp');
-          }
         }
 
         if (!is_go_on) return process.exit(0);

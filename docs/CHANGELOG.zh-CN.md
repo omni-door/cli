@@ -2,6 +2,14 @@
 
 [English](./CHANGELOG.md) | 简体中文
 
+## v2.1.x
+### v2.1.0
+1. 「optimization」`omni build` 用 tsc 或 gulp 编译的项目，默认支持 alias
+
+2. 「fix」`omni build` 自动安装缺少的构建依赖不全的问题
+
+---
+
 ## v2.0.x
 ### v2.0.17
 1. 「fix」`omni build` 组件项目gulp配置文件bug

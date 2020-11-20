@@ -2,6 +2,14 @@
 
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
+## v2.1.x
+### v2.1.0
+1. 「optimization」`omni build` default support alias when use the tsc or gulp to build project
+
+2. 「fix」`omni build` auto install build dependecies unsatisfied
+
+---
+
 ## v2.0.x
 ### v2.0.17
 1. 「fix」`omni build` the bug of component-project gulp configuration file

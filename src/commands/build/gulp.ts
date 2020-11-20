@@ -14,11 +14,16 @@ const babel = require_cwd('gulp-babel');
 const less = require_cwd('gulp-less', true);
 const sass = require_cwd('gulp-sass', true);
 const gulpif = require_cwd('gulp-if');
+const alias = require_cwd('gulp-ts-alias');
+const typescript = require_cwd('gulp-typescript');
+const sourcemaps = require_cwd('gulp-sourcemaps');
 const autoprefixer = require_cwd('gulp-autoprefixer');
 const cssnano = require_cwd('gulp-cssnano');
 const concat = require_cwd('gulp-concat');
 const minifycss = require_cwd('gulp-minify-css');
 const through2 = require_cwd('through2');
+
+const project = typescript && typescript.createProject('tsconfig.json');
 
 const params = {
   dest: {
@@ -47,6 +52,9 @@ function compileScripts (babelEnv, destDir) {
   process.env.BABEL_ENV = babelEnv;
   return gulp
     .src(scripts)
+    .pipe((alias && project) ? alias({ configuration: project.config }) : through2.obj())
+    .pipe(sourcemaps ? sourcemaps.init() : through2.obj())
+    .pipe(project ? project() : through2.obj())
     .pipe(babel({ root: process.cwd() }))
     .pipe(
       through2.obj(function (file, encoding, next) {
@@ -62,6 +70,7 @@ function compileScripts (babelEnv, destDir) {
         }
       })
     )
+    .pipe(sourcemaps ? sourcemaps.write({ sourceRoot: file => path.relative(path.join(file.cwd, file.path), file.base) }) : through2.obj())
     .pipe(gulp.dest(destDir));
 }
 

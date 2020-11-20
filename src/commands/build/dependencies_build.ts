@@ -41,7 +41,9 @@ export default function (config: {
     'rollup-plugin-node-resolve': '5.2.0',
     'rollup-plugin-typescript': '1.0.1',
     'rollup-plugin-typescript2': '0.26.0',
-    'typescript': '~3.7.5',
+    'ttypescript': '~1.5.12',
+    'typescript': '~3.9.7',
+    'typescript-transform-paths': '~2.0.3',
     'gulp': '4.0.2',
     'gulp-autoprefixer': '7.0.1',
     'gulp-babel': '8.0.0',
@@ -50,7 +52,19 @@ export default function (config: {
     'gulp-less': '4.0.1',
     'gulp-minify-css': '1.2.4',
     'gulp-sass': '4.1.0',
-    'through2': '4.0.1'
+    'gulp-if': '3.0.0',
+    'gulp-sourcemaps': '3.0.0',
+    'gulp-ts-alias': '1.1.0',
+    'gulp-typescript': '5.0.1',
+    'through2': '4.0.1',
+    'next': '~10.0.1',
+    'next-url-prettifier': '1.4.0',
+    '@next/bundle-analyzer': '~10.0.1',
+    '@zeit/next-css': '~1.0.1',
+    '@zeit/next-less': '~1.0.1',
+    '@zeit/next-sass': '~1.0.1',
+    'next-compose-plugins': '~2.2.0',
+    'next-transpile-modules': '~4.0.2',
   });
   const {
     build
@@ -102,6 +116,10 @@ export default function (config: {
     dependency('gulp-less'),
     dependency('gulp-minify-css'),
     dependency('gulp-sass'),
+    dependency('gulp-if'),
+    dependency('gulp-sourcemaps'),
+    dependency('gulp-ts-alias'),
+    dependency('gulp-typescript'),
     dependency('through2'),
     dependency('@babel/core'),
     dependency('@babel/preset-env'),
@@ -110,7 +128,17 @@ export default function (config: {
     dependency('@babel/plugin-transform-runtime'),
     dependency('@babel/plugin-proposal-class-properties')
   ] : build === 'tsc' ? [
-    dependency('typescript')
+    dependency('ttypescript'),
+    dependency('typescript'),
+    dependency('typescript-transform-paths')
+  ] : build === 'next' ? [
+    dependency('next'),
+    dependency('next-url-prettifier'),
+    dependency('@zeit/next-css'),
+    dependency('@zeit/next-less'),
+    dependency('@zeit/next-sass'),
+    dependency('next-compose-plugins'),
+    dependency('next-transpile-modules')
   ]
     : [];
 
