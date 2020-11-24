@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.1.x
+### v2.1.1
+1. 「fix」`omni release` manual iterate version cannot match correct
+
 ### v2.1.0
 1. 「optimization」`omni build` default support alias when use the tsc or gulp to build project
 

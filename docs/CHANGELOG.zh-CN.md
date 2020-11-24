@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.1.x
+### v2.1.1
+1. 「fix」`omni release` 手动迭代版本号无法正确匹配
+
 ### v2.1.0
 1. 「optimization」`omni build` 用 tsc 或 gulp 编译的项目，默认支持 alias
 
