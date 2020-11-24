@@ -19,7 +19,7 @@ updateVersion () {
   prevSubVersion=$(echo ${version#*.})
   subVersion=$(echo ${prevSubVersion%.*})
   subSubVersion=$(echo ${version##*.})
-  manualVersion=$(echo "$iterate" | grep [0-9]\.[0-9]\.[0-9])
+  manualVersion=$(echo "$iterate" | grep "[0-9].[0-9]*.[0-9]")
   if [ "$iterate" = "i" -o "$iterate" = "ignore" ]
   then
     echo -e "\033[33m${name}: Ignoring the version of iteration\033[0m"
