@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.1.x
+### v2.1.2
+1. 「update」`omni build` 升级 toolkit 项目的 rollup 配置
+
 ### v2.1.1
 1. 「fix」`omni release` 手动迭代版本号无法正确匹配
 
