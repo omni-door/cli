@@ -4,7 +4,7 @@ English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.1.x
 ### v2.1.2
-1. 「update」`omni build` upgrade the rollup-config which used for toolkit project
+1. 「update」`omni build` upgrade the rollup-config which has been used for toolkit project
 ### v2.1.1
 1. 「fix」`omni release` manual iterate version cannot match correct
 
