@@ -428,11 +428,11 @@ export default async function (strategy: STRATEGY, {
         }
       ];
 
-      configFileExist = true;
       // if the config file non-existence，cancel double confirmation
       if (!fs.existsSync(configPath)) {
         questions.shift();
-        configFileExist = false;
+      } else {
+        configFileExist = true;
       }
 
       await new Promise((resolve) => {
