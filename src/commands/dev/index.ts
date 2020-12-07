@@ -50,7 +50,7 @@ export default async function (config: OmniConfig | null, options: {
 
   const EWServerList = [ 'spa-react', 'spa-vue' ];
   if (~EWServerList.indexOf(type) && !webpack) {
-    handleException(`${type} 应用缺少开发服务webpack配置文件！(The ${type} app missing the dev-server webpack-config!)`); 
+    handleException(`${type}应用 缺少开发服务webpack配置文件！(The ${type}-app missing the dev-server webpack-config!)`); 
   }
 
   const _port = !isNaN(+p!)

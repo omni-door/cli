@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.1.x
+### v2.1.3
+1. 「update」`omni build` toolkit 项目构建产物过滤掉忽略的文件夹
+
 ### v2.1.2
 1. 「update」`omni build` 升级 toolkit 项目的 rollup 配置
 

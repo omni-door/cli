@@ -23,7 +23,8 @@ const { babel: babel_new } = require_cwd('@rollup/plugin-babel', true);
 const babel_old = require_cwd('rollup-plugin-babel', true);
 const json_new = require_cwd('@rollup/plugin-json', true);
 const json_old = require_cwd('rollup-plugin-json', true);
-${ts ? `const typescript = require_cwd('rollup-plugin-typescript');
+${ts ? `const typescript_new = require_cwd('@rollup/plugin-typescript', true);
+const typescript_old = require_cwd('rollup-plugin-typescript', true);
 const typescript2 = require_cwd('rollup-plugin-typescript2');
 ` : ''}
 const ppkj = require_cwd('./package.json');
@@ -35,10 +36,13 @@ const babel = babel_new || babel_old;
 const resolve = resolve_new || resolve_old;
 const commonjs = commonjs_new || commonjs_old;
 const json = json_new || json_old;
+${ts ? `const typescript = typescript_new || typescript_old;
+` : ''}
 const { build } = configs || {};
 const { configuration = config => config } = build || {};
 
 const extensions = ['.ts', '.js'];
+const tsExcludes = ['**/__test__/*'];
 const babelConfig = babel_new ? {
   exclude: 'node_modules/**',
   plugins: [['@babel/plugin-transform-runtime', { corejs: 3 }]],
@@ -130,7 +134,10 @@ function createConfig () {
         entryPath = path.resolve(filePath, \`index.\${exts[i]}\`);
         if (fs.existsSync(entryPath)) break;
       }
-      if (!fs.existsSync(entryPath)) break;
+      if (!fs.existsSync(entryPath) || fs.existsSync(path.resolve(filePath, '.buildignore'))) {
+        tsExcludes.push(\`\${filePath}/*\`);
+        continue;
+      }
       filesPaths.push({
         entry: entryPath,
         file: path.join(file, 'index.js'),
@@ -144,6 +151,7 @@ function createConfig () {
     output: {
       file: '${outDir}/index.js',
       format: 'cjs',
+      exports: 'named',
       compact: true
     },
     plugins: [
@@ -154,9 +162,9 @@ function createConfig () {
           compilerOptions: {
             target: 'es5',
             module: 'es2015'
-          }
-        },
-        exclude: [ "**/__test__/*" ]
+          },
+          exclude: tsExcludes
+        }
       }),` : ''}
       babel(babelConfig),
       json()
@@ -178,19 +186,19 @@ function createConfig () {
                 compilerOptions: {
                   target: 'es5',
                   module: 'es2015'
-                }
-              },
-              exclude: [ "**/__test__/*" ]
+                },
+                exclude: tsExcludes
+              }
             })` : ''}
           ]
         },`
     : ''
 } ...flatten(filesPaths.map(fileParams => {
-      const { entry, file } = fileParams
+      const { entry, file, dir } = fileParams
       return [{
         input: entry,
         output: {
-          file: path.resolve('${outDir}', file),
+          dir: path.resolve('${outDir}', dir),
           format: 'cjs',
           exports: 'named',
           compact: true
@@ -200,7 +208,8 @@ function createConfig () {
           commonjs(commonConfig),
           ${ts ? `typescript({
             target: 'es5',
-            exclude: ["**/__test__/*"]
+            outDir: path.resolve('${outDir}', file),
+            exclude: tsExcludes
           }),` : ''}
           babel(babelConfig),
           json()
@@ -210,7 +219,7 @@ function createConfig () {
     ? `{
             input: entry,
             output: {
-              file: path.resolve('${esmDir}', file),
+              dir: path.resolve('${esmDir}', dir),
               format: 'esm',
               compact: true
             },
@@ -221,7 +230,8 @@ function createConfig () {
               ${ts ? `typescript({
                 target: 'es5',
                 module: 'es2015',
-                exclude: ["**/__test__/*"]
+                outDir: path.resolve('${esmDir}', file),
+                exclude: tsExcludes
               })` : ''}
             ]
           }`
