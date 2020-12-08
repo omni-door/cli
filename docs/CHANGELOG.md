@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.1.x
+### v2.1.4
+1. 「fix」`omni build` toolkit project destructure property 'undefined' or 'null' error.
+
 ### v2.1.3
 1. 「update」`omni build` filter out the ingored folders when build the toolkit project
 

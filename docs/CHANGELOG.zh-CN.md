@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.1.x
+### v2.1.4
+1. 「fix」`omni build` toolkit 项目错误的从 'undefined' 或 'null' 中进行解构.
+
 ### v2.1.3
 1. 「update」`omni build` toolkit 项目构建产物过滤掉忽略的文件夹
 

@@ -15,11 +15,11 @@ export default function (config: {
 const fs = require('fs');
 const path = require('path');
 const { require_cwd, logErr } = require('@omni-door/utils');
-const { nodeResolve: resolve_new } = require_cwd('@rollup/plugin-node-resolve', true);
+const { nodeResolve: resolve_new } = require_cwd('@rollup/plugin-node-resolve', true) || {};
 const resolve_old = require_cwd('rollup-plugin-node-resolve', true);
 const commonjs_new = require_cwd('@rollup/plugin-commonjs', true);
 const commonjs_old = require_cwd('rollup-plugin-commonjs', true);
-const { babel: babel_new } = require_cwd('@rollup/plugin-babel', true);
+const { babel: babel_new } = require_cwd('@rollup/plugin-babel', true) || {};
 const babel_old = require_cwd('rollup-plugin-babel', true);
 const json_new = require_cwd('@rollup/plugin-json', true);
 const json_old = require_cwd('rollup-plugin-json', true);
