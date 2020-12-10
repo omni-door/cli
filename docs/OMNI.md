@@ -114,11 +114,13 @@ The dev-server based on express, realizing hot-update, api-proxy and other commo
   - stylelint - whether or not process stylelint check
 
 ## release
+- autoBuild - auto build project before release process
+
+- autoTag - npm publish will auto set tag according to the current version
+
 - git - project git repo url
 
 - npm - npm depository url
-
-- autoTag - npm publish will auto set tag according to the current version
 
 - preflight - the flight check before release
   - test - whether or not process unit-test

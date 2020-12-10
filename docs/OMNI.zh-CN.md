@@ -114,11 +114,13 @@ OMNI 会根据不同的项目类型决定整个初始化、构建、创建模板
   - stylelint - 是否进行stylelint检测
 
 ## release
+- autoBuild - 发布之前是否自动构建项目
+
+- autoTag - 发布到npm仓库时会自动根据当前版本号设定tag
+
 - git - 发布的git仓库地址
 
 - npm - 发布的npm仓库地址
-
-- autoTag - 发布到npm仓库时会自动根据当前版本号设定tag
 
 - preflight - 发布前的飞行检查
   - test - 发布前是否进行单元测试
