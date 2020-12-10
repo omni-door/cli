@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.1.x
+### v2.1.5
+1. 「feat」`omni release` 支持 自动构建(autoBuild).
+
 ### v2.1.4
 1. 「fix」`omni build` toolkit 项目错误的从 'undefined' 或 'null' 中进行解构.
 

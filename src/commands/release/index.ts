@@ -16,6 +16,7 @@ import {
   logPrefix
 } from '@omni-door/utils';
 import { getHandlers, signal, logo } from '../../utils';
+import buildCommands from '../build';
 /* import types */
 import type { OmniConfig, OmniPlugin } from '../../index.d';
 
@@ -55,6 +56,7 @@ export default async function (
   const {
     git,
     npm,
+    autoBuild,
     autoTag,
     preflight
   } = release;
@@ -110,6 +112,20 @@ export default async function (
       pkj = require(pkjPath);
     }
     return pkj;
+  }
+
+  // auto build
+  if (autoBuild && !autoRelease) {
+    logInfo('开始自动构建项目！(Start building the project automatically!)');
+    try {
+      await buildCommands(
+        config,
+        void 0,
+        true
+      );
+    } catch (err) {
+      handleReleaseErr('自动构建项目失败！(Auto building the project failed!)')();
+    }
   }
 
   try {
@@ -314,7 +330,8 @@ export default async function (
     }
 
     logTime('项目发布', true);
-    handleReleaseSuc()(!autoRelease);
+    const shouldExit = !autoRelease;
+    handleReleaseSuc()(shouldExit);
   } catch (err) {
     logErr(err);
     handleReleaseErr('👆 糟糕！发布过程发生了一点意外 (Oops! release process occured some accidents)')();

@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.1.x
+### v2.1.5
+1. 「feat」`omni release` support auto build(autoBuild).
+
 ### v2.1.4
 1. 「fix」`omni build` toolkit project destructure property 'undefined' or 'null' error.
 

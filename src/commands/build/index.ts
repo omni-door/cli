@@ -28,13 +28,17 @@ import release from '../release';
 import type { BUILD } from '@omni-door/utils';
 import type { OmniConfig, OmniPlugin } from '../../index.d';
 
-export default async function (config: OmniConfig | null, buildTactic?: {
-  config?: string;
-  verify?: boolean;
-  buildConfig?: string;
-  pkjFieldName?: string;
-  configFileName?: string;
-}) {
+export default async function (
+  config: OmniConfig | null,
+  buildTactic?: {
+    config?: string;
+    verify?: boolean;
+    buildConfig?: string;
+    pkjFieldName?: string;
+    configFileName?: string;
+  },
+  autoBuild?: boolean
+) {
   try {
     // node version pre-check
     await node_version('10.13.0');
@@ -366,13 +370,14 @@ export default async function (config: OmniConfig | null, buildTactic?: {
       } else {
         type !== 'toolkit' && spinner.state('stop');
         logTime('项目构建', true);
-        handleBuildSuc()(!autoRelease);
+        const shouldExit = !(autoRelease || autoBuild);
+        handleBuildSuc()(shouldExit);
       }
     }, handleBuildErr());
 
     // auto release
-    if (autoRelease) {
-      logInfo('开始自动发布！(Beginning auto release!)');
+    if (!autoBuild && autoRelease) {
+      logInfo('开始自动发布！(Start auto release!)');
       try {
         await release(config, { verify: false }, autoRelease);
         handleBuildSuc('自动发布成功！(Auto release success!)')(true);
