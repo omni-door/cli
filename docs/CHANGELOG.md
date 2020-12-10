@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.1.x
+### v2.1.6
+1. 「fix」`omni release` auto build missing some parameters.
+
 ### v2.1.5
 1. 「feat」`omni release` support auto build(autoBuild).
 

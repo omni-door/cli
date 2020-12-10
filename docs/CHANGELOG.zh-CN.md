@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.1.x
+### v2.1.6
+1. 「fix」`omni release` 自动构建参数缺失的问题.
+
 ### v2.1.5
 1. 「feat」`omni release` 支持 自动构建(autoBuild).
 

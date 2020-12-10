@@ -34,6 +34,10 @@ export default async function (
     manual?: string;
     verify?: boolean;
     tag?: string;
+    config?: string;
+    buildConfig?: string;
+    pkjFieldName?: string;
+    configFileName?: string;
   },
   autoRelease?: boolean
 ) {
@@ -114,23 +118,9 @@ export default async function (
     return pkj;
   }
 
-  // auto build
-  if (autoBuild && !autoRelease) {
-    logInfo('开始自动构建项目！(Start building the project automatically!)');
-    try {
-      await buildCommands(
-        config,
-        void 0,
-        true
-      );
-    } catch (err) {
-      handleReleaseErr('自动构建项目失败！(Auto building the project failed!)')();
-    }
-  }
-
   try {
     // eslint-disable-next-line prefer-const
-    let { automatic, ignore, manual, tag, verify } = iterTactic || {};
+    let { automatic, ignore, manual, tag, verify, ...rest } = iterTactic || {};
     const hasIter = !(ignore === void 0 && manual === void 0 && automatic === void 0);
     const versionErrMsg = `请输入有效的版本号 (Please input valid version)\n
     版本号规则可参考: https://semver.org/ (Reference to: https://semver.org/)`;
@@ -209,21 +199,38 @@ export default async function (
       process.exit(0);
     }
 
+    // auto build
+    if (autoBuild && !autoRelease) {
+      logInfo('开始自动构建项目！(Start building the project automatically!)');
+      try {
+        await buildCommands(
+          config,
+          {
+            ...rest,
+            verify
+          },
+          true
+        );
+      } catch (err) {
+        handleReleaseErr('自动构建项目失败！(Auto building the project failed!)')();
+      }
+    }
+
     logTime('项目发布');
     logInfo('开始发布！(Starting release process!)');
-    if (verify && test) {
+    if (!autoBuild && verify && test) {
       await exec(['npm test'], () => logEmph(italic('单元测试通过！(The unit test passed!)')), handleReleaseErr('单元测试失败！(The unit test failed!)'));
     }
 
-    if (verify && eslint) {
+    if (!autoBuild && verify && eslint) {
       await exec(['npm run lint:es'], () => logEmph(italic('eslint校验通过！(The eslint passed!)')), handleReleaseErr(`eslint校验失败！(The eslint checking failed!) \n 尝试执行 (try to exec): ${underline('npm run lint:es_fix')}`));
     }
 
-    if (verify && prettier) {
+    if (!autoBuild && verify && prettier) {
       await exec(['npm run lint:prettier'], () => logEmph(italic('prettier校验通过！(The prettier passed!)')), handleReleaseErr(`prettier校验失败！(The prettier checking failed!) \n 尝试执行 (try to exec): ${underline('npm run lint:prettier_fix')}`));
     }
 
-    if (verify && stylelint) {
+    if (!autoBuild && verify && stylelint) {
       await exec(['npm run lint:style'], () => logEmph(italic('stylelint校验通过！(The stylelint passed!)')), handleReleaseErr(`stylelint校验失败！(The stylelint checking failed!) \n 尝试执行 (try to exec): ${underline('npm run lint:style_fix')}`));
     }
 
