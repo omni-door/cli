@@ -2,6 +2,16 @@
 
 [English](./CHANGELOG.md) | 简体中文
 
+## v2.2.x
+### v2.2.0
+1. 「feat」`omni init` 安装工具新增 pnpm 选项，并移除 cnpm
+
+2. 「feat」`omni init` 新增项目名规范校验
+
+3. 「feat」新增 *最新版本 cli 安装提示*
+
+4. 「feat」新增 *错误命令意图推测*
+
 ## v2.1.x
 ### v2.1.6
 1. 「fix」`omni release` 自动构建参数缺失的问题.

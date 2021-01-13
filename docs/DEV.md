@@ -142,7 +142,7 @@ interface OmniConfig {
 }
 
 type BUILD = 'webpack' | 'rollup' | 'tsc' | '';
-type NPM = 'npm' | 'yarn' | 'cnpm' | 'taobao';
+type NPM = 'npm' | 'yarn' | 'pnpm';
 type PROJECT_TYPE = 'spa-react' | 'component-react' | 'toolkit';
 type STYLE = 'less' | 'scss' | 'css' | 'all' | '';
 ```

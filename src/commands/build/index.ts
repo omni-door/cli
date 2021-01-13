@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
+import { execSync } from'child_process';
 import fsExtra from 'fs-extra';
-import shelljs from 'shelljs';
 import inquirer from 'inquirer';
 import del from 'del';
 import rollupConfig from './rollup';
@@ -122,12 +122,14 @@ export default async function (
         const dependencies = dependencies_build({ build });
 
         // install tool pre-check
-        let iTool = 'yarn add -D';
-        let iToolCheck = shelljs.exec('yarn -v', { async: false });
-        if (~iToolCheck.stderr.indexOf('command not found')) {
-          iTool = 'cnpm i --save-dev';
-          iToolCheck = shelljs.exec('cnpm -v', { async: false });
-          if (~iToolCheck.stderr.indexOf('command not found')) {
+        let iTool = 'pnpm i --save-dev';
+        try {
+          execSync('pnpm -v', { stdio: 'ignore' });
+        } catch (e) {
+          iTool = 'yarn add -D';
+          try {
+            execSync('yarn -v', { stdio: 'ignore' });
+          } catch (e) {
             iTool = 'npm i --save-dev';
           }
         }

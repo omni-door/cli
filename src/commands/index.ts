@@ -1,5 +1,7 @@
 import program from 'commander';
-import { node_version, logWarn, require_cwd, logEmph } from '@omni-door/utils';
+import leven from 'leven';
+import chalk from 'chalk';
+import { node_version, npm_version, logWarn, require_cwd, logEmph } from '@omni-door/utils';
 /* import types */
 import type { OmniConfig } from '../index.d';
 
@@ -30,6 +32,12 @@ const commandDicts = {
   let config: OmniConfig | null = null;
   let configFilePath = './omni.config.js';
   getConfig();
+
+  try {
+    await npm_version(pkj.name || '@omni-door/cli', pkj.version);
+  } catch (e) {
+    logWarn(e);
+  }
 
   function getConfig () {
     try {
@@ -185,6 +193,26 @@ const commandDicts = {
 
       checkConfig();
       release(config, iterTactic);
+    });
+
+  program.arguments('<command>')
+    .action(unknownCommand => {
+      const availableCommands = program.commands.map(cmd => cmd._name);
+
+      let suggestion: any;
+    
+      availableCommands.forEach(cmd => {
+        const isBestMatch =
+          leven(cmd, unknownCommand) < leven(suggestion || '', unknownCommand);
+        if (leven(cmd, unknownCommand) < 3 && isBestMatch) {
+          suggestion = cmd;
+        }
+      });
+    
+      logWarn(`Unknown command ${chalk.red(unknownCommand)}!`);
+      if (suggestion) {
+        logWarn(`Did you mean ${chalk.green(suggestion)}?`);
+      }
     });
 
   program.parse(process.argv);

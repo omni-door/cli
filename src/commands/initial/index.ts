@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path, { parse } from 'path';
 import { promisify } from 'util';
+import { execSync } from'child_process';
 import fsExtra from 'fs-extra';
 import shelljs from 'shelljs';
 import chalk from 'chalk';
@@ -14,7 +15,8 @@ import {
   logErr,
   logWarn,
   getBrand,
-  node_version
+  node_version,
+  name_check
 } from '@omni-door/utils';
 import { logo, signal } from '../../utils';
 /* import types */
@@ -46,11 +48,16 @@ async function isDir (dirName: string) {
 async function checkPkgTool (pkgtool: PKJTOOL) {
   // install tool precheck
   return new Promise((resolve, reject) => {
-    const iToolCheck = shelljs.exec(`${pkgtool} -v`, { async: false });
+    let hasTool = true;
+    try {
+      execSync(`${pkgtool} -v`, { stdio: 'ignore' });
+    } catch (e) {
+      hasTool = false;
+    }
 
-    if (~iToolCheck.stderr.indexOf('command not found')) {
+    if (!hasTool) {
       if (pkgtool === 'npm') {
-        spinner.state('warn', '没有找到 npm 包管理工具！(Cannot found the npm package management tool!)');
+        spinner.state('warn', '没有找到 npm 包管理工具，请自行安装！(Cannot found the npm package management tool!)');
         process.exit(0);
       } else {
         spinner.state('info', `缺少包管理工具 ${pkgtool}！(Missing package management tool ${pkgtool}!)`);
@@ -62,6 +69,7 @@ async function checkPkgTool (pkgtool: PKJTOOL) {
         }]).then(answers => {
           const { install } = answers;
           if (!install) {
+            reject(false);
             return process.exit(0);
           }
           shelljs.exec(`npm i -g ${pkgtool}`, { async: false });
@@ -218,6 +226,8 @@ export default async function (strategy: STRATEGY, {
     }
   }
 
+  name_check(projectName);
+
   try {
     spinner.color('green');
     spinner.prefix('arrow3');
@@ -234,7 +244,7 @@ export default async function (strategy: STRATEGY, {
           }]).then(answers => {
             const { overwrite } = answers;
             if (!overwrite) return process.exit(0);
-            resolve();
+            resolve(void 0);
           });
         }).catch(err => {
           logErr(err);
@@ -243,7 +253,7 @@ export default async function (strategy: STRATEGY, {
         });
       }
       const { cli, pkj } = presetTpl(presetType);
-      await checkPkgTool(cli ? cli.pkgtool : 'yarn');
+      await checkPkgTool(cli ? cli.pkgtool : 'pnpm');
 
       tplPackage = pkj;
       tplParams.push(`strategy=${strategy}`);
@@ -253,6 +263,7 @@ export default async function (strategy: STRATEGY, {
     } else {
       let currStep = 1;
       let totalStep: string | number = '?';
+      let isValidName = true;
       const dupDirQuestions = [];
       const retryTimes = 10; // reenter name limit
       while (dupDirQuestions.length < retryTimes * 2) {
@@ -265,8 +276,9 @@ export default async function (strategy: STRATEGY, {
             return `${logo()}[${currStep}/${totalStep}] 确定要覆盖已经存在的 [${name}] 文件夹? (Are you sure to overwrite [${name}] directory?)`;
           },
           when: async function (answer: any) {
+            isValidName = name_check(answer.name, true);
             const { name, overwrite_dir } = answer;
-            return !configFileExist && !overwrite_dir && await isDir(name);
+            return isValidName && !configFileExist && !overwrite_dir && await isDir(name);
           }
         }, {
           name: 'name',
@@ -276,7 +288,7 @@ export default async function (strategy: STRATEGY, {
           },
           when: async function (answer: any) {
             const { name } = answer;
-            return !configFileExist && answer.overwrite_dir === false && await isDir(name);
+            return !isValidName || (!configFileExist && answer.overwrite_dir === false && await isDir(name));
           },
           default: defaultName
         }]);
@@ -350,7 +362,7 @@ export default async function (strategy: STRATEGY, {
           when: async function (answer: any) {
             const { overwrite_dir, name } = answer;
             if (!configFileExist && !overwrite_dir && await isDir(name)) {
-              logWarn('失败次数太多，检查该文件夹的内容后再试！(Please checking the directory then try again!)');
+              logWarn('失败次数太多，请想清楚后再试！(Please turn over to think then try again!)');
               return process.exit(0);
             }
             const projectType = getProjectType(answer);
@@ -416,15 +428,15 @@ export default async function (strategy: STRATEGY, {
         },{
           name: 'pkgtool',
           type: 'list',
-          choices: [ 'yarn', 'npm', 'cnpm' ],
+          choices: [ 'pnpm', 'yarn', 'npm' ],
           when: function () {
             if (!install) return false;
             return true;
           },
           message: function (answer: any) {
-            return `${logo()}[${++currStep}/${totalStep}] 请选择包安装工具，推荐使用yarn (Please choice the package install tool, recommended use yarn)：`;
+            return `${logo()}[${++currStep}/${totalStep}] 请选择包安装工具，推荐使用pnpm (Please choice the package install tool, recommended use pnpm)：`;
           },
-          default: 'yarn'
+          default: 'pnpm'
         }
       ];
 
@@ -446,7 +458,7 @@ export default async function (strategy: STRATEGY, {
               test = true,
               style = [],
               lint = [],
-              pkgtool = 'yarn'
+              pkgtool = 'pnpm'
             } = answers;
 
             const eslint = !!~lint.indexOf('eslint');
@@ -496,7 +508,7 @@ export default async function (strategy: STRATEGY, {
                 tplPackage = '@omni-door/tpl-toolkit';
                 break;
             }
-            resolve();
+            resolve(void 0);
           });
       }).catch(err => {
         logErr(err);
@@ -525,7 +537,7 @@ export default async function (strategy: STRATEGY, {
         }]).then(answers => {
           const { overwrite_dir } = answers;
           if (!overwrite_dir) return process.exit(0);
-          resolve();
+          resolve(void 0);
         });
       }).catch(err => {
         logErr(err);

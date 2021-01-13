@@ -2,6 +2,16 @@
 
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
+## v2.2.x
+### v2.2.0
+1. 「feat」`omni init` install tool add pnpm option and remove cnpm
+
+2. 「feat」`omni init` add package name verify
+
+3. 「feat」add latest cli recommand hint
+
+4. 「feat」add wrong command intention infer
+
 ## v2.1.x
 ### v2.1.6
 1. 「fix」`omni release` auto build missing some parameters.
