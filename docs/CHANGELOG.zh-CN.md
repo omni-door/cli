@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.2.x
+### v2.2.2
+1. 「feat」`omni init` 模板的 pkj-tool 默认使用 pnpm
+
 ### v2.2.1
 1. 「fix」`omni init` 项目名校验的问题
 

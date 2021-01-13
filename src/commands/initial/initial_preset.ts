@@ -29,7 +29,7 @@ export type GInstallCli = {
 
 export const cli_basic_react: GInstallCli = {
   project_type: 'spa-react',
-  pkgtool: 'yarn',
+  pkgtool: 'pnpm',
   build: 'webpack',
   ts: false,
   testFrame: '',
@@ -42,7 +42,7 @@ export const cli_basic_react: GInstallCli = {
 
 export const cli_standard_react: GInstallCli = {
   project_type: 'spa-react',
-  pkgtool: 'yarn',
+  pkgtool: 'pnpm',
   build: 'webpack',
   ts: true,
   testFrame: '',
@@ -55,7 +55,7 @@ export const cli_standard_react: GInstallCli = {
 
 export const cli_entire_react: GInstallCli = {
   project_type: 'spa-react',
-  pkgtool: 'yarn',
+  pkgtool: 'pnpm',
   build: 'webpack',
   ts: true,
   testFrame: 'jest',
@@ -68,7 +68,7 @@ export const cli_entire_react: GInstallCli = {
 
 export const cli_ssr_react: GInstallCli = {
   project_type: 'ssr-react',
-  pkgtool: 'yarn',
+  pkgtool: 'pnpm',
   build: 'next',
   ts: true,
   testFrame: 'jest',
@@ -82,7 +82,7 @@ export const cli_ssr_react: GInstallCli = {
 
 export const cli_components_react: GInstallCli = {
   project_type: 'component-react',
-  pkgtool: 'yarn',
+  pkgtool: 'pnpm',
   build: 'tsc',
   ts: true,
   testFrame: 'jest',
@@ -96,7 +96,7 @@ export const cli_components_react: GInstallCli = {
 
 export const cli_toolkit: GInstallCli = {
   project_type: 'toolkit',
-  pkgtool: 'yarn',
+  pkgtool: 'pnpm',
   build: 'rollup',
   ts: true,
   testFrame: 'mocha',
