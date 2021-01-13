@@ -117,7 +117,7 @@ export default async function (config: OmniConfig | null, componentName: string,
           } else if (type === moduleType.cc) {
             cc = true;
           }
-          resolve();
+          resolve(void 0);
         });
     }).catch(err => {
       handleException(err);

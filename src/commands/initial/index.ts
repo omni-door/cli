@@ -226,12 +226,11 @@ export default async function (strategy: STRATEGY, {
     }
   }
 
-  name_check(projectName);
-
   try {
     spinner.color('green');
     spinner.prefix('arrow3');
     if (presetType) {
+      name_check(projectName);
       if (fs.existsSync(configPath)) {
         configFileExist = true;
         // double confirmation

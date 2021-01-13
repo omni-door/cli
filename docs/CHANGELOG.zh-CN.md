@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.2.x
+### v2.2.1
+1. 「fix」`omni init` 项目名校验的问题
+
 ### v2.2.0
 1. 「feat」`omni init` 安装工具新增 pnpm 选项，并移除 cnpm
 

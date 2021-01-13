@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.2.x
+### v2.2.1
+1. 「fix」`omni init` the package name verify problem
+
 ### v2.2.0
 1. 「feat」`omni init` install tool add pnpm option and remove cnpm
 

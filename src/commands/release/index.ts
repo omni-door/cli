@@ -188,7 +188,7 @@ export default async function (
                 ignore = true;
                 break;
             }
-            resolve();
+            resolve(void 0);
           })
           .catch(handleReleaseErr());
       });
