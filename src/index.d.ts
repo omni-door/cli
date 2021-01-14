@@ -8,7 +8,7 @@ import type { Request, Response, NextFunction } from 'express';
 export type { Request, Response, NextFunction } from 'express';
 import type * as KoaApp from 'koa';
 export type { default as KoaApp } from 'koa';
-import type { BUILD, PROJECT_TYPE, STYLE, PLUGINSTAGE, LOGLEVEL, HASH, SPASERVER, COMPONENTSERVER, SSRSERVER } from '@omni-door/utils';
+import type { BUILD, PROJECT_TYPE, STYLE, PLUGINSTAGE, HASH, SPASERVER, COMPONENTSERVER, SSRSERVER } from '@omni-door/utils';
 
 export type ANYOBJECT = { [propName: string]: any };
 
@@ -72,7 +72,6 @@ export type OmniServer = {
     locality?: string;
     validityDays?: number;
   };
-  logLevel?: LOGLEVEL;
   proxy?: {
     route: string;
     config: Config;

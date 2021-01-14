@@ -36,7 +36,6 @@ export default async function (config: OmniConfig | null, options: {
   const {
     port,
     host,
-    logLevel,
     devMiddlewareOptions,
     webpack,
     proxy,
@@ -64,7 +63,6 @@ export default async function (config: OmniConfig | null, options: {
     p: _port,
     host: h || host,
     webpackConfig: webpack!,
-    logLevel,
     devMiddlewareOptions, 
     proxyConfig: proxy,
     middlewareConfig: middleware,

@@ -34,7 +34,6 @@ The dev-server based on express, realizing hot-update, api-proxy and other commo
       ip: string;
       port: number;
       host?: string;
-      logLevel: LOGLEVEL;
       proxyConfig?: (ProxyItem | ProxyFn)[];
     }) => {
       route: string;
@@ -63,7 +62,6 @@ The dev-server based on express, realizing hot-update, api-proxy and other commo
       ip: string;
       port: number;
       host?: string;
-      logLevel: LOGLEVEL;
       middlewareConfig?: (MiddlewareItem | MiddlewareFn)[];
     }) => {
       route: string;
@@ -80,8 +78,6 @@ The dev-server based on express, realizing hot-update, api-proxy and other commo
 - https - start dev-server with https protocol which could custom `key` and `cert`
 
 - serverType - dev-server type
-
-- logLevel - The log-level which dev-server will apply, optional 'debug', 'info', 'warn', 'error', 'silent'
 
 ## build
 

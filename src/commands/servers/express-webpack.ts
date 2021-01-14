@@ -1,10 +1,8 @@
-import path from 'path';
 import http from 'http';
 import https from 'https';
 import { logInfo, require_cwd } from '@omni-door/utils';
 import open from '../dev/open';
 /* import types */
-import type { LOGLEVEL } from '@omni-door/utils';
 import type { Express } from 'express';
 import type { Configuration, Compiler } from 'webpack';
 import type { WebpackDevMiddleware, Options } from 'webpack-dev-middleware';
@@ -14,7 +12,6 @@ import type { EWMiddleWareCallback } from '../../index.d';
 
 export interface EWServerParams {
   webpackConfig: Configuration;
-  logLevel: LOGLEVEL;
   devMiddlewareOptions?: Partial<Options>;
   proxyConfig?: ProxyConfig;
   middlewareConfig?: MiddlewareConfig;
@@ -30,7 +27,6 @@ export interface EWServerParams {
 
 export default function ({
   webpackConfig,
-  logLevel,
   devMiddlewareOptions,
   proxyConfig = [],
   middlewareConfig = [],
@@ -46,7 +42,6 @@ export default function ({
   const compiler: Compiler = webpack(webpackConfig);
   const devMiddleware: WebpackDevMiddleware & NextHandleFunction = require_cwd('webpack-dev-middleware')(compiler, {
     publicPath: '/',
-    logLevel,
     ...devMiddlewareOptions
   });
   const hotMiddleware= require_cwd('webpack-hot-middleware');
@@ -70,7 +65,6 @@ export default function ({
       ip: ipAddress,
       port,
       host,
-      logLevel,
       middlewareConfig
     }) : item;
 
@@ -87,7 +81,6 @@ export default function ({
       ip: ipAddress,
       port,
       host,
-      logLevel,
       proxyConfig
     }) : item;
 
@@ -98,17 +91,17 @@ export default function ({
   }
 
   // index.html for SPA history router
-  app.use('*', function (req, res, next) {
-    const filename = path.join(compiler.outputPath, 'index.html');
-    devMiddleware.fileSystem.readFile(filename, function (err, result) {
-      if (err) {
-        return next(err);
-      }
-      res.set('content-type', 'text/html');
-      res.send(result);
-      res.end();
-    });
-  });
+  // app.use('*', function (req, res, next) {
+  //   const filename = path.join(compiler.outputPath, 'index.html');
+  //   devMiddleware.fileSystem.readFile(filename, function (err, result) {
+  //     if (err) {
+  //       return next(err);
+  //     }
+  //     res.set('content-type', 'text/html');
+  //     res.send(result);
+  //     res.end();
+  //   });
+  // });
 
   let server;
   let serverUrl = `${host}:${port}`;

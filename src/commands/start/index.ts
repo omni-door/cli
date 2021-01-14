@@ -56,7 +56,6 @@ export default async function (config: OmniConfig | null, options: {
         dev: process.env.NODE_ENV === 'development',
         port: _port,
         host: _host,
-        logLevel: 'error',
         ipAddress,
         ...rest
       });

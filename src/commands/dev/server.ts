@@ -4,7 +4,6 @@ import * as mkcert from 'mkcert';
 import {
   logWarn,
   logErr,
-  LOGLEVEL,
   require_cwd,
   exec,
   output_file
@@ -24,7 +23,6 @@ export type ProxyFn = (params: {
   ip: string;
   port: number;
   host?: string;
-  logLevel: LOGLEVEL;
   middlewareConfig?: MiddlewareConfig;
 }) => ProxyItem;
 
@@ -35,7 +33,6 @@ export type MiddlewareFn = (params: {
   ip: string;
   port: number;
   host?: string;
-  logLevel: LOGLEVEL;
   proxyConfig?: ProxyConfig;
 }) => MiddlewareItem;
 
@@ -52,7 +49,6 @@ export type ServerOptions = {
     locality?: string;
     validityDays?: number;
   };
-  logLevel?: LOGLEVEL;
   proxyConfig?: ProxyConfig;
   middlewareConfig?: MiddlewareConfig;
   serverType: ServerType;
@@ -68,7 +64,6 @@ async function server ({
   serverType,
   projectType,
   devMiddlewareOptions = {},
-  logLevel = 'error',
   webpackConfig,
   proxyConfig = [],
   middlewareConfig = [],
@@ -163,7 +158,6 @@ async function server ({
       }
 
       const serverBasicOptions = {
-        logLevel,
         middlewareConfig,
         proxyConfig,
         ipAddress,

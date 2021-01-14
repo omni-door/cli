@@ -6,13 +6,11 @@ import open from '../dev/open';
 /* import types */
 import type NextServer from 'next-server/dist/server/next-server';
 import type * as KoaRouter from 'koa-router';
-import type { LOGLEVEL } from '@omni-door/utils';
 import type { ProxyConfig, MiddlewareConfig } from '../dev/server';
 import type { NextRouter, KNMiddleWareCallback, KoaApp, ANYOBJECT } from '../../index.d';
 
 export interface KNServerParams {
   dev: boolean;
-  logLevel: LOGLEVEL;
   proxyConfig?: ProxyConfig;
   middlewareConfig?: MiddlewareConfig;
   ipAddress: string;
@@ -29,7 +27,6 @@ export interface KNServerParams {
 export default function ({
   dev,
   ipAddress,
-  logLevel,
   proxyConfig = [],
   middlewareConfig = [],
   host,
@@ -66,7 +63,6 @@ export default function ({
             ip: ipAddress,
             port,
             host,
-            logLevel,
             middlewareConfig
           }) : item;
   
@@ -102,7 +98,6 @@ export default function ({
             ip: ipAddress,
             port,
             host,
-            logLevel,
             proxyConfig
           }) : item;
       

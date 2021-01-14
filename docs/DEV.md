@@ -79,7 +79,6 @@ import { Configuration } from 'webpack';
 import { Config } from 'http-proxy-middleware';
 import { Options as DevMiddlewareOptions } from 'webpack-dev-middleware';
 
-type LOGLEVEL = 'debug' | 'info' | 'warn' | 'error' | 'silent';
 type ServerType = 'storybook' | 'docz' | 'dumi' | 'bisheng' | 'styleguidist' | 'default';
 
 interface OmniConfig {
@@ -88,7 +87,6 @@ interface OmniConfig {
     port?: number;
     host?: string;
     https?: boolean | { key: string; cert: string; };
-    logLevel?: LOGLEVEL;
     devMiddlewareOptions?: Partial<DevMiddlewareOptions>;
     webpack?: Configuration;
     proxy?: {
