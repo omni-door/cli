@@ -25,7 +25,7 @@ describe('initial preset test', function () {
     expect(cli_basic_react.build).to.be.equal('webpack');
 
     expect(cli_basic_react.pkgtool).to.be.a('string');
-    expect(cli_basic_react.pkgtool).to.be.equal('yarn');
+    expect(cli_basic_react.pkgtool).to.be.equal('pnpm');
 
     expect(cli_basic_react['project_type']).to.be.a('string');
     expect(cli_basic_react['project_type']).to.be.equal('spa-react');
@@ -56,7 +56,7 @@ describe('initial preset test', function () {
     expect(cli_standard_react.build).to.be.equal('webpack');
 
     expect(cli_standard_react.pkgtool).to.be.a('string');
-    expect(cli_standard_react.pkgtool).to.be.equal('yarn');
+    expect(cli_standard_react.pkgtool).to.be.equal('pnpm');
 
     expect(cli_standard_react['project_type']).to.be.a('string');
     expect(cli_standard_react['project_type']).to.be.equal('spa-react');
@@ -87,7 +87,7 @@ describe('initial preset test', function () {
     expect(cli_entire_react.build).to.be.equal('webpack');
 
     expect(cli_entire_react.pkgtool).to.be.a('string');
-    expect(cli_entire_react.pkgtool).to.be.equal('yarn');
+    expect(cli_entire_react.pkgtool).to.be.equal('pnpm');
 
     expect(cli_entire_react['project_type']).to.be.a('string');
     expect(cli_entire_react['project_type']).to.be.equal('spa-react');
@@ -118,7 +118,7 @@ describe('initial preset test', function () {
     expect(cli_components_react.build).to.be.equal('tsc');
 
     expect(cli_components_react.pkgtool).to.be.a('string');
-    expect(cli_components_react.pkgtool).to.be.equal('yarn');
+    expect(cli_components_react.pkgtool).to.be.equal('pnpm');
 
     expect(cli_components_react['project_type']).to.be.a('string');
     expect(cli_components_react['project_type']).to.be.equal('component-react');
@@ -152,7 +152,7 @@ describe('initial preset test', function () {
     expect(cli_toolkit.build).to.be.equal('rollup');
 
     expect(cli_toolkit.pkgtool).to.be.a('string');
-    expect(cli_toolkit.pkgtool).to.be.equal('yarn');
+    expect(cli_toolkit.pkgtool).to.be.equal('pnpm');
 
     expect(cli_toolkit['project_type']).to.be.a('string');
     expect(cli_toolkit['project_type']).to.be.equal('toolkit');
