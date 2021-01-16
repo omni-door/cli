@@ -79,6 +79,8 @@ OMNI 会根据不同的项目类型决定整个初始化、构建、创建模板
 
 - serverType - 开发服务的类型
 
+- favicon - 开发服务的 favicon 路径
+
 ## build 构建配置
 
 - autoRelease - 构建完成后是否自动发布

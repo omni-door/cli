@@ -79,6 +79,8 @@ The dev-server based on express, realizing hot-update, api-proxy and other commo
 
 - serverType - dev-server type
 
+- favicon - favicon path for dev-server
+
 ## build
 
 - autoRelease - auto release project after build success

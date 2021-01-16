@@ -37,7 +37,7 @@ export type MiddlewareFn = (params: {
 }) => MiddlewareItem;
 
 // types-server
-type EWServerOptions = Pick<EWServerParams, 'webpackConfig' | 'devMiddlewareOptions'>
+type EWServerOptions = Pick<EWServerParams, 'webpackConfig' | 'devMiddlewareOptions' | 'favicon'>
 export type ServerOptions = {
   p: number;
   host?: string;
@@ -53,7 +53,7 @@ export type ServerOptions = {
   middlewareConfig?: MiddlewareConfig;
   serverType: ServerType;
   projectType: PROJECT_TYPE;
-  nextRouter?: NextRouter
+  nextRouter?: NextRouter;
 } & EWServerOptions;
 
 async function server ({
@@ -67,7 +67,8 @@ async function server ({
   webpackConfig,
   proxyConfig = [],
   middlewareConfig = [],
-  nextRouter
+  nextRouter,
+  favicon
 }: ServerOptions): Promise<void> {
   try {
     const CWD = process.cwd();
@@ -184,6 +185,7 @@ async function server ({
           EWServer({
             webpackConfig,
             devMiddlewareOptions,
+            favicon,
             ...serverBasicOptions
           });
       }

@@ -3,6 +3,11 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.2.x
+### v2.2.3
+1. 「feat」spa-react project support webpack5
+
+2. 「feat」spa-react project dev-server support custom favicon
+
 ### v2.2.2
 1. 「feat」`omni init` the template pkj-tool default use pnpm
 

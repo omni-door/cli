@@ -1,3 +1,4 @@
+import path from 'path';
 import http from 'http';
 import https from 'https';
 import { logInfo, require_cwd } from '@omni-door/utils';
@@ -23,6 +24,7 @@ export interface EWServerParams {
     key?: string | Buffer;
     cert?: string | Buffer;
   };
+  favicon?: string;
 }
 
 export default function ({
@@ -34,9 +36,11 @@ export default function ({
   host,
   listenHost,
   port,
-  httpsConfig
+  httpsConfig,
+  favicon: faviconPath
 }: EWServerParams) {
   const express = require_cwd('express');
+  const favicon = require_cwd('serve-favicon');
   const proxy = require_cwd('http-proxy-middleware');
   const webpack = require_cwd('webpack');
   const compiler: Compiler = webpack(webpackConfig);
@@ -90,18 +94,8 @@ export default function ({
     );
   }
 
-  // index.html for SPA history router
-  // app.use('*', function (req, res, next) {
-  //   const filename = path.join(compiler.outputPath, 'index.html');
-  //   devMiddleware.fileSystem.readFile(filename, function (err, result) {
-  //     if (err) {
-  //       return next(err);
-  //     }
-  //     res.set('content-type', 'text/html');
-  //     res.send(result);
-  //     res.end();
-  //   });
-  // });
+  // favicon.ico
+  app.use(favicon(faviconPath || path.resolve(__dirname, 'favicon.ico')));
 
   let server;
   let serverUrl = `${host}:${port}`;

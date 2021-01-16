@@ -88,6 +88,7 @@ export interface OmniConfig {
     devMiddlewareOptions?: Partial<DevMiddlewareOptions>;
     webpack?: Configuration;
     serverType?: ServerType;
+    favicon?: string;
   };
   server?: OmniServer & { serverType?: SSRSERVER; };
   build: {
