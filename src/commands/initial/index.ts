@@ -35,6 +35,7 @@ const ProjectDict = {
 
 const LayoutDict = {
   viewport: 'viewport(vw/vh)',
+  'viewport(vw/vh)': 'viewport',
   rem: 'rem',
   px: 'px'
 };
@@ -515,7 +516,7 @@ export default async function (strategy: STRATEGY, {
               `prettier=${prettier}`,
               `commitlint=${commitlint}`,
               `style=${stylesheet}`,
-              `layout=${layout}`,
+              `layout=${LayoutDict[layout as keyof typeof LayoutDict]}`,
               `stylelint=${stylelint}`,
               `devServer=${server}`,
               `spaServer=${server}`,

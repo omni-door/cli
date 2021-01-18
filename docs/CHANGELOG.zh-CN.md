@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.2.x
+### v2.2.5
+1. 「fix」`omni init` 对 `layout` 的值做转换
+
 ### v2.2.4
 1. 「feat」`omni init` spa-react 项目支持 `layout` 选项
 

@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.2.x
+### v2.2.5
+1. 「fix」`omni init` the `layout` value need transform
+
 ### v2.2.4
 1. 「feat」`omni init` spa-react project support `layout` option
 
