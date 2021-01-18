@@ -4,6 +4,7 @@ import type {
   TESTFRAME,
   PKJTOOL,
   STYLE,
+  LAYOUT,
   SPASERVER,
   COMPONENTSERVER,
   SSRSERVER,
@@ -22,6 +23,7 @@ export type GInstallCli = {
   prettier: boolean;
   commitlint: boolean;
   style: STYLE;
+  layout?: LAYOUT;
   stylelint: boolean;
   devServer?: DEVSERVER;
   serverType?: SSRSERVER;
@@ -37,6 +39,7 @@ export const cli_basic_react: GInstallCli = {
   prettier: false,
   commitlint: false,
   style: 'css',
+  layout: 'px',
   stylelint: false
 };
 
@@ -50,6 +53,7 @@ export const cli_standard_react: GInstallCli = {
   prettier: true,
   commitlint: false,
   style: 'less',
+  layout: 'px',
   stylelint: true
 };
 
@@ -63,6 +67,7 @@ export const cli_entire_react: GInstallCli = {
   prettier: true,
   commitlint: true,
   style: 'all',
+  layout: 'px',
   stylelint: true
 };
 

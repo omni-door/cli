@@ -22,12 +22,22 @@ import { logo, signal } from '../../utils';
 /* import types */
 import type { PKJTOOL, STRATEGY } from '@omni-door/utils';
 
-enum ProjectType {
-  'spa-react (React单页应用)' = 'spa-react',
-  'ssr-react (React服务端渲染应用)' = 'ssr-react',
-  'component-react (React组件库)' = 'component-react',
-  'toolkit (工具库)' = 'toolkit'
-}
+const ProjectDict = {
+  'spa-react': 'spa-react (React单页应用)',
+  'spa-react (React单页应用)': 'spa-react',
+  'ssr-react': 'ssr-react (React服务端渲染应用)',
+  'ssr-react (React服务端渲染应用)': 'ssr-react',
+  'component-react': 'component-react (React组件库)',
+  'component-react (React组件库)': 'component-react',
+  'toolkit': 'toolkit (工具库)',
+  'toolkit (工具库)': 'toolkit'
+};
+
+const LayoutDict = {
+  viewport: 'viewport(vw/vh)',
+  rem: 'rem',
+  px: 'px'
+};
 
 const stat = promisify(fs.stat);
 
@@ -294,8 +304,9 @@ export default async function (strategy: STRATEGY, {
       }
 
       const getProjectType = (answer: any) => {
-        return ProjectType[answer.project_type as keyof typeof ProjectType];
+        return ProjectDict[answer.project_type as keyof typeof ProjectDict];
       };
+
       const questions = [
         {
           name: 'overwrite',
@@ -305,7 +316,12 @@ export default async function (strategy: STRATEGY, {
         },{
           name: 'project_type',
           type: 'list',
-          choices: [ 'spa-react (React单页应用)', 'ssr-react (React服务端渲染应用)', 'component-react (React组件库)', 'toolkit (工具库)' ],
+          choices: [
+            ProjectDict['spa-react'],
+            ProjectDict['ssr-react'],
+            ProjectDict['component-react'],
+            ProjectDict['toolkit']
+          ],
           message: `${logo()}[${currStep}/${totalStep}] 请选择项目类型 (Please choose the type of project)：`,
           when: function (answer: any) {
             if (answer.overwrite === false) {
@@ -320,7 +336,7 @@ export default async function (strategy: STRATEGY, {
             const projectType = getProjectType(answer);
             switch (projectType) {
               case 'spa-react':
-                totalStep = install ? 7 : 6;
+                totalStep = install ? 8 : 7;
                 break;
               case 'ssr-react':
                 totalStep = install ? 8 : 7;
@@ -413,6 +429,18 @@ export default async function (strategy: STRATEGY, {
             return true;
           }
         },{
+          name: 'layout',
+          type: 'list',
+          when: (answer: any) => {
+            const projectType = getProjectType(answer);
+            if (projectType === 'spa-react') return true;
+            return false;
+          },
+          choices: [LayoutDict.viewport, LayoutDict.rem, LayoutDict.px],
+          message: function (answer: any) {
+            return `${logo()}[${++currStep}/${totalStep}] 选择布局适配方案 (Please select layout plan)`;
+          }
+        },{
           name: 'lint',
           type: 'checkbox',
           choices: (answer: any) => {
@@ -456,6 +484,7 @@ export default async function (strategy: STRATEGY, {
               ts = true,
               test = true,
               style = [],
+              layout = 'px',
               lint = [],
               pkgtool = 'pnpm'
             } = answers;
@@ -473,7 +502,7 @@ export default async function (strategy: STRATEGY, {
                   : style.includes('scss')
                     ? 'scss'
                     : 'css';
-            const projectType = ProjectType[project_type as keyof typeof ProjectType];
+            const projectType = ProjectDict[project_type as keyof typeof ProjectDict];
 
             projectName = name;
             tplParams.push(
@@ -486,6 +515,7 @@ export default async function (strategy: STRATEGY, {
               `prettier=${prettier}`,
               `commitlint=${commitlint}`,
               `style=${stylesheet}`,
+              `layout=${layout}`,
               `stylelint=${stylelint}`,
               `devServer=${server}`,
               `spaServer=${server}`,
