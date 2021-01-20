@@ -33,11 +33,8 @@ const commandDicts = {
   let configFilePath = './omni.config.js';
   getConfig();
 
-  try {
-    await npm_version(pkj.name || '@omni-door/cli', pkj.version);
-  } catch (e) {
-    logWarn(e);
-  }
+  // npm-package latest version checking
+  npm_version(pkj.name || '@omni-door/cli', pkj.version);
 
   function getConfig () {
     try {

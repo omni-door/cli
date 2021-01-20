@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.2.x
+### v2.2.6
+1. 「optimization」npm-package latest version checking not block the program
+
 ### v2.2.5
 1. 「fix」`omni init` 对 `layout` 的值做转换
 

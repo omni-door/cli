@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.2.x
+### v2.2.6
+1. 「optimization」npm-package latest 版本校验不阻塞程序运行
+
 ### v2.2.5
 1. 「fix」`omni init` the `layout` value need transform
 
