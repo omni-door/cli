@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.2.x
+### v2.2.8
+1. 「optimization」`omni init`、`omni new` 脚手架版本号和模板版本号同步 
+
 ### v2.2.7
 1. 「optimization」`omni init` 新增对 REPL(命令行运行的交互式界面) 方式交互的包管理器校验
 

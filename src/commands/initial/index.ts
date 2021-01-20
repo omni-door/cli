@@ -18,7 +18,7 @@ import {
   node_version,
   name_check
 } from '@omni-door/utils';
-import { logo, signal } from '../../utils';
+import { logo, signal, CLITAG, TPLTAG } from '../../utils';
 /* import types */
 import type { PKJTOOL, STRATEGY } from '@omni-door/utils';
 
@@ -200,7 +200,7 @@ export default async function (strategy: STRATEGY, {
     initPath: customInitPath
   } = option || {};
 
-  const tplParams: string[] = [ `install=${install}` ];
+  const tplParams: string[] = [ `install=${install}`, `tag=${CLITAG || TPLTAG ? `~${TPLTAG}` : 'latest'}` ];
   let configPath = path.resolve(configFileName);
 
   const CWD = process.cwd();
@@ -599,7 +599,7 @@ export default async function (strategy: STRATEGY, {
 
       return exec(
         [
-          `npx ${tplPkj || tplPackage}@${tplPkjTag || 'latest'} init ${arr2str([ ...tplParams, ...tplPkjParams ])}`
+          `npx ${tplPkj || tplPackage}@${tplPkjTag || TPLTAG ? `~${TPLTAG}` : 'latest'} init ${arr2str([ ...tplParams, ...tplPkjParams ])}`
         ],
         async function () {
           const afterRes = typeof after === 'function' && await after();

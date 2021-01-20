@@ -1,7 +1,7 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import { getHandlers, handlerFactory } from '../tackle_plugins';
-import logo from '../logo';
+import { getHandlers, handlerFactory, logo, signal, TPLTAG, CLITAG } from '../';
+
 
 describe('tackle_plugins test', function () {
   it('type checking', function () {
@@ -66,5 +66,18 @@ describe('logo test', function () {
 
   it('value checking', function () {
     expect(logo()).to.be.equal('🐸  ');
+  });
+});
+
+describe('signal test', function () {
+  it('type checking', function () {
+    expect(signal).to.be.a('function');
+  });
+});
+
+describe('tag test', function () {
+  it('type checking', function () {
+    expect(TPLTAG).to.be.a('string');
+    expect(CLITAG).to.be.a('undefined');
   });
 });
