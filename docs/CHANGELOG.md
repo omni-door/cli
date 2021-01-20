@@ -3,8 +3,13 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.2.x
+### v2.2.7
+1. 「optimization」`omni init` add package management checking when in REPL style
+
+2. 「fix」`omni init` correct display content when not select any stylesheet
+
 ### v2.2.6
-1. 「optimization」npm-package latest 版本校验不阻塞程序运行
+1. 「optimization」npm-package latest version checking not block the program
 
 ### v2.2.5
 1. 「fix」`omni init` the `layout` value need transform

@@ -22,6 +22,38 @@ import { logo, signal } from '../../utils';
 /* import types */
 import type { PKJTOOL, STRATEGY } from '@omni-door/utils';
 
+type OptionType = {
+  react_basic?: boolean | string;
+  react_standard?: boolean | string;
+  react_entire?: boolean | string;
+  react_ssr?: boolean | string;
+  react_components?: boolean | string;
+  toolkit?: boolean | string;
+  install: boolean;
+};
+
+type BeforeRes = {
+  create_dir?: boolean;
+  dir_name?: string;
+  stdout?: boolean;
+};
+
+type AfterRes = {
+  success?: boolean;
+  msg?: string;
+};
+
+type OptionCustom = {
+  before?: (dirName: string) => (void | BeforeRes | Promise<BeforeRes>);
+  after?: () => (void | AfterRes | Promise<AfterRes>);
+  tplPkj?: string;
+  tplPkjTag?: string;
+  tplPkjParams?: string[];
+  pkjFieldName?: string;
+  configFileName?: string;
+  initPath?: string;
+};
+
 const ProjectDict = {
   'spa-react': 'spa-react (React单页应用)',
   'spa-react (React单页应用)': 'spa-react',
@@ -128,38 +160,6 @@ function presetTpl (type: Exclude<keyof OptionType, 'install'>) {
 
   return { cli, pkj };
 }
-
-type OptionType = {
-  react_basic?: boolean | string;
-  react_standard?: boolean | string;
-  react_entire?: boolean | string;
-  react_ssr?: boolean | string;
-  react_components?: boolean | string;
-  toolkit?: boolean | string;
-  install: boolean;
-};
-
-type BeforeRes = {
-  create_dir?: boolean;
-  dir_name?: string;
-  stdout?: boolean;
-};
-
-type AfterRes = {
-  success?: boolean;
-  msg?: string;
-};
-
-type OptionCustom = {
-  before?: (dirName: string) => (void | BeforeRes | Promise<BeforeRes>);
-  after?: () => (void | AfterRes | Promise<AfterRes>);
-  tplPkj?: string;
-  tplPkjTag?: string;
-  tplPkjParams?: string[];
-  pkjFieldName?: string;
-  configFileName?: string;
-  initPath?: string;
-};
 
 export default async function (strategy: STRATEGY, {
   react_basic,
@@ -434,6 +434,10 @@ export default async function (strategy: STRATEGY, {
           type: 'list',
           when: (answer: any) => {
             const projectType = getProjectType(answer);
+            if (answer.style.length === 0) {
+              ++currStep;
+              return false;
+            }
             if (projectType === 'spa-react') return true;
             return false;
           },
@@ -446,7 +450,7 @@ export default async function (strategy: STRATEGY, {
           type: 'checkbox',
           choices: (answer: any) => {
             const lintArr = [ 'eslint', 'prettier', 'commitlint', 'stylelint' ];
-            (answer.style === 'none' || getProjectType(answer) === 'toolkit') && lintArr.pop();
+            (answer.style.length === 0 || getProjectType(answer) === 'toolkit') && lintArr.pop();
             return lintArr;
           },
           message: function (answer: any) {
@@ -489,6 +493,8 @@ export default async function (strategy: STRATEGY, {
               lint = [],
               pkgtool = 'pnpm'
             } = answers;
+
+            await checkPkgTool(pkgtool);
 
             const eslint = !!~lint.indexOf('eslint');
             const prettier = !!~lint.indexOf('prettier');

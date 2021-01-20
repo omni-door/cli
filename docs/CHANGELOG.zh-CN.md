@@ -3,8 +3,13 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.2.x
+### v2.2.7
+1. 「optimization」`omni init` 新增对 REPL(命令行运行的交互式界面) 方式交互的包管理器校验
+
+2. 「fix」`omni init` 当未选择样式文件时，正确的展示后续内容
+
 ### v2.2.6
-1. 「optimization」npm-package latest version checking not block the program
+1. 「optimization」npm-package latest 版本校验不阻塞程序运行
 
 ### v2.2.5
 1. 「fix」`omni init` 对 `layout` 的值做转换
