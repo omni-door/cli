@@ -10,7 +10,7 @@ import {
   logSuc,
   node_version
 } from '@omni-door/utils';
-import { getHandlers, signal, logo, TPLTAG } from '../../utils';
+import { getHandlers, signal, logo } from '../../utils';
 /* import types */
 import type { OmniConfig, OmniPlugin } from '../../index.d';
 
@@ -182,7 +182,7 @@ export default async function (config: OmniConfig | null, componentName: string,
     root
   });
 
-  const newTpl = `${newTplPkj}@${tplPkjTag || TPLTAG ? `~${TPLTAG}` : 'latest'}`;
+  const newTpl = `${newTplPkj}@${tplPkjTag || 'latest'}`;
   logInfo(`正在下载 ${newTpl} 模板，请稍后... (Downloading the templates, please wait patiently…)`);
   exec(
     [

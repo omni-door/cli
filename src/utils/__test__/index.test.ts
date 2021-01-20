@@ -1,6 +1,6 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
-import { getHandlers, handlerFactory, logo, signal, TPLTAG, CLITAG } from '../';
+import { getHandlers, handlerFactory, logo, signal, getTag } from '../';
 
 
 describe('tackle_plugins test', function () {
@@ -75,8 +75,13 @@ describe('signal test', function () {
   });
 });
 
-describe('tag test', function () {
+describe('getTag test', function () {
   it('type checking', function () {
+    expect(getTag).to.be.a('function');
+  });
+
+  it('value checking', function () {
+    const { TPLTAG, CLITAG } = getTag();
     expect(TPLTAG).to.be.a('string');
     expect(CLITAG).to.be.a('undefined');
   });
