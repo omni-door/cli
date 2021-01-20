@@ -2,7 +2,6 @@ import program from 'commander';
 import leven from 'leven';
 import chalk from 'chalk';
 import { node_version, npm_version, logWarn, require_cwd, logEmph } from '@omni-door/utils';
-import { getTag } from '../utils';
 /* import types */
 import type { OmniConfig } from '../index.d';
 
@@ -90,7 +89,8 @@ const commandDicts = {
         changeCWD(workPath);
       }
 
-      const { CLITAG, TPLTAG } = getTag();
+      const CLITAG = pkj?.version?.match?.(/[a-zA-Z]+/g)?.[0];
+      const TPLTAG = pkj?.version?.match?.(/[0-9]\.[0-9]/g)?.[0];
       initial(strategy, options, { tplPkjTag: TPLTAG ? `~${TPLTAG}` : 'latest', tplPkjParams: [ `tag=${CLITAG || (TPLTAG ? `~${TPLTAG}` : 'latest')}` ] });
     });
 
@@ -151,7 +151,7 @@ const commandDicts = {
         changeCWD(workPath);
         getConfig();
       }
-      const { TPLTAG } = getTag();
+      const TPLTAG = pkj?.version?.match?.(/[0-9]\.[0-9]/g)?.[0];
       checkConfig();
       newTpl(config, componentName, { ...options, tplPkjTag: TPLTAG });
     });

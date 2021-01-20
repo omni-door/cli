@@ -6,6 +6,8 @@ English | [简体中文](./CHANGELOG.zh-CN.md)
 ### v2.2.8
 1. 「optimization」`omni init`, `omni new` make sure then cli's version and templates' version consistence
 
+2. 「fix」`omni init` install package manage tool exception handles
+
 ### v2.2.7
 1. 「optimization」`omni init` add package management checking when in REPL style
 

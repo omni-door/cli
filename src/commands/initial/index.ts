@@ -115,8 +115,19 @@ async function checkPkgTool (pkgtool: PKJTOOL) {
             reject(false);
             return process.exit(0);
           }
-          shelljs.exec(`npm i -g ${pkgtool}`, { async: false });
-          resolve(true);
+          try {
+            execSync(`npm i -g ${pkgtool}`, { stdio: 'ignore' });
+            resolve(true);
+          } catch (e) {
+            try {
+              execSync(`sudo npm i -g ${pkgtool}`, { stdio: 'inherit' });
+              resolve(true);
+            } catch (err) {
+              logWarn(err);
+              logWarn(`${pkgtool} 安装失败，请自行安装后再试！（The setup ${pkgtool} failed, please try it by yourself!）`);
+              process.exit(0);
+            }
+          }       
         });
       }
     } else {
