@@ -207,9 +207,9 @@ const commandDicts = {
         }
       });
     
-      logWarn(`Unknown command ${chalk.red(unknownCommand)}!`);
+      logWarn(`Unknown command ${chalk.red(`omni ${unknownCommand}`)}`);
       if (suggestion) {
-        logWarn(`Did you mean ${chalk.green(suggestion)}?`);
+        logWarn(`Try to ${chalk.green(`omni ${suggestion}`)}`);
       }
     });
 

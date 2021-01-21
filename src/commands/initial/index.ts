@@ -3,7 +3,6 @@ import path, { parse } from 'path';
 import { promisify } from 'util';
 import { execSync } from'child_process';
 import fsExtra from 'fs-extra';
-import shelljs from 'shelljs';
 import chalk from 'chalk';
 import figlet from 'figlet';
 import inquirer from 'inquirer';
