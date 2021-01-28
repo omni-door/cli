@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.2.x
+### v2.2.9
+1. 「fix」`omni dev` spa 项目 dev-server 通配符路由缺失
+
 ### v2.2.8
 1. 「optimization」`omni init`、`omni new` 脚手架版本号和模板版本号同步
 

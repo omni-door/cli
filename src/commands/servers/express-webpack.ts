@@ -1,3 +1,4 @@
+import fs from 'fs';
 import path from 'path';
 import http from 'http';
 import https from 'https';
@@ -96,6 +97,9 @@ export default function ({
 
   // favicon.ico
   app.use(favicon(faviconPath || path.resolve(__dirname, 'favicon.ico')));
+
+  // index.html for SPA browser router
+  app.use('*', devMiddleware);
 
   let server;
   let serverUrl = `${host}:${port}`;

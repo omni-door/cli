@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.2.x
+### v2.2.9
+1. 「fix」`omni dev` the spa project dev-server wildcard route
+
 ### v2.2.8
 1. 「optimization」`omni init`, `omni new` make sure then cli's version and templates' version consistence
 
