@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.2.x
+### v2.2.10
+1. 「fix」`omni init` toolkit 项目无法创建
+
 ### v2.2.9
 1. 「fix」`omni dev` spa 项目 dev-server 通配符路由缺失
 

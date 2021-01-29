@@ -444,11 +444,12 @@ export default async function (strategy: STRATEGY, {
           type: 'list',
           when: (answer: any) => {
             const projectType = getProjectType(answer);
-            if (answer.style.length === 0) {
+            if (projectType === 'spa-react') return true;
+
+            if (answer?.style?.length === 0) {
               ++currStep;
               return false;
             }
-            if (projectType === 'spa-react') return true;
             return false;
           },
           choices: [LayoutDict.viewport, LayoutDict.rem, LayoutDict.px],
@@ -460,7 +461,7 @@ export default async function (strategy: STRATEGY, {
           type: 'checkbox',
           choices: (answer: any) => {
             const lintArr = [ 'eslint', 'prettier', 'commitlint', 'stylelint' ];
-            (answer.style.length === 0 || getProjectType(answer) === 'toolkit') && lintArr.pop();
+            (answer?.style?.length === 0 || getProjectType(answer) === 'toolkit') && lintArr.pop();
             return lintArr;
           },
           message: function (answer: any) {

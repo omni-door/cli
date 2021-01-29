@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.2.x
+### v2.2.10
+1. 「fix」`omni init` cannot init toolkit project
+
 ### v2.2.9
 1. 「fix」`omni dev` the spa project dev-server wildcard route
 
