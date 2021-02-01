@@ -42,7 +42,7 @@ export default function ({
 }: EWServerParams) {
   const express = require_cwd('express');
   const favicon = require_cwd('serve-favicon');
-  const proxy = require_cwd('http-proxy-middleware');
+  const { createProxyMiddleware } = require_cwd('http-proxy-middleware');
   const webpack = require_cwd('webpack');
   const compiler: Compiler = webpack(webpackConfig);
   const devMiddleware: WebpackDevMiddleware & NextHandleFunction = require_cwd('webpack-dev-middleware')(compiler, {
@@ -75,7 +75,7 @@ export default function ({
 
     app.use(
       route,
-      proxy(config)
+      createProxyMiddleware(config)
     );
   }
 

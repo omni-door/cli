@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.2.x
+### v2.2.11
+1. 「fix」`omni dev` 更改 `http-proxy-middleware` 的 API
+
 ### v2.2.10
 1. 「fix」`omni init` toolkit 项目无法创建
 

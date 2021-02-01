@@ -1,7 +1,7 @@
 import program from 'commander';
 import leven from 'leven';
 import chalk from 'chalk';
-import { node_version, npm_version, logWarn, require_cwd, logEmph } from '@omni-door/utils';
+import { node_version, npm_version, logErr, logWarn, require_cwd, logEmph } from '@omni-door/utils';
 /* import types */
 import type { OmniConfig } from '../index.d';
 
@@ -207,9 +207,9 @@ const commandDicts = {
         }
       });
     
-      logWarn(`Unknown command ${chalk.red(`omni ${unknownCommand}`)}`);
+      logErr(`Unknown command ${chalk.bold(`omni ${unknownCommand}`)}`);
       if (suggestion) {
-        logWarn(`Try to ${chalk.green(`omni ${suggestion}`)}`);
+        logWarn(`Try to ${chalk.underline(chalk.green(`omni ${suggestion}`))}`);
       }
     });
 
