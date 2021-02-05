@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.2.x
+### v2.2.12
+1. 「upgrade」upgrade @omni-door/utils
+
 ### v2.2.11
 1. 「fix」`omni dev` change the `http-proxy-middleware`'s API
 
