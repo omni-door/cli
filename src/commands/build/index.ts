@@ -116,10 +116,10 @@ export default async function (
         message: `${logo()} 自动安装所需要的依赖? (Automatic install dependencies?)`,
         default: true
       }
-    ]).then(answers => {
+    ]).then(async answers => {
       const { install } = answers;
       if (install) {
-        const dependencies = dependencies_build({ build });
+        const dependencies = await dependencies_build({ build });
 
         // install tool pre-check
         let iTool = 'pnpm i --save-dev';

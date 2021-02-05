@@ -2,10 +2,10 @@ import { getDependency, arr2str } from '@omni-door/utils';
 /* import types */
 import type { BUILD } from '@omni-door/utils';
 
-export default function (config: {
+export default async function (config: {
   build: BUILD;
 }) {
-  const dependency = getDependency('stable', {
+  const dependency = await getDependency('stable', {
     '@babel/core': '~7.10.0',
     '@babel/preset-env': '~7.10.0',
     '@babel/preset-react': '~7.10.0',
