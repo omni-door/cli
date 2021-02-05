@@ -54,16 +54,18 @@ describe('build command test', function () {
     expect(config2).to.be.a('string');
   });
 
-  it('call dependencies', function () {
-    const webpackDependencies = dependencies({
+  it('call dependencies', function (done) {
+    dependencies({
       build: 'webpack'
+    }).then(webpackDependencies => {
+      expect(webpackDependencies).to.be.a('string');
+      expect(!!~webpackDependencies.indexOf('webpack')).to.be.true;
+      dependencies({
+        build: 'rollup'
+      }).then(rollupDependencies => {
+        expect(!!~rollupDependencies.indexOf('rollup')).to.be.true;
+        done();
+      });
     });
-    expect(webpackDependencies).to.be.a('string');
-    expect(!!~webpackDependencies.indexOf('webpack')).to.be.true;
-
-    const rollupDependencies = dependencies({
-      build: 'rollup'
-    });
-    expect(!!~rollupDependencies.indexOf('rollup')).to.be.true;
   });
 });
