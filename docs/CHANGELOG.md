@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.2.x
+### v2.2.13
+1. 「fix」`omni dev` the dev-server crash because favicon.icon not exist
+
 ### v2.2.12
 1. 「upgrade」upgrade @omni-door/utils
 

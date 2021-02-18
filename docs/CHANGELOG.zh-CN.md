@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.2.x
+### v2.2.13
+1. 「fix」`omni dev` favicon.icon 不存在的导致开发服务崩溃
+
 ### v2.2.12
 1. 「upgrade」升级 @omni-door/utils
 

@@ -96,7 +96,8 @@ export default function ({
   }
 
   // favicon.ico
-  app.use(favicon(faviconPath || path.resolve(__dirname, 'favicon.ico')));
+  const icoPath = faviconPath && fs.existsSync(faviconPath) ? faviconPath : path.resolve(__dirname, 'favicon.ico');
+  fs.existsSync(icoPath) && app.use(favicon(icoPath));
 
   // index.html for SPA browser router
   app.use('*', devMiddleware);
