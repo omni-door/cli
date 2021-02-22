@@ -2,6 +2,12 @@
 
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
+## v2.3.x
+### v2.3.0
+1. 「optimization」`omni init`、`omni new` add cli latest version update-notification
+
+2. 「upgrade」upgrade @omni-door/utils and replace APIs
+
 ## v2.2.x
 ### v2.2.13
 1. 「fix」`omni dev` the dev-server crash because favicon.icon not exist

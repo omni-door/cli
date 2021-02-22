@@ -18,8 +18,8 @@ import {
   logTime,
   underline,
   italic,
-  output_file,
-  node_version
+  outputFile,
+  nodeVersionCheck
 } from '@omni-door/utils';
 import { getHandlers, logo, signal } from '../../utils';
 import dependencies_build from './dependencies_build';
@@ -41,7 +41,7 @@ export default async function (
 ) {
   try {
     // node version pre-check
-    await node_version('10.13.0');
+    await nodeVersionCheck('10.13.0');
   } catch (e) {
     logWarn(e);
   }
@@ -323,7 +323,7 @@ export default async function (
 
         if (!is_go_on) return process.exit(0);
 
-        output_file({
+        outputFile({
           file_path: buildConfigPath,
           file_content: content_config
         });

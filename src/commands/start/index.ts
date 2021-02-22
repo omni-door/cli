@@ -1,5 +1,5 @@
 import path from 'path';
-import { logWarn, node_version, require_cwd, exec } from '@omni-door/utils';
+import { logWarn, nodeVersionCheck, requireCwd, exec } from '@omni-door/utils';
 import { KNServer } from '../servers';
 /* import types */
 import type { OmniConfig } from '../../index.d';
@@ -15,7 +15,7 @@ export default async function (config: OmniConfig | null, options: {
 }) {
   try {
     // node version pre-check
-    await node_version('8');
+    await nodeVersionCheck('8');
   } catch (e) {
     logWarn(e);
   }
@@ -40,7 +40,7 @@ export default async function (config: OmniConfig | null, options: {
 
   const p = options.port;
   const h = options.hostname;
-  const ip = require_cwd('ip');
+  const ip = requireCwd('ip');
   const ipAddress: string = ip.address();
   const CWD = process.cwd();
   const _port = (p ? +p : port) || 6200;

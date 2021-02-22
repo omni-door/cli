@@ -14,8 +14,8 @@ import {
   logErr,
   logWarn,
   getBrand,
-  node_version,
-  name_check
+  nodeVersionCheck,
+  pkgNameCheck
 } from '@omni-door/utils';
 import { logo, signal } from '../../utils';
 /* import types */
@@ -182,7 +182,7 @@ export default async function (strategy: STRATEGY, {
 }: OptionType, option?: OptionCustom) {
   try {
     // node version pre-check
-    await node_version('10.13.0');
+    await nodeVersionCheck('10.13.0');
   } catch (e) {
     logWarn(e);
   }
@@ -251,7 +251,7 @@ export default async function (strategy: STRATEGY, {
     spinner.color('green');
     spinner.prefix('arrow3');
     if (presetType) {
-      name_check(projectName);
+      pkgNameCheck(projectName);
       if (fs.existsSync(configPath)) {
         configFileExist = true;
         // double confirmation
@@ -296,7 +296,7 @@ export default async function (strategy: STRATEGY, {
             return `${logo()}[${currStep}/${totalStep}] 确定要覆盖已经存在的 [${name}] 文件夹? (Are you sure to overwrite [${name}] directory?)`;
           },
           when: async function (answer: any) {
-            isValidName = name_check(answer.name, true);
+            isValidName = pkgNameCheck(answer.name, true);
             const { name, overwrite_dir } = answer;
             return isValidName && !configFileExist && !overwrite_dir && await isDir(name);
           }

@@ -4,9 +4,9 @@ import * as mkcert from 'mkcert';
 import {
   logWarn,
   logErr,
-  require_cwd,
+  requireCwd,
   exec,
-  output_file
+  outputFile
 } from '@omni-door/utils';
 import { EWServer, KNServer } from '../servers';
 import open from './open';
@@ -72,7 +72,7 @@ async function server ({
 }: ServerOptions): Promise<void> {
   try {
     const CWD = process.cwd();
-    const ip = require_cwd('ip');
+    const ip = requireCwd('ip');
     const ipAddress: string = ip.address();
     const serverHost = host || '0.0.0.0';
     const openHost = host || ipAddress || '0.0.0.0';
@@ -126,11 +126,11 @@ async function server ({
               });
               key = certificate.key;
               cert = certificate.cert;
-              output_file({
+              outputFile({
                 file_path: keyPath,
                 file_content: key
               });
-              output_file({
+              outputFile({
                 file_path: certPath,
                 file_content: cert
               });

@@ -8,20 +8,20 @@ export default function (config: {
   return `'use strict';
 
 const path = require('path');
-const { require_cwd } = require('@omni-door/utils');
-const gulp = require_cwd('gulp');
-const babel = require_cwd('gulp-babel');
-const less = require_cwd('gulp-less', true);
-const sass = require_cwd('gulp-sass', true);
-const gulpif = require_cwd('gulp-if');
-const alias = require_cwd('gulp-ts-alias');
-const typescript = require_cwd('gulp-typescript');
-const sourcemaps = require_cwd('gulp-sourcemaps');
-const autoprefixer = require_cwd('gulp-autoprefixer');
-const cssnano = require_cwd('gulp-cssnano');
-const concat = require_cwd('gulp-concat');
-const minifycss = require_cwd('gulp-minify-css');
-const through2 = require_cwd('through2');
+const { requireCwd } = require('@omni-door/utils');
+const gulp = requireCwd('gulp');
+const babel = requireCwd('gulp-babel');
+const less = requireCwd('gulp-less', true);
+const sass = requireCwd('gulp-sass', true);
+const gulpif = requireCwd('gulp-if');
+const alias = requireCwd('gulp-ts-alias');
+const typescript = requireCwd('gulp-typescript');
+const sourcemaps = requireCwd('gulp-sourcemaps');
+const autoprefixer = requireCwd('gulp-autoprefixer');
+const cssnano = requireCwd('gulp-cssnano');
+const concat = requireCwd('gulp-concat');
+const minifycss = requireCwd('gulp-minify-css');
+const through2 = requireCwd('through2');
 
 const project = typescript && typescript.createProject('tsconfig.json');
 

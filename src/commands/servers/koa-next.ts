@@ -1,7 +1,7 @@
 import path from 'path';
 import http from 'http';
 import https from 'https';
-import { logInfo, logWarn, logErr, require_cwd, _typeof } from '@omni-door/utils';
+import { logInfo, logWarn, logErr, requireCwd, _typeof } from '@omni-door/utils';
 import open from '../dev/open';
 /* import types */
 import type NextServer from 'next-server/dist/server/next-server';
@@ -35,14 +35,14 @@ export default function ({
   httpsConfig,
   nextRouter
 }: KNServerParams) {
-  const Koa = require_cwd('koa');
-  const next = require_cwd('next');
-  const Router = require_cwd('koa-router');
-  const bodyParser = require_cwd('koa-bodyparser');
-  const k2c = require_cwd('koa2-connect');
-  const statics = require_cwd('koa-static');
-  const proxy = require_cwd('http-proxy-middleware');
-  const { pathToRegexp } = require_cwd('path-to-regexp');
+  const Koa = requireCwd('koa');
+  const next = requireCwd('next');
+  const Router = requireCwd('koa-router');
+  const bodyParser = requireCwd('koa-bodyparser');
+  const k2c = requireCwd('koa2-connect');
+  const statics = requireCwd('koa-static');
+  const proxy = requireCwd('http-proxy-middleware');
+  const { pathToRegexp } = requireCwd('path-to-regexp');
   const publicPath = path.resolve(process.cwd(), 'public');
 
   const nextApp: NextServer = next({ dev });

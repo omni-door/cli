@@ -1,7 +1,7 @@
 import program from 'commander';
 import leven from 'leven';
 import chalk from 'chalk';
-import { node_version, npm_version, logErr, logWarn, require_cwd, logEmph } from '@omni-door/utils';
+import { nodeVersionCheck, npmVersionCheck, updateNotifier, logErr, logWarn, requireCwd, logEmph } from '@omni-door/utils';
 /* import types */
 import type { OmniConfig } from '../index.d';
 
@@ -16,7 +16,7 @@ const commandDicts = {
 
 (async function () {
   try {
-    await node_version('10.13.0');
+    await nodeVersionCheck('10.13.0');
   } catch (e) {
     logWarn(e);
   }
@@ -33,14 +33,11 @@ const commandDicts = {
   let configFilePath = './omni.config.js';
   getConfig();
 
-  // npm-package latest version checking
-  npm_version(pkj.name || '@omni-door/cli', pkj.version);
-
   function getConfig () {
     try {
-      const ppkj = require_cwd('./package.json', true);
+      const ppkj = requireCwd('./package.json', true);
       configFilePath = ppkj?.omni?.filePath || configFilePath;
-      config = require_cwd(configFilePath, isSlient);
+      config = requireCwd(configFilePath, isSlient);
     } catch (e) {
       logWarn(e);
     }
@@ -84,6 +81,8 @@ const commandDicts = {
     })
     .usage('[strategy] [options]')
     .action((strategy, options) => {
+      updateNotifier(pkj);
+
       const workPath = options.path;
       if (workPath) {
         changeCWD(workPath);
@@ -105,6 +104,8 @@ const commandDicts = {
       path: 'The cli workpath for running dev-server.'
     })
     .action((options) => {
+      npmVersionCheck(pkj.name, pkj.version);
+
       const workPath = options.path;
       if (workPath) {
         changeCWD(workPath);
@@ -126,6 +127,8 @@ const commandDicts = {
       path: 'The cli workpath for running prod-server.'
     })
     .action((options) => {
+      npmVersionCheck(pkj.name, pkj.version);
+
       const workPath = options.path;
       if (workPath) {
         changeCWD(workPath);
@@ -146,6 +149,8 @@ const commandDicts = {
     })
     .usage('[name] [options]')
     .action((componentName, options) => {
+      updateNotifier(pkj);
+
       const workPath = options.path;
       if (workPath) {
         changeCWD(workPath);
@@ -163,6 +168,8 @@ const commandDicts = {
     .option('-P, --path <path>', 'the workpath for build project')
     .description('build your project according to the [omni.config.js]\'s build field')
     .action((buildTactic) => {
+      npmVersionCheck(pkj.name, pkj.version);
+
       const workPath = buildTactic.path;
       if (workPath) {
         changeCWD(workPath);
@@ -183,6 +190,8 @@ const commandDicts = {
     .option('-P, --path <path>', 'the workpath for release project')
     .description('publish your project according to the [omni.config.js]\'s release field')
     .action((iterTactic) => {
+      npmVersionCheck(pkj.name, pkj.version);
+
       const workPath = iterTactic.path;
       if (workPath) {
         changeCWD(workPath);

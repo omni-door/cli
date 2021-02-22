@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import http from 'http';
 import https from 'https';
-import { logInfo, require_cwd } from '@omni-door/utils';
+import { logInfo, requireCwd } from '@omni-door/utils';
 import open from '../dev/open';
 /* import types */
 import type { Express } from 'express';
@@ -40,16 +40,16 @@ export default function ({
   httpsConfig,
   favicon: faviconPath
 }: EWServerParams) {
-  const express = require_cwd('express');
-  const favicon = require_cwd('serve-favicon');
-  const { createProxyMiddleware } = require_cwd('http-proxy-middleware');
-  const webpack = require_cwd('webpack');
+  const express = requireCwd('express');
+  const favicon = requireCwd('serve-favicon');
+  const { createProxyMiddleware } = requireCwd('http-proxy-middleware');
+  const webpack = requireCwd('webpack');
   const compiler: Compiler = webpack(webpackConfig);
-  const devMiddleware: WebpackDevMiddleware & NextHandleFunction = require_cwd('webpack-dev-middleware')(compiler, {
+  const devMiddleware: WebpackDevMiddleware & NextHandleFunction = requireCwd('webpack-dev-middleware')(compiler, {
     publicPath: '/',
     ...devMiddlewareOptions
   });
-  const hotMiddleware= require_cwd('webpack-hot-middleware');
+  const hotMiddleware= requireCwd('webpack-hot-middleware');
  
   const app: Express = express();
 

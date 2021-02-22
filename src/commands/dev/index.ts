@@ -1,5 +1,5 @@
 import run from './run';
-import { logWarn, node_version } from '@omni-door/utils';
+import { logWarn, nodeVersionCheck } from '@omni-door/utils';
 import { signal } from '../../utils';
 /* import types */
 import type { OmniConfig } from '../../index.d';
@@ -15,7 +15,7 @@ export default async function (config: OmniConfig | null, options: {
 }) {
   try {
     // node version pre-check
-    await node_version('8');
+    await nodeVersionCheck('8');
   } catch (e) {
     logWarn(e);
   }

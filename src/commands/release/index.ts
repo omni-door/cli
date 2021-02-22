@@ -12,7 +12,7 @@ import {
   logTime,
   italic,
   underline,
-  node_version,
+  nodeVersionCheck,
   logPrefix
 } from '@omni-door/utils';
 import { getHandlers, signal, logo } from '../../utils';
@@ -43,7 +43,7 @@ export default async function (
 ) {
   try {
     // node version pre-check
-    await node_version('8');
+    await nodeVersionCheck('8');
   } catch (e) {
     logWarn(e);
   }

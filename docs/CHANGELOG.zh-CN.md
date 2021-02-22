@@ -2,6 +2,12 @@
 
 [English](./CHANGELOG.md) | 简体中文
 
+## v2.3.x
+### v2.3.0
+1. 「optimization」`omni init`、`omni new` 新增脚手架 latest 版本的更新提示
+
+2. 「upgrade」升级 @omni-door/utils，并替换 API
+
 ## v2.2.x
 ### v2.2.13
 1. 「fix」`omni dev` favicon.icon 不存在的导致开发服务崩溃

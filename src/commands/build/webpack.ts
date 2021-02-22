@@ -24,12 +24,12 @@ export default function (config: {
 
 const fs = require('fs');
 const path = require('path');
-const { require_cwd } = require('@omni-door/utils');
-const merge = require_cwd('webpack-merge');
+const { requireCwd } = require('@omni-door/utils');
+const merge = requireCwd('webpack-merge');
 
-const ppkj = require_cwd('./package.json');
+const ppkj = requireCwd('./package.json');
 const configFilePath = (ppkj && ppkj.${pkjFieldName} && ppkj.${pkjFieldName}.filePath) || './${configFileName}';
-const configs = require_cwd(configFilePath);
+const configs = requireCwd(configFilePath);
 ${configurationPath ? `const customConfig = require('${configurationPath}')` : ''}
 
 const { build } = configs || {};

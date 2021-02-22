@@ -8,7 +8,7 @@ import {
   logInfo,
   logWarn,
   logSuc,
-  node_version
+  nodeVersionCheck
 } from '@omni-door/utils';
 import { getHandlers, signal, logo } from '../../utils';
 /* import types */
@@ -35,7 +35,7 @@ export default async function (config: OmniConfig | null, componentName: string,
 }) {
   try {
     // node version pre-check
-    await node_version('8');
+    await nodeVersionCheck('8');
   } catch (e) {
     logWarn(e);
   }
