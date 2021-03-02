@@ -41,16 +41,20 @@ export default async function (config: OmniConfig | null, componentName: string,
   }
 
   if (!config || JSON.stringify(config) === '{}') {
-    handleException('请先初始化项目！(Please initialize an omni-project first!)');
+    handleException('请先初始化项目！(Please initialize first!)');
   }
 
   const {
-    type = 'spa-react',
+    type,
     template,
     build,
     release,
     plugins
   } = config!;
+
+  if (!type) {
+    handleException('项目类型缺失！(Cannot find the project type!)');
+  }
 
   const {
     root,
@@ -98,7 +102,7 @@ export default async function (config: OmniConfig | null, componentName: string,
           if (!answer.name && !componentName) {
             handleException(`请输入创建的${module_cn}名称！(Please input the ${module_en} name!)`);
           }
-          if (type === 'toolkit' || fc || cc) {
+          if (type === 'spa-vue' || type === 'toolkit' || fc || cc) {
             return false;
           }
           return true;
@@ -163,6 +167,9 @@ export default async function (config: OmniConfig | null, componentName: string,
     switch (type) {
       case 'spa-react':
         newTplPkj = '@omni-door/tpl-spa-react';
+        break;
+      case 'spa-vue':
+        newTplPkj = '@omni-door/tpl-spa-vue';
         break;
       case 'ssr-react':
         newTplPkj = '@omni-door/tpl-ssr-react';

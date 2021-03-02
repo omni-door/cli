@@ -71,6 +71,48 @@ export const cli_entire_react: GInstallCli = {
   stylelint: true
 };
 
+export const cli_basic_vue: GInstallCli = {
+  project_type: 'spa-vue',
+  pkgtool: 'pnpm',
+  build: 'webpack',
+  ts: false,
+  testFrame: '',
+  eslint: false,
+  prettier: false,
+  commitlint: false,
+  style: 'css',
+  layout: 'px',
+  stylelint: false
+};
+
+export const cli_standard_vue: GInstallCli = {
+  project_type: 'spa-vue',
+  pkgtool: 'pnpm',
+  build: 'webpack',
+  ts: true,
+  testFrame: '',
+  eslint: true,
+  prettier: true,
+  commitlint: false,
+  style: 'less',
+  layout: 'px',
+  stylelint: true
+};
+
+export const cli_entire_vue: GInstallCli = {
+  project_type: 'spa-vue',
+  pkgtool: 'pnpm',
+  build: 'webpack',
+  ts: true,
+  testFrame: 'jest',
+  eslint: true,
+  prettier: true,
+  commitlint: true,
+  style: 'all',
+  layout: 'px',
+  stylelint: true
+};
+
 export const cli_ssr_react: GInstallCli = {
   project_type: 'ssr-react',
   pkgtool: 'pnpm',
@@ -116,6 +158,9 @@ export default {
   cli_basic_react,
   cli_standard_react,
   cli_entire_react,
+  cli_basic_vue,
+  cli_standard_vue,
+  cli_entire_vue,
   cli_ssr_react,
   cli_components_react,
   cli_toolkit

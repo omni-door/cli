@@ -95,7 +95,10 @@ Arguments:
 Options:
   -rb, --react_basic [name]       create a basic React SPA project
   -rs, --react_standard [name]    create a standard React SPA project
-  -re, --react_entire [name]      create a most versatile React SPA project
+  -re, --vue_entire [name]      create a most versatile React SPA project
+  -vb, --vue_basic [name]       create a basic Vue SPA project
+  -vs, --vue_standard [name]    create a standard Vue SPA project
+  -ve, --vue_entire [name]      create a most versatile Vue SPA project
   -rS, --react_ssr [name]         create a React component library
   -rc, --react_components [name]  create a React component library
   -t, --toolkit [name]            create a toolkit project
@@ -153,8 +156,8 @@ Arguments:
   name              optional! The name of component.
 
 Options:
-  -f, --function    create a functional component
-  -c, --class       create a class component
+  -f, --function    create a React functional component
+  -c, --class       create a React class component
   -P, --path <path>  the workpath for create component
   -h, --help        output usage information
 ```

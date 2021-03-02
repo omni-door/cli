@@ -90,6 +90,9 @@ Arguments:
     -rb, --react_basic [name]       创建一个最基本的 React 单页应用
     -rs, --react_standard [name]    创建一个标准的 React 单页应用
     -re, --react_entire [name]      创建一个全量的 React 单页应用
+    -vb, --vue_basic [name]       创建一个最基本的 Vue 单页应用
+    -vs, --vue_standard [name]    创建一个标准的 Vue 单页应用
+    -ve, --vue_entire [name]      创建一个全量的 Vue 单页应用
     -rS, --react_ssr [name]         创建一个 React SSR 应用
     -rc, --react_components [name]  创建一个 React 组件库
     -t, --toolkit [name]            创建一个工具库
@@ -147,8 +150,8 @@ Arguments:
   module           可选！组件名称。
 
 Options:
-  -f, --function     创建一个函数组件
-  -c, --class        创建一个类组件
+  -f, --function     创建一个React函数组件
+  -c, --class        创建一个React类组件
   -P, --path <path>  创建组件的工作路径
   -h, --help        output usage information
 ```

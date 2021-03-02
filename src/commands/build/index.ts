@@ -119,7 +119,7 @@ export default async function (
     ]).then(async answers => {
       const { install } = answers;
       if (install) {
-        const dependencies = await dependencies_build({ build });
+        const dependencies = await dependencies_build({ build, project_type: type });
 
         // install tool pre-check
         let iTool = 'pnpm i --save-dev';
@@ -271,7 +271,7 @@ export default async function (
       buildCliArr.push(`${nextPath} build`);
     } else {
       const content_rollup = !buildConfig && type === 'toolkit' && rollupConfig({ ts: typescript, multiOutput: true, srcDir, outDir, esmDir, configurationPath, pkjFieldName, configFileName });
-      const content_webpack = !buildConfig && type === 'spa-react' && webpackConfig({ ts: typescript, multiOutput: false, srcDir, outDir, configurationPath, pkjFieldName, configFileName, hash });
+      const content_webpack = !buildConfig && (type === 'spa-react' || type === 'spa-vue') && webpackConfig({ ts: typescript, multiOutput: false, srcDir, outDir, configurationPath, pkjFieldName, configFileName, hash });
       const content_gulp = !buildConfig && type === 'component-react' && gulpConfig({ srcDir, outDir, esmDir });
       const content_config = buildConfig || content_rollup || content_webpack || content_gulp;
 
@@ -289,7 +289,7 @@ export default async function (
           }
 
           buildCliArr.push(`${rollupPath} -c ${buildConfigPath}`);
-        } else if (type === 'spa-react') {
+        } else if (type === 'spa-react' || type === 'spa-vue') {
           const webpackPath = buildCliPath.webpack;
 
           if (!fs.existsSync(webpackPath)) {
@@ -328,7 +328,7 @@ export default async function (
           file_content: content_config
         });
 
-        if (type === 'spa-react') {
+        if (type === 'spa-react' || type === 'spa-vue') {
           const bConfig = require(buildConfigPath);
           realOutDir = (bConfig && bConfig.output && bConfig.output.path) || outDir;
         }

@@ -1,9 +1,10 @@
 import { getDependency, arr2str } from '@omni-door/utils';
 /* import types */
-import type { BUILD } from '@omni-door/utils';
+import type { BUILD, PROJECT_TYPE } from '@omni-door/utils';
 
 export default async function (config: {
   build: BUILD;
+  project_type: PROJECT_TYPE;
 }) {
   const dependency = await getDependency('stable', {
     '@babel/core': '~7.10.0',
@@ -27,6 +28,7 @@ export default async function (config: {
     'style-loader': '~1.1.3',
     'terser-webpack-plugin': '2.3.4',
     'url-loader': '~3.0.0',
+    'vue-loader': 'next',
     'webpack': '~4.41.6',
     'webpack-bundle-analyzer': '3.6.0',
     'webpack-cli': '~3.3.11',
@@ -67,13 +69,15 @@ export default async function (config: {
     'next-transpile-modules': '~4.0.2',
   });
   const {
-    build
+    build,
+    project_type
   } = config;
 
   const buildDependencies = build === 'webpack' ? [
     dependency('webpack'),
     dependency('webpack-cli'),
     dependency('webpack-merge'),
+    project_type === 'spa-vue' ? dependency('vue-loader') : '',
     dependency('babel-loader'),
     dependency('cache-loader'),
     dependency('style-loader'),

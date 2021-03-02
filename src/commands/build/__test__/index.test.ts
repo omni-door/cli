@@ -56,12 +56,14 @@ describe('build command test', function () {
 
   it('call dependencies', function (done) {
     dependencies({
-      build: 'webpack'
+      build: 'webpack',
+      project_type: 'spa-react'
     }).then(webpackDependencies => {
       expect(webpackDependencies).to.be.a('string');
       expect(!!~webpackDependencies.indexOf('webpack')).to.be.true;
       dependencies({
-        build: 'rollup'
+        build: 'rollup',
+        project_type: 'toolkit'
       }).then(rollupDependencies => {
         expect(!!~rollupDependencies.indexOf('rollup')).to.be.true;
         done();

@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.3.x
+### v2.3.1
+1. 「feat」支持 `spa-vue` 项目
+
 ### v2.3.0
 1. 「optimization」`omni init`、`omni new` 新增脚手架 latest 版本的更新提示
 

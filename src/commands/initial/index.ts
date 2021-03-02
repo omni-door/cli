@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path, { parse } from 'path';
 import { promisify } from 'util';
-import { execSync } from'child_process';
+import { execSync } from 'child_process';
 import fsExtra from 'fs-extra';
 import chalk from 'chalk';
 import figlet from 'figlet';
@@ -25,6 +25,9 @@ type OptionType = {
   react_basic?: boolean | string;
   react_standard?: boolean | string;
   react_entire?: boolean | string;
+  vue_basic?: boolean | string;
+  vue_standard?: boolean | string;
+  vue_entire?: boolean | string;
   react_ssr?: boolean | string;
   react_components?: boolean | string;
   toolkit?: boolean | string;
@@ -56,6 +59,8 @@ type OptionCustom = {
 const ProjectDict = {
   'spa-react': 'spa-react (React单页应用)',
   'spa-react (React单页应用)': 'spa-react',
+  'spa-vue': 'spa-vue (Vue单页应用)',
+  'spa-vue (Vue单页应用)': 'spa-vue',
   'ssr-react': 'ssr-react (React服务端渲染应用)',
   'ssr-react (React服务端渲染应用)': 'ssr-react',
   'component-react': 'component-react (React组件库)',
@@ -73,7 +78,7 @@ const LayoutDict = {
 
 const stat = promisify(fs.stat);
 
-async function isDir (dirName: string) {
+async function isDir(dirName: string) {
   const dirPath = path.resolve(process.cwd(), dirName);
   if (fs.existsSync(dirPath)) {
     try {
@@ -81,13 +86,13 @@ async function isDir (dirName: string) {
       if (stats.isDirectory()) {
         return true;
       }
-    // eslint-disable-next-line no-empty
-    } catch (e) {}
+      // eslint-disable-next-line no-empty
+    } catch (e) { }
   }
   return false;
 }
 
-async function checkPkgTool (pkgtool: PKJTOOL) {
+async function checkPkgTool(pkgtool: PKJTOOL) {
   // install tool precheck
   return new Promise((resolve, reject) => {
     let hasTool = true;
@@ -126,7 +131,7 @@ async function checkPkgTool (pkgtool: PKJTOOL) {
               logWarn(`${pkgtool} 安装失败，请自行安装后再试！（The setup ${pkgtool} failed, please try it by yourself!）`);
               process.exit(0);
             }
-          }       
+          }
         });
       }
     } else {
@@ -135,13 +140,13 @@ async function checkPkgTool (pkgtool: PKJTOOL) {
   });
 }
 
-function mkdir (dirPath: string) {
+function mkdir(dirPath: string) {
   dirPath && fsExtra.ensureDirSync(dirPath, { mode: 0o2777 });
 }
 
-function presetTpl (type: Exclude<keyof OptionType, 'install'>) {
+function presetTpl(type: Exclude<keyof OptionType, 'install'>) {
   let cli, pkj = '';
-  switch(type) {
+  switch (type) {
     case 'react_basic':
       cli = presetCli.cli_basic_react;
       pkj = '@omni-door/tpl-spa-react';
@@ -153,6 +158,18 @@ function presetTpl (type: Exclude<keyof OptionType, 'install'>) {
     case 'react_entire':
       cli = presetCli.cli_entire_react;
       pkj = '@omni-door/tpl-spa-react';
+      break;
+    case 'vue_basic':
+      cli = presetCli.cli_basic_vue;
+      pkj = '@omni-door/tpl-spa-vue';
+      break;
+    case 'vue_standard':
+      cli = presetCli.cli_standard_vue;
+      pkj = '@omni-door/tpl-spa-vue';
+      break;
+    case 'vue_entire':
+      cli = presetCli.cli_entire_vue;
+      pkj = '@omni-door/tpl-spa-vue';
       break;
     case 'react_ssr':
       cli = presetCli.cli_ssr_react;
@@ -175,6 +192,9 @@ export default async function (strategy: STRATEGY, {
   react_basic,
   react_standard,
   react_entire,
+  vue_basic,
+  vue_standard,
+  vue_entire,
   react_ssr,
   react_components,
   toolkit,
@@ -210,7 +230,7 @@ export default async function (strategy: STRATEGY, {
     initPath: customInitPath
   } = option || {};
 
-  const tplParams: string[] = [ `install=${install}` ];
+  const tplParams: string[] = [`install=${install}`];
   let configPath = path.resolve(configFileName);
 
   const CWD = process.cwd();
@@ -233,6 +253,9 @@ export default async function (strategy: STRATEGY, {
     react_basic,
     react_standard,
     react_entire,
+    vue_basic,
+    vue_standard,
+    vue_entire,
     react_ssr,
     react_components,
     toolkit
@@ -324,11 +347,12 @@ export default async function (strategy: STRATEGY, {
           type: 'confirm',
           message: `${logo()} 确定要覆盖已经存在的 [${configFileName}] 文件? (Are you sure to overwrite [${configFileName}]?)`,
           default: false
-        },{
+        }, {
           name: 'project_type',
           type: 'list',
           choices: [
             ProjectDict['spa-react'],
+            ProjectDict['spa-vue'],
             ProjectDict['ssr-react'],
             ProjectDict['component-react'],
             ProjectDict['toolkit']
@@ -340,13 +364,14 @@ export default async function (strategy: STRATEGY, {
             }
             return true;
           }
-        },{
+        }, {
           name: 'name',
           type: 'input',
           message: function (answer: any) {
             const projectType = getProjectType(answer);
             switch (projectType) {
               case 'spa-react':
+              case 'spa-vue':
                 totalStep = install ? 8 : 7;
                 break;
               case 'ssr-react':
@@ -369,9 +394,9 @@ export default async function (strategy: STRATEGY, {
           choices: function (answer: any) {
             const projectType = getProjectType(answer);
             if (projectType === 'ssr-react') {
-              return [ 'next', 'koa-next' ];
+              return ['next', 'koa-next'];
             }
-            return [ 'docz', 'storybook', 'styleguidist', 'bisheng' ];
+            return ['docz', 'storybook', 'styleguidist', 'bisheng'];
           },
           default: function (answer: any) {
             const projectType = getProjectType(answer);
@@ -397,7 +422,7 @@ export default async function (strategy: STRATEGY, {
             }
             return false;
           }
-        },{
+        }, {
           name: 'ts',
           type: 'confirm',
           message: function (answer: any) {
@@ -406,12 +431,12 @@ export default async function (strategy: STRATEGY, {
           default: true,
           when: function (answer: any) {
             const projectType = getProjectType(answer);
-            if (projectType === 'spa-react' || projectType === 'ssr-react') {
+            if (projectType === 'spa-react' || projectType === 'spa-vue' || projectType === 'ssr-react') {
               return true;
             }
             return false;
           }
-        },{
+        }, {
           name: 'test',
           type: 'confirm',
           message: function (answer: any) {
@@ -420,31 +445,31 @@ export default async function (strategy: STRATEGY, {
           default: (answer: any) => getProjectType(answer) !== 'spa-react' && getProjectType(answer) !== 'ssr-react',
           when: function (answer: any) {
             const projectType = getProjectType(answer);
-            if (projectType === 'spa-react' || projectType === 'ssr-react') {
+            if (projectType === 'spa-react' || projectType === 'spa-vue' || projectType === 'ssr-react') {
               return true;
             }
             return false;
           }
-        },{
+        }, {
           name: 'style',
           type: 'checkbox',
-          choices: [ 'css', 'less', 'scss' ],
+          choices: ['css', 'less', 'scss'],
           message: function (answer: any) {
             return `${logo()}[${++currStep}/${totalStep}] 选择样式文件 (Please select the stylesheets)`;
           },
-          default: [ 'css' ],
+          default: ['css'],
           when: function (answer: any) {
             if (getProjectType(answer) === 'toolkit') {
               return false;
             }
             return true;
           }
-        },{
+        }, {
           name: 'layout',
           type: 'list',
           when: (answer: any) => {
             const projectType = getProjectType(answer);
-            if (projectType === 'spa-react') return true;
+            if (projectType === 'spa-react' || projectType === 'spa-vue') return true;
 
             if (answer?.style?.length === 0) {
               ++currStep;
@@ -456,22 +481,22 @@ export default async function (strategy: STRATEGY, {
           message: function (answer: any) {
             return `${logo()}[${++currStep}/${totalStep}] 选择布局适配方案 (Please select layout plan)`;
           }
-        },{
+        }, {
           name: 'lint',
           type: 'checkbox',
           choices: (answer: any) => {
-            const lintArr = [ 'eslint', 'prettier', 'commitlint', 'stylelint' ];
+            const lintArr = ['eslint', 'prettier', 'commitlint', 'stylelint'];
             (answer?.style?.length === 0 || getProjectType(answer) === 'toolkit') && lintArr.pop();
             return lintArr;
           },
           message: function (answer: any) {
             return `${logo()}[${++currStep}/${totalStep}] 选择lint工具 (Please select the lint tools)：`;
           },
-          default: [ 'eslint' ]
-        },{
+          default: ['eslint']
+        }, {
           name: 'pkgtool',
           type: 'list',
-          choices: [ 'pnpm', 'yarn', 'npm' ],
+          choices: ['pnpm', 'yarn', 'npm'],
           when: function () {
             if (!install) return false;
             return true;
@@ -545,6 +570,9 @@ export default async function (strategy: STRATEGY, {
               case 'spa-react':
                 tplPackage = '@omni-door/tpl-spa-react';
                 break;
+              case 'spa-vue':
+                tplPackage = '@omni-door/tpl-spa-vue';
+                break;
               case 'ssr-react':
                 tplPackage = '@omni-door/tpl-ssr-react';
                 break;
@@ -610,18 +638,18 @@ export default async function (strategy: STRATEGY, {
 
       return exec(
         [
-          `npx ${tplPkj || tplPackage}@${tplPkjTag || 'latest'} init ${arr2str([ ...tplParams, ...tplPkjParams ])}`
+          `npx ${tplPkj || tplPackage}@${tplPkjTag || 'latest'} init ${arr2str([...tplParams, ...tplPkjParams])}`
         ],
         async function () {
           const afterRes = typeof after === 'function' && await after();
           const { success, msg } = afterRes || {};
-    
+
           if (success === false) {
             spinner.state('fail', msg || '初始化项目失败！(Initialize project failed!)');
           } else {
             spinner.state('succeed', msg || '初始化项目完成！(Initialize project success!)');
           }
-    
+
           data && console.info(chalk.yellow(data));
           process.exit(0);
         },

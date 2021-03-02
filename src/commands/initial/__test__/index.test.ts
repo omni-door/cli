@@ -5,6 +5,9 @@ import {
   cli_basic_react,
   cli_standard_react,
   cli_entire_react,
+  cli_basic_vue,
+  cli_standard_vue,
+  cli_entire_vue,
   cli_ssr_react,
   cli_components_react,
   cli_toolkit
@@ -109,6 +112,136 @@ describe('initial preset test', function () {
 
     expect(cli_entire_react.stylelint).to.be.a('boolean');
     expect(cli_entire_react.stylelint).to.be.true;
+  });
+
+  it('cli_basic_vue checking', function () {
+    expect(cli_basic_vue).to.be.an('object');
+
+    expect(cli_basic_vue.build).to.be.a('string');
+    expect(cli_basic_vue.build).to.be.equal('webpack');
+
+    expect(cli_basic_vue.pkgtool).to.be.a('string');
+    expect(cli_basic_vue.pkgtool).to.be.equal('pnpm');
+
+    expect(cli_basic_vue['project_type']).to.be.a('string');
+    expect(cli_basic_vue['project_type']).to.be.equal('spa-vue');
+
+    expect(cli_basic_vue.ts).to.be.a('boolean');
+    expect(cli_basic_vue.ts).to.be.false;
+
+    expect(cli_basic_vue.testFrame).to.be.a('string');
+    expect(cli_basic_vue.testFrame).to.be.equal('');
+
+    expect(cli_basic_vue.eslint).to.be.a('boolean');
+    expect(cli_basic_vue.eslint).to.be.false;
+
+    expect(cli_basic_vue.commitlint).to.be.a('boolean');
+    expect(cli_basic_vue.commitlint).to.be.false;
+
+    expect(cli_basic_vue.style).to.be.a('string');
+    expect(cli_basic_vue.style).to.be.equal('css');
+
+    expect(cli_basic_vue.stylelint).to.be.a('boolean');
+    expect(cli_basic_vue.stylelint).to.be.false;
+  });
+
+  it('cli_standard_vue checking', function () {
+    expect(cli_standard_vue).to.be.an('object');
+
+    expect(cli_standard_vue.build).to.be.a('string');
+    expect(cli_standard_vue.build).to.be.equal('webpack');
+
+    expect(cli_standard_vue.pkgtool).to.be.a('string');
+    expect(cli_standard_vue.pkgtool).to.be.equal('pnpm');
+
+    expect(cli_standard_vue['project_type']).to.be.a('string');
+    expect(cli_standard_vue['project_type']).to.be.equal('spa-vue');
+
+    expect(cli_standard_vue.ts).to.be.a('boolean');
+    expect(cli_standard_vue.ts).to.be.true;
+
+    expect(cli_standard_vue.testFrame).to.be.a('string');
+    expect(cli_standard_vue.testFrame).to.be.equal('');
+
+    expect(cli_standard_vue.eslint).to.be.a('boolean');
+    expect(cli_standard_vue.eslint).to.be.true;
+
+    expect(cli_standard_vue.commitlint).to.be.a('boolean');
+    expect(cli_standard_vue.commitlint).to.be.false;
+
+    expect(cli_standard_vue.style).to.be.a('string');
+    expect(cli_standard_vue.style).to.be.equal('less');
+
+    expect(cli_standard_vue.stylelint).to.be.a('boolean');
+    expect(cli_standard_vue.stylelint).to.be.true;
+  });
+
+  it('cli_entire_vue checking', function () {
+    expect(cli_entire_vue).to.be.an('object');
+
+    expect(cli_entire_vue.build).to.be.a('string');
+    expect(cli_entire_vue.build).to.be.equal('webpack');
+
+    expect(cli_entire_vue.pkgtool).to.be.a('string');
+    expect(cli_entire_vue.pkgtool).to.be.equal('pnpm');
+
+    expect(cli_entire_vue['project_type']).to.be.a('string');
+    expect(cli_entire_vue['project_type']).to.be.equal('spa-vue');
+
+    expect(cli_entire_vue.ts).to.be.a('boolean');
+    expect(cli_entire_vue.ts).to.be.true;
+
+    expect(cli_entire_vue.testFrame).to.be.a('string');
+    expect(cli_entire_vue.testFrame).to.be.equal('jest');
+
+    expect(cli_entire_vue.eslint).to.be.a('boolean');
+    expect(cli_entire_vue.eslint).to.be.true;
+
+    expect(cli_entire_vue.commitlint).to.be.a('boolean');
+    expect(cli_entire_vue.commitlint).to.be.true;
+
+    expect(cli_entire_vue.style).to.be.a('string');
+    expect(cli_entire_vue.style).to.be.equal('all');
+
+    expect(cli_entire_vue.stylelint).to.be.a('boolean');
+    expect(cli_entire_vue.stylelint).to.be.true;
+  });
+
+  it('cli_ssr_react checking', function () {
+    expect(cli_ssr_react).to.be.an('object');
+
+    expect(cli_ssr_react.build).to.be.a('string');
+    expect(cli_ssr_react.build).to.be.equal('next');
+
+    expect(cli_ssr_react.pkgtool).to.be.a('string');
+    expect(cli_ssr_react.pkgtool).to.be.equal('pnpm');
+
+    expect(cli_ssr_react['project_type']).to.be.a('string');
+    expect(cli_ssr_react['project_type']).to.be.equal('ssr-react');
+
+    expect(cli_ssr_react.ts).to.be.a('boolean');
+    expect(cli_ssr_react.ts).to.be.true;
+
+    expect(cli_ssr_react.testFrame).to.be.a('string');
+    expect(cli_ssr_react.testFrame).to.be.equal('jest');
+
+    expect(cli_ssr_react.eslint).to.be.a('boolean');
+    expect(cli_ssr_react.eslint).to.be.true;
+
+    expect(cli_ssr_react.prettier).to.be.a('boolean');
+    expect(cli_ssr_react.prettier).to.be.true;
+
+    expect(cli_ssr_react.commitlint).to.be.a('boolean');
+    expect(cli_ssr_react.commitlint).to.be.true;
+
+    expect(cli_ssr_react.style).to.be.a('string');
+    expect(cli_ssr_react.style).to.be.equal('all');
+
+    expect(cli_ssr_react.stylelint).to.be.a('boolean');
+    expect(cli_ssr_react.stylelint).to.be.true;
+
+    expect(cli_ssr_react.serverType).to.be.a('string');
+    expect(cli_ssr_react.serverType).to.be.equal('next');
   });
 
   it('cli_components_react checking', function () {

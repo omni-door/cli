@@ -139,9 +139,9 @@ interface OmniConfig {
   plugins?: OmniPlugin<PLUGINSTAGE>[];
 }
 
-type BUILD = 'webpack' | 'rollup' | 'tsc' | '';
-type NPM = 'npm' | 'yarn' | 'pnpm' | 'taobao';
-type PROJECT_TYPE = 'spa-react' | 'component-react' | 'toolkit';
+export type BUILD = 'webpack' | 'rollup' | 'gulp' | 'tsc' | 'next' | '';
+type NPM = 'npm' | 'yarn' | 'pnpm';
+type PROJECT_TYPE = 'spa-react' | 'spa-vue' | 'ssr-react' | 'component-react' | 'toolkit';
 type STYLE = 'less' | 'scss' | 'css' | 'all' | '';
 ```
 
