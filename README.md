@@ -95,9 +95,9 @@ Arguments:
 Options:
   -rb, --react_basic [name]       create a basic React SPA project
   -rs, --react_standard [name]    create a standard React SPA project
-  -re, --vue_entire [name]      create a most versatile React SPA project
-  -vb, --vue_basic [name]       create a basic Vue SPA project
-  -vs, --vue_standard [name]    create a standard Vue SPA project
+  -re, --vue_entire [name]        create a most versatile React SPA project
+  -vb, --vue_basic [name]         create a basic Vue SPA project
+  -vs, --vue_standard [name]      create a standard Vue SPA project
   -ve, --vue_entire [name]      create a most versatile Vue SPA project
   -rS, --react_ssr [name]         create a React component library
   -rc, --react_components [name]  create a React component library
