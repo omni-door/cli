@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.3.x
+### v2.3.2
+1. 「optimization」 `omni init` fixed `@omni-door/cli` mid version
+
 ### v2.3.1
 1. 「feat」support `spa-vue` project
 
