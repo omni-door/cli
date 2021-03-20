@@ -3,6 +3,11 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.3.x
+### v2.3.3
+1. 「optimization」 `omni init` unit-test default-none-selected when the project is `spa-vue` 
+
+2. 「optimization」 `omni release` auto-iteration optimization
+
 ### v2.3.2
 1. 「optimization」 `omni init` fixed `@omni-door/cli` mid version
 
