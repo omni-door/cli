@@ -26,10 +26,22 @@ const iterDict = {
   ignore: '忽视迭代 (ignore)'
 };
 
+function getAutoIterDict (version: string) {
+  return {
+    [`major (${version} -> ${semver.inc(version, 'major')})`]: 'major',
+    [`minor (${version} -> ${semver.inc(version, 'minor')})`]: 'minor',
+    [`patch (${version} -> ${semver.inc(version, 'patch')})`]: 'patch',
+    [`premajor (${version} -> ${semver.inc(version, 'premajor')})`]: 'premajor',
+    [`preminor (${version} -> ${semver.inc(version, 'preminor')})`]: 'preminor',
+    [`prepatch (${version} -> ${semver.inc(version, 'prepatch')})`]: 'prepatch',
+    [`prerelease (${version} -> ${semver.inc(version, 'prerelease')})`]: 'prerelease'
+  };
+}
+
 export default async function (
   config: OmniConfig | null,
   iterTactic?: {
-    automatic?: boolean;
+    automatic?: boolean | string;
     ignore?: boolean;
     manual?: string;
     verify?: boolean;
@@ -129,6 +141,7 @@ export default async function (
     const defaultTag = manual
       ? manual.match(/[a-zA-Z]+/g)?.[0] ?? 'latest'
       : pkj?.version?.match(/[a-zA-Z]+/g)?.[0] ?? 'latest';
+    const autoIterDict = getAutoIterDict(pkj.version);
 
     if (!hasIter || (npm && !tag)) {
       await new Promise((resolve, reject) => {
@@ -141,7 +154,14 @@ export default async function (
             message: `${logo()}请选择迭代策略 (Please choice iteration strategy)：`
           },
           {
-            name: 'version',
+            name: 'version_semantic',
+            type: 'list',
+            when: answer => answer.iter === iterDict.automatic,
+            choices: [ ...Object.keys(autoIterDict) ],
+            message: `${logo()}请选择迭代的版本号 (Please choice the version of iteration)：`
+          },
+          {
+            name: 'version_manual',
             type: 'input',
             when: answer => answer.iter === iterDict.manual,
             validate: val => {
@@ -164,11 +184,12 @@ export default async function (
               }
               return defaultTag;
             },
-            message: `${logo()}请输入迭代的标签 (Please input the iteration tag):`
+            message: `${logo()}请输入 npm 发布标签 (Please input the npm publish tag):`
           }
         ])
           .then(answers => {
-            const { iter, version, label } = answers;
+            const { iter, version_semantic, version_manual, label } = answers;
+            const version = version_semantic ?? version_manual;
             if (label) {
               tag = label;
             } else if (autoTag && npm) {
@@ -179,10 +200,12 @@ export default async function (
 
             switch (iter) {
               case iterDict.automatic:
-                automatic = true;
+                // eslint-disable-next-line no-case-declarations
+                const releaseType = autoIterDict[version_semantic as keyof typeof autoIterDict];
+                automatic = semver.inc(pkj.version, releaseType as any) ?? true;
                 break;
               case iterDict.manual:
-                manual = version;
+                manual = version_manual;
                 break;
               case iterDict.ignore:
                 ignore = true;
@@ -234,7 +257,13 @@ export default async function (
       await exec(['npm run lint:style'], () => logEmph(italic('stylelint校验通过！(The stylelint passed!)')), handleReleaseErr(`stylelint校验失败！(The stylelint checking failed!) \n 尝试执行 (try to exec): ${underline('npm run lint:style_fix')}`));
     }
 
-    const versionShellSuffix = ignore ? 'i' : manual ? manual : '';
+    const versionShellSuffix = ignore
+      ? 'i'
+      : manual
+        ? `m ${manual}`
+        : typeof automatic === 'string'
+          ? `a ${automatic}`
+          : '';
     await exec(
       [`${path.resolve(__dirname, 'version.sh')} "${logPrefix()}" ${versionShellSuffix}`],
       () => {

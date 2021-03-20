@@ -442,7 +442,7 @@ export default async function (strategy: STRATEGY, {
           message: function (answer: any) {
             return `${logo()}[${++currStep}/${totalStep}] 是否开启单元测试? (Whether or not apply unit-test?)`;
           },
-          default: (answer: any) => getProjectType(answer) !== 'spa-react' && getProjectType(answer) !== 'ssr-react',
+          default: (answer: any) => getProjectType(answer) !== 'spa-react' && getProjectType(answer) !== 'spa-vue' && getProjectType(answer) !== 'ssr-react',
           when: function (answer: any) {
             const projectType = getProjectType(answer);
             if (projectType === 'spa-react' || projectType === 'spa-vue' || projectType === 'ssr-react') {
