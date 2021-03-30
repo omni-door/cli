@@ -28,13 +28,13 @@ const iterDict = {
 
 function getAutoIterDict (version: string) {
   return {
-    [`major (${version} -> ${semver.inc(version, 'major')})`]: 'major',
-    [`minor (${version} -> ${semver.inc(version, 'minor')})`]: 'minor',
-    [`patch (${version} -> ${semver.inc(version, 'patch')})`]: 'patch',
-    [`premajor (${version} -> ${semver.inc(version, 'premajor')})`]: 'premajor',
-    [`preminor (${version} -> ${semver.inc(version, 'preminor')})`]: 'preminor',
-    [`prepatch (${version} -> ${semver.inc(version, 'prepatch')})`]: 'prepatch',
-    [`prerelease (${version} -> ${semver.inc(version, 'prerelease')})`]: 'prerelease'
+    [`1. patch (${version} -> ${semver.inc(version, 'patch')})`]: 'patch',
+    [`2. prepatch (${version} -> ${semver.inc(version, 'prepatch')})`]: 'prepatch',
+    [`3. prerelease (${version} -> ${semver.inc(version, 'prerelease')})`]: 'prerelease',
+    [`4. minor (${version} -> ${semver.inc(version, 'minor')})`]: 'minor',
+    [`5. preminor (${version} -> ${semver.inc(version, 'preminor')})`]: 'preminor',
+    [`6. major (${version} -> ${semver.inc(version, 'major')})`]: 'major',
+    [`7. premajor (${version} -> ${semver.inc(version, 'premajor')})`]: 'premajor'
   };
 }
 
@@ -158,7 +158,7 @@ export default async function (
             type: 'list',
             when: answer => answer.iter === iterDict.automatic,
             choices: [ ...Object.keys(autoIterDict) ],
-            message: `${logo()}请选择迭代的版本号 (Please choice the version of iteration)：`
+            message: `${logo()}请选择自动迭代的类型 (Please choice the type of auto-iteration)：`
           },
           {
             name: 'version_manual',

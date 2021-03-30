@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.3.x
+### v2.3.4
+1. 「optimization」 `omni release` 自动迭代版本号策略顺序优化
+
 ### v2.3.3
 1. 「optimization」 `omni init` 单元测试 `spa-vue` 项目默认不选
 

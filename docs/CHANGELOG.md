@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.3.x
+### v2.3.4
+1. 「optimization」 `omni release` the optimization that auto-iteration strategy order
+
 ### v2.3.3
 1. 「optimization」 `omni init` unit-test default-none-selected when the project is `spa-vue` 
 

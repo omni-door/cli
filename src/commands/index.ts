@@ -45,7 +45,7 @@ const commandDicts = {
 
   function checkConfig () {
     if (!config) {
-      logWarn(`请先初始化项目或检查「${configFilePath}」配置文件是否存在问题！(Please initialize project first or checking is there a problem with the「${configFilePath}」config file!)`);
+      logWarn(`请先初始化项目或检查「${configFilePath}」配置文件是否存在问题！\n(Please initialize project first or checking is the「${configFilePath}」config file has some problems!)`);
       process.exit(0);
     }
   }
