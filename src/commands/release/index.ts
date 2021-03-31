@@ -26,6 +26,16 @@ const iterDict = {
   ignore: '忽视迭代 (ignore)'
 };
 
+const releaseSemverTag = {
+  patch: 'latest',
+  minor: 'latest',
+  major: 'latest',
+  prepatch: 'prepatch',
+  preminor: 'preminor',
+  premajor: 'premajor',
+  prerelease: 'prerelease'
+};
+
 function getAutoIterDict (version: string) {
   return {
     [`1. patch (${version} -> ${semver.inc(version, 'patch')})`]: 'patch',
@@ -189,19 +199,18 @@ export default async function (
         ])
           .then(answers => {
             const { iter, version_semantic, version_manual, label } = answers;
-            const version = version_semantic ?? version_manual;
+            const releaseType = autoIterDict[version_semantic]; 
+            const version = version_manual ?? (version_semantic ? semver.inc(pkj.version, releaseType as any) : '');
             if (label) {
               tag = label;
             } else if (autoTag && npm) {
               tag = version
-                ? version.match(/[a-zA-Z]+/g)?.[0] ?? 'latest'
+                ? version.match(/[a-zA-Z]+/g)?.[0] ?? releaseSemverTag[releaseType as keyof typeof releaseSemverTag] ?? 'latest'
                 : defaultTag;
             }
-
             switch (iter) {
               case iterDict.automatic:
                 // eslint-disable-next-line no-case-declarations
-                const releaseType = autoIterDict[version_semantic as keyof typeof autoIterDict];
                 automatic = semver.inc(pkj.version, releaseType as any) ?? true;
                 break;
               case iterDict.manual:

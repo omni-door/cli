@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.3.x
+### v2.3.5
+1. 「fix」 `omni release` 自动迭代版本号的 tag 不正确
+
 ### v2.3.4
 1. 「optimization」 `omni release` 自动迭代版本号策略顺序优化
 

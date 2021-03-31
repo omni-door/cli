@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.3.x
+### v2.3.5
+1. 「fix」 `omni release` the auto-iteration tag problem
+
 ### v2.3.4
 1. 「optimization」 `omni release` the optimization that auto-iteration strategy order
 
