@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.3.x
+### v2.3.6
+1. 「fix」 `omni build` the typescript-plugin will affect the rollup build result
+
 ### v2.3.5
 1. 「fix」 `omni release` the auto-iteration tag problem
 

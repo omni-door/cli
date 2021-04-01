@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.3.x
+### v2.3.6
+1. 「fix」 `omni build` rollup 中的 typescript插件，影响输出结果的问题
+
 ### v2.3.5
 1. 「fix」 `omni release` 自动迭代版本号的 tag 不正确
 

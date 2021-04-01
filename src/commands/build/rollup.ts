@@ -58,6 +58,15 @@ const resolveConfig = {
   preferBuiltins: true,
   browser: true
 };
+const ts2config = {
+  tsconfigOverride: {
+    compilerOptions: {
+      target: 'es2015',
+      module: 'ESNext'
+    },
+    exclude: tsExcludes
+  }
+};
 const commonConfig = commonjs_new? void 0 : {
   namedExports: {
     'react': [
@@ -157,15 +166,7 @@ function createConfig () {
     plugins: [
       resolve(resolveConfig),
       commonjs(commonConfig),
-      ${ts ? `typescript2({
-        tsconfigOverride: {
-          compilerOptions: {
-            target: 'es5',
-            module: 'es2015'
-          },
-          exclude: tsExcludes
-        }
-      }),` : ''}
+      ${ts ? 'typescript2(ts2config),' : ''}
       babel(babelConfig),
       json()
     ]}, ${
@@ -181,15 +182,7 @@ function createConfig () {
             resolve(resolveConfig),
             commonjs(commonConfig),
             json(),
-            ${ts ? `typescript2({
-              tsconfigOverride: {
-                compilerOptions: {
-                  target: 'es5',
-                  module: 'es2015'
-                },
-                exclude: tsExcludes
-              }
-            })` : ''}
+            ${ts ? 'typescript2(ts2config)' : ''}
           ]
         },`
     : ''
@@ -207,7 +200,8 @@ function createConfig () {
           resolve(resolveConfig),
           commonjs(commonConfig),
           ${ts ? `typescript({
-            target: 'es5',
+            target: 'es2015',
+            module: 'ESNext',
             outDir: path.resolve('${outDir}', file),
             exclude: tsExcludes
           }),` : ''}
@@ -228,8 +222,8 @@ function createConfig () {
               commonjs(commonConfig),
               json(),
               ${ts ? `typescript({
-                target: 'es5',
-                module: 'es2015',
+                target: 'es2015',
+                module: 'ESNext',
                 outDir: path.resolve('${esmDir}', file),
                 exclude: tsExcludes
               })` : ''}
