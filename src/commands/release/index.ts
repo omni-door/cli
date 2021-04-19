@@ -38,13 +38,13 @@ const releaseSemverTag = {
 
 function getAutoIterDict (version: string) {
   return {
-    [`1. patch (${version} -> ${semver.inc(version, 'patch')})`]: 'patch',
-    [`2. prepatch (${version} -> ${semver.inc(version, 'prepatch')})`]: 'prepatch',
-    [`3. prerelease (${version} -> ${semver.inc(version, 'prerelease')})`]: 'prerelease',
-    [`4. minor (${version} -> ${semver.inc(version, 'minor')})`]: 'minor',
-    [`5. preminor (${version} -> ${semver.inc(version, 'preminor')})`]: 'preminor',
-    [`6. major (${version} -> ${semver.inc(version, 'major')})`]: 'major',
-    [`7. premajor (${version} -> ${semver.inc(version, 'premajor')})`]: 'premajor'
+    [`1. pre-release (${version} -> ${semver.inc(version, 'prerelease')})`]: 'prerelease',
+    [`2. pre-patch (${version} -> ${semver.inc(version, 'prepatch')})`]: 'prepatch',
+    [`3. patch (${version} -> ${semver.inc(version, 'patch')})`]: 'patch',
+    [`4. pre-minor (${version} -> ${semver.inc(version, 'preminor')})`]: 'preminor',
+    [`5. minor (${version} -> ${semver.inc(version, 'minor')})`]: 'minor',
+    [`6. pre-major (${version} -> ${semver.inc(version, 'premajor')})`]: 'premajor',
+    [`7. major (${version} -> ${semver.inc(version, 'major')})`]: 'major'
   };
 }
 
@@ -161,14 +161,14 @@ export default async function (
             type: 'list',
             when: () => !hasIter,
             choices: [ iterDict.automatic, iterDict.manual, iterDict.ignore ],
-            message: `${logo()}请选择迭代策略 (Please choice iteration strategy)：`
+            message: `${logo()}请选择迭代方式 (Please choice the pattern of iteration)：`
           },
           {
             name: 'version_semantic',
             type: 'list',
             when: answer => answer.iter === iterDict.automatic,
             choices: [ ...Object.keys(autoIterDict) ],
-            message: `${logo()}请选择自动迭代的类型 (Please choice the type of auto-iteration)：`
+            message: `${logo()}请选择自动迭代的版本 (Please choice the version of auto-iteration)：`
           },
           {
             name: 'version_manual',
