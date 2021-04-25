@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.3.x
+### v2.3.8
+1. 「optimization」 log 优化
+
 ### v2.3.7
 1. 「optimization」 `omni release` 迭代优化
 

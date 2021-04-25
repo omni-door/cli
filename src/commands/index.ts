@@ -21,23 +21,16 @@ const commandDicts = {
     logWarn(e);
   }
 
-  let isSlient = true;
-  const args = process.argv.slice(2);
-  if (args && args.length > 0 && args[0] !== 'init') {
-    isSlient = !~Object.keys(commandDicts).indexOf(args[0]);
-  }
-
   const { initial, dev, start, newTpl, build, release } = require('./commands');
   const pkj = require('../../package.json');
   let config: OmniConfig | null = null;
   let configFilePath = './omni.config.js';
-  getConfig();
 
-  function getConfig () {
+  function getConfig (silent?: boolean) {
     try {
       const ppkj = requireCwd('./package.json', true);
       configFilePath = ppkj?.omni?.filePath || configFilePath;
-      config = requireCwd(configFilePath, isSlient);
+      config = requireCwd(configFilePath, silent);
     } catch (e) {
       logWarn(e);
     }
@@ -45,7 +38,8 @@ const commandDicts = {
 
   function checkConfig () {
     if (!config) {
-      logWarn(`请先初始化项目或检查「${configFilePath}」配置文件是否存在问题！\n(Please initialize project first or checking is the「${configFilePath}」config file has some problems!)`);
+      logWarn(`Please initialize project first or checking the【 ${configFilePath} 】configuration file`);
+      logWarn(`请先初始化项目或检查【 ${configFilePath} 】配置文件是否存在问题`);
       process.exit(0);
     }
   }
@@ -54,9 +48,11 @@ const commandDicts = {
     try {
       process.chdir(workPath);
       const cwd = process.cwd();
-      logEmph(`工作路径更新为「${cwd}」(The work path change to 「${cwd}」)`);
+      logEmph(`The work path change to【 ${cwd} 】`);
+      logEmph(`工作路径更新为【 ${cwd} 】`);
     } catch (err) {
-      logWarn(`工作路径更新失败，请检查「${workPath}」是否存在！(Please checking the「${workPath}」had existed!)`);
+      logWarn(`Please checking the【 ${workPath} 】had existed`);
+      logWarn(`工作路径更新失败，请检查【 ${workPath} 】是否存在`);
       process.exit(0);
     }
   }
@@ -87,9 +83,7 @@ const commandDicts = {
       updateNotifier(pkj);
 
       const workPath = options.path;
-      if (workPath) {
-        changeCWD(workPath);
-      }
+      if (workPath) changeCWD(workPath);
 
       const CLITAG = pkj?.version?.match?.(/[a-zA-Z]+/g)?.[0];
       const TPLTAG = pkj?.version?.match?.(/[0-9]\.[0-9]/g)?.[0];
@@ -112,11 +106,9 @@ const commandDicts = {
       npmVersionCheck(pkj.name, pkj.version);
 
       const workPath = options.path;
-      if (workPath) {
-        changeCWD(workPath);
-        getConfig();
-      }
+      if (workPath) changeCWD(workPath);
 
+      getConfig(!!workPath);
       checkConfig();
       dev(config, options);
     });
@@ -135,11 +127,9 @@ const commandDicts = {
       npmVersionCheck(pkj.name, pkj.version);
 
       const workPath = options.path;
-      if (workPath) {
-        changeCWD(workPath);
-        getConfig();
-      }
+      if (workPath) changeCWD(workPath);
 
+      getConfig(!!workPath);
       checkConfig();
       start(config, options);
     });
@@ -157,12 +147,11 @@ const commandDicts = {
       updateNotifier(pkj);
 
       const workPath = options.path;
-      if (workPath) {
-        changeCWD(workPath);
-        getConfig();
-      }
-      const TPLTAG = pkj?.version?.match?.(/[0-9]\.[0-9]/g)?.[0];
+      if (workPath) changeCWD(workPath);
+
+      getConfig(!!workPath);
       checkConfig();
+      const TPLTAG = pkj?.version?.match?.(/[0-9]\.[0-9]/g)?.[0];
       newTpl(config, componentName, { ...options, tplPkjTag: TPLTAG });
     });
 
@@ -176,11 +165,9 @@ const commandDicts = {
       npmVersionCheck(pkj.name, pkj.version);
 
       const workPath = buildTactic.path;
-      if (workPath) {
-        changeCWD(workPath);
-        getConfig();
-      }
+      if (workPath) changeCWD(workPath);
 
+      getConfig(!!workPath);
       checkConfig();
       build(config, buildTactic);
     });
@@ -198,11 +185,9 @@ const commandDicts = {
       npmVersionCheck(pkj.name, pkj.version);
 
       const workPath = iterTactic.path;
-      if (workPath) {
-        changeCWD(workPath);
-        getConfig();
-      }
+      if (workPath) changeCWD(workPath);
 
+      getConfig(!!workPath);
       checkConfig();
       release(config, iterTactic);
     });

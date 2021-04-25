@@ -3,8 +3,11 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.3.x
+### v2.3.8
+1. 「optimization」 log optimize
+
 ### v2.3.7
-1. 「optimization」 `omni release` iteration optimization
+1. 「optimization」 `omni release` iteration optimize
 
 ### v2.3.6
 1. 「fix」 `omni build` the typescript-plugin will affect the rollup build result
