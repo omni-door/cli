@@ -353,8 +353,16 @@ export default async function (
       spinner.state('start', 'Building, please wait patiently(项目构建中)');
     }
 
-    del.sync(realOutDir || outDir);
-    esmDir && del.sync(esmDir);
+    try {
+      del.sync(realOutDir || outDir, {
+        force: true
+      });
+      esmDir && del.sync(esmDir, {
+        force: true
+      }); 
+    } catch (err) {
+      logWarn(err);
+    }
 
     await exec(buildCliArr, async function () {
       const { style, assets = [] } = reserve;

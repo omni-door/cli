@@ -1,7 +1,7 @@
 import program from 'commander';
 import leven from 'leven';
 import chalk from 'chalk';
-import { nodeVersionCheck, npmVersionCheck, updateNotifier, logErr, logWarn, requireCwd, logEmph } from '@omni-door/utils';
+import { nodeVersionCheck, npmVersionCheck, updateNotifier, logErr, logWarn, requireCwd, logInfo } from '@omni-door/utils';
 /* import types */
 import type { OmniConfig } from '../index.d';
 
@@ -48,11 +48,11 @@ const commandDicts = {
     try {
       process.chdir(workPath);
       const cwd = process.cwd();
-      logEmph(`The work path change to "${cwd}"`);
-      logEmph(`工作路径更新为 "${cwd}"`);
+      logInfo(`The work path change to "${cwd}"`);
+      logInfo(`工作路径变更为 "${cwd}"`);
     } catch (err) {
       logWarn(`Please checking the "${workPath}" had existed`);
-      logWarn(`工作路径更新失败，请检查 "${workPath}" 是否存在`);
+      logWarn(`工作路径变更失败，请检查 "${workPath}" 是否存在`);
       process.exit(0);
     }
   }

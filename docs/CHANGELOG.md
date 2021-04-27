@@ -3,6 +3,11 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.3.x
+### v2.3.10
+1. 「optimization」 log output
+
+2. 「fix」`omni build` cannot delete the file or dir which outside the current working directory
+
 ### v2.3.9
 1. 「optimization」 log output
 

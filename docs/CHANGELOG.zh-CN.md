@@ -3,6 +3,11 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.3.x
+### v2.3.10
+1. 「optimization」 日志优化
+
+2. 「fix」 `omni build` 无法删除在工作路径之外的文件或文件夹
+
 ### v2.3.9
 1. 「optimization」 日志优化
 

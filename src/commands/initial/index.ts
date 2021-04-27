@@ -111,7 +111,7 @@ async function checkPkgTool(pkgtool: PKJTOOL) {
         inquirer.prompt([{
           name: 'install',
           type: 'confirm',
-          message: `${logo()} Automatic install the ${pkgtool} in the global environment(自动安装 ${pkgtool} 到全局环境)?`,
+          message: `${logo()}Automatic install the ${pkgtool} in the global environment(自动安装 ${pkgtool} 到全局环境)?`,
           default: true
         }]).then(answers => {
           const { install } = answers;
@@ -283,7 +283,7 @@ export default async function (strategy: STRATEGY, {
           inquirer.prompt([{
             name: 'overwrite',
             type: 'confirm',
-            message: `${logo()} Are you sure to overwrite the "${configFileName}"(确定要覆盖已经存在的 "${configFileName}" 文件)?`,
+            message: `${logo()}Are you sure to overwrite the "${configFileName}"(确定要覆盖已经存在的 "${configFileName}" 文件)?`,
             default: false
           }]).then(answers => {
             const { overwrite } = answers;
@@ -346,7 +346,7 @@ export default async function (strategy: STRATEGY, {
         {
           name: 'overwrite',
           type: 'confirm',
-          message: `${logo()} Are you sure to overwrite the "${configFileName}"(确定要覆盖已经存在的 "${configFileName}" 文件)?`,
+          message: `${logo()}Are you sure to overwrite the "${configFileName}"(确定要覆盖已经存在的 "${configFileName}" 文件)?`,
           default: false
         }, {
           name: 'project_type',
@@ -504,7 +504,7 @@ export default async function (strategy: STRATEGY, {
             return true;
           },
           message: function (answer: any) {
-            return `${logo()}[${++currStep}/${totalStep}] Select the package install tool, recommended use pnpm(请选择包安装工具，推荐使用pnpm):`;
+            return `${logo()}[${++currStep}/${totalStep}] Select the package install tool(请选择包安装工具):`;
           },
           default: 'pnpm'
         }
