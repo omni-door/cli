@@ -38,8 +38,8 @@ const commandDicts = {
 
   function checkConfig () {
     if (!config) {
-      logWarn(`Please initialize project first or checking the【 ${configFilePath} 】configuration file`);
-      logWarn(`请先初始化项目或检查【 ${configFilePath} 】配置文件是否存在问题`);
+      logWarn(`Please initialize project first or checking the "${configFilePath}" configuration file`);
+      logWarn(`请先初始化项目或检查 "${configFilePath}" 配置文件是否存在问题`);
       process.exit(0);
     }
   }
@@ -48,11 +48,11 @@ const commandDicts = {
     try {
       process.chdir(workPath);
       const cwd = process.cwd();
-      logEmph(`The work path change to【 ${cwd} 】`);
-      logEmph(`工作路径更新为【 ${cwd} 】`);
+      logEmph(`The work path change to "${cwd}"`);
+      logEmph(`工作路径更新为 "${cwd}"`);
     } catch (err) {
-      logWarn(`Please checking the【 ${workPath} 】had existed`);
-      logWarn(`工作路径更新失败，请检查【 ${workPath} 】是否存在`);
+      logWarn(`Please checking the "${workPath}" had existed`);
+      logWarn(`工作路径更新失败，请检查 "${workPath}" 是否存在`);
       process.exit(0);
     }
   }

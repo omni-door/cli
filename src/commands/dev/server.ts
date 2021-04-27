@@ -139,8 +139,8 @@ async function server ({
             isHttps = true;
           } catch (err) {
             logWarn(err);
-            logWarn(`生成证书失败！(Failing to generate the certificate!)\n
-            可通过以下方式手动指定证书:
+            logWarn(`Failing to generate the certificate(生成证书失败)!\n
+            You can specify the certificate manually(可通过以下方式手动指定证书):
             https: {
               key: fs.readFileSync(path.resolve(\${your_path_to_key})),
               cert: fs.readFileSync(path.resolve(\${your_path_to_cert}))
@@ -154,7 +154,8 @@ async function server ({
       }
 
       if (isHttps && (!key || !cert)) {
-        logWarn('证书缺失，将以http启动开发服务！(Missing the certificate, start the dev-server with http!)');
+        logWarn('Missing the certificate, start the dev-server with http');
+        logWarn('证书缺失，将以http启动开发服务');
         isHttps = false;
       }
 
@@ -177,7 +178,8 @@ async function server ({
           });
           break;
         case 'ssr-vue':
-          logWarn('暂不支持 ssr-vue 项目!');
+          logWarn('Not support ssr-vue yet'); 
+          logWarn('暂不支持 ssr-vue 项目'); 
           break;
         case 'spa-react':
         case 'spa-vue':

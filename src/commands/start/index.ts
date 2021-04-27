@@ -21,12 +21,12 @@ export default async function (config: OmniConfig | null, options: {
   }
 
   if (!config || JSON.stringify(config) === '{}') {
-    handleException('请先初始化项目！(Please initialize project first!)');
+    handleException('Please initialize project first(请先初始化项目)!');
   }
   const { server } = config!;
 
   if (!server || JSON.stringify(server) === '{}') {
-    handleException('配置文件 start 字段缺失！(The start field is missing in config file!)');
+    handleException('The start field is missing in config file(配置文件 start 字段缺失)!');
   }
   const {
     port,
@@ -35,7 +35,7 @@ export default async function (config: OmniConfig | null, options: {
     ...rest
   } = server || {};
   if (!serverType) {
-    handleException('请指定 server 类型！(Please specify server-type!)');
+    handleException('Please specify server-type(请指定 server 类型)!');
   }
 
   const p = options.port;
@@ -66,6 +66,7 @@ export default async function (config: OmniConfig | null, options: {
     case 'koa-nuxt':
     case 'nuxt':
     default:
-      logWarn('暂不支持 ssr-vue 项目!');
+      logWarn('Not support ssr-vue yet');
+      logWarn('暂不支持 ssr-vue 项目');
   }
 }

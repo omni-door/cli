@@ -47,15 +47,16 @@ export default async function (
   }
 
   if (!config || JSON.stringify(config) === '{}') {
-    logWarn('请先初始化项目！(Please initialize project first!)');
+    logWarn('Please initialize project first');
+    logWarn('请先初始化项目');
     return process.exit(0);
   }
 
   // bind exit signals
   signal();
 
-  const message = '开始构建！(Building process start!)';
-  logTime('项目构建');
+  const message = 'Building(开始构建)';
+  logTime('BUILD(项目构建)');
   logInfo(message);
 
   const { type, template, build, release: configRelease, plugins } = config;
@@ -85,11 +86,11 @@ export default async function (
   if (configurationPath && !fs.existsSync(configurationPath)) configurationPath = void(0);
 
   if (!outDir || !srcDir) {
-    handleBuildErr('配置文件中未定义 $srcDir 或 $outDir (The $srcDir or $outDir were missed in configuration file)')();
+    handleBuildErr('The "srcDir" or "outDir" were missed in configuration file(配置文件中未定义 "srcDir" 或 "outDir")')();
   }
 
   function handleBuildSuc (msg?: string) {
-    msg = msg || '恭喜！项目构建成功！(Building completed!)';
+    msg = msg || 'Building completed(构建成功)!';
 
     return function (isExit?: boolean) {
       logSuc(msg!);
@@ -98,7 +99,7 @@ export default async function (
   }
 
   function handleBuildErr (msg?: string) {
-    msg = msg || '项目构建失败！(Building failed!)';
+    msg = msg || 'Building failed(构建失败)!';
 
     return function (err?: string) {
       err && logErr(err);
@@ -113,7 +114,7 @@ export default async function (
       {
         name: 'install',
         type: 'confirm',
-        message: `${logo()} 自动安装所需要的依赖? (Automatic install dependencies?)`,
+        message: `${logo()} Automatic install dependencies(自动安装所需要的依赖)?`,
         default: true
       }
     ]).then(async answers => {
@@ -138,12 +139,14 @@ export default async function (
           `${iTool} ${dependencies}`
         ],
         () => {
-          logEmph('构建依赖安装完毕！(The dependencies install completed!)');
+          logEmph('The dependencies install completed');
+          logEmph('构建依赖安装完毕');
           return true;
         },
         err => {
           logWarn(err);
-          logWarn('👆 依赖安装发生了错误 (The dependencies install occured some accidents)');
+          logWarn('The dependencies install occured some accidents');
+          logWarn('依赖安装发生了错误');
           return false;
         });
       } else {
@@ -191,7 +194,8 @@ export default async function (
       try {
         stats = fs.statSync(srcPath);
       } catch (error) {
-        logWarn(`"${srcPath}" 是一个无效的路径！(The path of "${srcPath}" is invaild!)`);
+        logWarn(`The path of "${srcPath}" is invaild`);
+        logWarn(`"${srcPath}" 是一个无效的路径`);
         continue;
       }
 
@@ -205,7 +209,8 @@ export default async function (
         fsExtra.ensureDirSync(path.resolve(destPath, '..'));
         emsPath && fsExtra.ensureDirSync(path.resolve(emsPath, '..'));
       } else {
-        logWarn(`"${srcPath}" 不是有效的文件或文件夹路径！(The file or directory path which is "${srcPath}" cannot be found!)`);
+        logWarn(`The file or directory path which is "${srcPath}" cannot be found`);
+        logWarn(`"${srcPath}" 不是有效的文件或文件夹路径`);
         continue;
       }
       fsExtra.copySync(srcPath, destPath);
@@ -215,19 +220,19 @@ export default async function (
 
   try {
     if (verify && test) {
-      await exec(['npm test'], () => logEmph(italic('单元测试通过！(The unit test passed!)')), handleBuildErr('单元测试失败！(The unit test failed!)'));
+      await exec(['npm test'], () => logEmph(italic('Unit Test!')), handleBuildErr('The unit test not pass(单元测试失败)'));
     }
 
     if (verify && eslint) {
-      await exec(['npm run lint:es'], () => logEmph(italic('eslint校验通过！(The eslint passed!)')), handleBuildErr(`eslint校验失败！(The eslint checking failed!) \n 尝试执行 (try to exec): ${underline('npm run lint:es_fix')}`));
+      await exec(['npm run lint:es'], () => logEmph(italic('Eslint!')), handleBuildErr(`The eslint not pass(eslint校验失败) \n try to exec(尝试执行): ${underline('npm run lint:es_fix')}`));
     }
 
     if (verify && prettier) {
-      await exec(['npm run lint:prettier'], () => logEmph(italic('prettier校验通过！(The prettier passed!)')), handleBuildErr(`prettier校验失败！(The prettier checking failed!) \n 尝试执行 (try to exec): ${underline('npm run lint:prettier_fix')}`));
+      await exec(['npm run lint:prettier'], () => logEmph(italic('Prettier!')), handleBuildErr(`The prettier not pass(prettier校验失败) \n try to exec(尝试执行): ${underline('npm run lint:prettier_fix')}`));
     }
 
     if (verify && stylelint) {
-      await exec(['npm run lint:style'], () => logEmph(italic('stylelint校验通过！(The stylelint passed!)')), handleBuildErr(`stylelint校验失败！(The stylelint checking failed!) \n 尝试执行 (try to exec): ${underline('npm run lint:style_fix')}`));
+      await exec(['npm run lint:style'], () => logEmph(italic('Stylelint!')), handleBuildErr(`The stylelint not pass(stylelint校验失败) \n try to exec(尝试执行): ${underline('npm run lint:style_fix')}`));
     }
 
     let realOutDir: string = '';
@@ -242,7 +247,7 @@ export default async function (
     };
     if (tool === 'tsc') {
       if (!typescript) {
-        handleBuildErr('已禁用 typescript，无法完成构建！(The typescript had been forbidden!)')();
+        handleBuildErr('The typescript had been forbidden(已禁用 typescript，无法完成构建)')();
       }
 
       let tscPath = buildCliPath.tsc;
@@ -250,7 +255,8 @@ export default async function (
       if (fs.existsSync(buildCliPath.ttsc)) tscPath = buildCliPath.ttsc;
 
       if (!fs.existsSync(tscPath)) {
-        logWarn('请先安装 typescript 相关依赖! (Please install typescript first!)');
+        logWarn('Please install typescript first');
+        logWarn('请先安装 typescript 相关依赖');
         const is_go_on = await installDenpendencies('tsc');
         if (!is_go_on) return process.exit(0);
         tscPath = buildCliPath.ttsc;
@@ -263,7 +269,8 @@ export default async function (
       const nextPath = buildCliPath.next;
 
       if (!fs.existsSync(nextPath)) {
-        logWarn('请先安装 webpack 相关依赖! (Please install webpack first!)');
+        logWarn('Please install webpack first');
+        logWarn('请先安装 webpack 相关依赖');
         const is_go_on = await installDenpendencies('next');
         if (!is_go_on) return process.exit(0);
       }
@@ -284,7 +291,8 @@ export default async function (
           const rollupPath = buildCliPath.rollup;
 
           if (!fs.existsSync(rollupPath)) {
-            logWarn('请先安装 rollup 相关依赖! (Please install rollup first!)');
+            logWarn('Please install rollup first');
+            logWarn('请先安装 rollup 相关依赖');
             is_go_on = await installDenpendencies('rollup');
           }
 
@@ -293,7 +301,8 @@ export default async function (
           const webpackPath = buildCliPath.webpack;
 
           if (!fs.existsSync(webpackPath)) {
-            logWarn('请先安装 webpack 相关依赖! (Please install webpack first!)');
+            logWarn('Please install webpack first');
+            logWarn('请先安装 webpack 相关依赖');
             is_go_on = await installDenpendencies('webpack');
           }
 
@@ -305,12 +314,14 @@ export default async function (
           if (fs.existsSync(buildCliPath.ttsc)) tscPath = buildCliPath.ttsc;
 
           if (typescript && !fs.existsSync(tscPath)) {
-            logWarn('请先安装 typescript 相关依赖! (Please install typescript first!)');
+            logWarn('Please install typescript first');
+            logWarn('请先安装 typescript 相关依赖');
             is_go_on = await installDenpendencies('tsc');
             if (is_go_on) tscPath = buildCliPath.ttsc;
           }
           if (is_go_on && !fs.existsSync(gulpPath)) {
-            logWarn('请先安装 gulp 相关依赖! (Please install gulp first!)');
+            logWarn('Please install gulp first');
+            logWarn('请先安装 gulp 相关依赖');
             is_go_on = await installDenpendencies('gulp');
           }
 
@@ -339,7 +350,7 @@ export default async function (
     if (type !== 'toolkit') {
       spinner.color('green');
       spinner.prefix('moon');
-      spinner.state('start', '项目构建中 (Building, please wait patiently)');
+      spinner.state('start', 'Building, please wait patiently(项目构建中)');
     }
 
     del.sync(realOutDir || outDir);
@@ -368,10 +379,10 @@ export default async function (
       }
 
       if (realOutDir && !fs.existsSync(realOutDir)) {
-        handleBuildErr(`输出的 ${realOutDir} 文件不存在，构建失败！(The output file ${realOutDir} doesn't exist)`)();
+        handleBuildErr(`The output file ${realOutDir} doesn't exist(输出的 ${realOutDir} 文件不存在，构建失败)`)();
       } else {
         type !== 'toolkit' && spinner.state('stop');
-        logTime('项目构建', true);
+        logTime('BUILD(项目构建)', true);
         const shouldExit = !(autoRelease || autoBuild);
         handleBuildSuc()(shouldExit);
       }
@@ -379,16 +390,17 @@ export default async function (
 
     // auto release
     if (!autoBuild && autoRelease) {
-      logInfo('开始自动发布！(Start auto release!)');
+      logInfo('Start auto release');
+      logInfo('开始自动发布');
       try {
         await release(config, { verify: false }, autoRelease);
-        handleBuildSuc('自动发布成功！(Auto release success!)')(true);
+        handleBuildSuc('Auto release success(自动发布成功)!')(true);
       } catch (err) {
-        handleBuildErr('自动发布失败！(Auto release failed!)')();
+        handleBuildErr('Auto release failed(自动发布失败)!')();
       }
     }
   } catch (err) {
     logErr(err);
-    handleBuildErr('👆 糟糕！构建过程发生了点意外！(Oops! Building process occured some accidents!)')();
+    handleBuildErr('👆 Oops! Building process occured some accidents(糟糕！构建过程发生了点意外)!')();
   }
 }

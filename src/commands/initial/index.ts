@@ -104,14 +104,14 @@ async function checkPkgTool(pkgtool: PKJTOOL) {
 
     if (!hasTool) {
       if (pkgtool === 'npm') {
-        spinner.state('warn', '没有找到 npm 包管理工具，请自行安装！(Cannot found the npm package management tool!)');
+        spinner.state('warn', 'Cannot found the npm package management tool(没有找到 npm 包管理工具，请自行安装)!');
         process.exit(0);
       } else {
-        spinner.state('info', `缺少包管理工具 ${pkgtool}！(Missing package management tool ${pkgtool}!)`);
+        spinner.state('info', `Missing package management tool ${pkgtool}(缺少包管理工具 ${pkgtool})!`);
         inquirer.prompt([{
           name: 'install',
           type: 'confirm',
-          message: `${logo()} 自动安装 ${pkgtool} 到全局环境? (Automatic install the ${pkgtool} in the global environment?)`,
+          message: `${logo()} Automatic install the ${pkgtool} in the global environment(自动安装 ${pkgtool} 到全局环境)?`,
           default: true
         }]).then(answers => {
           const { install } = answers;
@@ -128,7 +128,8 @@ async function checkPkgTool(pkgtool: PKJTOOL) {
               resolve(true);
             } catch (err) {
               logWarn(err);
-              logWarn(`${pkgtool} 安装失败，请自行安装后再试！（The setup ${pkgtool} failed, please try it by yourself!）`);
+              logWarn(`The setup ${pkgtool} failed, please try it by yourself`);
+              logWarn(`${pkgtool} 安装失败，请自行安装后再试`);
               process.exit(0);
             }
           }
@@ -282,7 +283,7 @@ export default async function (strategy: STRATEGY, {
           inquirer.prompt([{
             name: 'overwrite',
             type: 'confirm',
-            message: `${logo()} 确定要覆盖已经存在的 [${configFileName}] 文件? (Are you sure to overwrite [${configFileName}]?)`,
+            message: `${logo()} Are you sure to overwrite the "${configFileName}"(确定要覆盖已经存在的 "${configFileName}" 文件)?`,
             default: false
           }]).then(answers => {
             const { overwrite } = answers;
@@ -291,7 +292,7 @@ export default async function (strategy: STRATEGY, {
           });
         }).catch(err => {
           logErr(err);
-          spinner.state('fail', '项目初始化发生错误！(The initializing occurred some accidents!)');
+          spinner.state('fail', 'The initializing occurred some accidents(项目初始化发生错误)!');
           process.exit(1);
         });
       }
@@ -316,7 +317,7 @@ export default async function (strategy: STRATEGY, {
           default: false,
           message: async function (answer: any) {
             const { name } = answer;
-            return `${logo()}[${currStep}/${totalStep}] 确定要覆盖已经存在的 [${name}] 文件夹? (Are you sure to overwrite [${name}] directory?)`;
+            return `${logo()}[${currStep}/${totalStep}] Are you sure to overwrite the "${name}" directory(确定要覆盖已经存在的 "${name}" 文件夹)?`;
           },
           when: async function (answer: any) {
             isValidName = pkgNameCheck(answer.name, true);
@@ -327,7 +328,7 @@ export default async function (strategy: STRATEGY, {
           name: 'name',
           type: 'input',
           message: function (answer: any) {
-            return `${logo()}[${currStep}/${totalStep}] 请重新输入项目名称 (Please reenter your project name)：`;
+            return `${logo()}[${currStep}/${totalStep}] Please reenter your project name(请重新输入项目名称):`;
           },
           when: async function (answer: any) {
             const { name } = answer;
@@ -345,7 +346,7 @@ export default async function (strategy: STRATEGY, {
         {
           name: 'overwrite',
           type: 'confirm',
-          message: `${logo()} 确定要覆盖已经存在的 [${configFileName}] 文件? (Are you sure to overwrite [${configFileName}]?)`,
+          message: `${logo()} Are you sure to overwrite the "${configFileName}"(确定要覆盖已经存在的 "${configFileName}" 文件)?`,
           default: false
         }, {
           name: 'project_type',
@@ -357,7 +358,7 @@ export default async function (strategy: STRATEGY, {
             ProjectDict['component-react'],
             ProjectDict['toolkit']
           ],
-          message: `${logo()}[${currStep}/${totalStep}] 请选择项目类型 (Please choose the type of project)：`,
+          message: `${logo()}[${currStep}/${totalStep}] Please choose the type of project(请选择项目类型):`,
           when: function (answer: any) {
             if (answer.overwrite === false) {
               return process.exit(0);
@@ -383,7 +384,7 @@ export default async function (strategy: STRATEGY, {
               default:
                 totalStep = install ? 4 : 3;
             }
-            return `${logo()}[${++currStep}/${totalStep}] 请输入项目名称 (Please enter your project name)：`;
+            return `${logo()}[${++currStep}/${totalStep}] Please enter your project name(请输入项目名称):`;
           },
           default: defaultName
         },
@@ -407,13 +408,14 @@ export default async function (strategy: STRATEGY, {
           },
           message: function (answer: any) {
             const projectType = getProjectType(answer);
-            const msg = projectType === 'ssr-react' ? '请选择SSR服务类型 (Please chioce the SSR server type)' : '请选择组件库Demo框架 (Please chioce the component-library demonstration frame)';
+            const msg = projectType === 'ssr-react' ? 'Please chioce the SSR server type(请选择SSR服务类型)' : 'Please chioce the component-library demonstration frame(请选择组件库Demo框架)';
             return `${logo()}[${++currStep}/${totalStep}] ${msg}：`;
           },
           when: async function (answer: any) {
             const { overwrite_dir, name } = answer;
             if (!configFileExist && !overwrite_dir && await isDir(name)) {
-              logWarn('失败次数太多，请想清楚后再试！(Please turn over to think then try again!)');
+              logWarn('Please turn over to think then try again');
+              logWarn('失败次数太多，请想清楚后再试');
               return process.exit(0);
             }
             const projectType = getProjectType(answer);
@@ -426,7 +428,7 @@ export default async function (strategy: STRATEGY, {
           name: 'ts',
           type: 'confirm',
           message: function (answer: any) {
-            return `${logo()}[${++currStep}/${totalStep}] 是否使用typescript? (Whether or not apply typescript?)`;
+            return `${logo()}[${++currStep}/${totalStep}] Apply typescript(使用typescript)?`;
           },
           default: true,
           when: function (answer: any) {
@@ -440,7 +442,7 @@ export default async function (strategy: STRATEGY, {
           name: 'test',
           type: 'confirm',
           message: function (answer: any) {
-            return `${logo()}[${++currStep}/${totalStep}] 是否开启单元测试? (Whether or not apply unit-test?)`;
+            return `${logo()}[${++currStep}/${totalStep}] Apply unit-test(开启单元测试)?`;
           },
           default: (answer: any) => getProjectType(answer) !== 'spa-react' && getProjectType(answer) !== 'spa-vue' && getProjectType(answer) !== 'ssr-react',
           when: function (answer: any) {
@@ -455,7 +457,7 @@ export default async function (strategy: STRATEGY, {
           type: 'checkbox',
           choices: ['css', 'less', 'scss'],
           message: function (answer: any) {
-            return `${logo()}[${++currStep}/${totalStep}] 选择样式文件 (Please select the stylesheets)`;
+            return `${logo()}[${++currStep}/${totalStep}] Select the stylesheets(选择样式文件):`;
           },
           default: ['css'],
           when: function (answer: any) {
@@ -479,7 +481,7 @@ export default async function (strategy: STRATEGY, {
           },
           choices: [LayoutDict.viewport, LayoutDict.rem, LayoutDict.px],
           message: function (answer: any) {
-            return `${logo()}[${++currStep}/${totalStep}] 选择布局适配方案 (Please select layout plan)`;
+            return `${logo()}[${++currStep}/${totalStep}] Select layout plan(选择布局适配方案):`;
           }
         }, {
           name: 'lint',
@@ -490,7 +492,7 @@ export default async function (strategy: STRATEGY, {
             return lintArr;
           },
           message: function (answer: any) {
-            return `${logo()}[${++currStep}/${totalStep}] 选择lint工具 (Please select the lint tools)：`;
+            return `${logo()}[${++currStep}/${totalStep}] Select the lint tools(选择lint工具):`;
           },
           default: ['eslint']
         }, {
@@ -502,7 +504,7 @@ export default async function (strategy: STRATEGY, {
             return true;
           },
           message: function (answer: any) {
-            return `${logo()}[${++currStep}/${totalStep}] 请选择包安装工具，推荐使用pnpm (Please choice the package install tool, recommended use pnpm)：`;
+            return `${logo()}[${++currStep}/${totalStep}] Select the package install tool, recommended use pnpm(请选择包安装工具，推荐使用pnpm):`;
           },
           default: 'pnpm'
         }
@@ -587,7 +589,7 @@ export default async function (strategy: STRATEGY, {
           });
       }).catch(err => {
         logErr(err);
-        spinner.state('fail', '项目初始化发生错误！(The initializing occurred some accidents!)');
+        spinner.state('fail', 'The initializing occurred some accidents(项目初始化发生错误)!');
         process.exit(1);
       });
     }
@@ -607,7 +609,7 @@ export default async function (strategy: STRATEGY, {
         inquirer.prompt([{
           name: 'overwrite_dir',
           type: 'confirm',
-          message: `${logo()} 请再次确认覆盖 [${dirName}] 文件夹! (Please confirm overwrite the [${dirName}] directory again!)`,
+          message: `${logo()} Please confirm overwrite the "${dirName}" directory again(请再次确认覆盖 "${dirName}" 文件夹)!`,
           default: true
         }]).then(answers => {
           const { overwrite_dir } = answers;
@@ -616,7 +618,7 @@ export default async function (strategy: STRATEGY, {
         });
       }).catch(err => {
         logErr(err);
-        spinner.state('fail', '项目初始化发生错误！(The initializing occurred some accidents!)');
+        spinner.state('fail', 'The initializing occurred some accidents(项目初始化发生错误)!');
         process.exit(1);
       });
     }
@@ -627,13 +629,13 @@ export default async function (strategy: STRATEGY, {
       `isSilent=${isSilent}`
     );
     // loading start display
-    spinner.state('start', '项目初始化中 (Initializing, please wait patiently)');
+    spinner.state('start', 'Initializing, please wait patiently(项目初始化中)');
     // create the folder
     !configFileExist && create_dir !== false && mkdir(initPath);
     return figlet(getBrand(), function (err, data) {
       if (err) {
         logErr(err.message);
-        spinner.state('fail', 'figlet 出现了问题！(Some thing about figlet is wrong!)');
+        spinner.state('fail', 'Something about figlet is wrong(figlet 出现了问题)!');
       }
 
       return exec(
@@ -645,9 +647,9 @@ export default async function (strategy: STRATEGY, {
           const { success, msg } = afterRes || {};
 
           if (success === false) {
-            spinner.state('fail', msg || '初始化项目失败！(Initialize project failed!)');
+            spinner.state('fail', msg || 'Initialize project failed(初始化项目失败)!');
           } else {
-            spinner.state('succeed', msg || '初始化项目完成！(Initialize project success!)');
+            spinner.state('succeed', msg || 'Initialize project success(初始化项目完成)!');
           }
 
           data && console.info(chalk.yellow(data));
@@ -655,14 +657,14 @@ export default async function (strategy: STRATEGY, {
         },
         async function (err: any) {
           logErr(err);
-          spinner.state('fail', '初始化项目失败！(Initialize project failed!)');
+          spinner.state('fail', 'Initialize project failed(初始化项目失败)!');
           process.exit(1);
         }
       );
     });
   } catch (err) {
     logErr(err);
-    spinner.state('fail', '项目初始化发生错误！(The initializing occurred some accidents!)');
+    spinner.state('fail', 'The initializing occurred some accidents(项目初始化发生错误)!');
     process.exit(1);
   }
 }

@@ -21,9 +21,9 @@ import buildCommands from '../build';
 import type { OmniConfig, OmniPlugin } from '../../index.d';
 
 const iterDict = {
-  automatic: '自动迭代 (automatic)',
-  manual: '手动迭代 (manual)',
-  ignore: '忽视迭代 (ignore)'
+  automatic: 'automatic(自动)',
+  manual: 'manual(手动)',
+  ignore: 'ignore(忽略)'
 };
 
 const releaseSemverTag = {
@@ -71,7 +71,8 @@ export default async function (
   }
 
   if (!config || JSON.stringify(config) === '{}') {
-    logWarn('请先初始化项目！(Please initialize project first!)');
+    logWarn('Please initialize project first');
+    logWarn('请先初始化项目');
     process.exit(0);
   }
 
@@ -110,7 +111,7 @@ export default async function (
   }
 
   function handleReleaseSuc (msg?: string) {
-    msg = msg || '恭喜！发布完成！(The release process completed!)';
+    msg = msg || 'Release completed(发布完成)!';
 
     return function (isExit?: boolean) {
       logSuc(msg!);
@@ -119,7 +120,7 @@ export default async function (
   }
 
   function handleReleaseErr (msg?: string) {
-    msg = msg || '发布失败！(release failed!)';
+    msg = msg || 'Release failed(发布失败)!';
 
     return function (err?: string) {
       err && logErr(err);
@@ -144,8 +145,8 @@ export default async function (
     // eslint-disable-next-line prefer-const
     let { automatic, ignore, manual, tag, verify, ...rest } = iterTactic || {};
     const hasIter = !(ignore === void 0 && manual === void 0 && automatic === void 0);
-    const versionErrMsg = `请输入有效的版本号 (Please input valid version)\n
-    版本号规则可参考: https://semver.org/ (Reference to: https://semver.org/)`;
+    const versionErrMsg = `Please input valid version(请输入有效的版本号)\n
+    Reference to(版本号规则可参考): https://semver.org/`;
     const pkjPath = path.resolve(process.cwd(), 'package.json');
     let pkj = getPkjData(pkjPath);
     const defaultTag = manual
@@ -161,14 +162,14 @@ export default async function (
             type: 'list',
             when: () => !hasIter,
             choices: [ iterDict.automatic, iterDict.manual, iterDict.ignore ],
-            message: `${logo()}请选择迭代方式 (Please choice the pattern of iteration)：`
+            message: `${logo()}Select the way of iteration(选择迭代方式):`
           },
           {
             name: 'version_semantic',
             type: 'list',
             when: answer => answer.iter === iterDict.automatic,
             choices: [ ...Object.keys(autoIterDict) ],
-            message: `${logo()}请选择自动迭代的版本 (Please choice the version of auto-iteration)：`
+            message: `${logo()}Select the version(选择版本)`
           },
           {
             name: 'version_manual',
@@ -182,7 +183,7 @@ export default async function (
               }
               return true;
             },
-            message: `${logo()}请输入迭代的版本号 (Please input the iteration version):`
+            message: `${logo()}Input the version(输入版本号):`
           },
           {
             name: 'label',
@@ -194,7 +195,7 @@ export default async function (
               }
               return defaultTag;
             },
-            message: `${logo()}请输入 npm 发布标签 (Please input the npm publish tag):`
+            message: `${logo()}Input the npm publish tag(输入 npm 发布标签):`
           }
         ])
           .then(answers => {
@@ -233,7 +234,8 @@ export default async function (
 
     // auto build
     if (autoBuild && !autoRelease) {
-      logInfo('开始自动构建项目！(Start building the project automatically!)');
+      logInfo('Start building the project automatically');
+      logInfo('开始自动构建项目');
       try {
         await buildCommands(
           config,
@@ -244,26 +246,26 @@ export default async function (
           true
         );
       } catch (err) {
-        handleReleaseErr('自动构建项目失败！(Auto building the project failed!)')();
+        handleReleaseErr('Auto building the project failed(自动构建项目失败)!')();
       }
     }
 
-    logTime('项目发布');
-    logInfo('开始发布！(Starting release process!)');
+    logTime('RELEASE(发布)');
+    logInfo('Starting release process(开始发布)!');
     if (!autoBuild && verify && test) {
-      await exec(['npm test'], () => logEmph(italic('单元测试通过！(The unit test passed!)')), handleReleaseErr('单元测试失败！(The unit test failed!)'));
+      await exec(['npm test'], () => logEmph(italic('Unit Test!')), handleReleaseErr('The unit test not pass(单元测试失败)'));
     }
 
     if (!autoBuild && verify && eslint) {
-      await exec(['npm run lint:es'], () => logEmph(italic('eslint校验通过！(The eslint passed!)')), handleReleaseErr(`eslint校验失败！(The eslint checking failed!) \n 尝试执行 (try to exec): ${underline('npm run lint:es_fix')}`));
+      await exec(['npm run lint:es'], () => logEmph(italic('Eslint!')), handleReleaseErr(`The eslint not pass(eslint校验失败) \n try to exec(尝试执行): ${underline('npm run lint:es_fix')}`));
     }
 
     if (!autoBuild && verify && prettier) {
-      await exec(['npm run lint:prettier'], () => logEmph(italic('prettier校验通过！(The prettier passed!)')), handleReleaseErr(`prettier校验失败！(The prettier checking failed!) \n 尝试执行 (try to exec): ${underline('npm run lint:prettier_fix')}`));
+      await exec(['npm run lint:prettier'], () => logEmph(italic('Prettier!')), handleReleaseErr(`The prettier not pass(prettier校验失败) \n try to exec(尝试执行): ${underline('npm run lint:prettier_fix')}`));
     }
 
     if (!autoBuild && verify && stylelint) {
-      await exec(['npm run lint:style'], () => logEmph(italic('stylelint校验通过！(The stylelint passed!)')), handleReleaseErr(`stylelint校验失败！(The stylelint checking failed!) \n 尝试执行 (try to exec): ${underline('npm run lint:style_fix')}`));
+      await exec(['npm run lint:style'], () => logEmph(italic('Stylelint!')), handleReleaseErr(`The stylelint not pass(stylelint校验失败) \n try to exec(尝试执行): ${underline('npm run lint:style_fix')}`));
     }
 
     const versionShellSuffix = ignore
@@ -278,9 +280,10 @@ export default async function (
       () => {
         // re-require to get correct version
         pkj = getPkjData(pkjPath);
-        logEmph(`当前版本号为 ${pkj.version}！(The current version is ${pkj.version}!)`);
+        logEmph(`The current version is ${pkj.version}`);
+        logEmph(`当前版本号为 ${pkj.version}`);
       },
-      handleReleaseErr('版本迭代失败！(The version iteration failed!)')
+      handleReleaseErr('The version iteration failed(版本迭代失败)!')
     );
 
     if (git) {
@@ -301,18 +304,19 @@ export default async function (
       let canPush = true;
       let remote = gitUrl === gitOmniUrl ? 'omni' : 'origin';
       if (gitUrl !== gitOriginUrl && gitUrl !== gitOmniUrl) {
-        !gitOmniUrl && logInfo(`新增远程地址omni ${git} (Adding remote omni ${git})`);
+        !gitOmniUrl && logInfo(`Adding remote omni ${git}(新增远程地址omni ${git})`);
         const execArr = ['git remote remove omni', `git remote add omni ${git}`];
         !gitOmniUrl && execArr.shift(); // remote没有omni，移除remove操作
 
         await exec(
           execArr,
           () => {
-            logEmph(`git remote omni 为 ${git} (git remote omni is: ${git})`);
+            logEmph(`git remote omni: ${git}`);
             remote = 'omni';
           },
           () => {
-            logWarn('git remote 设置失败！(setting git remote failed!)');
+            logWarn('setting git remote failed');
+            logWarn('git remote 设置失败');
             canPush = false;
           }
         );
@@ -332,8 +336,11 @@ export default async function (
           `${commit}`,
           `${push}`
         ],
-        () => logEmph('git仓库推送成功！(Pushing to git-repo success!)'),
-        handleReleaseErr('git仓库推送失败！(Pushing to git-repo failed!)')
+        () => {
+          logEmph('Pushing to git-repo successfully!');
+          logEmph('git仓库推送成功！');
+        },
+        handleReleaseErr('Pushing to git-repo failed(git仓库推送失败)!')
       );
     }
 
@@ -348,8 +355,11 @@ export default async function (
 
       await exec(
         [`npm publish --registry=${npm || npmUrl} --tag=${tag}`],
-        () => logEmph(`npm包发布成功, 版本号为 ${pkj.version}@${tag}！(The npm-package publish success with version ${pkj.version}@${tag}!)`),
-        handleReleaseErr('npm包发布失败！(The npm-package publish failed!)')
+        () => {
+          logEmph(`The npm-package publish success with version ${pkj.version}@${tag}!`);
+          logEmph(`npm包发布成功, 版本号为 ${pkj.version}@${tag}！`);
+        },
+        handleReleaseErr('The npm-package publish failed(npm包发布失败)!')
       );
     }
 
@@ -374,11 +384,11 @@ export default async function (
       }
     }
 
-    logTime('项目发布', true);
+    logTime('RELEASE(发布)', true);
     const shouldExit = !autoRelease;
     handleReleaseSuc()(shouldExit);
   } catch (err) {
     logErr(err);
-    handleReleaseErr('👆 糟糕！发布过程发生了一点意外 (Oops! release process occured some accidents)')();
+    handleReleaseErr('👆 Oops! release process occured some accidents(糟糕！发布过程发生了一点意外)')();
   }
 }

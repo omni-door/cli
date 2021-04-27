@@ -3,8 +3,11 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.3.x
+### v2.3.9
+1. 「optimization」 log output
+
 ### v2.3.8
-1. 「optimization」 log optimize
+1. 「optimization」 log output
 
 ### v2.3.7
 1. 「optimization」 `omni release` iteration optimize

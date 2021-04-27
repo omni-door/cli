@@ -74,7 +74,9 @@ export default function ({
             try {
               await k2c(proxy(path, config))(ctx, next);
             } catch (err) {
-              logWarn(`http-proxy「${route}」匹配异常！(The http-proxy「${route})」match occur error!):\n ${err}`);
+              logWarn(err);
+              logWarn(`The http-proxy「${route})」match occur error`);
+              logWarn(`http-proxy「${route}」匹配异常`);
             }
             break;
           }
@@ -109,7 +111,9 @@ export default function ({
             try {
               await (<KNMiddleWareCallback>callback)(ctx, next);
             } catch (err) {
-              logWarn(`中间件「${route}」匹配异常！(The middleware「${route})」match occur error!):\n ${err}`);
+              logWarn(err);
+              logWarn(`The middleware「${route})」match occur error`);
+              logWarn(`中间件「${route}」匹配异常`);
             }
             break;
           }
@@ -135,14 +139,18 @@ export default function ({
             try {
               shouldRender = await beforeRender(ctx, next);
             } catch (err) {
-              logWarn(`「${page}」页面 beforeRender 异常！(The「${page})」beforeRender error!):\n ${err}`);
+              logWarn(err);
+              logWarn(`The ${page}'s beforeRender error!`);
+              logWarn(`${page} 页面 beforeRender 执行异常`);
             }
           }
 
           shouldRender && nextApp.render(req, res, `/${page}`, Object.assign(Object.create(null), defaultParams, query, params, _typeof(shouldRender) === 'object' ? shouldRender : null));
         } catch (err) {
           shouldRender = false;
-          logWarn(`页面「${page}」路由出错：${JSON.stringify(err)}`);
+          logWarn(JSON.stringify(err));
+          logWarn(`The ${page} router error`);
+          logWarn(`${page} 路由出错`);
         }
 
         if (shouldRender) {
