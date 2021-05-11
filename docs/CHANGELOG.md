@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.3.x
+### v2.3.11
+1. 「fix」 regular expression for version match
+
 ### v2.3.10
 1. 「optimization」 log output
 

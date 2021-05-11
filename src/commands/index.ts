@@ -86,8 +86,8 @@ const commandDicts = {
       if (workPath) changeCWD(workPath);
 
       const CLITAG = pkj?.version?.match?.(/[a-zA-Z]+/g)?.[0];
-      const TPLTAG = pkj?.version?.match?.(/[0-9]\.[0-9]/g)?.[0];
-      const CLICURRENTVERSION = pkj?.version?.match?.(/[0-9]\.[0-9]\.[0-9]/g)?.[0];
+      const TPLTAG = pkj?.version?.match?.(/[0-9]+\.[0-9]+/g)?.[0];
+      const CLICURRENTVERSION = pkj?.version?.match?.(/[0-9]+\.[0-9]+\.[0-9]+/g)?.[0];
 
       initial(strategy, options, { tplPkjTag: TPLTAG ? `~${TPLTAG}` : 'latest', tplPkjParams: [ `tag=${CLITAG || (CLICURRENTVERSION ? `~${CLICURRENTVERSION}` : 'latest')}` ] });
     });
