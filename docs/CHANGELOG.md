@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.3.x
+### v2.3.12
+1. 「optimization」 the hint for upgrade cli
+
 ### v2.3.11
 1. 「fix」 regular expression for version match
 

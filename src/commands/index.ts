@@ -103,13 +103,13 @@ const commandDicts = {
       path: 'The cli workpath for running dev-server.'
     })
     .action((options) => {
-      npmVersionCheck(pkj.name, pkj.version);
-
       const workPath = options.path;
       if (workPath) changeCWD(workPath);
 
       getConfig(!!workPath);
       checkConfig();
+      npmVersionCheck(pkj.name, pkj.version);
+
       dev(config, options);
     });
 
@@ -124,13 +124,13 @@ const commandDicts = {
       path: 'The cli workpath for running prod-server.'
     })
     .action((options) => {
-      npmVersionCheck(pkj.name, pkj.version);
-
       const workPath = options.path;
       if (workPath) changeCWD(workPath);
 
       getConfig(!!workPath);
       checkConfig();
+      npmVersionCheck(pkj.name, pkj.version);
+
       start(config, options);
     });
 
@@ -144,13 +144,12 @@ const commandDicts = {
     })
     .usage('[name] [options]')
     .action((componentName, options) => {
-      updateNotifier(pkj);
-
       const workPath = options.path;
       if (workPath) changeCWD(workPath);
 
       getConfig(!!workPath);
       checkConfig();
+      updateNotifier(pkj);
       const TPLTAG = pkj?.version?.match?.(/[0-9]\.[0-9]/g)?.[0];
       newTpl(config, componentName, { ...options, tplPkjTag: TPLTAG });
     });
@@ -162,13 +161,13 @@ const commandDicts = {
     .option('-P, --path <path>', 'the workpath for build project')
     .description('build your project according to the [omni.config.js]\'s build field')
     .action((buildTactic) => {
-      npmVersionCheck(pkj.name, pkj.version);
-
       const workPath = buildTactic.path;
       if (workPath) changeCWD(workPath);
 
       getConfig(!!workPath);
       checkConfig();
+      npmVersionCheck(pkj.name, pkj.version);
+
       build(config, buildTactic);
     });
 
@@ -182,13 +181,13 @@ const commandDicts = {
     .option('-P, --path <path>', 'the workpath for release project')
     .description('publish your project according to the [omni.config.js]\'s release field')
     .action((iterTactic) => {
-      npmVersionCheck(pkj.name, pkj.version);
-
       const workPath = iterTactic.path;
       if (workPath) changeCWD(workPath);
 
       getConfig(!!workPath);
       checkConfig();
+      updateNotifier(pkj);
+
       release(config, iterTactic);
     });
 

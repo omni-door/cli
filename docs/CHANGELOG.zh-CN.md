@@ -3,6 +3,10 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.3.x
+
+### v2.3.12
+1. 「optimization」 更新 cli 的提示
+
 ### v2.3.11
 1. 「fix」 匹配版本号的正则表达式
 
