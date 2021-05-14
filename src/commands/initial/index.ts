@@ -30,6 +30,7 @@ type OptionType = {
   vue_entire?: boolean | string;
   react_ssr?: boolean | string;
   react_components?: boolean | string;
+  vue_components?: boolean | string;
   toolkit?: boolean | string;
   install: boolean;
 };
@@ -65,6 +66,8 @@ const ProjectDict = {
   'ssr-react (React服务端渲染应用)': 'ssr-react',
   'component-react': 'component-react (React组件库)',
   'component-react (React组件库)': 'component-react',
+  'component-vue': 'component-vue (Vue组件库)',
+  'component-vue (Vue组件库)': 'component-vue',
   'toolkit': 'toolkit (工具库)',
   'toolkit (工具库)': 'toolkit'
 };
@@ -180,6 +183,10 @@ function presetTpl(type: Exclude<keyof OptionType, 'install'>) {
       cli = presetCli.cli_components_react;
       pkj = '@omni-door/tpl-component-react';
       break;
+    case 'vue_components':
+      cli = presetCli.cli_components_vue;
+      pkj = '@omni-door/tpl-component-vue';
+      break;
     case 'toolkit':
       cli = presetCli.cli_toolkit;
       pkj = '@omni-door/tpl-toolkit';
@@ -198,6 +205,7 @@ export default async function (strategy: STRATEGY, {
   vue_entire,
   react_ssr,
   react_components,
+  vue_components,
   toolkit,
   install
 }: OptionType, option?: OptionCustom) {
@@ -259,6 +267,7 @@ export default async function (strategy: STRATEGY, {
     vue_entire,
     react_ssr,
     react_components,
+    vue_components,
     toolkit
   };
   for (const k in types) {
@@ -354,8 +363,9 @@ export default async function (strategy: STRATEGY, {
           choices: [
             ProjectDict['spa-react'],
             ProjectDict['spa-vue'],
-            ProjectDict['ssr-react'],
             ProjectDict['component-react'],
+            ProjectDict['component-vue'],
+            ProjectDict['ssr-react'],
             ProjectDict['toolkit']
           ],
           message: `${logo()}[${currStep}/${totalStep}] Please choose the type of project(请选择项目类型):`,
@@ -380,6 +390,9 @@ export default async function (strategy: STRATEGY, {
                 break;
               case 'component-react':
                 totalStep = install ? 6 : 5;
+                break;
+              case 'component-vue':
+                totalStep = install ? 5 : 4;
                 break;
               default:
                 totalStep = install ? 4 : 3;
@@ -580,6 +593,9 @@ export default async function (strategy: STRATEGY, {
                 break;
               case 'component-react':
                 tplPackage = '@omni-door/tpl-component-react';
+                break;
+              case 'component-vue':
+                tplPackage = '@omni-door/tpl-component-vue';
                 break;
               case 'toolkit':
                 tplPackage = '@omni-door/tpl-toolkit';

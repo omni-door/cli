@@ -10,6 +10,7 @@ import {
   cli_entire_vue,
   cli_ssr_react,
   cli_components_react,
+  cli_components_vue,
   cli_toolkit
 } from '../initial_preset';
 
@@ -251,7 +252,7 @@ describe('initial preset test', function () {
     expect(cli_components_react.build).to.be.equal('tsc');
 
     expect(cli_components_react.pkgtool).to.be.a('string');
-    expect(cli_components_react.pkgtool).to.be.equal('pnpm');
+    expect(cli_components_react.pkgtool).to.be.equal('yarn');
 
     expect(cli_components_react['project_type']).to.be.a('string');
     expect(cli_components_react['project_type']).to.be.equal('component-react');
@@ -278,6 +279,40 @@ describe('initial preset test', function () {
     expect(cli_components_react.devServer).to.be.equal('docz');
   });
 
+  it('cli_components_vue checking', function () {
+    expect(cli_components_vue).to.be.an('object');
+
+    expect(cli_components_vue.build).to.be.a('string');
+    expect(cli_components_vue.build).to.be.equal('tsc');
+
+    expect(cli_components_vue.pkgtool).to.be.a('string');
+    expect(cli_components_vue.pkgtool).to.be.equal('yarn');
+
+    expect(cli_components_vue['project_type']).to.be.a('string');
+    expect(cli_components_vue['project_type']).to.be.equal('component-vue');
+
+    expect(cli_components_vue.ts).to.be.a('boolean');
+    expect(cli_components_vue.ts).to.be.true;
+
+    expect(cli_components_vue.testFrame).to.be.a('string');
+    expect(cli_components_vue.testFrame).to.be.equal('jest');
+
+    expect(cli_components_vue.eslint).to.be.a('boolean');
+    expect(cli_components_vue.eslint).to.be.true;
+
+    expect(cli_components_vue.commitlint).to.be.a('boolean');
+    expect(cli_components_vue.commitlint).to.be.true;
+
+    expect(cli_components_vue.style).to.be.a('string');
+    expect(cli_components_vue.style).to.be.equal('less');
+
+    expect(cli_components_vue.stylelint).to.be.a('boolean');
+    expect(cli_components_vue.stylelint).to.be.true;
+
+    expect(cli_components_vue.devServer).to.be.a('string');
+    expect(cli_components_vue.devServer).to.be.equal('storybook');
+  });
+
   it('cli_toolkit checking', function () {
     expect(cli_toolkit).to.be.an('object');
 
@@ -285,7 +320,7 @@ describe('initial preset test', function () {
     expect(cli_toolkit.build).to.be.equal('rollup');
 
     expect(cli_toolkit.pkgtool).to.be.a('string');
-    expect(cli_toolkit.pkgtool).to.be.equal('pnpm');
+    expect(cli_toolkit.pkgtool).to.be.equal('yarn');
 
     expect(cli_toolkit['project_type']).to.be.a('string');
     expect(cli_toolkit['project_type']).to.be.equal('toolkit');

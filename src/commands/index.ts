@@ -72,6 +72,7 @@ const commandDicts = {
     .option('-ve, --vue_entire [name]', 'create a most versatile Vue SPA project')
     .option('-rS, --react_ssr [name]', 'create a React component library')
     .option('-rc, --react_components [name]', 'create a React component library')
+    .option('-vc, --vue_components [name]', 'create a Vue component library')
     .option('-t, --toolkit [name]', 'create a toolkit project')
     .option('-n, --no-install', 'init project without install dependencies')
     .option('-P, --path <path>', 'the workpath for init the project')

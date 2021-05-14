@@ -2,9 +2,13 @@
 
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
-## v2.3.x
-### v2.3.12
+## v2.4.x
+### v2.4.0
 1. 「optimization」 the hint for upgrade cli
+
+2. 「feat」support `component-vue` project
+
+## v2.3.x
 
 ### v2.3.11
 1. 「fix」 regular expression for version match

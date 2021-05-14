@@ -129,7 +129,7 @@ export const cli_ssr_react: GInstallCli = {
 
 export const cli_components_react: GInstallCli = {
   project_type: 'component-react',
-  pkgtool: 'pnpm',
+  pkgtool: 'yarn',
   build: 'tsc',
   ts: true,
   testFrame: 'jest',
@@ -141,9 +141,23 @@ export const cli_components_react: GInstallCli = {
   devServer: 'docz'
 };
 
+export const cli_components_vue: GInstallCli = {
+  project_type: 'component-vue',
+  pkgtool: 'yarn',
+  build: 'tsc',
+  ts: true,
+  testFrame: 'jest',
+  eslint: true,
+  prettier: true,
+  commitlint: true,
+  style: 'less',
+  stylelint: true,
+  devServer: 'storybook'
+};
+
 export const cli_toolkit: GInstallCli = {
   project_type: 'toolkit',
-  pkgtool: 'pnpm',
+  pkgtool: 'yarn',
   build: 'rollup',
   ts: true,
   testFrame: 'mocha',
@@ -163,5 +177,6 @@ export default {
   cli_entire_vue,
   cli_ssr_react,
   cli_components_react,
+  cli_components_vue,
   cli_toolkit
 };

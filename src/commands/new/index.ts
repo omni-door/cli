@@ -177,6 +177,9 @@ export default async function (config: OmniConfig | null, componentName: string,
       case 'component-react':
         newTplPkj = '@omni-door/tpl-component-react';
         break;
+      case 'component-vue':
+        newTplPkj = '@omni-door/tpl-component-vue';
+        break;
       case 'toolkit':
       default:
         newTplPkj = '@omni-door/tpl-toolkit';
