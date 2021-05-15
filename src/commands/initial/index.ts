@@ -625,7 +625,7 @@ export default async function (strategy: STRATEGY, {
         inquirer.prompt([{
           name: 'overwrite_dir',
           type: 'confirm',
-          message: `${logo()} Please confirm overwrite the "${dirName}" directory again(请再次确认覆盖 "${dirName}" 文件夹)!`,
+          message: `${logo()} Overwrite the "${dirName}" directory, please confirm again(请再次确认覆盖 "${dirName}" 文件夹)!`,
           default: true
         }]).then(answers => {
           const { overwrite_dir } = answers;

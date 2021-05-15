@@ -61,7 +61,7 @@ export default async function (config: OmniConfig | null, componentName: string,
     test,
     typescript = false,
     stylesheet = '',
-    readme = [false, 'md']
+    readme = false
   } = template!;
 
   let module_cn = '组件';
@@ -102,7 +102,7 @@ export default async function (config: OmniConfig | null, componentName: string,
           if (!answer.name && !componentName) {
             handleException(`Please input the ${module_en} name(请输入创建的${module_cn}名称)!`);
           }
-          if (type === 'spa-vue' || type === 'toolkit' || fc || cc) {
+          if (type === 'spa-vue' || type === 'component-vue' || type === 'toolkit' || fc || cc) {
             return false;
           }
           return true;
@@ -142,7 +142,7 @@ export default async function (config: OmniConfig | null, componentName: string,
   // bind exit signals
   signal();
 
-  const mdx = readme[1] === 'mdx';
+  const mdx = readme === 'mdx';
   const path_cp = path.resolve(root, componentName);
   const path_cp_rel = path.relative(process.cwd(), path_cp);
 
@@ -159,7 +159,7 @@ export default async function (config: OmniConfig | null, componentName: string,
     `type=${cc ? 'cc' : 'fc'}`,
     `test=${!!test}`,
     `hasStorybook=${hasStorybook}`,
-    readme[0] ? `md=${mdx ? 'mdx' : 'md'}` : ''
+    readme ? `md=${mdx ? 'mdx' : 'md'}` : ''
   ];
 
   let newTplPkj = tplPkj;

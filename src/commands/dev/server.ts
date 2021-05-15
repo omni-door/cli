@@ -183,13 +183,13 @@ async function server ({
           break;
         case 'spa-react':
         case 'spa-vue':
-        default:
           EWServer({
             webpackConfig,
             devMiddlewareOptions,
             favicon,
             ...serverBasicOptions
           });
+          break;
       }
     } else {
       let delay = 0;
