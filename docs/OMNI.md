@@ -15,6 +15,8 @@ The project types:
 
 - component-react - React Component Library
 
+- component-vue - Vue Component Library
+
 - toolkit - SDK Library 
 
 ## dev

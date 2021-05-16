@@ -95,6 +95,7 @@ Arguments:
     -ve, --vue_entire [name]        创建一个全量的 Vue 单页应用
     -rS, --react_ssr [name]         创建一个 React SSR 应用
     -rc, --react_components [name]  创建一个 React 组件库
+    -vc, --vue_components [name]    创建一个 Vue 组件库
     -t, --toolkit [name]            创建一个工具库
     -n, --no-install                初始化项目不安装任何依赖
     -P, --path <path>               创建项目的工作路径
