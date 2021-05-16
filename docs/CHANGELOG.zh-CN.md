@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.4.x
+### v2.4.1
+1. 「fix」 `omni init` 覆写的工作路径
+
 ### v2.4.0
 1. 「optimization」 更新 cli 的提示
 

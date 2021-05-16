@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.4.x
+### v2.4.1
+1. 「fix」 `omni init` the work path for overwrite
+
 ### v2.4.0
 1. 「optimization」 the hint for upgrade cli
 

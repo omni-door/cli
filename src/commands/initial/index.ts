@@ -618,7 +618,7 @@ export default async function (strategy: STRATEGY, {
     } = beforeRes || {};
     const isSilent = typeof stdout === 'boolean' ? !stdout : false;
     const dirName = dir_name || projectName;
-    const initPath = customInitPath || path.resolve(CWD, dirName);
+    const initPath = customInitPath || path.resolve(CWD, configFileExist ? '' : dirName);
 
     if (!configFileExist && await isDir(dirName)) {
       await new Promise((resolve) => {
