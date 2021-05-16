@@ -101,6 +101,7 @@ Options:
   -ve, --vue_entire [name]        create a most versatile Vue SPA project
   -rS, --react_ssr [name]         create a React component library
   -rc, --react_components [name]  create a React component library
+  -vc, --vue_components [name]    create a Vue component library
   -t, --toolkit [name]            create a toolkit project
   -n, --no-install                init project without install dependencies
   -P, --path <path>               the workpath for init the project
