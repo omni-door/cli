@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.4.x
+### v2.4.2
+1. 「optimization」 `omni build` pass params to the rollup custom config
+
 ### v2.4.1
 1. 「fix」 `omni init` the work path for overwrite
 

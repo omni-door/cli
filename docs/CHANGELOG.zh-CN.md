@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.4.x
+### v2.4.2
+1. 「optimization」 `omni build` rollup 自定义配置文件的参数传递
+
 ### v2.4.1
 1. 「fix」 `omni init` 覆写的工作路径
 

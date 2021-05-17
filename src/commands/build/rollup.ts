@@ -237,7 +237,7 @@ function createConfig () {
 
 module.exports = ${
   configurationPath
-    ? 'customConfig'
+    ? 'typeof customConfig === \'function\' ? customConfig(createConfig()) : customConfig'
     : 'configuration(createConfig());'
 }
 `;
