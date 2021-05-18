@@ -113,7 +113,7 @@ export interface OmniConfig {
   };
   release: {
     git?: string;
-    npm?: string;
+    npm?: string | boolean;
     autoBuild?: boolean;
     autoTag?: boolean;
     preflight?: {

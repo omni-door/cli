@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.4.x
+### v2.4.3
+1. 「optimization」 `omni release` npm publish 支持两步验证(OTP)
+
 ### v2.4.2
 1. 「optimization」 `omni build` rollup 自定义配置文件的参数传递
 

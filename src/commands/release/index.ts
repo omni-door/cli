@@ -15,6 +15,7 @@ import {
   nodeVersionCheck,
   logPrefix
 } from '@omni-door/utils';
+import { spawn } from 'child_process';
 import { getHandlers, signal, logo } from '../../utils';
 import buildCommands from '../build';
 /* import types */
@@ -353,14 +354,45 @@ export default async function (
         }, () => {}, true
       );
 
-      await exec(
-        [`npm publish --registry=${npm || npmUrl} --tag=${tag}`],
-        () => {
-          logEmph(`The npm-package publish success with version ${pkj.version}@${tag}!`);
-          logEmph(`npm包发布成功, 版本号为 ${pkj.version}@${tag}！`);
-        },
-        handleReleaseErr('The npm-package publish failed(npm包发布失败)!')
-      );
+      await new Promise((resolve, reject) => {
+        const npm_publish = spawn(
+          'npm',
+          [
+            'publish',
+            `--registry=${(npm && typeof npm === 'string') ? npm : npmUrl}`,
+            `--tag=${tag}`,
+            '--access public'
+          ],
+          {
+            detached: true,
+            stdio: 'inherit'
+          }
+        );
+  
+        if (npm_publish.stdout) {
+          npm_publish.stdout.on('data', data => {
+            console.info(data.toString());
+          });
+        }
+
+        if (npm_publish.stderr) {
+          npm_publish.stderr.on('data', data => {
+            console.info(data.toString());
+          });
+        }
+
+        npm_publish.on('error', handleReleaseErr('The npm-package publish failed(npm包发布失败)!'));
+
+        npm_publish.on('close', code => {
+          if (code === 0) {
+            logEmph(`The npm-package publish success with version ${pkj.version}@${tag}!`);
+            logEmph(`npm包发布成功, 版本号为 ${pkj.version}@${tag}！`);
+            resolve(null);
+          } else {
+            reject();
+          }
+        });
+      });
     }
 
     // handle release plugins
