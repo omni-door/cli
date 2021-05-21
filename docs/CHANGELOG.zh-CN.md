@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.4.x
+### v2.4.4
+1. 「update」 `omni dev` 打开浏览器延时
+
 ### v2.4.3
 1. 「optimization」 `omni release` npm publish 支持两步验证(OTP)
 

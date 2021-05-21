@@ -79,7 +79,7 @@ async function server ({
     let serverUrl = openHost + ':' + p;
 
     const ServerDevCli = {
-      storybook: `${path.resolve(CWD, 'node_modules/.bin/start-storybook')} -p ${p} -h ${serverHost} --quiet`,
+      storybook: `${path.resolve(CWD, 'node_modules/.bin/start-storybook')} -p ${p} -h ${serverHost} --quiet --ci`,
       docz: `${path.resolve(CWD, 'node_modules/.bin/docz')} dev -p ${p} --host ${serverHost}`,
       bisheng: `${path.resolve(CWD, 'node_modules/.bin/bisheng')} start`,
       styleguidist: `${path.resolve(CWD, 'node_modules/.bin/styleguidist')} server --port ${p} --host ${serverHost}`,
@@ -88,6 +88,7 @@ async function server ({
       nuxt: `${path.resolve(CWD, 'node_modules/.bin/nuxt')} dev --port ${p} --hostname ${serverHost}`
     };
     const autoOpenServer = [
+      'storybook',
       'docz',
       'styleguidist',
       'dumi',
@@ -194,15 +195,18 @@ async function server ({
     } else {
       let delay = 0;
       switch (serverType) {
+        case 'storybook':
+          delay = 15000;
+          break;
         case 'docz':
-          delay = 12000;
+          delay = 15000;
           break;
         case 'next':
         case 'nuxt':
-          delay = 3000;
+          delay = 5000;
           break;
         default:
-          delay = 5000;
+          delay = 8000;
       }
       serverUrl = 'http://' + serverUrl;
       exec([ServerDevCli[serverType as keyof typeof ServerDevCli]]);

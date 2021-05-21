@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.4.x
+### v2.4.4
+1. 「update」 `omni dev` open browser delay
+
 ### v2.4.3
 1. 「optimization」 `omni release` npm publish support OTP
 
