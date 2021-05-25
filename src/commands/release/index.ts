@@ -15,7 +15,7 @@ import {
   nodeVersionCheck,
   logPrefix
 } from '@omni-door/utils';
-import { spawn } from 'child_process';
+import { spawn, execSync } from 'child_process';
 import { getHandlers, signal, logo } from '../../utils';
 import buildCommands from '../build';
 /* import types */
@@ -287,7 +287,8 @@ export default async function (
       handleReleaseErr('The version iteration failed(版本迭代失败)!')
     );
 
-    if (git) {
+    const hasChange = !!execSync('git status -s').toString();
+    if (git && hasChange) {
       const gitUrl = git.trim();
       let gitOriginUrl = '';
       let gitOmniUrl = '';

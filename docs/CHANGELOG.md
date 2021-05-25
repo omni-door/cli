@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.4.x
+### v2.4.5
+1. 「optimization」 `omni release` git process will check status first
+
 ### v2.4.4
 1. 「update」 `omni dev` open browser delay
 

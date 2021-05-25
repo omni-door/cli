@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.4.x
+### v2.4.5
+1. 「optimization」 `omni release` 操作git前先检查状态
+
 ### v2.4.4
 1. 「update」 `omni dev` 打开浏览器延时
 
