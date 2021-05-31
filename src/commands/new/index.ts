@@ -132,9 +132,9 @@ export default async function (config: OmniConfig | null, componentName: string,
     handleException(
       `Please input a valid module name(请输入合法的${module_cn}名称)!\n
       Rules(规则):\n
-        1. ${module_cn}名大于等于2个字符；(module name must greater-or-equal 2)\n
-        2. 第一个字符只能由 下划线_ 或 大小写字母 组成；(the first character can only be underscore or upper/lower case letter)\n
-        3. 后续字符只能由 数字、下划线_、大小写字母 组成！(subsequent characters can only be numberm, underscore, upper and lower case letter)\n
+        1. The ${module_cn} name must greater-or-equal 2(${module_cn}名大于等于2个字符)\n
+        2. The first character can only be underscore or upper/lower case letter(第一个字符只能由 下划线_ 或 大小写字母 组成)\n
+        3. The subsequent characters can only be numberm, underscore, upper and lower case letter(后续字符只能由 数字、下划线_、大小写字母 组成)\n
       `
     );
   }
