@@ -3,6 +3,11 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.4.x
+### v2.4.6
+1. 「chore」 `omni new` 名称提示
+
+2. 「optimization」 `omni dev` 打开浏览器之前先确保端口已经被占用
+
 ### v2.4.5
 1. 「optimization」 `omni release` 操作git前先检查状态
 

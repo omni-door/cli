@@ -193,24 +193,28 @@ async function server ({
           break;
       }
     } else {
-      let delay = 0;
-      switch (serverType) {
-        case 'storybook':
-          delay = 15000;
-          break;
-        case 'docz':
-          delay = 15000;
-          break;
-        case 'next':
-        case 'nuxt':
-          delay = 5000;
-          break;
-        default:
-          delay = 8000;
-      }
       serverUrl = 'http://' + serverUrl;
       exec([ServerDevCli[serverType as keyof typeof ServerDevCli]]);
-      if (~autoOpenServer.indexOf(serverType)) setTimeout(() => open(serverUrl), delay);  
+      if (~autoOpenServer.indexOf(serverType)) {
+        const detectPort = requireCwd('detect-port');
+        const openAfterPortAvailable = () => {
+          setTimeout(() => {
+            detectPort(p)
+              .then((_p : number) => {
+                if (_p === p) {
+                  openAfterPortAvailable();
+                } else {
+                  open(serverUrl);
+                }
+              })
+              .catch((err: any) => {
+                logWarn(err);
+                open(serverUrl);
+              });
+          }, 1000);
+        };
+        openAfterPortAvailable();
+      } 
     }
 
   } catch (err) {

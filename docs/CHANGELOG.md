@@ -3,6 +3,11 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.4.x
+### v2.4.6
+1. 「chore」 `omni new` name hint
+
+2. 「optimization」 `omni dev` open browser after detect the port is occupied
+
 ### v2.4.5
 1. 「optimization」 `omni release` git process will check status first
 
