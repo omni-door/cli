@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.4.x
+### v2.4.7
+1. 「optimization」 `omni init` check the node version whether `>=12` when choose the *docz* for the demo-frame at *component-react* project
+
 ### v2.4.6
 1. 「chore」 `omni new` name hint
 

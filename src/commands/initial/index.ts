@@ -410,14 +410,14 @@ export default async function (strategy: STRATEGY, {
             if (projectType === 'ssr-react') {
               return ['next', 'koa-next'];
             }
-            return ['docz', 'storybook', 'styleguidist', 'bisheng'];
+            return ['storybook', 'docz', 'styleguidist', 'bisheng'];
           },
           default: function (answer: any) {
             const projectType = getProjectType(answer);
             if (projectType === 'ssr-react') {
               return 'next';
             }
-            return 'docz';
+            return 'storybook';
           },
           message: function (answer: any) {
             const projectType = getProjectType(answer);
@@ -437,7 +437,8 @@ export default async function (strategy: STRATEGY, {
             }
             return false;
           }
-        }, {
+        },
+        {
           name: 'ts',
           type: 'confirm',
           message: function (answer: any) {
@@ -451,7 +452,8 @@ export default async function (strategy: STRATEGY, {
             }
             return false;
           }
-        }, {
+        },
+        {
           name: 'test',
           type: 'confirm',
           message: function (answer: any) {
@@ -465,7 +467,8 @@ export default async function (strategy: STRATEGY, {
             }
             return false;
           }
-        }, {
+        },
+        {
           name: 'style',
           type: 'checkbox',
           choices: ['css', 'less', 'scss'],
@@ -473,13 +476,15 @@ export default async function (strategy: STRATEGY, {
             return `${logo()}[${++currStep}/${totalStep}] Select the stylesheets(选择样式文件):`;
           },
           default: ['css'],
-          when: function (answer: any) {
+          when: async function (answer: any) {
             if (getProjectType(answer) === 'toolkit') {
               return false;
             }
+            if (answer.server === 'docz') await nodeVersionCheck('12');
             return true;
           }
-        }, {
+        },
+        {
           name: 'layout',
           type: 'list',
           when: (answer: any) => {
@@ -496,7 +501,8 @@ export default async function (strategy: STRATEGY, {
           message: function (answer: any) {
             return `${logo()}[${++currStep}/${totalStep}] Select layout plan(选择布局适配方案):`;
           }
-        }, {
+        },
+        {
           name: 'lint',
           type: 'checkbox',
           choices: (answer: any) => {
@@ -508,7 +514,8 @@ export default async function (strategy: STRATEGY, {
             return `${logo()}[${++currStep}/${totalStep}] Select the lint tools(选择lint工具):`;
           },
           default: ['eslint']
-        }, {
+        },
+        {
           name: 'pkgtool',
           type: 'list',
           choices: ['pnpm', 'yarn', 'npm'],
