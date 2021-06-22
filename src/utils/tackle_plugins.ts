@@ -15,7 +15,7 @@ export function getHandlers<T extends PLUGINSTAGE> (plugins: OmniPlugin<T>[], st
 
 export const handlerFactory: HandlerFactory = (handler, errMsg) => (config, options) => {
   try {
-    return handler(config, options);
+    return Promise.resolve(handler(config, options));
   } catch (err) {
     logWarn(err);
     logWarn(errMsg || 'The plugin execution error, will skip to continue the rest of the operaions(插件执行发生错误，将跳过继续执行剩余操作)');

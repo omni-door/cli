@@ -203,13 +203,8 @@ export default async function (
             const { iter, version_semantic, version_manual, label } = answers;
             const releaseType = autoIterDict[version_semantic]; 
             const version = version_manual ?? (version_semantic ? semver.inc(pkj.version, releaseType as any) : '');
-            if (label) {
-              tag = label;
-            } else if (autoTag && npm) {
-              tag = version
-                ? version.match(/[a-zA-Z]+/g)?.[0] ?? releaseSemverTag[releaseType as keyof typeof releaseSemverTag] ?? 'latest'
-                : defaultTag;
-            }
+            tag = label || version?.match(/[a-zA-Z]+/g)?.[0] || releaseSemverTag[releaseType as keyof typeof releaseSemverTag] || defaultTag;
+
             switch (iter) {
               case iterDict.automatic:
                 // eslint-disable-next-line no-case-declarations
@@ -222,6 +217,7 @@ export default async function (
                 ignore = true;
                 break;
             }
+
             resolve(void 0);
           })
           .catch(handleReleaseErr());

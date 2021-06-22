@@ -3,6 +3,11 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.4.x
+### v2.4.8
+1. 「optimization」 `omni release` tag and plugin handler
+
+2. 「upgrade」upgrade @omni-door/utils
+
 ### v2.4.7
 1. 「optimization」 `omni init` check the node version whether `>=12` when choose the *docz* for the demo-frame at *component-react* project
 

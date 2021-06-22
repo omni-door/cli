@@ -3,6 +3,11 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.4.x
+### v2.4.8
+1. 「optimization」 `omni release` tag 和 plugin handler
+
+2. 「upgrade」升级 @omni-door/utils
+
 ### v2.4.7
 1. 「optimization」 `omni init` 在 *component-react* 项目中，选择 *docz* 作为 demo 框架时，检查 node 版本是否 `>= 12`
 
