@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.4.x
+### v2.4.9
+1. 「update」 `omni release` 将插件的处理程序置于 git 和 npm 的操作之前
+
 ### v2.4.8
 1. 「optimization」 `omni release` tag 和 plugin handler
 

@@ -283,6 +283,27 @@ export default async function (
       handleReleaseErr('The version iteration failed(版本迭代失败)!')
     );
 
+    // handle release plugins
+    const plugin_handles = plugins && plugins.length > 0 && getHandlers<'release'>(plugins as OmniPlugin<'release'>[], 'release');
+    if (plugin_handles) {
+      const version = pkj ? pkj.version : 'unknown';
+      const versionIterTactic = ignore ? 'ignore' : manual ? 'manual' : 'auto';
+      for (const name in plugin_handles) {
+        const handler = plugin_handles[name];
+        await handler({
+          type,
+          template,
+          build,
+          release
+        }, {
+          version,
+          versionIterTactic,
+          verify,
+          tag
+        });
+      }
+    }
+
     const hasChange = !!execSync('git status -s').toString();
     if (git && hasChange) {
       const gitUrl = git.trim();
@@ -390,27 +411,6 @@ export default async function (
           }
         });
       });
-    }
-
-    // handle release plugins
-    const plugin_handles = plugins && plugins.length > 0 && getHandlers<'release'>(plugins as OmniPlugin<'release'>[], 'release');
-    if (plugin_handles) {
-      const version = pkj ? pkj.version : 'unknown';
-      const versionIterTactic = ignore ? 'ignore' : manual ? 'manual' : 'auto';
-      for (const name in plugin_handles) {
-        const handler = plugin_handles[name];
-        await handler({
-          type,
-          template,
-          build,
-          release
-        }, {
-          version,
-          versionIterTactic,
-          verify,
-          tag
-        });
-      }
     }
 
     logTime('RELEASE(发布)', true);

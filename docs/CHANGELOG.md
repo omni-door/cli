@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.4.x
+### v2.4.9
+1. 「update」 `omni release` put plugin process before git and npm process
+
 ### v2.4.8
 1. 「optimization」 `omni release` tag and plugin handler
 
