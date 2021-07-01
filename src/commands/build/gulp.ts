@@ -20,7 +20,8 @@ const sourcemaps = requireCwd('gulp-sourcemaps');
 const autoprefixer = requireCwd('gulp-autoprefixer');
 const cssnano = requireCwd('gulp-cssnano');
 const concat = requireCwd('gulp-concat');
-const minifycss = requireCwd('gulp-minify-css');
+const concatCss = requireCwd('gulp-concat-css');
+const cleanCSS = requireCwd('gulp-clean-css');
 const through2 = requireCwd('through2');
 
 const project = typescript && typescript.createProject('tsconfig.json');
@@ -122,8 +123,9 @@ function trans2css() {
     .pipe(cssnano({ zindex: false, reduceIdents: false }))
     .pipe(gulp.dest(dest.lib))
     .pipe(gulp.dest(dest.es))
+    .pipe(concatCss('index.css'))
     .pipe(concat('index.css'))
-    .pipe(minifycss())
+    .pipe(cleanCSS())
     .pipe(gulp.dest(dest.lib))
     .pipe(gulp.dest(dest.es));
 }

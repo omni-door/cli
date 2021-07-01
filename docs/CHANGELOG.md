@@ -2,6 +2,10 @@
 
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
+## v2.5.x
+### v2.5.0
+1. 「feat」 `omni build` gulp-package support css path concat and replace css-minifier
+
 ## v2.4.x
 ### v2.4.9
 1. 「update」 `omni release` put plugin process before git and npm process

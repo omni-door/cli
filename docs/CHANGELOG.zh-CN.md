@@ -2,6 +2,10 @@
 
 [English](./CHANGELOG.md) | 简体中文
 
+## v2.5.x
+### v2.5.0
+1. 「feat」 `omni build` gulp 打包支持 css 路径拼接并替换 css-minifier
+
 ## v2.4.x
 ### v2.4.9
 1. 「update」 `omni release` 将插件的处理程序置于 git 和 npm 的操作之前
