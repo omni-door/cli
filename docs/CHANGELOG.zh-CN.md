@@ -3,6 +3,11 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.5.x
+### v2.5.1
+1. 「optimization」 `omni build` gulp 打包支持 vue SFC
+
+2. 「feat」 `omni new` *component-vue* 项目支持 SFC 和 Render-Function
+
 ### v2.5.0
 1. 「feat」 `omni build` gulp 打包支持 css 路径拼接并替换 css-minifier
 

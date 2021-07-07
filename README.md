@@ -157,10 +157,12 @@ Arguments:
   name              optional! The name of component.
 
 Options:
-  -f, --function    create a React functional component
-  -c, --class       create a React class component
+  -f, --function     create a React-Function-Component
+  -c, --class        create a React-Class-Component
+  -r, --render       create a Vue-Render-Function
+  -s, --single       create a Vue-Single-File-Component
   -P, --path <path>  the workpath for create component
-  -h, --help        output usage information
+  -h, --help         display help for command
 ```
 
 ---
@@ -171,7 +173,7 @@ Options:
 ```shell
 Usage: omni build [options]
 
-build your project according to the [omni.config.js]'s build field
+build your project according to the [omni.config.js]\'s build field
 
 Options:
   -c, --config <path>  specify the path of config file

@@ -3,6 +3,11 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.5.x
+### v2.5.1
+1. 「optimization」 `omni build` gulp-package support vue SFC
+
+2. 「feat」 `omni new` support SFC and Render-Function for *component-vue* project
+
 ### v2.5.0
 1. 「feat」 `omni build` gulp-package support css path concat and replace css-minifier
 

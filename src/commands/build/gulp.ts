@@ -2,8 +2,11 @@ export default function (config: {
   srcDir: string;
   outDir: string;
   esmDir: string;
+  configurationPath?: string;
+  configFileName?: string;
+  pkjFieldName?: string;
 }) {
-  const { srcDir = 'src', outDir = 'lib', esmDir = 'es' } = config;
+  const { srcDir = 'src', outDir = 'lib', esmDir = 'es', configurationPath, pkjFieldName = 'omni', configFileName = 'omni.config.js' } = config;
 
   return `'use strict';
 
@@ -24,6 +27,13 @@ const concatCss = requireCwd('gulp-concat-css');
 const cleanCSS = requireCwd('gulp-clean-css');
 const through2 = requireCwd('through2');
 
+const ppkj = requireCwd('./package.json');
+const configFilePath = (ppkj && ppkj.${pkjFieldName} && ppkj.${pkjFieldName}.filePath) || './${configFileName}';
+const configs = requireCwd(configFilePath);
+${configurationPath ? `const customConfig = require('${configurationPath}')
+` : ''}
+const { build } = configs || {};
+const { configuration = params => () => Promise.resolve() } = build || {};
 const project = typescript && typescript.createProject('tsconfig.json');
 
 const params = {
@@ -38,6 +48,10 @@ const params = {
   scripts: [
     '${srcDir}/**/*.{ts,tsx,js,jsx}',
     '!${srcDir}/**/{demo,__demo__,test,__test__,stories,__stories__}/*.{ts,tsx,js,jsx}'
+  ],
+  vue: [
+    '${srcDir}/**/*.vue',
+    '!${srcDir}/**/{demo,__demo__,test,__test__,stories,__stories__}/*.vue'
   ]
 };
 
@@ -85,6 +99,14 @@ function compileES () {
   return compileScripts('es', dest.es);
 }
 
+function copyVueSFC () {
+  const { dest, vue } = params;
+  return gulp
+    .src(vue)
+    .pipe(gulp.dest(dest.lib))
+    .pipe(gulp.dest(dest.es));
+}
+
 function copyStylesheet () {
   const { dest, styles } = params;
   return gulp
@@ -130,12 +152,16 @@ function trans2css() {
     .pipe(gulp.dest(dest.es));
 }
 
-const buildScripts = gulp.series(compileCJS, compileES);
+const buildScripts = gulp.series(compileCJS, compileES, copyVueSFC);
 
-const build = gulp.parallel(buildScripts, copyStylesheet, trans2css);
+const builds = ${
+  configurationPath
+    ? 'customConfig'
+    : 'gulp.parallel(buildScripts, copyStylesheet, trans2css, configuration(params));'
+}
 
-exports.build = build;
+exports.build = builds;
 
-exports.default = build;
+exports.default = builds;
 `;
 }

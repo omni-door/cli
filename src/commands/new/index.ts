@@ -22,6 +22,8 @@ function handleException (msg?: string) {
 export default async function (config: OmniConfig | null, componentName: string, options?: {
   function?: boolean;
   class?: boolean;
+  render?: boolean;
+  single?: boolean;
   tplPkj?: string;
   tplPkjTag?: string;
   before?: (params: {
@@ -72,16 +74,18 @@ export default async function (config: OmniConfig | null, componentName: string,
   }
 
   // eslint-disable-next-line prefer-const
-  let { function: fc, class: cc, tplPkj, tplPkjTag, before, after } = options || {};
+  let { function: fc, class: cc, render: h, single: sfc, tplPkj, tplPkjTag, before, after } = options || {};
 
   if (!root) {
     handleException(`Missing the path for generate ${module_en}(生成${module_cn}的路径缺失)!`);
   }
 
-  if (!componentName || (!fc && !cc)) {
+  if (!componentName || (!fc && !cc && !h && !sfc)) {
     const moduleType = {
-      fc: `functional-${module_en}(函数${module_cn})`,
-      cc: `class-${module_en}(类${module_cn})`
+      fc: 'Function-Component(函数组件)',
+      cc: 'Class-Component(类组件)',
+      h: 'Render-Function(渲染函数组件)',
+      sfc: 'Single-File-Component(模板组件)',
     };
     const questions = [
       {
@@ -102,12 +106,12 @@ export default async function (config: OmniConfig | null, componentName: string,
           if (!answer.name && !componentName) {
             handleException(`Please input the ${module_en} name(请输入创建的${module_cn}名称)!`);
           }
-          if (type === 'spa-vue' || type === 'component-vue' || type === 'toolkit' || fc || cc) {
+          if (type === 'spa-vue' || type === 'toolkit' || fc || cc) {
             return false;
           }
           return true;
         },
-        choices: [ moduleType.fc, moduleType.cc ],
+        choices: type === 'component-vue' ? [ moduleType.h, moduleType.sfc ] : [ moduleType.fc, moduleType.cc ],
         message: `${logo()} Select the type of ${module_en}(选择${module_cn}类型):`
       }      
     ];
@@ -116,10 +120,19 @@ export default async function (config: OmniConfig | null, componentName: string,
         .then(answers => {
           const { name, type } = answers;
           componentName = name || componentName;
-          if (type === moduleType.fc) {
-            fc = true;
-          } else if (type === moduleType.cc) {
-            cc = true;
+          switch (type) {
+            case moduleType.fc:
+              fc = true;
+              break;
+            case moduleType.cc:
+              cc = true;
+              break;
+            case moduleType.sfc:
+              sfc = true;
+              break;
+            case moduleType.h:
+              h = true;
+              break;
           }
           resolve(void 0);
         });
@@ -156,7 +169,16 @@ export default async function (config: OmniConfig | null, componentName: string,
     `newPath=${path_cp}`,
     `stylesheet=${stylesheet}`,
     `ts=${typescript}`,
-    `type=${cc ? 'cc' : 'fc'}`,
+    `type=${cc
+      ? 'cc'
+      : fc
+        ? 'fc'
+        : h
+          ? 'h'
+          : sfc
+            ? 'sfc'
+            : ''
+    }`,
     `test=${!!test}`,
     `hasStorybook=${hasStorybook}`,
     readme ? `md=${mdx ? 'mdx' : 'md'}` : ''

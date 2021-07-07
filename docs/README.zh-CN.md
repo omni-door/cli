@@ -99,7 +99,7 @@ Arguments:
     -t, --toolkit [name]            创建一个工具库
     -n, --no-install                初始化项目不安装任何依赖
     -P, --path <path>               创建项目的工作路径
-    -h, --help               output usage information
+    -h, --help                      输出帮助信息
 ```
 
 ---
@@ -116,7 +116,7 @@ Options:
   -p, --port <port>      根据指定的端口号启动开发服务
   -H, --hostname <host>  根据指定的hostname启动开发服务
   -P, --path <path>      启动开发服务的工作路径
-  -h, --help             output usage information
+  -h, --help             输出帮助信息
 ```
 
 ---
@@ -133,7 +133,7 @@ Options:
   -p, --port <port>      根据指定的端口号启动生产服务
   -H, --hostname <host>  根据指定的hostname启动生产服务
   -P, --path <path>      启动生产服务的工作路径
-  -h, --help             output usage information
+  -h, --help             输出帮助信息
 ```
 
 ---
@@ -153,8 +153,10 @@ Arguments:
 Options:
   -f, --function     创建一个React函数组件
   -c, --class        创建一个React类组件
+  -r, --render       创建一个Vue渲染函数组件
+  -s, --single       创建一个Vue模板组件
   -P, --path <path>  创建组件的工作路径
-  -h, --help        output usage information
+  -h, --help         输出帮助信息
 ```
 
 ---
@@ -171,7 +173,7 @@ Options:
   -c, --config <path>  指定构建的配置文件路径
   -n, --no-verify      绕过所有预检直接构建
   -P, --path <path>    构建的工作路径
-  -h, --help           output usage information
+  -h, --help           输出帮助信息
 ```
 
 ---
@@ -191,7 +193,7 @@ Options:
   -t, --tag <tag>         发布时指定tag
   -n, --no-verify         绕过所有的预检直接发布
   -P, --path <path>       发布的工作路径
-  -h, --help              output usage information
+  -h, --help              输出帮助信息
 ```
 
 ---

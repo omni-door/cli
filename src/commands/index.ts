@@ -137,8 +137,10 @@ const commandDicts = {
 
   program
     .command(`${commandDicts.new} [name]`)
-    .option('-f, --function', 'create a functional component')
-    .option('-c, --class', 'create a class component')
+    .option('-f, --function', 'create a React-Function-Component')
+    .option('-c, --class', 'create a React-Class-Component')
+    .option('-r, --render', 'create a Vue-Render-Function')
+    .option('-s, --single', 'create a Vue-Single-File-Component')
     .option('-P, --path <path>', 'the workpath for create component')
     .description('omni new [name] [-f | -c] [-P <path>]', {
       name: 'The name of component.',
