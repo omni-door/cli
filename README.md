@@ -2,7 +2,7 @@
 
 https://www.omnidoor.org
 
-The CLI Tool for set up standard javascript project.
+The CLI Tool for set up standard frontend project.
 
 [![NPM downloads](http://img.shields.io/npm/dm/%40omni-door%2Fcli.svg?style=flat-square)](https://www.npmjs.com/package/@omni-door/cli)
 [![npm version](https://badge.fury.io/js/%40omni-door%2Fcli.svg)](https://badge.fury.io/js/%40omni-door%2Fcli)
@@ -173,7 +173,7 @@ Options:
 ```shell
 Usage: omni build [options]
 
-build your project according to the [omni.config.js]\'s build field
+build your project according to the [omni.config.js]'s build field
 
 Options:
   -c, --config <path>  specify the path of config file

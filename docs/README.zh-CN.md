@@ -2,7 +2,7 @@
 
 https://www.omnidoor.org
 
-一个能创建标准的 javascript 项目的脚手架。
+一个能创建标准的前端项目的脚手架。
 
 [![NPM downloads](http://img.shields.io/npm/dm/%40omni-door%2Fcli.svg?style=flat-square)](https://www.npmjs.com/package/@omni-door/cli)
 [![npm version](https://badge.fury.io/js/%40omni-door%2Fcli.svg)](https://badge.fury.io/js/%40omni-door%2Fcli)
