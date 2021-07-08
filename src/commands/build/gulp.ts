@@ -73,7 +73,7 @@ function compileScripts (babelEnv, destDir) {
     .pipe(sourcemaps ? sourcemaps.init() : through2.obj())
     .pipe(project ? project() : through2.obj())
     .pipe(babel({ root: process.cwd() }))
-    .pipe(replace ? replace(/.vue/g, '.js') : through2.obj())
+    .pipe(replace ? replace(/\.vue("|'){1}/g, '.js$1') : through2.obj())
     .pipe(
       through2.obj(function (file, encoding, next) {
         this.push(file.clone());
