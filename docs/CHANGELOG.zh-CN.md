@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.5.x
+### v2.5.4
+1. 「optimization」 `omni build` gulp 打包支持自定义配置
+
 ### v2.5.3
 1. 「fix」 `omni build` gulp 打包替换 vue-SFC 文件路径
 

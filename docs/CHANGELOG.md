@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.5.x
+### v2.5.4
+1. 「optimization」 `omni build` gulp-package support custom configuration
+
 ### v2.5.3
 1. 「fix」 `omni build` gulp-package replace vue-SFC file path
 
