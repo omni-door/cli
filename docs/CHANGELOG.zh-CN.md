@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.5.x
+### v2.5.2
+1. 「optimization」 `omni build` gulp 打包编译 vue-SFC 文件
+
 ### v2.5.1
 1. 「optimization」 `omni build` gulp 打包支持 vue SFC
 

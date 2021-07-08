@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.5.x
+### v2.5.2
+1. 「optimization」 `omni build` package with gulp will compile the vue-SFC file
+
 ### v2.5.1
 1. 「optimization」 `omni build` gulp-package support vue SFC
 

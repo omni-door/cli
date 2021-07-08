@@ -26,6 +26,8 @@ const concat = requireCwd('gulp-concat');
 const concatCss = requireCwd('gulp-concat-css');
 const cleanCSS = requireCwd('gulp-clean-css');
 const through2 = requireCwd('through2');
+const replace = requireCwd('gulp-replace-path', true);
+const vueSFC = requireCwd('@omni-door/gulp-plugin-vue-sfc', true);
 
 const ppkj = requireCwd('./package.json');
 const configFilePath = (ppkj && ppkj.${pkjFieldName} && ppkj.${pkjFieldName}.filePath) || './${configFileName}';
@@ -71,6 +73,7 @@ function compileScripts (babelEnv, destDir) {
     .pipe(sourcemaps ? sourcemaps.init() : through2.obj())
     .pipe(project ? project() : through2.obj())
     .pipe(babel({ root: process.cwd() }))
+    .pipe(replace ? replace(/.vue/g, '.js') : through2.obj())
     .pipe(
       through2.obj(function (file, encoding, next) {
         this.push(file.clone());
@@ -99,10 +102,16 @@ function compileES () {
   return compileScripts('es', dest.es);
 }
 
-function copyVueSFC () {
+function compileSFC () {
   const { dest, vue } = params;
   return gulp
     .src(vue)
+    .pipe(sourcemaps ? sourcemaps.init() : through2.obj())
+    .pipe(vueSFC ? vueSFC.default({ ext: '.ts' }) : through2.obj())
+    .pipe((alias && project) ? alias({ configuration: project.config }) : through2.obj())
+    .pipe(project ? project() : through2.obj())
+    .pipe(babel({ root: process.cwd() }))
+    .pipe(sourcemaps ? sourcemaps.write({ sourceRoot: file => path.relative(path.join(file.cwd, file.path), file.base) }) : through2.obj())
     .pipe(gulp.dest(dest.lib))
     .pipe(gulp.dest(dest.es));
 }
@@ -152,7 +161,7 @@ function trans2css() {
     .pipe(gulp.dest(dest.es));
 }
 
-const buildScripts = gulp.series(compileCJS, compileES, copyVueSFC);
+const buildScripts = gulp.series(compileCJS, compileES, compileSFC);
 
 const builds = ${
   configurationPath
