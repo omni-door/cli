@@ -35,7 +35,7 @@ const configs = requireCwd(configFilePath);
 ${configurationPath ? `const customConfig = require('${configurationPath}')
 ` : ''}
 const { build } = configs || {};
-const { configuration = ({ task }) => task } = build || {};
+const { configuration = ({ task }) => { const [compileCJS, compileES, compileSFC, ...rest] = task; return [gulp.series(compileCJS, compileES, compileSFC), ...rest]; } } = build || {};
 const project = typescript && typescript.createProject('tsconfig.json');
 
 const params = {
@@ -161,12 +161,10 @@ function trans2css() {
     .pipe(gulp.dest(dest.es));
 }
 
-const buildScripts = gulp.series(compileCJS, compileES, compileSFC);
-
 const builds = ${
   configurationPath
     ? 'customConfig'
-    : 'gulp.parallel.apply(gulp, configuration({ task: [buildScripts, copyStylesheet, trans2css], params }));'
+    : 'gulp.parallel.apply(gulp, configuration({ task: [compileCJS, compileES, compileSFC, copyStylesheet, trans2css], params }));'
 }
 
 exports.build = builds;
