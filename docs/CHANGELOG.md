@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.5.x
+### v2.5.6
+1. 「optimization」 `omni release` autoTag `rc` force to `latest` when extract from version
+
 ### v2.5.5
 1. 「optimization」 `omni build` gulp-package custom configuration expose full items
 
