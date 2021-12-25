@@ -36,7 +36,7 @@ export default async function ({
       server(Object.assign(rest, { p }));
     }
   } catch (err) {
-    logErr(err);
+    logErr(err as string);
     process.exit(1);
   }
 }

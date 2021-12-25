@@ -139,7 +139,7 @@ async function server ({
 
             isHttps = true;
           } catch (err) {
-            logWarn(err);
+            logWarn(err as string);
             logWarn(`Failing to generate the certificate(生成证书失败)!\n
             You can specify the certificate manually(可通过以下方式手动指定证书):
             https: {
@@ -218,7 +218,7 @@ async function server ({
     }
 
   } catch (err) {
-    logErr(err);
+    logErr(err as string);
     process.exit(1);
   }
 }

@@ -68,7 +68,7 @@ export default async function (
     // node version pre-check
     await nodeVersionCheck('8');
   } catch (e) {
-    logWarn(e);
+    logWarn(e as string);
   }
 
   if (!config || JSON.stringify(config) === '{}') {
@@ -417,7 +417,7 @@ export default async function (
     const shouldExit = !autoRelease;
     handleReleaseSuc()(shouldExit);
   } catch (err) {
-    logErr(err);
+    logErr(err as string);
     handleReleaseErr('👆 Oops! release process occured some accidents(糟糕！发布过程发生了一点意外)')();
   }
 }

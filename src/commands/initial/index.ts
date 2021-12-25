@@ -130,7 +130,7 @@ async function checkPkgTool(pkgtool: PKJTOOL) {
               execSync(`sudo npm i -g ${pkgtool}`, { stdio: 'inherit' });
               resolve(true);
             } catch (err) {
-              logWarn(err);
+              logWarn(err as string);
               logWarn(`The setup ${pkgtool} failed, please try it by yourself`);
               logWarn(`${pkgtool} 安装失败，请自行安装后再试`);
               process.exit(0);
@@ -213,7 +213,7 @@ export default async function (strategy: STRATEGY, {
     // node version pre-check
     await nodeVersionCheck('10.13.0');
   } catch (e) {
-    logWarn(e);
+    logWarn(e as string);
   }
 
   // bind exit signals
@@ -251,7 +251,7 @@ export default async function (strategy: STRATEGY, {
 
     configPath = path.resolve(realCWD, (ppkj && ppkj[pkjFieldName] && ppkj[pkjFieldName]['filePath']) || configFileName);
   } catch (e) {
-    logWarn(e);
+    logWarn(e as string);
   }
 
   // get project name
@@ -686,7 +686,7 @@ export default async function (strategy: STRATEGY, {
       );
     });
   } catch (err) {
-    logErr(err);
+    logErr(err as string);
     spinner.state('fail', 'The initializing occurred some accidents(项目初始化发生错误)!');
     process.exit(1);
   }

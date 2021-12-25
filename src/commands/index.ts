@@ -18,7 +18,7 @@ const commandDicts = {
   try {
     await nodeVersionCheck('10.13.0');
   } catch (e) {
-    logWarn(e);
+    logWarn(e as string);
   }
 
   const { initial, dev, start, newTpl, build, release } = require('./commands');
@@ -32,7 +32,7 @@ const commandDicts = {
       configFilePath = ppkj?.omni?.filePath || configFilePath;
       config = requireCwd(configFilePath, silent);
     } catch (e) {
-      logWarn(e);
+      logWarn(e as string);
     }
   }
 

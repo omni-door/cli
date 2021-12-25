@@ -3,6 +3,12 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.5.x
+### v2.5.6
+1. 「fix」 `omni build` gulp 打包 *.vue* 文件后缀名转换
+
+2. 「update」 `omni build` dependencies_build 依赖版本更新
+
+
 ### v2.5.5
 1. 「optimization」 `omni build` gulp 打包自定义暴露完整配置项
 

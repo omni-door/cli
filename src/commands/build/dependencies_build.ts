@@ -13,6 +13,7 @@ export default async function (config: {
     '@babel/preset-typescript': '~7.10.0',
     '@babel/plugin-transform-runtime': '~7.10.0',
     '@babel/plugin-proposal-class-properties': '~7.10.0',
+    '@omni-door/gulp-plugin-vue-sfc': '~0.1.0',
     'babel-loader': '~8.1.0',
     'cache-loader': '~4.1.0',
     'css-loader': '~3.4.2',
@@ -44,7 +45,7 @@ export default async function (config: {
     'rollup-plugin-typescript': '1.0.1',
     'rollup-plugin-typescript2': '0.26.0',
     'ttypescript': '~1.5.12',
-    'typescript': '~3.9.7',
+    'typescript': '~3.9.10',
     'typescript-transform-paths': '~2.0.3',
     'gulp': '4.0.2',
     'gulp-autoprefixer': '7.0.1',
@@ -57,7 +58,7 @@ export default async function (config: {
     'gulp-sass': '4.1.0',
     'gulp-if': '3.0.0',
     'gulp-sourcemaps': '3.0.0',
-    'gulp-ts-alias': '1.1.0',
+    'gulp-ts-alias': '1.3.0',
     'gulp-typescript': '5.0.1',
     'through2': '4.0.1',
     'next': '~10.0.1',
@@ -132,7 +133,8 @@ export default async function (config: {
     dependency('@babel/preset-react'),
     dependency('@babel/preset-typescript'),
     dependency('@babel/plugin-transform-runtime'),
-    dependency('@babel/plugin-proposal-class-properties')
+    dependency('@babel/plugin-proposal-class-properties'),
+    project_type === 'component-vue' ? dependency('@omni-door/gulp-plugin-vue-sfc') : ''
   ] : build === 'tsc' ? [
     dependency('ttypescript'),
     dependency('typescript'),

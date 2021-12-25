@@ -3,6 +3,11 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.5.x
+### v2.5.6
+1. 「fix」 `omni build` *.vue* file extension conversion when package with gulp
+
+2. 「update」 `omni build` dependencies_build version upgrade
+
 ### v2.5.5
 1. 「optimization」 `omni build` gulp-package custom configuration expose full items
 

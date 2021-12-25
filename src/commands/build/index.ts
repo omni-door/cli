@@ -43,7 +43,7 @@ export default async function (
     // node version pre-check
     await nodeVersionCheck('10.13.0');
   } catch (e) {
-    logWarn(e);
+    logWarn(e as string);
   }
 
   if (!config || JSON.stringify(config) === '{}') {
@@ -361,7 +361,7 @@ export default async function (
         force: true
       }); 
     } catch (err) {
-      logWarn(err);
+      logWarn(err as string);
     }
 
     await exec(buildCliArr, async function () {
@@ -408,7 +408,7 @@ export default async function (
       }
     }
   } catch (err) {
-    logErr(err);
+    logErr(err as string);
     handleBuildErr('👆 Oops! Building process occured some accidents(糟糕！构建过程发生了点意外)!')();
   }
 }
