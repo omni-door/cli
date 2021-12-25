@@ -203,7 +203,8 @@ export default async function (
             const { iter, version_semantic, version_manual, label } = answers;
             const releaseType = autoIterDict[version_semantic]; 
             const version = version_manual ?? (version_semantic ? semver.inc(pkj.version, releaseType as any) : '');
-            tag = label || version?.match(/[a-zA-Z]+/g)?.[0] || releaseSemverTag[releaseType as keyof typeof releaseSemverTag] || defaultTag;
+            const versionTag = version?.match(/[a-zA-Z]+/g)?.[0];
+            tag = label || (versionTag === 'rc' ? 'latest' : versionTag) || releaseSemverTag[releaseType as keyof typeof releaseSemverTag] || defaultTag;
 
             switch (iter) {
               case iterDict.automatic:

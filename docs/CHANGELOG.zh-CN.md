@@ -8,6 +8,7 @@
 
 2. 「update」 `omni build` dependencies_build 依赖版本更新
 
+3. 「optimization」 `omni release` 从版本中自动获取tag时，`rc` 会强制转换成 `latest`
 
 ### v2.5.5
 1. 「optimization」 `omni build` gulp 打包自定义暴露完整配置项
