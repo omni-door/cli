@@ -74,7 +74,7 @@ export default function ({
             try {
               await k2c(proxy(path, config))(ctx, next);
             } catch (err) {
-              logWarn(err);
+              logWarn(err as any);
               logWarn(`The http-proxy「${route})」match occur error`);
               logWarn(`http-proxy「${route}」匹配异常`);
             }
@@ -111,7 +111,7 @@ export default function ({
             try {
               await (<KNMiddleWareCallback>callback)(ctx, next);
             } catch (err) {
-              logWarn(err);
+              logWarn(err as any);
               logWarn(`The middleware「${route})」match occur error`);
               logWarn(`中间件「${route}」匹配异常`);
             }
@@ -139,7 +139,7 @@ export default function ({
             try {
               shouldRender = await beforeRender(ctx, next);
             } catch (err) {
-              logWarn(err);
+              logWarn(err as any);
               logWarn(`The ${page}'s beforeRender error!`);
               logWarn(`${page} 页面 beforeRender 执行异常`);
             }

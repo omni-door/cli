@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.5.x
+### v2.5.7
+1. 「update」upgrade *shelljs* to resolve circular dependency warning
+
 ### v2.5.6
 1. 「fix」 `omni build` *.vue* file extension conversion when package with gulp
 

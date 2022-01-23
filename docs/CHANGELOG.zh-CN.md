@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.5.x
+### v2.5.7
+1. 「update」升级 *shelljs* 解决循环依赖的警告
+
 ### v2.5.6
 1. 「fix」 `omni build` gulp 打包 *.vue* 文件后缀名转换
 

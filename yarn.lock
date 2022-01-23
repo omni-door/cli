@@ -387,17 +387,17 @@
     "@nodelib/fs.scandir" "2.1.3"
     fastq "^1.6.0"
 
-"@omni-door/utils@~1.2.7":
-  version "1.2.7"
-  resolved "https://registry.npmjs.org/@omni-door/utils/-/utils-1.2.7.tgz#78c73bc8cd0078a3ff0dc1251061f256df36368d"
-  integrity sha512-btPWWkUUuVrm5Rwniq3M4oG1Nx6mUiQBSRc+59yQnLZWw3UnKPyqJ3NQla2QNrMD5K03AUG/A9lGJ+QO3qAvIw==
+"@omni-door/utils@~1.2.8":
+  version "1.2.8"
+  resolved "https://registry.npmjs.org/@omni-door/utils/-/utils-1.2.8.tgz#5431c6139f9bb49ae52dd9cfa7c401860e1b329b"
+  integrity sha512-qxnBXaB2pK7F/19LGUNVGDbg+0DWhxVzTmTXUdcX2GZ00fVeYqLwiSy5z1zsxRDQEne8j3EdMdhIEHtL74F3TQ==
   dependencies:
     "@types/signale" "1.4.0"
     chalk "3.0.0"
     fs-extra "8.1.0"
     ora "4.0.3"
     semver "7.3.4"
-    shelljs "0.8.3"
+    shelljs "0.8.5"
     signale "1.4.0"
     update-notifier "5.1.0"
     validate-npm-package-name "3.0.0"
@@ -7054,10 +7054,10 @@ shebang-regex@^3.0.0:
   resolved "https://registry.yarnpkg.com/shebang-regex/-/shebang-regex-3.0.0.tgz#ae16f1644d873ecad843b0307b143362d4c42172"
   integrity sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==
 
-shelljs@0.8.3:
-  version "0.8.3"
-  resolved "https://registry.yarnpkg.com/shelljs/-/shelljs-0.8.3.tgz#a7f3319520ebf09ee81275b2368adb286659b097"
-  integrity sha512-fc0BKlAWiLpwZljmOvAOTE/gXawtCoNrP5oaY7KIaQbbyHeQVg01pSEuEGvGh3HEdBU4baCD7wQBwADmM/7f7A==
+shelljs@0.8.5:
+  version "0.8.5"
+  resolved "https://registry.npmjs.org/shelljs/-/shelljs-0.8.5.tgz#de055408d8361bed66c669d2f000538ced8ee20c"
+  integrity sha512-TiwcRcrkhHvbrZbnRcFYMLl30Dfov3HKqzp5tO5b4pt6G/SezKcYhmDg15zXVBswHmctSAQKznqNW2LO5tTDow==
   dependencies:
     glob "^7.0.0"
     interpret "^1.0.0"
