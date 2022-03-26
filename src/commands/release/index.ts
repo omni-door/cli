@@ -8,6 +8,7 @@ import {
   logInfo,
   logWarn,
   logSuc,
+  logCongrat,
   logEmph,
   logTime,
   italic,
@@ -115,7 +116,7 @@ export default async function (
     msg = msg || 'Release completed(发布完成)!';
 
     return function (isExit?: boolean) {
-      logSuc(msg!);
+      logCongrat(msg!);
       isExit && process.exit(0);
     };
   }
@@ -232,8 +233,8 @@ export default async function (
 
     // auto build
     if (autoBuild && !autoRelease) {
-      logInfo('Start building the project automatically');
-      logInfo('开始自动构建项目');
+      logEmph(italic('Start building the project automatically'));
+      logEmph(italic('开始自动构建项目'));
       try {
         await buildCommands(
           config,
@@ -251,19 +252,19 @@ export default async function (
     logTime('RELEASE(发布)');
     logInfo('Starting release process(开始发布)!');
     if (!autoBuild && verify && test) {
-      await exec(['npm test'], () => logEmph(italic('Unit Test!')), handleReleaseErr('The unit test not pass(单元测试失败)'));
+      await exec(['npm test'], () => logSuc('Unit Test!'), handleReleaseErr('The unit test not pass(单元测试失败)'));
     }
 
     if (!autoBuild && verify && eslint) {
-      await exec(['npm run lint:es'], () => logEmph(italic('Eslint!')), handleReleaseErr(`The eslint not pass(eslint校验失败) \n try to exec(尝试执行): ${underline('npm run lint:es_fix')}`));
+      await exec(['npm run lint:es'], () => logSuc('Eslint!'), handleReleaseErr(`The eslint not pass(eslint校验失败) \n try to exec(尝试执行): ${underline('npm run lint:es_fix')}`));
     }
 
     if (!autoBuild && verify && prettier) {
-      await exec(['npm run lint:prettier'], () => logEmph(italic('Prettier!')), handleReleaseErr(`The prettier not pass(prettier校验失败) \n try to exec(尝试执行): ${underline('npm run lint:prettier_fix')}`));
+      await exec(['npm run lint:prettier'], () => logSuc('Prettier!'), handleReleaseErr(`The prettier not pass(prettier校验失败) \n try to exec(尝试执行): ${underline('npm run lint:prettier_fix')}`));
     }
 
     if (!autoBuild && verify && stylelint) {
-      await exec(['npm run lint:style'], () => logEmph(italic('Stylelint!')), handleReleaseErr(`The stylelint not pass(stylelint校验失败) \n try to exec(尝试执行): ${underline('npm run lint:style_fix')}`));
+      await exec(['npm run lint:style'], () => logSuc('Stylelint!'), handleReleaseErr(`The stylelint not pass(stylelint校验失败) \n try to exec(尝试执行): ${underline('npm run lint:style_fix')}`));
     }
 
     const versionShellSuffix = ignore
@@ -357,8 +358,8 @@ export default async function (
           `${push}`
         ],
         () => {
-          logEmph('Pushing to git-repo successfully!');
-          logEmph('git仓库推送成功！');
+          logSuc('Pushing to git-repo successfully!');
+          logSuc('git仓库推送成功！');
         },
         handleReleaseErr('Pushing to git-repo failed(git仓库推送失败)!')
       );
@@ -404,8 +405,8 @@ export default async function (
 
         npm_publish.on('close', code => {
           if (code === 0) {
-            logEmph(`The npm-package publish success with version ${pkj.version}@${tag}!`);
-            logEmph(`npm包发布成功, 版本号为 ${pkj.version}@${tag}！`);
+            logSuc(`The npm-package publish success with version ${pkj.version}@${tag}!`);
+            logSuc(`npm包发布成功, 版本号为 ${pkj.version}@${tag}！`);
             resolve(null);
           } else {
             reject();

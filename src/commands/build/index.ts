@@ -14,6 +14,7 @@ import {
   logInfo,
   logWarn,
   logSuc,
+  logCongrat,
   logEmph,
   logTime,
   underline,
@@ -93,7 +94,7 @@ export default async function (
     msg = msg || 'Building completed(构建成功)!';
 
     return function (isExit?: boolean) {
-      logSuc(msg!);
+      logCongrat(msg!);
       isExit && process.exit(0);
     };
   }
@@ -139,8 +140,8 @@ export default async function (
           `${iTool} ${dependencies}`
         ],
         () => {
-          logEmph('The dependencies install completed');
-          logEmph('构建依赖安装完毕');
+          logSuc('The dependencies install completed');
+          logSuc('构建依赖安装完毕');
           return true;
         },
         err => {
@@ -220,19 +221,19 @@ export default async function (
 
   try {
     if (verify && test) {
-      await exec(['npm test'], () => logEmph(italic('Unit Test!')), handleBuildErr('The unit test not pass(单元测试失败)'));
+      await exec(['npm test'], () => logSuc('Unit Test!'), handleBuildErr('The unit test not pass(单元测试失败)'));
     }
 
     if (verify && eslint) {
-      await exec(['npm run lint:es'], () => logEmph(italic('Eslint!')), handleBuildErr(`The eslint not pass(eslint校验失败) \n try to exec(尝试执行): ${underline('npm run lint:es_fix')}`));
+      await exec(['npm run lint:es'], () => logSuc('Eslint!'), handleBuildErr(`The eslint not pass(eslint校验失败) \n try to exec(尝试执行): ${underline('npm run lint:es_fix')}`));
     }
 
     if (verify && prettier) {
-      await exec(['npm run lint:prettier'], () => logEmph(italic('Prettier!')), handleBuildErr(`The prettier not pass(prettier校验失败) \n try to exec(尝试执行): ${underline('npm run lint:prettier_fix')}`));
+      await exec(['npm run lint:prettier'], () => logSuc('Prettier!'), handleBuildErr(`The prettier not pass(prettier校验失败) \n try to exec(尝试执行): ${underline('npm run lint:prettier_fix')}`));
     }
 
     if (verify && stylelint) {
-      await exec(['npm run lint:style'], () => logEmph(italic('Stylelint!')), handleBuildErr(`The stylelint not pass(stylelint校验失败) \n try to exec(尝试执行): ${underline('npm run lint:style_fix')}`));
+      await exec(['npm run lint:style'], () => logSuc('Stylelint!'), handleBuildErr(`The stylelint not pass(stylelint校验失败) \n try to exec(尝试执行): ${underline('npm run lint:style_fix')}`));
     }
 
     let realOutDir: string = '';
@@ -398,8 +399,8 @@ export default async function (
 
     // auto release
     if (!autoBuild && autoRelease) {
-      logInfo('Start auto release');
-      logInfo('开始自动发布');
+      logEmph(italic('Start auto release'));
+      logEmph(italic('开始自动发布'));
       try {
         await release(config, { verify: false }, autoRelease);
         handleBuildSuc('Auto release success(自动发布成功)!')(true);

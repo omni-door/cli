@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.5.x
+### v2.5.8
+1. 「optimization」`omni build` 和 `omni release` log 输出优化
+
 ### v2.5.7
 1. 「update」升级 *shelljs* 解决循环依赖的警告
 

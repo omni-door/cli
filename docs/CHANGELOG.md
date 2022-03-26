@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.5.x
+### v2.5.8
+1. 「optimization」`omni build` and `omni release` log output improved.
+
 ### v2.5.7
 1. 「update」upgrade *shelljs* to resolve circular dependency warning
 
