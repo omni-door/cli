@@ -298,7 +298,7 @@ export default async function (
           }
 
           buildCliArr.push(`${rollupPath} -c ${buildConfigPath}`);
-        } else if (type === 'spa-react' || type === 'spa-vue') {
+        } else if (type === 'spa-react' || type === 'spa-react-pc' || type === 'spa-vue') {
           const webpackPath = buildCliPath.webpack;
 
           if (!fs.existsSync(webpackPath)) {
@@ -340,7 +340,7 @@ export default async function (
           file_content: content_config
         });
 
-        if (type === 'spa-react' || type === 'spa-vue') {
+        if (type === 'spa-react' || type === 'spa-react-pc' || type === 'spa-vue') {
           const bConfig = require(buildConfigPath);
           realOutDir = (bConfig && bConfig.output && bConfig.output.path) || outDir;
         }

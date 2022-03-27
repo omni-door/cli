@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.6.x
+### v2.6.2
+1. 「fix」`omni build` not support `spa-react-pc` project
+
 ### v2.6.1
 1. 「fix」`omni new` and `omni build` not support `spa-react-pc` project
 
