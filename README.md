@@ -95,7 +95,8 @@ Arguments:
 Options:
   -rb, --react_basic [name]       create a basic React SPA project
   -rs, --react_standard [name]    create a standard React SPA project
-  -re, --vue_entire [name]        create a most versatile React SPA project
+  -re, --react_entire [name]        create a most versatile React SPA project
+  -rp, --react_pc [name]          create a React SPA project based on Antd
   -vb, --vue_basic [name]         create a basic Vue SPA project
   -vs, --vue_standard [name]      create a standard Vue SPA project
   -ve, --vue_entire [name]        create a most versatile Vue SPA project

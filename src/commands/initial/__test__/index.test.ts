@@ -5,6 +5,7 @@ import {
   cli_basic_react,
   cli_standard_react,
   cli_entire_react,
+  cli_pc_react,
   cli_basic_vue,
   cli_standard_vue,
   cli_entire_vue,
@@ -113,6 +114,37 @@ describe('initial preset test', function () {
 
     expect(cli_entire_react.stylelint).to.be.a('boolean');
     expect(cli_entire_react.stylelint).to.be.true;
+  });
+
+  it('cli_entire_react checking', function () {
+    expect(cli_entire_react).to.be.an('object');
+
+    expect(cli_pc_react.build).to.be.a('string');
+    expect(cli_pc_react.build).to.be.equal('webpack');
+
+    expect(cli_pc_react.pkgtool).to.be.a('string');
+    expect(cli_pc_react.pkgtool).to.be.equal('pnpm');
+
+    expect(cli_pc_react['project_type']).to.be.a('string');
+    expect(cli_pc_react['project_type']).to.be.equal('spa-react-pc');
+
+    expect(cli_pc_react.ts).to.be.a('boolean');
+    expect(cli_pc_react.ts).to.be.true;
+
+    expect(cli_pc_react.testFrame).to.be.a('string');
+    expect(cli_pc_react.testFrame).to.be.equal('');
+
+    expect(cli_pc_react.eslint).to.be.a('boolean');
+    expect(cli_pc_react.eslint).to.be.true;
+
+    expect(cli_pc_react.commitlint).to.be.a('boolean');
+    expect(cli_pc_react.commitlint).to.be.true;
+
+    expect(cli_pc_react.style).to.be.a('string');
+    expect(cli_pc_react.style).to.be.equal('less');
+
+    expect(cli_pc_react.stylelint).to.be.a('boolean');
+    expect(cli_pc_react.stylelint).to.be.true;
   });
 
   it('cli_basic_vue checking', function () {

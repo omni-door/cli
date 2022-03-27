@@ -9,6 +9,8 @@ OMNI 会根据不同的项目类型决定整个初始化、构建、创建模板
 
 - spa-react - React单页应用
 
+- spa-react-pc - 基于 [Antd](https://ant.design/) 的React中后台单页应用
+
 - spa-vue - Vue单页应用
 
 - ssr-react - React服务端渲染应用

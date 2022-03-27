@@ -67,6 +67,7 @@ const commandDicts = {
     .option('-rb, --react_basic [name]', 'create a basic React SPA project')
     .option('-rs, --react_standard [name]', 'create a standard React SPA project')
     .option('-re, --react_entire [name]', 'create a most versatile React SPA project')
+    .option('-rp, --react_pc [name]', 'create a React SPA project based on antd')
     .option('-vb, --vue_basic [name]', 'create a basic Vue SPA project')
     .option('-vs, --vue_standard [name]', 'create a standard Vue SPA project')
     .option('-ve, --vue_entire [name]', 'create a most versatile Vue SPA project')

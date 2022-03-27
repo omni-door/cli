@@ -183,6 +183,7 @@ async function server ({
           logWarn('暂不支持 ssr-vue 项目'); 
           break;
         case 'spa-react':
+        case 'spa-react-pc':
         case 'spa-vue':
           EWServer({
             webpackConfig,

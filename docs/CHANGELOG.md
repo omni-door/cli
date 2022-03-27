@@ -2,6 +2,10 @@
 
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
+## v2.6.x
+### v2.6.0
+1. 「feat」support `spa-react-pc` project
+
 ## v2.5.x
 ### v2.5.8
 1. 「optimization」`omni build` and `omni release` log output improved.

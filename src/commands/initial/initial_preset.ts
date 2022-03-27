@@ -71,6 +71,19 @@ export const cli_entire_react: GInstallCli = {
   stylelint: true
 };
 
+export const cli_pc_react: GInstallCli = {
+  project_type: 'spa-react-pc',
+  pkgtool: 'pnpm',
+  build: 'webpack',
+  ts: true,
+  testFrame: '',
+  eslint: true,
+  prettier: true,
+  commitlint: true,
+  style: 'less',
+  stylelint: true
+};
+
 export const cli_basic_vue: GInstallCli = {
   project_type: 'spa-vue',
   pkgtool: 'pnpm',
@@ -172,6 +185,7 @@ export default {
   cli_basic_react,
   cli_standard_react,
   cli_entire_react,
+  cli_pc_react,
   cli_basic_vue,
   cli_standard_vue,
   cli_entire_vue,

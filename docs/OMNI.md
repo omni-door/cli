@@ -9,6 +9,8 @@ The project types:
 
 - spa-react - React single-page-application
 
+- spa-react-pc - React single-page-application based on [Antd](https://ant.design/)
+
 - spa-vue - Vue single-page-application
 
 - ssr-react - React sever-side-render application

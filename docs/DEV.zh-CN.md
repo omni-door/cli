@@ -141,7 +141,7 @@ interface OmniConfig {
 
 export type BUILD = 'webpack' | 'rollup' | 'gulp' | 'tsc' | 'next' | '';
 type NPM = 'npm' | 'yarn' | 'pnpm';
-type PROJECT_TYPE = 'spa-react' | 'spa-vue' | 'ssr-react' | 'component-react' | 'component-vue' | 'toolkit';
+type PROJECT_TYPE = 'spa-react' | 'spa-react-pc' | 'spa-vue' | 'ssr-react' | 'component-react' | 'component-vue' | 'toolkit';
 type STYLE = 'less' | 'scss' | 'css' | 'all' | '';
 ```
 

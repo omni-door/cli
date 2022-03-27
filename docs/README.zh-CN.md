@@ -90,6 +90,7 @@ Arguments:
     -rb, --react_basic [name]       创建一个最基本的 React 单页应用
     -rs, --react_standard [name]    创建一个标准的 React 单页应用
     -re, --react_entire [name]      创建一个全量的 React 单页应用
+    -rp, --react_pc [name]          创建一个基于 Antd 的 React 中后台单页应用
     -vb, --vue_basic [name]         创建一个最基本的 Vue 单页应用
     -vs, --vue_standard [name]      创建一个标准的 Vue 单页应用
     -ve, --vue_entire [name]        创建一个全量的 Vue 单页应用

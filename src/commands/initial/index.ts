@@ -25,6 +25,7 @@ type OptionType = {
   react_basic?: boolean | string;
   react_standard?: boolean | string;
   react_entire?: boolean | string;
+  react_pc?: boolean | string;
   vue_basic?: boolean | string;
   vue_standard?: boolean | string;
   vue_entire?: boolean | string;
@@ -60,6 +61,8 @@ type OptionCustom = {
 const ProjectDict = {
   'spa-react': 'spa-react (React单页应用)',
   'spa-react (React单页应用)': 'spa-react',
+  'spa-react-pc': 'spa-react-pc (React中后台应用)',
+  'spa-react-pc (React中后台应用)': 'spa-react-pc',
   'spa-vue': 'spa-vue (Vue单页应用)',
   'spa-vue (Vue单页应用)': 'spa-vue',
   'ssr-react': 'ssr-react (React服务端渲染应用)',
@@ -163,6 +166,10 @@ function presetTpl(type: Exclude<keyof OptionType, 'install'>) {
       cli = presetCli.cli_entire_react;
       pkj = '@omni-door/tpl-spa-react';
       break;
+    case 'react_pc':
+      cli = presetCli.cli_pc_react;
+      pkj = '@omni-door/tpl-spa-react-pc';
+      break;
     case 'vue_basic':
       cli = presetCli.cli_basic_vue;
       pkj = '@omni-door/tpl-spa-vue';
@@ -200,6 +207,7 @@ export default async function (strategy: STRATEGY, {
   react_basic,
   react_standard,
   react_entire,
+  react_pc,
   vue_basic,
   vue_standard,
   vue_entire,
@@ -262,6 +270,7 @@ export default async function (strategy: STRATEGY, {
     react_basic,
     react_standard,
     react_entire,
+    react_pc,
     vue_basic,
     vue_standard,
     vue_entire,
@@ -362,6 +371,7 @@ export default async function (strategy: STRATEGY, {
           type: 'list',
           choices: [
             ProjectDict['spa-react'],
+            ProjectDict['spa-react-pc'],
             ProjectDict['spa-vue'],
             ProjectDict['component-react'],
             ProjectDict['component-vue'],
@@ -383,20 +393,22 @@ export default async function (strategy: STRATEGY, {
             switch (projectType) {
               case 'spa-react':
               case 'spa-vue':
-                totalStep = install ? 8 : 7;
-                break;
               case 'ssr-react':
-                totalStep = install ? 8 : 7;
+                totalStep = 7;
+                break;
+              case 'spa-react-pc':
+                totalStep = 6;
                 break;
               case 'component-react':
-                totalStep = install ? 6 : 5;
+                totalStep = 5;
                 break;
               case 'component-vue':
-                totalStep = install ? 5 : 4;
+                totalStep = 4;
                 break;
               default:
-                totalStep = install ? 4 : 3;
+                totalStep = 3;
             }
+            install && totalStep++;
             return `${logo()}[${++currStep}/${totalStep}] Please enter your project name(请输入项目名称):`;
           },
           default: defaultName
@@ -447,7 +459,7 @@ export default async function (strategy: STRATEGY, {
           default: true,
           when: function (answer: any) {
             const projectType = getProjectType(answer);
-            if (projectType === 'spa-react' || projectType === 'spa-vue' || projectType === 'ssr-react') {
+            if (projectType === 'spa-react' || projectType === 'spa-react-pc' || projectType === 'spa-vue' || projectType === 'ssr-react') {
               return true;
             }
             return false;
@@ -459,10 +471,10 @@ export default async function (strategy: STRATEGY, {
           message: function (answer: any) {
             return `${logo()}[${++currStep}/${totalStep}] Apply unit-test(开启单元测试)?`;
           },
-          default: (answer: any) => getProjectType(answer) !== 'spa-react' && getProjectType(answer) !== 'spa-vue' && getProjectType(answer) !== 'ssr-react',
+          default: (answer: any) => getProjectType(answer) !== 'spa-react' && getProjectType(answer) !== 'spa-react-pc' && getProjectType(answer) !== 'spa-vue' && getProjectType(answer) !== 'ssr-react',
           when: function (answer: any) {
             const projectType = getProjectType(answer);
-            if (projectType === 'spa-react' || projectType === 'spa-vue' || projectType === 'ssr-react') {
+            if (projectType === 'spa-react' || projectType === 'spa-react-pc' || projectType === 'spa-vue' || projectType === 'ssr-react') {
               return true;
             }
             return false;
@@ -591,6 +603,9 @@ export default async function (strategy: STRATEGY, {
             switch (projectType) {
               case 'spa-react':
                 tplPackage = '@omni-door/tpl-spa-react';
+                break;
+              case 'spa-react-pc':
+                tplPackage = '@omni-door/tpl-spa-react-pc';
                 break;
               case 'spa-vue':
                 tplPackage = '@omni-door/tpl-spa-vue';
