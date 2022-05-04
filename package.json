@@ -84,7 +84,7 @@
     "less-loader": "^5.0.0",
     "lint-staged": "^9.4.2",
     "mocha": "^6.2.2",
-    "node-sass": "^4.13.0",
+    "node-sass": "^7.0.0",
     "nyc": "^14.1.1",
     "open": "^7.0.0",
     "rollup": "^1.26.0",
