@@ -3,7 +3,7 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.6.x
-### v2.6.3
+### v2.6.4
 1. 「upgrade」inquirer | mkcert
 
 ### v2.6.2
