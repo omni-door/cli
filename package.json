@@ -1,6 +1,6 @@
 {
   "name": "@omni-door/cli",
-  "version": "2.6.3",
+  "version": "2.6.2",
   "description": "A tool set for set up the standard JS project",
   "bin": {
     "omni": "./bin/omni-door.js"
@@ -117,7 +117,7 @@
     "figlet": "1.2.4",
     "fs-extra": "8.1.0",
     "inquirer": "8.2.4",
-    "leven": "4.0.0",
+    "leven": "3.1.0",
     "mkcert": "1.5.0",
     "shelljs": "0.8.5"
   },

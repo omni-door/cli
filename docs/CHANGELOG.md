@@ -4,7 +4,7 @@ English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.6.x
 ### v2.6.3
-1. 「upgrade」inquirer | leven | mkcert
+1. 「upgrade」inquirer | mkcert
 
 ### v2.6.2
 1. 「fix」`omni build` not support `spa-react-pc` project

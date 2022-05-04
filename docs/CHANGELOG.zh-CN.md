@@ -4,7 +4,7 @@
 
 ## v2.6.x
 ### v2.6.3
-1. 「upgrade」inquirer | leven | mkcert
+1. 「upgrade」inquirer | mkcert
 
 ### v2.6.2
 1. 「fix」`omni build` 未能支持 `spa-react-pc` 项目
