@@ -325,36 +325,6 @@ export default async function (strategy: STRATEGY, {
     } else {
       let currStep = 1;
       let totalStep: string | number = '?';
-      let isValidName = true;
-      const dupDirQuestions = [];
-      const retryTimes = 10; // reenter name limit
-      while (dupDirQuestions.length < retryTimes * 2) {
-        dupDirQuestions.push(...[{
-          name: 'overwrite_dir',
-          type: 'confirm',
-          default: false,
-          message: async function (answer: any) {
-            const { name } = answer;
-            return `${logo()}[${currStep}/${totalStep}] Are you sure to overwrite the "${name}" directory(确定要覆盖已经存在的 "${name}" 文件夹)?`;
-          },
-          when: async function (answer: any) {
-            isValidName = pkgNameCheck(answer.name, true);
-            const { name, overwrite_dir } = answer;
-            return isValidName && !configFileExist && !overwrite_dir && await isDir(name);
-          }
-        }, {
-          name: 'name',
-          type: 'input',
-          message: function (answer: any) {
-            return `${logo()}[${currStep}/${totalStep}] Please reenter your project name(请重新输入项目名称):`;
-          },
-          when: async function (answer: any) {
-            const { name } = answer;
-            return !isValidName || (!configFileExist && answer.overwrite_dir === false && await isDir(name));
-          },
-          default: defaultName
-        }]);
-      }
 
       const getProjectType = (answer: any) => {
         return ProjectDict[answer.project_type as keyof typeof ProjectDict];
@@ -364,7 +334,7 @@ export default async function (strategy: STRATEGY, {
         {
           name: 'overwrite',
           type: 'confirm',
-          message: `${logo()}Are you sure to overwrite the "${configFileName}"(确定要覆盖已经存在的 "${configFileName}" 文件)?`,
+          message: `${logo()}Are you sure to overwrite this project (确定覆盖该项目)?`,
           default: false
         }, {
           name: 'project_type',
@@ -378,7 +348,7 @@ export default async function (strategy: STRATEGY, {
             ProjectDict['ssr-react'],
             ProjectDict['toolkit']
           ],
-          message: `${logo()}[${currStep}/${totalStep}] Please choose the type of project(请选择项目类型):`,
+          message: `${logo()}[${currStep}/${totalStep}] Please choose the type of project (请选择项目类型):`,
           when: function (answer: any) {
             if (answer.overwrite === false) {
               return process.exit(0);
@@ -409,11 +379,19 @@ export default async function (strategy: STRATEGY, {
                 totalStep = 3;
             }
             install && totalStep++;
-            return `${logo()}[${++currStep}/${totalStep}] Please enter your project name(请输入项目名称):`;
+            return `${logo()}[${++currStep}/${totalStep}] Please enter your project name (请输入项目名称):`;
+          },
+          validate: async function (input: any) {
+            const isValidName = pkgNameCheck(input, true);
+            const isExisted = await isDir(input);
+            if (isValidName && !isExisted) return true;
+            if (isExisted) {
+              logWarn(`The "${input}" directory had been existed ("${input}" 文件夹已经存在)`);
+            }
+            return isExisted ? `The "${input}" directory had been existed ("${input}" 文件夹已经存在)` : 'Please re-input your project name (请重新输入项目名称)';
           },
           default: defaultName
         },
-        ...dupDirQuestions,
         {
           name: 'server',
           type: 'list',
@@ -433,16 +411,10 @@ export default async function (strategy: STRATEGY, {
           },
           message: function (answer: any) {
             const projectType = getProjectType(answer);
-            const msg = projectType === 'ssr-react' ? 'Please chioce the SSR server type(请选择SSR服务类型)' : 'Please chioce the component-library demonstration frame(请选择组件库Demo框架)';
+            const msg = projectType === 'ssr-react' ? 'Please chioce the SSR server type (请选择SSR服务类型)' : 'Please chioce the component-library demonstration frame (请选择组件库Demo框架)';
             return `${logo()}[${++currStep}/${totalStep}] ${msg}：`;
           },
           when: async function (answer: any) {
-            const { overwrite_dir, name } = answer;
-            if (!configFileExist && !overwrite_dir && await isDir(name)) {
-              logWarn('Please turn over to think then try again');
-              logWarn('失败次数太多，请想清楚后再试');
-              return process.exit(0);
-            }
             const projectType = getProjectType(answer);
             if (projectType === 'component-react' || projectType === 'ssr-react') {
               return true;

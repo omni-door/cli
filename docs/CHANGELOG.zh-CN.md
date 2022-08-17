@@ -2,6 +2,14 @@
 
 [English](./CHANGELOG.md) | 简体中文
 
+## v2.7.x
+### v2.7.0
+1. 「optimization」`omni init` 和 `omni release` REPL 交互提升
+
+2. 「upgrade」升级 @omni-door/utils
+
+3. 「feat」支持 React@18
+
 ## v2.6.x
 ### v2.6.4
 1. 「upgrade」inquirer | mkcert

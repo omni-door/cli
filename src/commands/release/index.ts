@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import inquirer from 'inquirer';
 import semver from 'semver';
+import chalk from 'chalk';
 import {
   exec, 
   logErr,
@@ -14,6 +15,7 @@ import {
   italic,
   underline,
   nodeVersionCheck,
+  getNpmVersions,
   logPrefix
 } from '@omni-door/utils';
 import { spawn, execSync } from 'child_process';
@@ -22,31 +24,52 @@ import buildCommands from '../build';
 /* import types */
 import type { OmniConfig, OmniPlugin } from '../../index.d';
 
+const tagCustom = '$omni_custom$';
+
+const tagDict = {
+  '1. alpha (内测版)': 'alpha',
+  '2. beta (公测版)': 'beta',
+  '3. rc (内测版)': 'rc',
+  '4. latest (正式版)': 'latest',
+  '5. custom (自定义)': tagCustom
+};
+
+const tagDictWithExtraWords = {
+  '1. alpha (内测版 - 当前标签)': 'alpha',
+  '2. beta (公测版 - 当前标签)': 'beta',
+  '3. rc (内测版 - 当前标签)': 'rc',
+  '4. latest (正式版 - 当前标签)': 'latest'
+};
+
 const iterDict = {
-  automatic: 'automatic(自动)',
-  manual: 'manual(手动)',
-  ignore: 'ignore(忽略)'
+  automatic: '1. automatic(自动)',
+  manual: '2. manual(手动)',
+  ignore: '3. ignore(忽略)'
 };
 
-const releaseSemverTag = {
-  patch: 'latest',
-  minor: 'latest',
-  major: 'latest',
-  prepatch: 'prepatch',
-  preminor: 'preminor',
-  premajor: 'premajor',
-  prerelease: 'prerelease'
-};
+function getAutoIterDict (version: string, tag: string) {
+  if (tag === 'latest') {
+    return {
+      [`1. patch (${version} -> ${semver.inc(version, 'patch')})`]: ['latest', semver.inc(version, 'patch')],
+      [`2. minor (${version} -> ${semver.inc(version, 'minor')})`]: ['latest', semver.inc(version, 'minor')],
+      [`3. major (${version} -> ${semver.inc(version, 'major')})`]: ['latest', semver.inc(version, 'major')]
+    };
+  }
 
-function getAutoIterDict (version: string) {
+  if (tag === 'rc') {
+    return {
+      [`1. pre-release (${version} -> ${semver.inc(version, 'prerelease', tag)})`]: [tag || 'prerelease', semver.inc(version, 'prerelease', tag)],
+      [`2. patch (${version} -> ${semver.inc(version, 'patch')})`]: ['latest', semver.inc(version, 'patch')],
+      [`3. minor (${version} -> ${semver.inc(version, 'minor')})`]: ['latest', semver.inc(version, 'minor')],
+      [`4. major (${version} -> ${semver.inc(version, 'major')})`]: ['latest', semver.inc(version, 'major')]
+    };
+  }
+
   return {
-    [`1. pre-release (${version} -> ${semver.inc(version, 'prerelease')})`]: 'prerelease',
-    [`2. pre-patch (${version} -> ${semver.inc(version, 'prepatch')})`]: 'prepatch',
-    [`3. patch (${version} -> ${semver.inc(version, 'patch')})`]: 'patch',
-    [`4. pre-minor (${version} -> ${semver.inc(version, 'preminor')})`]: 'preminor',
-    [`5. minor (${version} -> ${semver.inc(version, 'minor')})`]: 'minor',
-    [`6. pre-major (${version} -> ${semver.inc(version, 'premajor')})`]: 'premajor',
-    [`7. major (${version} -> ${semver.inc(version, 'major')})`]: 'major'
+    [`1. pre-release (${version} -> ${semver.inc(version, 'prerelease', tag)})`]: [tag || 'prerelease', semver.inc(version, 'prerelease', tag)],
+    [`2. pre-patch (${version} -> ${semver.inc(version, 'prepatch', tag)})`]: [tag || 'prepatch', semver.inc(version, 'prepatch', tag)],
+    [`3. pre-minor (${version} -> ${semver.inc(version, 'preminor', tag)})`]: [tag || 'preminor', semver.inc(version, 'preminor', tag)],
+    [`4. pre-major (${version} -> ${semver.inc(version, 'premajor', tag)})`]: [tag || 'premajor', semver.inc(version, 'premajor', tag)],
   };
 }
 
@@ -113,7 +136,7 @@ export default async function (
   }
 
   function handleReleaseSuc (msg?: string) {
-    msg = msg || 'Release completed(发布完成)!';
+    msg = msg || 'Release completed (发布完成)!';
 
     return function (isExit?: boolean) {
       logCongrat(msg!);
@@ -122,7 +145,7 @@ export default async function (
   }
 
   function handleReleaseErr (msg?: string) {
-    msg = msg || 'Release failed(发布失败)!';
+    msg = msg || 'Release failed (发布失败)!';
 
     return function (err?: string) {
       err && logErr(err);
@@ -137,7 +160,7 @@ export default async function (
       version: '0.0.1'
     };
     if (fs.existsSync(pkjPath)) {
-      delete require.cache[pkjPath]; // 删除缓存避免版本号不正确
+      delete require.cache[pkjPath]; // delete cache in order to avoid version may not correct
       pkj = require(pkjPath);
     }
     return pkj;
@@ -146,32 +169,98 @@ export default async function (
   try {
     // eslint-disable-next-line prefer-const
     let { automatic, ignore, manual, tag, verify, ...rest } = iterTactic || {};
-    const hasIter = !(ignore === void 0 && manual === void 0 && automatic === void 0);
-    const versionErrMsg = `Please input valid version(请输入有效的版本号)\n
-    Reference to(版本号规则可参考): https://semver.org/`;
+
+    // package.json data
     const pkjPath = path.resolve(process.cwd(), 'package.json');
     let pkj = getPkjData(pkjPath);
+
+    // the version for iteration
+    let iterVersion = manual || (typeof automatic === 'string' ? automatic : '') || pkj.version;
+    // whether or not need iteration
+    const needIteration = ignore === void 0 && manual === void 0 && automatic === void 0;
+
+    const versionErrMsg = `Please input valid version (请输入有效的版本号)\n
+    Reference to (版本号规则可参考): https://semver.org/`;
+    const tagErrMsg = 'The tag can only contain letters (标签只能包含字母)';
+    const versionRepeatMsg = (ver: string) => `The ${ver} is not available (${ver} 不可用)`;
+
+    const existedVersions = [] as string[];
+    let versionsPromise = Promise.resolve();
+    if (npm) {
+      versionsPromise = getNpmVersions(pkj.name, { registry: typeof npm === 'string' ? npm : void 0 })
+        .then(res => { existedVersions.push(...res); });
+    }
+
+    // infer the tag which according to the version
     const defaultTag = manual
       ? manual.match(/[a-zA-Z]+/g)?.[0] ?? 'latest'
       : pkj?.version?.match(/[a-zA-Z]+/g)?.[0] ?? 'latest';
-    const autoIterDict = getAutoIterDict(pkj.version);
 
-    if (!hasIter || (npm && !tag)) {
+    // automatic interation dictionary
+    const autoIterDict = {} as Record<string, [string, string]>;
+
+    if (needIteration || (npm && !tag)) {
       await new Promise((resolve, reject) => {
         inquirer.prompt([
           {
+            name: 'presetTag',
+            type: 'list',
+            when: () => npm && !tag && !autoTag,
+            choices: () => {
+              const result = Object.keys(tagDict);
+              const presetTags = Object.values(tagDict);
+              if (!presetTags.some(v => v === defaultTag)) {
+                const key = `0. ${defaultTag} (当前标签)`;
+                result.unshift(key);
+                tagDictWithExtraWords[key as keyof typeof tagDictWithExtraWords] = defaultTag;
+              } else {
+                const ind = presetTags.indexOf(defaultTag);
+                const preset = result[ind];
+                result.splice(ind, 1, preset.replace(')', ' - 当前标签)'));
+              }
+              return result;
+            },
+            default: () => {
+              const result = Object.keys(tagDict);
+              const presetTags = Object.values(tagDict);
+              if (presetTags.some(v => v === defaultTag)) {
+                return result[presetTags.indexOf(defaultTag)].replace(')', ' - 当前标签)');
+              }
+            },
+            message: 'Choose the tag (选择标签):'
+          },
+          {
+            name: 'label',
+            type: 'input',
+            when: answer => tagDict[answer.presetTag as keyof typeof tagDict] === tagCustom,
+            default: () => {
+              if (defaultTag === 'rc') return 'latest';
+              return defaultTag;
+            },
+            validate: val => {
+              if (/^[a-zA-Z]+$/g.test(val)) {
+                return true;
+              }
+              return tagErrMsg;
+            },
+            message: `${logo()}Input the tag (输入标签):`
+          },
+          {
             name: 'iter',
             type: 'list',
-            when: () => !hasIter,
+            when: () => needIteration,
             choices: [ iterDict.automatic, iterDict.manual, iterDict.ignore ],
-            message: `${logo()}Select the way of iteration(选择迭代方式):`
+            message: `${logo()}Select the way of iteration (选择迭代方式):`
           },
           {
             name: 'version_semantic',
             type: 'list',
             when: answer => answer.iter === iterDict.automatic,
-            choices: [ ...Object.keys(autoIterDict) ],
-            message: `${logo()}Select the version(选择版本)`
+            choices: (answer) => {
+              Object.assign(autoIterDict, getAutoIterDict(pkj.version, answer.label || tagDict[answer.presetTag as keyof typeof tagDict] || tagDictWithExtraWords[answer.presetTag as keyof typeof tagDictWithExtraWords] || defaultTag));
+              return [ ...Object.keys(autoIterDict) ];
+            },
+            message: `${logo()}Select the version (选择版本):`
           },
           {
             name: 'version_manual',
@@ -185,35 +274,51 @@ export default async function (
               }
               return true;
             },
-            message: `${logo()}Input the version(输入版本号):`
+            message: `${logo()}Input the version (输入版本号):`
           },
           {
-            name: 'label',
-            type: 'input',
-            when: () => npm && !tag && !autoTag,
-            default: (answer: any) => {
-              if (answer.version) {
-                return answer.version.match(/[a-zA-Z]+/g)?.[0] ?? 'latest';
+            name: 'changeVersion',
+            type: 'confirm',
+            message: () => {
+              const currentVer = iterVersion;
+              const type = tag === 'latest' ? 'patch' : 'prerelease';
+              while(~existedVersions.indexOf(iterVersion)) {
+                iterVersion = semver.inc(iterVersion, type, tag)!;
               }
-              return defaultTag;
+
+              return `The ${chalk.strikethrough.red(currentVer)} had been occupied, would you like change to ${chalk.bold.underline.green(iterVersion)}?`;
             },
-            message: `${logo()}Input the npm publish tag(输入 npm 发布标签):`
+            when: async (answer) => {
+              if (!npm) return false;
+              const { version_manual, version_semantic, presetTag, label } = answer;
+              iterVersion = version_manual || autoIterDict[version_semantic]?.[1] || iterVersion;
+              const versionTag = iterVersion?.match(/[a-zA-Z]+/g)?.[0];
+              tag = label
+              || tagDict[presetTag as keyof typeof tagDict]
+              || tagDictWithExtraWords[presetTag as keyof typeof tagDictWithExtraWords]
+              || (versionTag === 'rc' ? 'latest' : versionTag)
+              || autoIterDict[version_semantic]?.[0]
+              || defaultTag;
+              await versionsPromise;
+              return existedVersions.some(v => iterVersion === v);
+            }
           }
         ])
           .then(answers => {
-            const { iter, version_semantic, version_manual, label } = answers;
-            const releaseType = autoIterDict[version_semantic]; 
-            const version = version_manual ?? (version_semantic ? semver.inc(pkj.version, releaseType as any) : '');
-            const versionTag = version?.match(/[a-zA-Z]+/g)?.[0];
-            tag = label || (versionTag === 'rc' ? 'latest' : versionTag) || releaseSemverTag[releaseType as keyof typeof releaseSemverTag] || defaultTag;
+            const { iter, version_semantic, version_manual, changeVersion } = answers;
+            if (changeVersion === false) {
+              const currentVer = version_manual ?? autoIterDict[version_semantic]?.[1] ?? '';
+              logWarn(versionRepeatMsg(currentVer));
+              process.exit(1);
+            }
 
             switch (iter) {
               case iterDict.automatic:
                 // eslint-disable-next-line no-case-declarations
-                automatic = semver.inc(pkj.version, releaseType as any) ?? true;
+                automatic = iterVersion ?? true;
                 break;
               case iterDict.manual:
-                manual = version_manual;
+                manual = iterVersion;
                 break;
               case iterDict.ignore:
                 ignore = true;
@@ -224,6 +329,12 @@ export default async function (
           })
           .catch(handleReleaseErr());
       });
+    } else if (npm) {
+      await versionsPromise;
+      if (~existedVersions.indexOf(iterVersion)) {
+        logWarn(versionRepeatMsg(iterVersion));
+        process.exit(0);
+      }
     }
 
     if (manual && !semver.valid(manual)) {
