@@ -363,9 +363,9 @@ export default async function (strategy: STRATEGY, {
             switch (projectType) {
               case 'spa-react':
               case 'spa-vue':
-              case 'ssr-react':
                 totalStep = 7;
                 break;
+              case 'ssr-react':
               case 'spa-react-pc':
                 totalStep = 6;
                 break;
@@ -461,7 +461,7 @@ export default async function (strategy: STRATEGY, {
           },
           default: ['css'],
           when: async function (answer: any) {
-            if (getProjectType(answer) === 'toolkit') {
+            if (getProjectType(answer) === 'toolkit' || getProjectType(answer) === 'ssr-react') {
               return false;
             }
             if (answer.server === 'docz') await nodeVersionCheck('12');

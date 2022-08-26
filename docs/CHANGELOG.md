@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.7.x
+### v2.7.1
+1. 「update」`omni init` ssr-react remove style option
+
 ### v2.7.0
 1. 「optimization」`omni init` and `omni release` REPL improvement
 

@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.7.x
+### v2.7.1
+1. 「update」`omni init` ssr-react 移除样式选择
+
 ### v2.7.0
 1. 「optimization」`omni init` 和 `omni release` REPL 交互提升
 
