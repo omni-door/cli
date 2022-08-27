@@ -1,5 +1,5 @@
 import path from 'path';
-import { logWarn, nodeVersionCheck, requireCwd, exec } from '@omni-door/utils';
+import { logWarn, nodeVersionCheck, requireCwd, exec, _typeof } from '@omni-door/utils';
 import { KNServer } from '../servers';
 /* import types */
 import type { OmniConfig } from '../../index.d';
@@ -32,6 +32,8 @@ export default async function (config: OmniConfig | null, options: {
     port,
     host,
     serverType,
+    middleware,
+    https,
     ...rest
   } = server || {};
   if (!serverType) {
@@ -50,6 +52,15 @@ export default async function (config: OmniConfig | null, options: {
     next: `${path.resolve(CWD, 'node_modules/.bin/next')} start --port ${_port} --hostname ${_host}`
   };
 
+  if (_typeof(https) === 'boolean') {
+    logWarn(`The https must specify path when start server at production environment (开发环境中 https 必须指定路径): \n
+
+    https: {
+      key: fs.readFileSync(path.resolve(\${your_path_to_key})),
+      cert: fs.readFileSync(path.resolve(\${your_path_to_cert}))
+    }`);
+  }
+
   switch (serverType) {
     case 'koa-next':
       KNServer({
@@ -57,6 +68,8 @@ export default async function (config: OmniConfig | null, options: {
         port: _port,
         host: _host,
         ipAddress,
+        middlewareConfig: middleware,
+        httpsConfig: _typeof(https) === 'object' ? https as Object : void 0,
         ...rest
       });
       break;

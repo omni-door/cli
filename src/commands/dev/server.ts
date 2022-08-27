@@ -140,8 +140,8 @@ async function server ({
             isHttps = true;
           } catch (err) {
             logWarn(err as string);
-            logWarn(`Failing to generate the certificate(生成证书失败)!\n
-            You can specify the certificate manually(可通过以下方式手动指定证书):
+            logWarn(`Failing to generate the certificate (生成证书失败)!\nYou can specify the certificate manually (可通过以下方式手动指定证书):
+
             https: {
               key: fs.readFileSync(path.resolve(\${your_path_to_key})),
               cert: fs.readFileSync(path.resolve(\${your_path_to_cert}))

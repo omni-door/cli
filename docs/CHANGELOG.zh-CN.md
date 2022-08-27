@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.7.x
+### v2.7.2
+1. 「fix」`omni start` 缺失 middleware 和 https 参数
+
 ### v2.7.1
 1. 「update」`omni init` ssr-react 移除样式选择
 

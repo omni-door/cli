@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.7.x
+### v2.7.2
+1. 「fix」`omni start` miss middleware and https parameters
+
 ### v2.7.1
 1. 「update」`omni init` ssr-react remove style option
 
