@@ -14,7 +14,7 @@ import open from './open';
 import type { Config } from 'http-proxy-middleware';
 import type { EWServerParams } from '../servers';
 import type { PROJECT_TYPE } from '@omni-door/utils';
-import type { NextRouter, ServerType, PathParams, MiddleWareCallback } from '../../index.d';
+import type { KoaApp, NextRouter, ServerType, PathParams, MiddleWareCallback } from '../../index.d';
 
 // types-proxy
 export type ProxyItem = { route: PathParams; config: Config; };
@@ -54,6 +54,7 @@ export type ServerOptions = {
   serverType: ServerType;
   projectType: PROJECT_TYPE;
   nextRouter?: NextRouter;
+  handleKoaApp?: (app: KoaApp<KoaApp.DefaultState, KoaApp.DefaultContext>) => any;
 } & EWServerOptions;
 
 async function server ({
@@ -68,6 +69,7 @@ async function server ({
   proxyConfig = [],
   middlewareConfig = [],
   nextRouter,
+  handleKoaApp,
   favicon
 }: ServerOptions): Promise<void> {
   try {
@@ -175,6 +177,7 @@ async function server ({
           KNServer({
             dev: process.env.NODE_ENV === 'production' ? false : true,
             nextRouter,
+            handleKoaApp,
             ...serverBasicOptions
           });
           break;

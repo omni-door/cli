@@ -81,6 +81,7 @@ export type OmniServer = {
     callback: MiddleWareCallback;
   }[];
   nextRouter?: NextRouter;
+  handleKoaApp?: (app: KoaApp<KoaApp.DefaultState, KoaApp.DefaultContext>) => any;
 };
 export interface OmniConfig {
   type: PROJECT_TYPE;

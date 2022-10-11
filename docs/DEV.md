@@ -75,30 +75,51 @@ type OptionRelease = {
 
 ### Type of OmniConfig
 ```ts
-import { Configuration } from 'webpack';
-import { Config } from 'http-proxy-middleware';
-import { Options as DevMiddlewareOptions } from 'webpack-dev-middleware';
+import type { Configuration } from 'webpack';
+import type { Config } from 'http-proxy-middleware';
+import type { Options as DevMiddlewareOptions } from 'webpack-dev-middleware';
+import type { Request, Response, NextFunction } from 'express';
+import type * as KoaApp from 'koa';
 
 type ServerType = 'storybook' | 'docz' | 'dumi' | 'bisheng' | 'styleguidist' | 'default';
+type BUILD = 'webpack' | 'rollup' | 'gulp' | 'tsc' | 'next' | '';
+type NPM = 'npm' | 'yarn' | 'pnpm';
+type PROJECT_TYPE = 'spa-react' | 'spa-react-pc' | 'spa-vue' | 'ssr-react' | 'component-react' | 'component-vue' | 'toolkit';
+type STYLE = 'less' | 'scss' | 'css' | 'all' | '';
+type SSRSERVER = 'next' | 'koa-next' | 'nuxt' | 'koa-nuxt' | '';
+
+type OmniServer = {
+  port?: number;
+  host?: string;
+  https?: boolean | { key: string; cert: string; };
+  CA?: {
+    organization?: string;
+    countryCode?: string;
+    state?: string;
+    locality?: string;
+    validityDays?: number;
+  };
+  proxy?: {
+    route: string;
+    config: Config;
+  }[];
+  middleware?: {
+    route: PathParams;
+    callback: MiddleWareCallback;
+  }[];
+  nextRouter?: NextRouter;
+  handleKoaApp?: (app: KoaApp<KoaApp.DefaultState, KoaApp.DefaultContext>) => any;
+};
 
 interface OmniConfig {
   type: PROJECT_TYPE;
-  dev?: {
-    port?: number;
-    host?: string;
-    https?: boolean | { key: string; cert: string; };
+  dev?: OmniServer & {
     devMiddlewareOptions?: Partial<DevMiddlewareOptions>;
     webpack?: Configuration;
-    proxy?: {
-      route: string;
-      config: Config;
-    }[];
-    middleware?: {
-      route: PathParams;
-      callback: MiddleWareCallback;
-    }[];
     serverType?: ServerType;
+    favicon?: string;
   };
+  server?: OmniServer & { serverType?: SSRSERVER; };
   build: {
     autoRelease?: boolean;
     srcDir: string;
@@ -138,11 +159,6 @@ interface OmniConfig {
   };
   plugins?: OmniPlugin<PLUGINSTAGE>[];
 }
-
-export type BUILD = 'webpack' | 'rollup' | 'gulp' | 'tsc' | 'next' | '';
-type NPM = 'npm' | 'yarn' | 'pnpm';
-type PROJECT_TYPE = 'spa-react' | 'spa-react-pc' | 'spa-vue' | 'ssr-react' | 'component-react' | 'component-vue' | 'toolkit';
-type STYLE = 'less' | 'scss' | 'css' | 'all' | '';
 ```
 
 - `name`: the name of plugin

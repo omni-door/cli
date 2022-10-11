@@ -22,6 +22,7 @@ export interface KNServerParams {
     cert?: string | Buffer;
   };
   nextRouter?: NextRouter;
+  handleKoaApp?: (app: KoaApp<KoaApp.DefaultState, KoaApp.DefaultContext>) => any
 }
 
 export default function ({
@@ -33,7 +34,8 @@ export default function ({
   listenHost,
   port,
   httpsConfig,
-  nextRouter
+  nextRouter,
+  handleKoaApp
 }: KNServerParams) {
   const Koa = requireCwd('koa');
   const next = requireCwd('next');
@@ -170,6 +172,7 @@ export default function ({
       app.use(statics(publicPath));
       app.use(bodyParser());
       app.use(router.routes());
+      handleKoaApp?.(app);
 
       let server;
       let serverUrl = `${host}:${port}`;

@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.7.x
+### v2.7.3
+1. 「update」`ssr-react` with `koa-next` server support handle KoaApp through `handleKoaApp` callback
+
 ### v2.7.2
 1. 「fix」`omni start` miss middleware and https parameters
 
