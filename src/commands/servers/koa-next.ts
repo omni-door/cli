@@ -96,32 +96,50 @@ export default function ({
       });
 
       // middleware: custom
+      const middlewares = [...middlewareConfig];
+      for (let i = 0; i < middlewares.length; i++) {
+        const item = middlewares[i];
+        const { route, callback } = typeof item === 'function' ? item({
+          ip: ipAddress,
+          port,
+          host,
+          proxyConfig
+        }) : item;
+        const anyStr = '@#$%^#*(&^!~)::;;".._--';
+        if (!route || pathToRegexp(route).test(anyStr) || new RegExp(`^${route}`).test(anyStr)) {
+          // wildcard route
+          middlewares.splice(i, 1);
+          i--;
+          app.use(<KNMiddleWareCallback>callback);
+        }
+      }
+
       app.use(async (ctx, next) => {
         const { path } = ctx;
         let isMatch = false;
 
-        for (let i = 0; i < middlewareConfig.length; i++) {
-          const item = middlewareConfig[i];
+        for (let i = 0; i < middlewares.length; i++) {
+          const item = middlewares[i];
           const { route, callback } = typeof item === 'function' ? item({
             ip: ipAddress,
             port,
             host,
             proxyConfig
           }) : item;
-      
-          if (
-            pathToRegexp(route).test(path) ||
-            new RegExp(`^${route}`).test(path)
-          ) {
-            isMatch = true;
-            try {
+
+          try {
+            if (
+              pathToRegexp(route).test(path) ||
+              new RegExp(`^${route}`).test(path)
+            ) {
+              isMatch = true;
               await (<KNMiddleWareCallback>callback)(ctx, next);
-            } catch (err) {
-              logWarn(err as any);
-              logWarn(`The middleware「${route})」match occur error`);
-              logWarn(`中间件「${route}」匹配异常`);
+              break;
             }
-            break;
+          } catch (err) {
+            logWarn(err as any);
+            logWarn(`The middleware「${route})」match error`);
+            logWarn(`中间件「${route}」匹配异常`);
           }
         }
 

@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.7.x
+### v2.7.5
+1. 「fix」`koa-next` server middleware
+
 ### v2.7.4
 1. 「update」remove `handleKoaApp` support
 

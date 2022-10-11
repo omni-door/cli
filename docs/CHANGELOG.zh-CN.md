@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.7.x
+### v2.7.5
+1. 「fix」`koa-next` 服务中间件
+
 ### v2.7.4
 1. 「update」移除 `handleKoaApp` 的支持
 
