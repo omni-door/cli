@@ -107,8 +107,18 @@ type OmniServer = {
     route: PathParams;
     callback: MiddleWareCallback;
   }[];
+  cors?: {
+    origin?: string | ((ctx: KoaCtx) => string);
+    allowMethods?: string | string[];
+    exposeHeaders?: string | string[];
+    allowHeaders?: string | string[];
+    maxAge?: string | number;
+    credentials?: boolean | ((ctx: KoaCtx) => string);
+    keepHeadersOnError?: boolean;
+    secureContext?: boolean;
+    privateNetworkAccess?: boolean;
+  };
   nextRouter?: NextRouter;
-  handleKoaApp?: (app: KoaApp<KoaApp.DefaultState, KoaApp.DefaultContext>) => any;
 };
 
 interface OmniConfig {

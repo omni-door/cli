@@ -6,13 +6,14 @@ import open from '../dev/open';
 /* import types */
 import type NextServer from 'next-server/dist/server/next-server';
 import type * as KoaRouter from 'koa-router';
-import type { ProxyConfig, MiddlewareConfig } from '../dev/server';
+import type { ProxyConfig, MiddlewareConfig, CorsConfig } from '../dev/server';
 import type { NextRouter, KNMiddleWareCallback, KoaApp, ANYOBJECT } from '../../index.d';
 
 export interface KNServerParams {
   dev: boolean;
   proxyConfig?: ProxyConfig;
   middlewareConfig?: MiddlewareConfig;
+  corsConfig?: CorsConfig;
   ipAddress: string;
   host: string;
   listenHost?: string;
@@ -22,7 +23,6 @@ export interface KNServerParams {
     cert?: string | Buffer;
   };
   nextRouter?: NextRouter;
-  handleKoaApp?: (app: KoaApp<KoaApp.DefaultState, KoaApp.DefaultContext>) => any
 }
 
 export default function ({
@@ -30,12 +30,12 @@ export default function ({
   ipAddress,
   proxyConfig = [],
   middlewareConfig = [],
+  corsConfig,
   host,
   listenHost,
   port,
   httpsConfig,
-  nextRouter,
-  handleKoaApp
+  nextRouter
 }: KNServerParams) {
   const Koa = requireCwd('koa');
   const next = requireCwd('next');
@@ -43,6 +43,7 @@ export default function ({
   const bodyParser = requireCwd('koa-bodyparser');
   const k2c = requireCwd('koa2-connect');
   const statics = requireCwd('koa-static');
+  const cors = requireCwd('@koa/cors');
   const proxy = requireCwd('http-proxy-middleware');
   const { pathToRegexp } = requireCwd('path-to-regexp');
   const publicPath = path.resolve(process.cwd(), 'public');
@@ -53,6 +54,9 @@ export default function ({
     .then(() => {
       const app: KoaApp = new Koa();
       const router: KoaRouter = new Router();
+
+      // cors
+      app.use(cors(corsConfig));
 
       // middleware: http-proxy
       app.use(async (ctx, next) => {
@@ -172,7 +176,6 @@ export default function ({
       app.use(statics(publicPath));
       app.use(bodyParser());
       app.use(router.routes());
-      handleKoaApp?.(app);
 
       let server;
       let serverUrl = `${host}:${port}`;

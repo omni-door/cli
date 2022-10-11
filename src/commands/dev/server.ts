@@ -16,6 +16,8 @@ import type { EWServerParams } from '../servers';
 import type { PROJECT_TYPE } from '@omni-door/utils';
 import type { KoaApp, NextRouter, ServerType, PathParams, MiddleWareCallback } from '../../index.d';
 
+export type KoaCtx = KoaApp.ParameterizedContext<KoaApp.DefaultState, KoaApp.DefaultContext>;
+
 // types-proxy
 export type ProxyItem = { route: PathParams; config: Config; };
 export type ProxyConfig = (ProxyItem | ProxyFn)[];
@@ -36,6 +38,19 @@ export type MiddlewareFn = (params: {
   proxyConfig?: ProxyConfig;
 }) => MiddlewareItem;
 
+// types-cors
+export type CorsConfig = {
+  origin?: string | ((ctx: KoaCtx) => string);
+  allowMethods?: string | string[];
+  exposeHeaders?: string | string[];
+  allowHeaders?: string | string[];
+  maxAge?: string | number;
+  credentials?: boolean | ((ctx: KoaCtx) => string);
+  keepHeadersOnError?: boolean;
+  secureContext?: boolean;
+  privateNetworkAccess?: boolean;
+}
+
 // types-server
 type EWServerOptions = Pick<EWServerParams, 'webpackConfig' | 'devMiddlewareOptions' | 'favicon'>
 export type ServerOptions = {
@@ -51,10 +66,10 @@ export type ServerOptions = {
   };
   proxyConfig?: ProxyConfig;
   middlewareConfig?: MiddlewareConfig;
+  corsConfig?: CorsConfig;
   serverType: ServerType;
   projectType: PROJECT_TYPE;
   nextRouter?: NextRouter;
-  handleKoaApp?: (app: KoaApp<KoaApp.DefaultState, KoaApp.DefaultContext>) => any;
 } & EWServerOptions;
 
 async function server ({
@@ -69,7 +84,7 @@ async function server ({
   proxyConfig = [],
   middlewareConfig = [],
   nextRouter,
-  handleKoaApp,
+  corsConfig,
   favicon
 }: ServerOptions): Promise<void> {
   try {
@@ -177,7 +192,7 @@ async function server ({
           KNServer({
             dev: process.env.NODE_ENV === 'production' ? false : true,
             nextRouter,
-            handleKoaApp,
+            corsConfig,
             ...serverBasicOptions
           });
           break;

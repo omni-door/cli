@@ -3,6 +3,11 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.7.x
+### v2.7.4
+1. 「update」移除 `handleKoaApp` 的支持
+
+2. 「update」新增 `cors` 的支持
+
 ### v2.7.3
 1. 「update」`ssr-react` 下的 `koa-next` 服务，支持通过 `handleKoaApp` 回调操作KoaApp
 

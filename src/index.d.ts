@@ -14,6 +14,8 @@ export type ANYOBJECT = { [propName: string]: any };
 
 export type PathParams = string | RegExp | (string | RegExp)[];
 
+export type KoaCtx = KoaApp.ParameterizedContext<KoaApp.DefaultState, KoaApp.DefaultContext>;
+
 export type OptionTemplate = {
   componentName: string;
   componentType: 'function' | 'class';
@@ -80,8 +82,18 @@ export type OmniServer = {
     route: PathParams;
     callback: MiddleWareCallback;
   }[];
+  cors?: {
+    origin?: string | ((ctx: KoaCtx) => string);
+    allowMethods?: string | string[];
+    exposeHeaders?: string | string[];
+    allowHeaders?: string | string[];
+    maxAge?: string | number;
+    credentials?: boolean | ((ctx: KoaCtx) => string);
+    keepHeadersOnError?: boolean;
+    secureContext?: boolean;
+    privateNetworkAccess?: boolean;
+  };
   nextRouter?: NextRouter;
-  handleKoaApp?: (app: KoaApp<KoaApp.DefaultState, KoaApp.DefaultContext>) => any;
 };
 export interface OmniConfig {
   type: PROJECT_TYPE;
