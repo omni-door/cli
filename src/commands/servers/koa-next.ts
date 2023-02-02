@@ -71,20 +71,20 @@ export default function ({
             host,
             middlewareConfig
           }) : item;
-  
-          if (
-            pathToRegexp(route).test(path) ||
-            new RegExp(`^${route}`).test(path)
-          ) {
-            needProxy = true;
-            try {
+
+          try {
+            if (
+              pathToRegexp(route).test(path) ||
+              new RegExp(`^${route}`).test(path)
+            ) {
+              needProxy = true;
               await k2c(proxy(path, config))(ctx, next);
-            } catch (err) {
-              logWarn(err as any);
-              logWarn(`The http-proxy「${route})」match occur error`);
-              logWarn(`http-proxy「${route}」匹配异常`);
+              break;
             }
-            break;
+          } catch (err) {
+            logWarn(err as any);
+            logWarn(`The http-proxy「${route})」match occur error`);
+            logWarn(`http-proxy「${route}」匹配异常`);
           }
         }
 
@@ -99,56 +99,21 @@ export default function ({
       const middlewares = [...middlewareConfig];
       for (let i = 0; i < middlewares.length; i++) {
         const item = middlewares[i];
-        const { route, callback } = typeof item === 'function' ? item({
+        const { route, callback, method } = typeof item === 'function' ? item({
           ip: ipAddress,
           port,
           host,
           proxyConfig
         }) : item;
+        const _method = (method?.toLowerCase() ?? 'get') as 'get' | 'post' | 'put' | 'del';
         const anyStr = '@#$%^#*(&^!~)::;;".._--';
-        if (!route || pathToRegexp(route).test(anyStr) || new RegExp(`^${route}`).test(anyStr)) {
-          // wildcard route
-          middlewares.splice(i, 1);
-          i--;
-          app.use(<KNMiddleWareCallback>callback);
+        const wildcardRoute = !route || pathToRegexp(route).test(anyStr) || new RegExp(`^${route}`).test(anyStr);
+        if (wildcardRoute) {
+          router.use(<KNMiddleWareCallback>callback);
+        } else {
+          router[_method](route, <KNMiddleWareCallback>callback);
         }
       }
-
-      app.use(async (ctx, next) => {
-        const { path } = ctx;
-        let isMatch = false;
-
-        for (let i = 0; i < middlewares.length; i++) {
-          const item = middlewares[i];
-          const { route, callback } = typeof item === 'function' ? item({
-            ip: ipAddress,
-            port,
-            host,
-            proxyConfig
-          }) : item;
-
-          try {
-            if (
-              pathToRegexp(route).test(path) ||
-              new RegExp(`^${route}`).test(path)
-            ) {
-              isMatch = true;
-              await (<KNMiddleWareCallback>callback)(ctx, next);
-              break;
-            }
-          } catch (err) {
-            logWarn(err as any);
-            logWarn(`The middleware「${route})」match error`);
-            logWarn(`中间件「${route}」匹配异常`);
-          }
-        }
-
-        if (!isMatch) {
-          await next();
-        } else {
-          return;
-        }
-      });
 
       // inject routes
       // based on next-url-prettifier
@@ -193,7 +158,7 @@ export default function ({
       // middleware: static-server, body-parser and router
       app.use(statics(publicPath));
       app.use(bodyParser());
-      app.use(router.routes());
+      app.use(router.routes()).use(router.allowedMethods());
 
       let server;
       let serverUrl = `${host}:${port}`;

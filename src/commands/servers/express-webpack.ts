@@ -82,14 +82,16 @@ export default function ({
   // custom middleware
   for (let i = 0; i < middlewareConfig.length; i++) {
     const item = middlewareConfig[i];
-    const { route, callback } = typeof item === 'function' ? item({
+    const { route, callback, method } = typeof item === 'function' ? item({
       ip: ipAddress,
       port,
       host,
       proxyConfig
     }) : item;
 
-    app.use(
+    let _method = (method?.toLowerCase() ?? 'use') as 'get' | 'post' | 'delete' | 'del' | 'put' | 'use';
+    if (_method === 'del') _method = 'delete';
+    app[_method](
       route,
       callback as EWMiddleWareCallback
     );

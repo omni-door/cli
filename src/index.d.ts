@@ -12,6 +12,8 @@ import type { BUILD, PROJECT_TYPE, STYLE, PLUGINSTAGE, HASH, SPASERVER, COMPONEN
 
 export type ANYOBJECT = { [propName: string]: any };
 
+export type Method = 'get' | 'GET' | 'post' | 'POST' | 'put' | 'PUT' | 'del' | 'DEL';
+
 export type PathParams = string | RegExp | (string | RegExp)[];
 
 export type KoaCtx = KoaApp.ParameterizedContext<KoaApp.DefaultState, KoaApp.DefaultContext>;
@@ -75,12 +77,13 @@ export type OmniServer = {
     validityDays?: number;
   };
   proxy?: {
-    route: string;
+    route: PathParams;
     config: Config;
   }[];
   middleware?: {
     route: PathParams;
     callback: MiddleWareCallback;
+    method?: Method;
   }[];
   cors?: {
     origin?: string | ((ctx: KoaCtx) => string);

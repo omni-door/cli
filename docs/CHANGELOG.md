@@ -2,6 +2,12 @@
 
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
+## v2.8.x
+### v2.8.0
+1. 「feat」middleware support http methods
+
+2. 「chore」upgrade @omni-door/utils
+
 ## v2.7.x
 ### v2.7.5
 1. 「fix」`koa-next` server middleware

@@ -2,6 +2,12 @@
 
 [English](./CHANGELOG.md) | 简体中文
 
+## v2.8.x
+### v2.8.0
+1. 「feat」中间件支持 http 方法
+
+2. 「chore」升级 @omni-door/utils
+
 ## v2.7.x
 ### v2.7.5
 1. 「fix」`koa-next` 服务中间件

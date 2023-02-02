@@ -14,7 +14,7 @@ import open from './open';
 import type { Config } from 'http-proxy-middleware';
 import type { EWServerParams } from '../servers';
 import type { PROJECT_TYPE } from '@omni-door/utils';
-import type { KoaApp, NextRouter, ServerType, PathParams, MiddleWareCallback } from '../../index.d';
+import type { KoaApp, NextRouter, ServerType, PathParams, MiddleWareCallback, Method } from '../../index.d';
 
 export type KoaCtx = KoaApp.ParameterizedContext<KoaApp.DefaultState, KoaApp.DefaultContext>;
 
@@ -29,7 +29,7 @@ export type ProxyFn = (params: {
 }) => ProxyItem;
 
 // types-middleware
-export type MiddlewareItem = { route: PathParams; callback: MiddleWareCallback; };
+export type MiddlewareItem = { route: PathParams; callback: MiddleWareCallback; method?: Method };
 export type MiddlewareConfig = (MiddlewareItem | MiddlewareFn)[];
 export type MiddlewareFn = (params: {
   ip: string;

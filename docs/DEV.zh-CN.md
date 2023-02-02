@@ -87,6 +87,7 @@ type NPM = 'npm' | 'yarn' | 'pnpm';
 type PROJECT_TYPE = 'spa-react' | 'spa-react-pc' | 'spa-vue' | 'ssr-react' | 'component-react' | 'component-vue' | 'toolkit';
 type STYLE = 'less' | 'scss' | 'css' | 'all' | '';
 type SSRSERVER = 'next' | 'koa-next' | 'nuxt' | 'koa-nuxt' | '';
+type Method = 'get' | 'GET' | 'post' | 'POST' | 'put' | 'PUT' | 'del' | 'DEL';
 
 type OmniServer = {
   port?: number;
@@ -100,12 +101,13 @@ type OmniServer = {
     validityDays?: number;
   };
   proxy?: {
-    route: string;
+    route: PathParams;
     config: Config;
   }[];
   middleware?: {
     route: PathParams;
     callback: MiddleWareCallback;
+    method?: Method;
   }[];
   cors?: {
     origin?: string | ((ctx: KoaCtx) => string);
