@@ -1,6 +1,7 @@
 import path from 'path';
 import { logWarn, nodeVersionCheck, requireCwd, exec, _typeof } from '@omni-door/utils';
 import { KNServer } from '../servers';
+import { signal } from '../../utils';
 /* import types */
 import type { OmniConfig } from '../../index.d';
 
@@ -39,6 +40,9 @@ export default async function (config: OmniConfig | null, options: {
   if (!serverType) {
     handleException('Please specify server-type(请指定 server 类型)!');
   }
+
+  // bind exit signals
+  signal();
 
   const p = options.port;
   const h = options.hostname;

@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.8.x
+### v2.8.1
+1. 「optimization」node 进程异常信号监听
+
 ### v2.8.0
 1. 「feat」中间件支持 http 方法
 

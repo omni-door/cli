@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.8.x
+### v2.8.1
+1. 「optimization」node process exception signal listener
+
 ### v2.8.0
 1. 「feat」middleware support http methods
 
