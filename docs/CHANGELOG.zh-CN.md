@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.8.x
+### v2.8.2
+1. 「fix」`omni start` 移除最新版本提示避免网络阻塞
+
 ### v2.8.1
 1. 「optimization」node 进程异常信号监听
 

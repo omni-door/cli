@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.8.x
+### v2.8.2
+1. 「fix」`omni start` remove laster version tip to avoid network block
+
 ### v2.8.1
 1. 「optimization」node process exception signal listener
 

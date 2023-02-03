@@ -131,7 +131,6 @@ const commandDicts = {
 
       getConfig(!!workPath);
       checkConfig();
-      npmVersionCheck(pkj.name, pkj.version);
 
       start(config, options);
     });
