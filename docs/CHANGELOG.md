@@ -2,6 +2,14 @@
 
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
+## v2.9.x
+### v2.9.1
+1. 「update」`omni init` add deprecated and recommend hints
+
+
+### v2.9.0
+1. 「chore」upgrade express and node-sass
+
 ## v2.8.x
 ### v2.8.2
 1. 「fix」`omni start` remove laster version tip to avoid network block

@@ -2,6 +2,14 @@
 
 [English](./CHANGELOG.md) | 简体中文
 
+## v2.9.x
+### v2.9.1
+1. 「update」`omni init` 添加 deprecated 和 recommend 提示
+
+
+### v2.9.0
+1. 「chore」升级 express 和 node-sass
+
 ## v2.8.x
 ### v2.8.2
 1. 「fix」`omni start` 移除最新版本提示避免网络阻塞

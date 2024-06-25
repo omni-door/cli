@@ -75,6 +75,19 @@ const ProjectDict = {
   'toolkit (工具库)': 'toolkit'
 };
 
+const ServerTypes = {
+  ssr: {
+    'next': 'next',
+    'koa-next(deprecated)': 'koa-next',
+  },
+  cpLib: {
+    'storybook(recommend)': 'storybook',
+    'docz': 'docz',
+    'styleguidist(deprecated)': 'styleguidist',
+    'bisheng(deprecated)': 'bisheng'
+  }
+};
+
 const LayoutDict = {
   viewport: 'viewport(vw/vh)',
   'viewport(vw/vh)': 'viewport',
@@ -398,16 +411,16 @@ export default async function (strategy: STRATEGY, {
           choices: function (answer: any) {
             const projectType = getProjectType(answer);
             if (projectType === 'ssr-react') {
-              return ['next', 'koa-next'];
+              return Object.keys(ServerTypes.ssr);
             }
-            return ['storybook', 'docz', 'styleguidist', 'bisheng'];
+            return Object.keys(ServerTypes.cpLib);
           },
           default: function (answer: any) {
             const projectType = getProjectType(answer);
             if (projectType === 'ssr-react') {
-              return 'next';
+              return Object.keys(ServerTypes.ssr)[0];
             }
-            return 'storybook';
+            return Object.keys(ServerTypes.cpLib)[0];
           },
           message: function (answer: any) {
             const projectType = getProjectType(answer);
@@ -527,7 +540,7 @@ export default async function (strategy: STRATEGY, {
             const {
               project_type,
               name,
-              server = '',
+              server: _server = '',
               ts = true,
               test = true,
               style = [],
@@ -538,6 +551,12 @@ export default async function (strategy: STRATEGY, {
 
             await checkPkgTool(pkgtool);
 
+            let server = '';
+            Object.keys(ServerTypes).some(t => {
+              const list = ServerTypes[t as keyof typeof ServerTypes];
+              server = list[_server as keyof typeof list];
+              return !!server;
+            });
             const eslint = !!~lint.indexOf('eslint');
             const prettier = !!~lint.indexOf('prettier');
             const commitlint = !!~lint.indexOf('commitlint');
