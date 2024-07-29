@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.9.x
+### v2.9.2
+1. 「update」`omni build` gulp-sass 手动引入 sass
+
 ### v2.9.1
 1. 「update」`omni init` 添加 deprecated 和 recommend 提示
 
