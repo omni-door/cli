@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.9.x
+### v2.9.3
+1. 「update」`omni dev` storybook 开发命令变更
+
 ### v2.9.2
 1. 「update」`omni build` gulp-sass 手动引入 sass
 

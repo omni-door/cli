@@ -96,7 +96,7 @@ async function server ({
     let serverUrl = openHost + ':' + p;
 
     const ServerDevCli = {
-      storybook: `${path.resolve(CWD, 'node_modules/.bin/start-storybook')} -p ${p} -h ${serverHost} --quiet --ci`,
+      storybook: `${path.resolve(CWD, 'node_modules/.bin/storybook')} dev -p ${p} -h ${serverHost} --disable-telemetry --quiet --ci`,
       docz: `${path.resolve(CWD, 'node_modules/.bin/docz')} dev -p ${p} --host ${serverHost}`,
       bisheng: `${path.resolve(CWD, 'node_modules/.bin/bisheng')} start`,
       styleguidist: `${path.resolve(CWD, 'node_modules/.bin/styleguidist')} server --port ${p} --host ${serverHost}`,
