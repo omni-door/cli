@@ -13,10 +13,11 @@ import {
   arr2str,
   logErr,
   logWarn,
+  logInfo,
   getBrand,
   nodeVersionCheck,
   pkgNameCheck,
-  logInfo
+  getNpmVersions
 } from '@omni-door/utils';
 import { logo, signal } from '../../utils';
 /* import types */
@@ -250,6 +251,9 @@ export default async function (strategy: STRATEGY, {
   // reset illegal strategy
   strategy = (strategy === 'stable' || strategy === 'latest') ? strategy : 'stable';
 
+  // npm versions' promise
+  let versionsPromise: undefined | Promise<string[]>;
+
   const {
     before,
     after,
@@ -332,6 +336,9 @@ export default async function (strategy: STRATEGY, {
       await checkPkgTool(cli ? cli.pkgtool : 'pnpm');
 
       tplPackage = pkj;
+      if (tplPkjTag) {
+        versionsPromise = getNpmVersions(tplPkj || tplPackage);
+      }
       tplParams.push(`strategy=${strategy}`);
       for (const k in cli) {
         tplParams.push(`${k}=${cli[k as keyof typeof cli]}`);
@@ -615,6 +622,9 @@ export default async function (strategy: STRATEGY, {
                 tplPackage = '@omni-door/tpl-toolkit';
                 break;
             }
+            if (tplPkjTag) {
+              versionsPromise = getNpmVersions(tplPkj || tplPackage);
+            }
             resolve(void 0);
           });
       }).catch(err => {
@@ -662,12 +672,25 @@ export default async function (strategy: STRATEGY, {
     spinner.state('start', 'Initializing, please wait patiently(项目初始化中)');
     // create the folder
     !configFileExist && create_dir !== false && mkdir(initPath);
+
+    let templatePackageTag = tplPkjTag || 'latest';
+    if (tplPkjTag && versionsPromise) {
+      const matchVer = tplPkjTag.match(/\d+.\d+/)?.[0];
+      if (matchVer) {
+        const versions = await versionsPromise;
+        const [firstNum, secondNum] = matchVer.split('.');
+        const regexp = new RegExp(`^${firstNum}{1}.${secondNum}{1}.\\d+$`);
+        const thirdNum = Math.max(...versions.filter(v => regexp.test(v)).map(v => +(v.split('.')?.[2] ?? 0)));
+        templatePackageTag = `${firstNum}.${secondNum}.${thirdNum}`;
+      }
+    }
+
     return figlet(getBrand(), function (err, data) {
       if (err) {
         logErr(err.message);
         spinner.state('fail', 'Something about figlet is wrong(figlet 出现了问题)!');
       }
-      const initCmd = `npx ${tplPkj || tplPackage}@${tplPkjTag || 'latest'} init ${arr2str([...tplParams, ...tplPkjParams])}`;
+      const initCmd = `npx ${tplPkj || tplPackage}@${templatePackageTag} init ${arr2str([...tplParams, ...tplPkjParams])}`;
       logInfo(`Exec: ${initCmd}`);
       return exec(
         [ initCmd ],
