@@ -8,6 +8,7 @@ import {
   logInfo,
   logWarn,
   logSuc,
+  getNpmVersions,
   nodeVersionCheck
 } from '@omni-door/utils';
 import { getHandlers, signal, logo } from '../../utils';
@@ -212,12 +213,24 @@ export default async function (config: OmniConfig | null, componentName: string,
     }
   }
 
+  let templatePackageTag = tplPkjTag || 'latest';
+  if (tplPkjTag) {
+    const matchVer = tplPkjTag.match(/\d+.\d+/)?.[0];
+    if (matchVer) {
+      const versions = await getNpmVersions(newTplPkj);
+      const [firstNum, secondNum] = matchVer.split('.');
+      const regexp = new RegExp(`^${firstNum}{1}.${secondNum}{1}.\\d+$`);
+      const thirdNum = Math.max(...versions.filter(v => regexp.test(v)).map(v => +(v.split('.')?.[2] ?? 0)));
+      templatePackageTag = `${firstNum}.${secondNum}.${thirdNum}`;
+    }
+  }
+
   typeof before === 'function' && await before({
     componentName,
     root
   });
 
-  const newTpl = `${newTplPkj}@${tplPkjTag || 'latest'}`;
+  const newTpl = `${newTplPkj}@${templatePackageTag}`;
   logInfo(`Downloading the ${newTpl}, please wait patiently(正在下载 ${newTpl}，请稍后)…`);
   exec(
     [

@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.9.x
+### v2.9.6
+1. 「feat」`omni new` specify template's version
+
 ### v2.9.5
 1. 「feat」`omni init` specify template's version
 

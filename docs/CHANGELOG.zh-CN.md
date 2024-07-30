@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.9.x
+### v2.9.6
+1. 「feat」`omni new` 指定模版的版本
+
 ### v2.9.5
 1. 「feat」`omni init` 指定模版的版本
 
