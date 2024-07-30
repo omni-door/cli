@@ -15,7 +15,8 @@ import {
   logWarn,
   getBrand,
   nodeVersionCheck,
-  pkgNameCheck
+  pkgNameCheck,
+  logInfo
 } from '@omni-door/utils';
 import { logo, signal } from '../../utils';
 /* import types */
@@ -666,11 +667,10 @@ export default async function (strategy: STRATEGY, {
         logErr(err.message);
         spinner.state('fail', 'Something about figlet is wrong(figlet 出现了问题)!');
       }
-
+      const initCmd = `npx ${tplPkj || tplPackage}@${tplPkjTag || 'latest'} init ${arr2str([...tplParams, ...tplPkjParams])}`;
+      logInfo(`Exec: ${initCmd}`);
       return exec(
-        [
-          `npx ${tplPkj || tplPackage}@${tplPkjTag || 'latest'} init ${arr2str([...tplParams, ...tplPkjParams])}`
-        ],
+        [ initCmd ],
         async function () {
           const afterRes = typeof after === 'function' && await after();
           const { success, msg } = afterRes || {};

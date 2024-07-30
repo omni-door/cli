@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.9.x
+### v2.9.4
+1. 「chore」`omni init` 添加 init 命令日志
+
 ### v2.9.3
 1. 「update」`omni dev` storybook 开发命令变更
 
