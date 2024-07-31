@@ -44,9 +44,9 @@ export default async function (config: {
     'rollup-plugin-node-resolve': '5.2.0',
     'rollup-plugin-typescript': '1.0.1',
     'rollup-plugin-typescript2': '0.26.0',
-    'ttypescript': '~1.5.12',
-    'typescript': '~3.9.10',
-    'typescript-transform-paths': '~2.0.3',
+    'ts-patch': '~3.2.1',
+    'typescript': '~5.5.4',
+    'typescript-transform-paths': '~3.4.7',
     'gulp': '4.0.2',
     'gulp-autoprefixer': '7.0.1',
     'gulp-babel': '8.0.0',
@@ -137,7 +137,7 @@ export default async function (config: {
     dependency('@babel/plugin-proposal-class-properties'),
     project_type === 'component-vue' ? dependency('@omni-door/gulp-plugin-vue-sfc') : ''
   ] : build === 'tsc' ? [
-    dependency('ttypescript'),
+    dependency('ts-patch'),
     dependency('typescript'),
     dependency('typescript-transform-paths')
   ] : build === 'next' ? [

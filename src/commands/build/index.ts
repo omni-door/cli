@@ -240,7 +240,7 @@ export default async function (
     const buildCliArr = [];
     const buildCliPath = {
       tsc: path.resolve(CWD, 'node_modules/typescript/bin/tsc'),
-      ttsc: path.resolve(CWD, 'node_modules/ttypescript/bin/tsc'),
+      tspc: path.resolve(CWD, 'node_modules/ts-patch/bin/tspc.js'),
       rollup: path.resolve(CWD, 'node_modules/rollup/dist/bin/rollup'),
       webpack: path.resolve(CWD, 'node_modules/webpack-cli/bin/cli.js'),
       gulp: path.resolve(CWD, 'node_modules/gulp/bin/gulp.js'),
@@ -252,15 +252,15 @@ export default async function (
       }
 
       let tscPath = buildCliPath.tsc;
-      // ttypescript is preferred
-      if (fs.existsSync(buildCliPath.ttsc)) tscPath = buildCliPath.ttsc;
+      // ts-patch is preferred
+      if (fs.existsSync(buildCliPath.tspc)) tscPath = buildCliPath.tspc;
 
       if (!fs.existsSync(tscPath)) {
         logWarn('Please install typescript first');
         logWarn('请先安装 typescript 相关依赖');
         const is_go_on = await installDenpendencies('tsc');
         if (!is_go_on) return process.exit(0);
-        tscPath = buildCliPath.ttsc;
+        tscPath = buildCliPath.tspc;
       }
 
       buildCliArr.push(`${tscPath} --outDir ${outDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --rootDir ${srcDir}`);
@@ -311,14 +311,14 @@ export default async function (
         } else if (type === 'component-react' || type === 'component-vue') {
           let tscPath = buildCliPath.tsc;
           const gulpPath = buildCliPath.gulp;
-          // ttypescript is preferred
-          if (fs.existsSync(buildCliPath.ttsc)) tscPath = buildCliPath.ttsc;
+          // ts-patch is preferred
+          if (fs.existsSync(buildCliPath.tspc)) tscPath = buildCliPath.tspc;
 
           if (typescript && !fs.existsSync(tscPath)) {
             logWarn('Please install typescript first');
             logWarn('请先安装 typescript 相关依赖');
             is_go_on = await installDenpendencies('tsc');
-            if (is_go_on) tscPath = buildCliPath.ttsc;
+            if (is_go_on) tscPath = buildCliPath.tspc;
           }
           if (is_go_on && !fs.existsSync(gulpPath)) {
             logWarn('Please install gulp first');

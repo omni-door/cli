@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.9.x
+### v2.9.8
+1. 「update」`omni build` 用 ts-patch 替代 ttypescript
+
 ### v2.9.7
 1. 「update」`omni build` gulp 排除 `*.{demo,test,stories}.{vue,ts,tsx,js,jsx}` 文件构建
 
