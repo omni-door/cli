@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.9.x
+### v2.9.7
+1. 「update」`omni build` gulp 排除 `*.{demo,test,stories}.{vue,ts,tsx,js,jsx}` 文件构建
+
 ### v2.9.6
 1. 「feat」`omni new` 指定模版的版本
 

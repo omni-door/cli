@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.9.x
+### v2.9.7
+1. 「update」`omni build` gulp exclude `*.{demo,test,stories}.{vue,ts,tsx,js,jsx}` file build
+
 ### v2.9.6
 1. 「feat」`omni new` specify template's version
 

@@ -49,11 +49,13 @@ const params = {
   ],
   scripts: [
     '${srcDir}/**/*.{ts,tsx,js,jsx}',
-    '!${srcDir}/**/{demo,__demo__,test,__test__,stories,__stories__}/*.{ts,tsx,js,jsx}'
+    '!${srcDir}/**/{demo,__demo__,test,__test__,stories,__stories__}/*.{ts,tsx,js,jsx}',
+    '!${srcDir}/**/*.{demo,test,stories}.{ts,tsx,js,jsx}'
   ],
   vue: [
     '${srcDir}/**/*.vue',
-    '!${srcDir}/**/{demo,__demo__,test,__test__,stories,__stories__}/*.vue'
+    '!${srcDir}/**/{demo,__demo__,test,__test__,stories,__stories__}/*.{vue,ts,tsx,js,jsx}',
+    '!${srcDir}/**/*.{demo,test,stories}.{vue,ts,tsx,js,jsx}'
   ]
 };
 
