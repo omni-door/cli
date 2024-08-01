@@ -241,6 +241,7 @@ export default async function (
     const buildCliPath = {
       tsc: path.resolve(CWD, 'node_modules/typescript/bin/tsc'),
       tspc: path.resolve(CWD, 'node_modules/ts-patch/bin/tspc.js'),
+      vuetsc: path.resolve(CWD, 'node_modules/vue-tsc/bin/vue-tsc.js'),
       rollup: path.resolve(CWD, 'node_modules/rollup/dist/bin/rollup'),
       webpack: path.resolve(CWD, 'node_modules/webpack-cli/bin/cli.js'),
       gulp: path.resolve(CWD, 'node_modules/gulp/bin/gulp.js'),
@@ -310,11 +311,12 @@ export default async function (
           buildCliArr.push(`${webpackPath} --config ${buildConfigPath}`);
         } else if (type === 'component-react' || type === 'component-vue') {
           let tscPath = buildCliPath.tsc;
+          const vTscPath = buildCliPath.vuetsc;
           const gulpPath = buildCliPath.gulp;
           // ts-patch is preferred
           if (fs.existsSync(buildCliPath.tspc)) tscPath = buildCliPath.tspc;
 
-          if (typescript && !fs.existsSync(tscPath)) {
+          if (typescript && (!fs.existsSync(tscPath) || (type === 'component-vue' && !fs.existsSync(vTscPath)))) {
             logWarn('Please install typescript first');
             logWarn('请先安装 typescript 相关依赖');
             is_go_on = await installDenpendencies('tsc');
@@ -329,6 +331,8 @@ export default async function (
           buildCliArr.push(
             typescript ? `${tscPath} --outDir ${outDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --emitDeclarationOnly --rootDir ${srcDir}` : '',
             typescript && esmDir ? `${tscPath} --module ES6 --target ES6 --outDir ${esmDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --emitDeclarationOnly --rootDir ${srcDir}` : '',
+            typescript && type === 'component-vue' ? `${vTscPath} --outDir ${outDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --emitDeclarationOnly --rootDir ${srcDir}` : '',
+            typescript && esmDir && type === 'component-vue' ? `${vTscPath} --module ES6 --target ES6 --outDir ${esmDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --emitDeclarationOnly --rootDir ${srcDir}` : '',
             `${gulpPath} --gulpfile ${buildConfigPath} --cwd ${CWD}`
           );
         }

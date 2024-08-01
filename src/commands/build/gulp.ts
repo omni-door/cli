@@ -75,7 +75,7 @@ function compileScripts (babelEnv, destDir) {
     .pipe(sourcemaps ? sourcemaps.init() : through2.obj())
     .pipe(project ? project() : through2.obj())
     .pipe(babel({ root: process.cwd() }))
-    .pipe(replace ? replace(/\.vue("|'){1}/g, '.js$1') : through2.obj())
+    .pipe(replace ? replace(/\\.vue("|'){1}/g, '.js$1') : through2.obj())
     .pipe(
       through2.obj(function (file, encoding, next) {
         this.push(file.clone());
@@ -113,7 +113,7 @@ function compileSFC () {
     .pipe((alias && project) ? alias({ configuration: project.config }) : through2.obj())
     .pipe(project ? project() : through2.obj())
     .pipe(babel({ root: process.cwd() }))
-    .pipe(replace ? replace(/\.vue("|'){1}/g, '.js$1') : through2.obj())
+    .pipe(replace ? replace(/\\.vue("|'){1}/g, '.js$1') : through2.obj())
     .pipe(sourcemaps ? sourcemaps.write({ sourceRoot: file => path.relative(path.join(file.cwd, file.path), file.base) }) : through2.obj())
     .pipe(gulp.dest(dest.lib))
     .pipe(gulp.dest(dest.es));

@@ -3,6 +3,10 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.9.x
+### v2.9.9
+1. 「fix」`omni build` vue file not generate declaration file
+2. 「fix」`omni build` `.vue` ext transfer to `.js`
+
 ### v2.9.8
 1. 「update」`omni build` ts-patch replace ttypescript
 

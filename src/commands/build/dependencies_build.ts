@@ -30,6 +30,7 @@ export default async function (config: {
     'terser-webpack-plugin': '2.3.4',
     'url-loader': '~3.0.0',
     'vue-loader': 'next',
+    'vue-tsc': '~2.0.29',
     'webpack': '~4.41.6',
     'webpack-bundle-analyzer': '3.6.0',
     'webpack-cli': '~3.3.11',
@@ -139,7 +140,8 @@ export default async function (config: {
   ] : build === 'tsc' ? [
     dependency('ts-patch'),
     dependency('typescript'),
-    dependency('typescript-transform-paths')
+    dependency('typescript-transform-paths'),
+    project_type === 'component-vue'? dependency('vue-tsc') : ''
   ] : build === 'next' ? [
     dependency('next'),
     dependency('next-url-prettifier'),

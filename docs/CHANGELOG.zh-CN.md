@@ -3,6 +3,10 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.9.x
+### v2.9.9
+1. 「fix」`omni build` vue 文件没有生成声明文件
+2. 「fix」`omni build` `.vue` 后缀转换成 `.js`
+
 ### v2.9.8
 1. 「update」`omni build` 用 ts-patch 替代 ttypescript
 
