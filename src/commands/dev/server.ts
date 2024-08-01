@@ -100,7 +100,7 @@ async function server ({
       docz: `${path.resolve(CWD, 'node_modules/.bin/docz')} dev -p ${p} --host ${serverHost}`,
       bisheng: `${path.resolve(CWD, 'node_modules/.bin/bisheng')} start`,
       styleguidist: `${path.resolve(CWD, 'node_modules/.bin/styleguidist')} server --port ${p} --host ${serverHost}`,
-      dumi: `${path.resolve(CWD, 'node_modules/.bin/dumi')} dev --port ${p} --host ${serverHost}`,
+      dumi: `PORT=${p} ${path.resolve(CWD, 'node_modules/.bin/dumi')} dev`,
       next: `${path.resolve(CWD, 'node_modules/.bin/next')} dev --port ${p} --hostname ${serverHost}`,
       nuxt: `${path.resolve(CWD, 'node_modules/.bin/nuxt')} dev --port ${p} --hostname ${serverHost}`
     };
@@ -108,7 +108,6 @@ async function server ({
       'storybook',
       'docz',
       'styleguidist',
-      'dumi',
       'next'
     ];
 

@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.9.x
+### v2.9.10
+1. 「fix」`omni dev` dumi 开发服务命令
+
 ### v2.9.9
 1. 「fix」`omni build` vue 文件没有生成声明文件
 2. 「fix」`omni build` `.vue` 后缀转换成 `.js`
