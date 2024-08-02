@@ -58,15 +58,43 @@ const resolveConfig = {
   preferBuiltins: true,
   browser: true
 };
-const ts2config = {
-  tsconfigOverride: {
-    compilerOptions: {
-      target: 'es2015',
-      module: 'ESNext'
-    },
-    exclude: tsExcludes
+const tsconfig = {
+  ts: {
+    cjs: (file) => ({
+      target: 'es5',
+      module: 'commonjs',
+      outDir: path.resolve('${outDir}', file),
+      exclude: tsExcludes
+    }),
+    esm: (file) => ({
+      target: 'ESNEXT',
+      module: 'ESNext',
+      outDir: path.resolve('${esmDir}', file),
+      exclude: tsExcludes
+    })
+  },
+  ts2: {
+    cjs: () => ({
+      tsconfigOverride: {
+        compilerOptions: {
+          target: 'es5',
+          module: 'ES2015'
+        },
+        exclude: tsExcludes
+      }
+    }),
+    esm: () => ({
+      tsconfigOverride: {
+        compilerOptions: {
+          target: 'es2015',
+          module: 'ESNext'
+        },
+        exclude: tsExcludes
+      }
+    })
   }
 };
+
 const commonConfig = commonjs_new? void 0 : {
   namedExports: {
     'react': [
@@ -166,7 +194,7 @@ function createConfig () {
     plugins: [
       resolve(resolveConfig),
       commonjs(commonConfig),
-      ${ts ? 'typescript2(ts2config),' : ''}
+      ${ts ? 'typescript2(tsconfig.ts2.cjs()),' : ''}
       babel(babelConfig),
       json()
     ]}, ${
@@ -182,7 +210,7 @@ function createConfig () {
             resolve(resolveConfig),
             commonjs(commonConfig),
             json(),
-            ${ts ? 'typescript2(ts2config)' : ''}
+            ${ts ? 'typescript2(tsconfig.ts2.esm())' : ''}
           ]
         },`
     : ''
@@ -199,12 +227,7 @@ function createConfig () {
         plugins: [
           resolve(resolveConfig),
           commonjs(commonConfig),
-          ${ts ? `typescript({
-            target: 'es2015',
-            module: 'ESNext',
-            outDir: path.resolve('${outDir}', file),
-            exclude: tsExcludes
-          }),` : ''}
+          ${ts ? 'typescript(tsconfig.ts.cjs(file)),' : ''}
           babel(babelConfig),
           json()
         ]
@@ -221,12 +244,7 @@ function createConfig () {
               resolve(resolveConfig),
               commonjs(commonConfig),
               json(),
-              ${ts ? `typescript({
-                target: 'es2015',
-                module: 'ESNext',
-                outDir: path.resolve('${esmDir}', file),
-                exclude: tsExcludes
-              })` : ''}
+              ${ts ? 'typescript(tsconfig.ts.esm(file))' : ''}
             ]
           }`
     : ''

@@ -108,7 +108,8 @@ async function server ({
       'storybook',
       'docz',
       'styleguidist',
-      'next'
+      'next',
+      'dumi'
     ];
 
     const needCustomServer = !serverType || serverType === 'default' || serverType === 'express-webpack' || serverType === 'koa-next' || serverType === 'koa-nuxt';

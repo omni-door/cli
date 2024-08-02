@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.9.x
+### v2.9.11
+1. 「update」`omni build` rollup 配置
+
 ### v2.9.10
 1. 「fix」`omni dev` dumi 开发服务命令
 
