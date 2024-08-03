@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.9.x
+### v2.9.12
+1. 「update」`omni release` cannot change version when `npm` field not set
+
 ### v2.9.11
 1. 「update」`omni build` rollup config
 

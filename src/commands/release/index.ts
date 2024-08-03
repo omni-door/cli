@@ -289,7 +289,6 @@ export default async function (
               return `The ${chalk.strikethrough.red(currentVer)} had been occupied, would you like change to ${chalk.bold.underline.green(iterVersion)}?`;
             },
             when: async (answer) => {
-              if (!npm) return false;
               const { version_manual, version_semantic, presetTag, label } = answer;
               iterVersion = version_manual || autoIterDict[version_semantic]?.[1] || iterVersion;
               const versionTag = iterVersion?.match(/[a-zA-Z]+/g)?.[0];
@@ -299,6 +298,7 @@ export default async function (
               || (versionTag === 'rc' ? 'latest' : versionTag)
               || autoIterDict[version_semantic]?.[0]
               || defaultTag;
+              if (!npm) return false;
               await versionsPromise;
               return existedVersions.some(v => iterVersion === v);
             }
