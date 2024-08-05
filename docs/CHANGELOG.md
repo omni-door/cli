@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.9.x
+### v2.9.13
+1. 「update」`omni dev` webpack config support function format
+
 ### v2.9.12
 1. 「update」`omni release` cannot change version when `npm` field not set
 

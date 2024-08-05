@@ -127,7 +127,7 @@ interface OmniConfig {
   type: PROJECT_TYPE;
   dev?: OmniServer & {
     devMiddlewareOptions?: Partial<DevMiddlewareOptions>;
-    webpack?: Configuration;
+    webpack?: Configuration | (() => Configuration);
     serverType?: ServerType;
     favicon?: string;
   };

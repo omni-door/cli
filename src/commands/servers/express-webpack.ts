@@ -13,7 +13,7 @@ import type { ProxyConfig, MiddlewareConfig } from '../dev/server';
 import type { EWMiddleWareCallback } from '../../index.d';
 
 export interface EWServerParams {
-  webpackConfig: Configuration;
+  webpackConfig: Configuration | (() => Configuration);
   devMiddlewareOptions?: Partial<Options>;
   proxyConfig?: ProxyConfig;
   middlewareConfig?: MiddlewareConfig;
@@ -44,7 +44,7 @@ export default function ({
   const favicon = requireCwd('serve-favicon');
   const { createProxyMiddleware } = requireCwd('http-proxy-middleware');
   const webpack = requireCwd('webpack');
-  const compiler: Compiler = webpack(webpackConfig);
+  const compiler: Compiler = webpack(typeof webpackConfig === 'function' ? webpackConfig() : webpackConfig);
   const devMiddleware: WebpackDevMiddleware & NextHandleFunction = requireCwd('webpack-dev-middleware')(compiler, {
     publicPath: '/',
     ...devMiddlewareOptions

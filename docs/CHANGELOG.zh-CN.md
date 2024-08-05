@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.9.x
+### v2.9.13
+1. 「update」`omni dev` webpack 配置支持函数的形式
+
 ### v2.9.12
 1. 「update」`omni release` 当 `npm` 字段未设置的时候，无法更改版本号
 
