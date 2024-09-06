@@ -45,7 +45,7 @@ const extensions = ['.ts', '.js'];
 const tsExcludes = ['**/__test__/*'];
 const babelConfig = babel_new ? {
   exclude: 'node_modules/**',
-  plugins: [['@babel/plugin-transform-runtime', { corejs: 3 }]],
+  plugins: [['@babel/plugin-transform-runtime', { useESModules: false, corejs: 3 }]],
   babelHelpers: 'runtime',
   extensions
 } : {
@@ -159,29 +159,33 @@ function flatten (arr) {
 
 function createConfig () {
   const filesPaths = [];
-  ${multiOutput ? `const files = fs.readdirSync('${srcDir}');
-  const len = files.length;
-  for (let i = 0; i < len; i++) {
-    const file = files[i];
-    const filePath = path.resolve('${srcDir}', file);
-    const stats = fs.statSync(filePath);
-    if (stats.isDirectory()) {
-      let entryPath = '';
-      for (let i = 0, len = exts.length; i < len; i++) {
-        entryPath = path.resolve(filePath, \`index.\${exts[i]}\`);
-        if (fs.existsSync(entryPath)) break;
+  ${multiOutput ? `const getEntryPath = (files, preDir) => {
+    const len = files.length;
+    for (let i = 0; i < len; i++) {
+      const file = files[i];
+      if (file.includes('test')) continue;
+      const preDirPath = path.join(preDir, file);
+      const filePath = path.resolve('${srcDir}', preDirPath);
+      const stats = fs.statSync(filePath);
+      if (stats.isDirectory()) {
+        getEntryPath(fs.readdirSync(filePath), preDirPath);
+      } else {
+        let entryPath = '';
+        const extArr = path.extname(filePath).split('.');
+        entryPath = (extArr.length && !!~exts.indexOf(extArr[1])) ? filePath : '';
+        if (!entryPath || !fs.existsSync(entryPath) || fs.existsSync(path.resolve(filePath, '.buildignore'))) {
+          tsExcludes.push(\`\${filePath}/*\`);
+          continue;
+        }
+        filesPaths.push({
+          entry: entryPath,
+          file: path.join(file, 'index.js'),
+          dir: preDir
+        });
       }
-      if (!fs.existsSync(entryPath) || fs.existsSync(path.resolve(filePath, '.buildignore'))) {
-        tsExcludes.push(\`\${filePath}/*\`);
-        continue;
-      }
-      filesPaths.push({
-        entry: entryPath,
-        file: path.join(file, 'index.js'),
-        dir: file
-      });
     }
-  }
+  };
+  getEntryPath(fs.readdirSync('${srcDir}'), '');
   ` : ''}
   return [{
     input: indexPath,
@@ -215,7 +219,7 @@ function createConfig () {
         },`
     : ''
 } ...flatten(filesPaths.map(fileParams => {
-      const { entry, file, dir } = fileParams
+      const { entry, file, dir } = fileParams;
       return [{
         input: entry,
         output: {
@@ -228,7 +232,6 @@ function createConfig () {
           resolve(resolveConfig),
           commonjs(commonConfig),
           ${ts ? 'typescript(tsconfig.ts.cjs(file)),' : ''}
-          babel(babelConfig),
           json()
         ]
       }, ${

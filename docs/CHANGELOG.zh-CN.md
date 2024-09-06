@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.9.x
+### v2.9.14
+1. 「fix」`omni build` rollup 多入口文件构建问题
+
 ### v2.9.13
 1. 「update」`omni dev` webpack 配置支持函数的形式
 

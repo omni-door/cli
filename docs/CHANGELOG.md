@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.9.x
+### v2.9.14
+1. 「fix」`omni build` rollup multiple entry bug
+
 ### v2.9.13
 1. 「update」`omni dev` webpack config support function format
 

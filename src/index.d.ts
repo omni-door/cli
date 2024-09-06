@@ -103,6 +103,7 @@ export interface OmniConfig {
   dev?: OmniServer & {
     devMiddlewareOptions?: Partial<DevMiddlewareOptions>;
     webpack?: Configuration | (() => Configuration);
+    configuration?: (config: ANYOBJECT) => ANYOBJECT;
     serverType?: ServerType;
     favicon?: string;
   };
