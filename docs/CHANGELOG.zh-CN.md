@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.9.x
+### v2.9.15
+1. 「fix」`omni build` rollup ESM模块构建参数
+
 ### v2.9.14
 1. 「fix」`omni build` rollup 多入口文件构建问题
 

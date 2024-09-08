@@ -212,7 +212,7 @@ function createConfig () {
           },
           plugins: [
             resolve(resolveConfig),
-            commonjs(commonConfig),
+            commonjs(Object.assign(commonConfig || {}, { transformMixedEsModules: true, esmExternals: true })),
             json(),
             ${ts ? 'typescript2(tsconfig.ts2.esm())' : ''}
           ]
@@ -245,7 +245,7 @@ function createConfig () {
             },
             plugins: [
               resolve(resolveConfig),
-              commonjs(commonConfig),
+              commonjs(Object.assign(commonConfig || {}, { transformMixedEsModules: true, esmExternals: true })),
               json(),
               ${ts ? 'typescript(tsconfig.ts.esm(file))' : ''}
             ]
