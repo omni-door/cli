@@ -29,7 +29,7 @@ const tagCustom = '$omni_custom$';
 const tagDict = {
   '1. alpha (内测版)': 'alpha',
   '2. beta (公测版)': 'beta',
-  '3. rc (内测版)': 'rc',
+  '3. rc (候选版)': 'rc',
   '4. latest (正式版)': 'latest',
   '5. custom (自定义)': tagCustom
 };
@@ -37,7 +37,7 @@ const tagDict = {
 const tagDictWithExtraWords = {
   '1. alpha (内测版 - 当前标签)': 'alpha',
   '2. beta (公测版 - 当前标签)': 'beta',
-  '3. rc (内测版 - 当前标签)': 'rc',
+  '3. rc (候选版 - 当前标签)': 'rc',
   '4. latest (正式版 - 当前标签)': 'latest'
 };
 

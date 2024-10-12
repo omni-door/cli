@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.9.x
+### v2.9.16
+1. 「chore」`omni release` rc tag name
+
 ### v2.9.15
 1. 「fix」`omni build` rollup ESM build params
 

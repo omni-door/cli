@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.9.x
+### v2.9.16
+1. 「chore」`omni release` rc 标签名称
+
 ### v2.9.15
 1. 「fix」`omni build` rollup ESM模块构建参数
 
