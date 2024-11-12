@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ## v2.9.x
+### v2.9.17
+1. 「update」`omni release` tag choice won't need set npm registry address first
+
 ### v2.9.16
 1. 「chore」`omni release` rc tag name
 

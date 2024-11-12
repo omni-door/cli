@@ -205,7 +205,7 @@ export default async function (
           {
             name: 'presetTag',
             type: 'list',
-            when: () => npm && !tag && !autoTag,
+            when: () => !tag && !autoTag,
             choices: () => {
               const result = Object.keys(tagDict);
               const presetTags = Object.values(tagDict);
@@ -257,7 +257,13 @@ export default async function (
             type: 'list',
             when: answer => answer.iter === iterDict.automatic,
             choices: (answer) => {
-              Object.assign(autoIterDict, getAutoIterDict(pkj.version, answer.label || tagDict[answer.presetTag as keyof typeof tagDict] || tagDictWithExtraWords[answer.presetTag as keyof typeof tagDictWithExtraWords] || defaultTag));
+              Object.assign(autoIterDict, getAutoIterDict(
+                pkj.version,
+                answer.label ||
+                tagDict[answer.presetTag as keyof typeof tagDict] ||
+                tagDictWithExtraWords[answer.presetTag as keyof typeof tagDictWithExtraWords] ||
+                defaultTag
+              ));
               return [ ...Object.keys(autoIterDict) ];
             },
             message: `${logo()}Select the version (选择版本):`

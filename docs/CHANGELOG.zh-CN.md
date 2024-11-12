@@ -3,6 +3,9 @@
 [English](./CHANGELOG.md) | 简体中文
 
 ## v2.9.x
+### v2.9.17
+1. 「update」`omni release` 没有设置 npm 仓库地址也能进行 tag 选择
+
 ### v2.9.16
 1. 「chore」`omni release` rc 标签名称
 
