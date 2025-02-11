@@ -2,6 +2,18 @@
 
 [English](./CHANGELOG.md) | 简体中文
 
+# v3
+## v3.0.x
+### v3.0.0
+1. 「update」`omni init` react 组件库移除 docz, styleguidist, bisheng 等demo文档的支持
+
+2. 「update」`omni init` react-ssr 移除 koa+next 作为SSR服务的支持
+
+3. 「update」支持 react@19, next@15 以及其他依赖的升级
+
+---
+
+# v2
 ## v2.9.x
 ### v2.9.17
 1. 「update」`omni release` 没有设置 npm 仓库地址也能进行 tag 选择
@@ -303,8 +315,6 @@
 
 2. 「fix」`omni build` 自动安装缺少的构建依赖不全的问题
 
----
-
 ## v2.0.x
 ### v2.0.17
 1. 「fix」`omni build` 组件项目gulp配置文件bug
@@ -372,6 +382,7 @@
 
 ---
 
+# v1
 ## v1.4.x
 ### v1.4.4
 1. 「optimization」 `omni init` 固定 template 的版本号
@@ -651,8 +662,6 @@
 
 3. 「update」`onmi init` component-react 和 toolkit 默认开启单元测试
 
----
-
 ## v1.0.x
 ### v1.0.10
 1. 「fix」[node-version-check] 修复node版本检测问题
@@ -721,6 +730,7 @@
 
 ---
 
+# v0
 ## v0.2.x
 1. 可用版本，请使用最新版本
 

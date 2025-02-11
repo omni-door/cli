@@ -52,10 +52,6 @@ export default async function (config: OmniConfig | null, options: {
   const _port = (p ? +p : port) || 6200;
   const _host = h || host || '0.0.0.0';
 
-  const ServerStartCli = {
-    next: `${path.resolve(CWD, 'node_modules/.bin/next')} start --port ${_port} --hostname ${_host}`
-  };
-
   if (_typeof(https) === 'boolean') {
     logWarn(`The https must specify path when start server at production environment (开发环境中 https 必须指定路径): \n
 
@@ -66,21 +62,10 @@ export default async function (config: OmniConfig | null, options: {
   }
 
   switch (serverType) {
-    case 'koa-next':
-      KNServer({
-        dev: process.env.NODE_ENV === 'development',
-        port: _port,
-        host: _host,
-        ipAddress,
-        middlewareConfig: middleware,
-        httpsConfig: _typeof(https) === 'object' ? https as Object : void 0,
-        ...rest
-      });
+    case 'next-app':
+    case 'next-pages':
+      exec([`${path.resolve(CWD, 'node_modules/.bin/next')} start --port ${_port} --hostname ${_host}`]);
       break;
-    case 'next':
-      exec([ServerStartCli[serverType]]);
-      break;
-    case 'koa-nuxt':
     case 'nuxt':
     default:
       logWarn('Not support ssr-vue yet');

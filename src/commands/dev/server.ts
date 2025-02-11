@@ -95,24 +95,22 @@ async function server ({
     const openHost = host || ipAddress || '0.0.0.0';
     let serverUrl = openHost + ':' + p;
 
+    const nextDevCli = `${path.resolve(CWD, 'node_modules/.bin/next')} dev --port ${p} --hostname ${serverHost}`;
     const ServerDevCli = {
       storybook: `${path.resolve(CWD, 'node_modules/.bin/storybook')} dev -p ${p} -h ${serverHost} --disable-telemetry --quiet --ci`,
-      docz: `${path.resolve(CWD, 'node_modules/.bin/docz')} dev -p ${p} --host ${serverHost}`,
-      bisheng: `${path.resolve(CWD, 'node_modules/.bin/bisheng')} start`,
-      styleguidist: `${path.resolve(CWD, 'node_modules/.bin/styleguidist')} server --port ${p} --host ${serverHost}`,
       dumi: `PORT=${p} ${path.resolve(CWD, 'node_modules/.bin/dumi')} dev`,
-      next: `${path.resolve(CWD, 'node_modules/.bin/next')} dev --port ${p} --hostname ${serverHost}`,
+      'next-app': nextDevCli,
+      'next-pages': nextDevCli,
       nuxt: `${path.resolve(CWD, 'node_modules/.bin/nuxt')} dev --port ${p} --hostname ${serverHost}`
     };
     const autoOpenServer = [
       'storybook',
-      'docz',
-      'styleguidist',
-      'next',
+      'next-app',
+      'next-pages',
       'dumi'
     ];
 
-    const needCustomServer = !serverType || serverType === 'default' || serverType === 'express-webpack' || serverType === 'koa-next' || serverType === 'koa-nuxt';
+    const needCustomServer = !serverType || serverType === 'default' || serverType === 'express-webpack';
     if (needCustomServer) {
       let isHttps = false;
       let key, cert;

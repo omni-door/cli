@@ -1,7 +1,18 @@
 # CHANGE LOG
 
 English | [简体中文](./CHANGELOG.zh-CN.md)
+# v3
+## v3.0.x
+### v3.0.0
+1. 「update」`omni init` react-component library remove docz, styleguidist, bisheng
 
+2. 「update」`omni init` react-ssr project remove koa-next as server type
+
+3. 「update」support react@19, next@15 and other dependencies upgrade
+
+---
+
+# v2
 ## v2.9.x
 ### v2.9.17
 1. 「update」`omni release` tag choice won't need set npm registry address first
@@ -303,8 +314,6 @@ English | [简体中文](./CHANGELOG.zh-CN.md)
 
 2. 「fix」`omni build` auto install build dependecies unsatisfied
 
----
-
 ## v2.0.x
 ### v2.0.17
 1. 「fix」`omni build` the bug of component-project gulp configuration file
@@ -372,6 +381,7 @@ English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ---
 
+# v1
 ## v1.4.x
 ### v1.4.4
 1. 「optimization」 `omni init` fixed template version
@@ -651,8 +661,6 @@ English | [简体中文](./CHANGELOG.zh-CN.md)
 
 3. 「update」`onmi init` component-react and toolkit set unit-test by default
 
----
-
 ## v1.0.x
 ### v1.0.10
 1. 「fix」[node-version-check] fix the version check bug
@@ -721,6 +729,7 @@ English | [简体中文](./CHANGELOG.zh-CN.md)
 
 ---
 
+# v0
 ## v0.2.x
 1. available version, please upgrade the latest version
 

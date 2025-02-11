@@ -36,15 +36,15 @@ export default function (config, options) {
 
 ### Type of plugin
 ```ts
-type PLUGINSTAGE = 'new' | 'build' | 'release';
+type PLUGIN_STAGE = 'new' | 'build' | 'release';
 
-interface OmniPlugin<T extends PLUGINSTAGE> {
+interface OmniPlugin<T extends PLUGIN_STAGE> {
   name: string;
   stage: T;
   handler: PluginHandler<T>;
 }
 
-interface PluginHandler<T extends PLUGINSTAGE> {
+interface PluginHandler<T extends PLUGIN_STAGE> {
   (
     config: config: Omit<OmniConfig, 'dev' | 'plugins'>,
     options?: T extends 'new' ? OptionTemplate : T extends 'build' ? OptionBuild : OptionRelease
@@ -81,12 +81,12 @@ import type { Options as DevMiddlewareOptions } from 'webpack-dev-middleware';
 import type { Request, Response, NextFunction } from 'express';
 import type * as KoaApp from 'koa';
 
-type ServerType = 'storybook' | 'docz' | 'dumi' | 'bisheng' | 'styleguidist' | 'default';
+type ServerType = 'storybook' | 'default';
 type BUILD = 'webpack' | 'rollup' | 'gulp' | 'tsc' | 'next' | '';
 type NPM = 'npm' | 'yarn' | 'pnpm';
 type PROJECT_TYPE = 'spa-react' | 'spa-react-pc' | 'spa-vue' | 'ssr-react' | 'component-react' | 'component-vue' | 'toolkit';
 type STYLE = 'less' | 'scss' | 'css' | 'all' | '';
-type SSRSERVER = 'next' | 'koa-next' | 'nuxt' | 'koa-nuxt' | '';
+type SSR_SERVER = 'next-app' | 'next-pages' | 'nuxt' | '';
 type Method = 'get' | 'GET' | 'post' | 'POST' | 'put' | 'PUT' | 'del' | 'DEL';
 
 type OmniServer = {
@@ -131,7 +131,7 @@ interface OmniConfig {
     serverType?: ServerType;
     favicon?: string;
   };
-  server?: OmniServer & { serverType?: SSRSERVER; };
+  server?: OmniServer & { serverType?: SSR_SERVER; };
   build: {
     autoRelease?: boolean;
     srcDir: string;
@@ -169,7 +169,7 @@ interface OmniConfig {
     stylesheet?: STYLE;
     readme?: [boolean, 'mdx' | 'md'];
   };
-  plugins?: OmniPlugin<PLUGINSTAGE>[];
+  plugins?: OmniPlugin<PLUGIN_STAGE>[];
 }
 ```
 

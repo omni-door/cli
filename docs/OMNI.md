@@ -156,11 +156,11 @@ plugin must meet following types:
 ```ts
 type OmniPlugin = {
   name: string;
-  stage: PluginStage;
+  stage: PLUGIN_STAGE;
   handler: PluginHandler;
 };
 
-type PluginStage = 'new' | 'build' | 'release';
+type PLUGIN_STAGE = 'new' | 'build' | 'release';
 interface PluginHandler {
   (config: Omit<OmniConfig, 'plugins'>): Promise<any>;
 }

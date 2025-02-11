@@ -274,7 +274,7 @@ describe('initial preset test', function () {
     expect(cli_ssr_react.stylelint).to.be.true;
 
     expect(cli_ssr_react.serverType).to.be.a('string');
-    expect(cli_ssr_react.serverType).to.be.equal('next');
+    expect(cli_ssr_react.serverType).to.be.equal('next-app');
   });
 
   it('cli_components_react checking', function () {
@@ -308,7 +308,7 @@ describe('initial preset test', function () {
     expect(cli_components_react.stylelint).to.be.true;
 
     expect(cli_components_react.devServer).to.be.a('string');
-    expect(cli_components_react.devServer).to.be.equal('docz');
+    expect(cli_components_react.devServer).to.be.equal('storybook');
   });
 
   it('cli_components_vue checking', function () {

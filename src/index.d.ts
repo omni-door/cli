@@ -8,7 +8,7 @@ import type { Request, Response, NextFunction } from 'express';
 export type { Request, Response, NextFunction } from 'express';
 import type * as KoaApp from 'koa';
 export type { default as KoaApp } from 'koa';
-import type { BUILD, PROJECT_TYPE, STYLE, PLUGINSTAGE, HASH, SPASERVER, COMPONENTSERVER, SSRSERVER, MARKDOWN } from '@omni-door/utils';
+import type { BUILD, PROJECT_TYPE, STYLE, PLUGIN_STAGE, HASH, SPA_SERVER, COMPONENT_SERVER, SSR_SERVER, MARKDOWN } from '@omni-door/utils';
 
 export type ANYOBJECT = { [propName: string]: any };
 
@@ -36,15 +36,15 @@ export type OptionRelease = {
   tag?: string;
 };
 
-export interface PluginHandler<T extends PLUGINSTAGE> {
+export interface PluginHandler<T extends PLUGIN_STAGE> {
   (
     config: Omit<OmniConfig, 'dev' | 'plugins'>,
     options?: T extends 'new' ? OptionTemplate : T extends 'build' ? OptionBuild : OptionRelease
   ): Promise<any>;
 } 
-export type HandlerFactory = <T extends PLUGINSTAGE>(handler: PluginHandler<T>, errMsg?: string) => PluginHandler<T>;
+export type HandlerFactory = <T extends PLUGIN_STAGE>(handler: PluginHandler<T>, errMsg?: string) => PluginHandler<T>;
 
-export interface OmniPlugin<T extends PLUGINSTAGE> {
+export interface OmniPlugin<T extends PLUGIN_STAGE> {
   name: string;
   stage: T;
   handler: PluginHandler<T>;
@@ -54,7 +54,7 @@ export type EWMiddleWareCallback = (req: Request, res: Response, next: NextFunct
 export type KNMiddleWareCallback = KoaApp.Middleware;
 export type MiddleWareCallback = EWMiddleWareCallback | KNMiddleWareCallback;
 
-export type ServerType = SPASERVER | COMPONENTSERVER | SSRSERVER | 'default';
+export type ServerType = SPA_SERVER | COMPONENT_SERVER | SSR_SERVER | 'default';
 
 export interface NextRouter {
   forEachPattern: (apply: (params: {
@@ -107,7 +107,7 @@ export interface OmniConfig {
     serverType?: ServerType;
     favicon?: string;
   };
-  server?: OmniServer & { serverType?: SSRSERVER; };
+  server?: OmniServer & { serverType?: SSR_SERVER; };
   build: {
     autoRelease?: boolean;
     srcDir: string;
@@ -149,5 +149,5 @@ export interface OmniConfig {
     stylesheet?: STYLE;
     readme?: MARKDOWN | boolean;
   };
-  plugins?: OmniPlugin<PLUGINSTAGE>[];
+  plugins?: OmniPlugin<PLUGIN_STAGE>[];
 }

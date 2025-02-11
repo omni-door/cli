@@ -1,32 +1,32 @@
 
 import type {
   BUILD,
-  TESTFRAME,
-  PKJTOOL,
+  TEST_FRAME,
+  PKJ_TOOL,
   STYLE,
   LAYOUT,
-  SPASERVER,
-  COMPONENTSERVER,
-  SSRSERVER,
+  SPA_SERVER,
+  COMPONENT_SERVER,
+  SSR_SERVER,
   PROJECT_TYPE
 } from '@omni-door/utils';
 
-type DEVSERVER = SPASERVER | COMPONENTSERVER;
+type DEV_SERVER = SPA_SERVER | COMPONENT_SERVER;
 
 export type GInstallCli = {
   project_type: PROJECT_TYPE;
-  pkgtool: PKJTOOL;
+  pkgtool: PKJ_TOOL;
   build: BUILD;
   ts: boolean;
-  testFrame: TESTFRAME;
+  testFrame: TEST_FRAME;
   eslint: boolean;
   prettier: boolean;
   commitlint: boolean;
   style: STYLE;
   layout?: LAYOUT;
   stylelint: boolean;
-  devServer?: DEVSERVER;
-  serverType?: SSRSERVER;
+  devServer?: DEV_SERVER;
+  serverType?: SSR_SERVER;
 };
 
 export const cli_basic_react: GInstallCli = {
@@ -137,7 +137,7 @@ export const cli_ssr_react: GInstallCli = {
   commitlint: true,
   style: 'all',
   stylelint: true,
-  serverType: 'next'
+  serverType: 'next-app'
 };
 
 export const cli_components_react: GInstallCli = {
@@ -151,7 +151,7 @@ export const cli_components_react: GInstallCli = {
   commitlint: true,
   style: 'less',
   stylelint: true,
-  devServer: 'docz'
+  devServer: 'storybook'
 };
 
 export const cli_components_vue: GInstallCli = {

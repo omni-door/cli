@@ -1,9 +1,9 @@
 import { logWarn } from '@omni-door/utils';
 /* import types */
-import type { PLUGINSTAGE } from '@omni-door/utils';
+import type { PLUGIN_STAGE } from '@omni-door/utils';
 import type { HandlerFactory, PluginHandler, OmniPlugin } from '../index.d';
 
-export function getHandlers<T extends PLUGINSTAGE> (plugins: OmniPlugin<T>[], stage: T) {
+export function getHandlers<T extends PLUGIN_STAGE> (plugins: OmniPlugin<T>[], stage: T) {
   const handlers: { [pluginName: string]: PluginHandler<T> } = {};
   for (let i = 0; i < plugins.length; i++) {
     const plugin = plugins[i];
@@ -17,7 +17,7 @@ export const handlerFactory: HandlerFactory = (handler, errMsg) => (config, opti
   try {
     return Promise.resolve(handler(config, options));
   } catch (err) {
-    logWarn(err);
+    logWarn(err as any);
     logWarn(errMsg || 'The plugin execution error, will skip to continue the rest of the operaions(插件执行发生错误，将跳过继续执行剩余操作)');
   }
   return Promise.resolve({});

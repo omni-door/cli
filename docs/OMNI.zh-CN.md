@@ -156,11 +156,11 @@ OMNI 会根据不同的项目类型决定整个初始化、构建、创建模板
 ```ts
 type OmniPlugin = {
   name: string;
-  stage: PluginStage;
+  stage: PLUGIN_STAGE;
   handler: PluginHandler;
 };
 
-type PluginStage = 'new' | 'build' | 'release';
+type PLUGIN_STAGE = 'new' | 'build' | 'release';
 interface PluginHandler {
   (config: Omit<OmniConfig, 'plugins'>): Promise<any>;
 }

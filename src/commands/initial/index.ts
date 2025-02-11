@@ -21,7 +21,7 @@ import {
 } from '@omni-door/utils';
 import { logo, signal } from '../../utils';
 /* import types */
-import type { PKJTOOL, STRATEGY } from '@omni-door/utils';
+import type { PKJ_TOOL, STRATEGY } from '@omni-door/utils';
 
 type OptionType = {
   react_basic?: boolean | string;
@@ -79,14 +79,11 @@ const ProjectDict = {
 
 const ServerTypes = {
   ssr: {
-    'next': 'next',
-    'koa-next(deprecated)': 'koa-next',
+    'next-app(recommend)': 'next-app',
+    'next-pages': 'next-pages',
   },
   cpLib: {
     'storybook(recommend)': 'storybook',
-    'docz': 'docz',
-    'styleguidist(deprecated)': 'styleguidist',
-    'bisheng(deprecated)': 'bisheng'
   }
 };
 
@@ -113,7 +110,7 @@ async function isDir(dirName: string) {
   return false;
 }
 
-async function checkPkgTool(pkgtool: PKJTOOL) {
+async function checkPkgTool(pkgtool: PKJ_TOOL) {
   // install tool precheck
   return new Promise((resolve, reject) => {
     let hasTool = true;
@@ -391,8 +388,6 @@ export default async function (strategy: STRATEGY, {
                 totalStep = 6;
                 break;
               case 'component-react':
-                totalStep = 5;
-                break;
               case 'component-vue':
                 totalStep = 4;
                 break;
@@ -437,10 +432,7 @@ export default async function (strategy: STRATEGY, {
           },
           when: async function (answer: any) {
             const projectType = getProjectType(answer);
-            if (projectType === 'component-react' || projectType === 'ssr-react') {
-              return true;
-            }
-            return false;
+            return projectType === 'ssr-react';
           }
         },
         {
@@ -485,7 +477,7 @@ export default async function (strategy: STRATEGY, {
             if (getProjectType(answer) === 'toolkit' || getProjectType(answer) === 'ssr-react') {
               return false;
             }
-            if (answer.server === 'docz') await nodeVersionCheck('12');
+            await nodeVersionCheck('12');
             return true;
           }
         },
@@ -562,7 +554,7 @@ export default async function (strategy: STRATEGY, {
             let server = '';
             Object.keys(ServerTypes).some(t => {
               const list = ServerTypes[t as keyof typeof ServerTypes];
-              server = list[_server as keyof typeof list];
+              server = list[_server as keyof typeof list] ?? '';
               return !!server;
             });
             const eslint = !!~lint.indexOf('eslint');
@@ -690,10 +682,13 @@ export default async function (strategy: STRATEGY, {
         logErr(err.message);
         spinner.state('fail', 'Something about figlet is wrong(figlet 出现了问题)!');
       }
+      const commitlint = !!~tplParams.indexOf('commitlint=true');
+      const execPath = tplParams.find(param => param.startsWith('initPath='))?.split('=')?.[1];
       const initCmd = `npx ${tplPkj || tplPackage}@${templatePackageTag} init ${arr2str([...tplParams, ...tplPkjParams])}`;
-      logInfo(`Exec: ${initCmd}`);
+      const cmds = commitlint && execPath ? [ initCmd, `${path.resolve(execPath, 'node_modules/.bin/husky init')}` ] : [ initCmd ];
+      logInfo(`Exec: ${cmds.join(' | ')}`);
       return exec(
-        [ initCmd ],
+        cmds,
         async function () {
           const afterRes = typeof after === 'function' && await after();
           const { success, msg } = afterRes || {};
