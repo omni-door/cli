@@ -4,6 +4,9 @@
 
 # v3
 ## v3.0.x
+### v3.0.1
+1. 「update」`omni init` 在 husky init 之前添加 `git init` 命令
+
 ### v3.0.0
 1. 「update」`omni init` react 组件库移除 docz, styleguidist, bisheng 等demo文档的支持
 

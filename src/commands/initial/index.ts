@@ -685,13 +685,23 @@ export default async function (strategy: STRATEGY, {
       const commitlint = !!~tplParams.indexOf('commitlint=true');
       const execPath = tplParams.find(param => param.startsWith('initPath='))?.split('=')?.[1];
       const initCmd = `npx ${tplPkj || tplPackage}@${templatePackageTag} init ${arr2str([...tplParams, ...tplPkjParams])}`;
-      const cmds = commitlint && execPath ? [ initCmd, `${path.resolve(execPath, 'node_modules/.bin/husky init')}` ] : [ initCmd ];
-      logInfo(`Exec: ${cmds.join(' | ')}`);
+      logInfo(`Exec: ${initCmd}`);
+
       return exec(
-        cmds,
+        [initCmd],
         async function () {
           const afterRes = typeof after === 'function' && await after();
-          const { success, msg } = afterRes || {};
+          let { success, msg } = afterRes || {};
+          if (success && commitlint && execPath) {
+            try {
+              execSync('git init', { cwd: execPath });
+              execSync('./node_modules/.bin/husky init', { cwd: execPath });
+            } catch (e) {
+              success = false;
+              // @ts-ignore
+              msg = e?.message || e;
+            }
+          }
 
           if (success === false) {
             spinner.state('fail', msg || 'Initialize project failed(初始化项目失败)!');
