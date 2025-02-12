@@ -265,7 +265,7 @@ export default async function (
       }
 
       buildCliArr.push(`${tscPath} --outDir ${outDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --rootDir ${srcDir}`);
-      esmDir && buildCliArr.push(`${tscPath} --module ES6 --target ES6 --outDir ${esmDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --rootDir ${srcDir}`);
+      esmDir && buildCliArr.push(`${tscPath} --module ESNext --target ES6 --outDir ${esmDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --rootDir ${srcDir}`);
       realOutDir = outDir;
     } else if (type === 'ssr-react') {
       const nextPath = buildCliPath.next;
@@ -330,9 +330,9 @@ export default async function (
 
           buildCliArr.push(
             typescript ? `${tscPath} --outDir ${outDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --emitDeclarationOnly --rootDir ${srcDir}` : '',
-            typescript && esmDir ? `${tscPath} --module ES6 --target ES6 --outDir ${esmDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --emitDeclarationOnly --rootDir ${srcDir}` : '',
+            typescript && esmDir ? `${tscPath} --module ESNext --target ES6 --outDir ${esmDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --emitDeclarationOnly --rootDir ${srcDir}` : '',
             typescript && type === 'component-vue' ? `${vTscPath} --outDir ${outDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --emitDeclarationOnly --rootDir ${srcDir}` : '',
-            typescript && esmDir && type === 'component-vue' ? `${vTscPath} --module ES6 --target ES6 --outDir ${esmDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --emitDeclarationOnly --rootDir ${srcDir}` : '',
+            typescript && esmDir && type === 'component-vue' ? `${vTscPath} --module ESNext --target ES6 --outDir ${esmDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --emitDeclarationOnly --rootDir ${srcDir}` : '',
             `${gulpPath} --gulpfile ${buildConfigPath} --cwd ${CWD}`
           );
         }

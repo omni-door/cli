@@ -4,6 +4,9 @@
 
 # v3
 ## v3.0.x
+### v3.0.2
+1. 「update」`omni build` tsc esm 构建 module 设置为 esnext
+
 ### v3.0.1
 1. 「update」`omni init` 在 husky init 之前添加 `git init` 命令
 
