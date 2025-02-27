@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 # v3
 ## v3.0.x
+### v3.0.3
+1. 「update」`omni init` husky init
+
 ### v3.0.2
 1. 「update」`omni build` tsc esm build module set to esnext
 

@@ -494,7 +494,7 @@ export default async function (strategy: STRATEGY, {
             }
             return false;
           },
-          choices: [LayoutDict.viewport, LayoutDict.rem, LayoutDict.px],
+          choices: [LayoutDict.px, LayoutDict.viewport, LayoutDict.rem],
           message: function (answer: any) {
             return `${logo()}[${++currStep}/${totalStep}] Select layout plan(选择布局适配方案):`;
           }
@@ -694,8 +694,9 @@ export default async function (strategy: STRATEGY, {
           let { success, msg } = afterRes || {};
           if (success && commitlint && execPath) {
             try {
-              execSync('git init', { cwd: execPath });
-              execSync('./node_modules/.bin/husky init', { cwd: execPath });
+              logInfo(`git and husky init: ${execPath}`);
+              execSync('git init', { cwd: execPath, stdio: 'inherit' });
+              execSync('npm run prepare', { cwd: execPath, stdio: 'inherit' });
             } catch (e) {
               success = false;
               // @ts-ignore

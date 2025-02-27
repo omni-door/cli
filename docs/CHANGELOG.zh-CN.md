@@ -4,6 +4,9 @@
 
 # v3
 ## v3.0.x
+### v3.0.3
+1. 「update」`omni init` husky 初始化
+
 ### v3.0.2
 1. 「update」`omni build` tsc esm 构建 module 设置为 esnext
 
