@@ -81,6 +81,7 @@ import type { Options as DevMiddlewareOptions } from 'webpack-dev-middleware';
 import type { Request, Response, NextFunction } from 'express';
 import type * as KoaApp from 'koa';
 
+type ANY_OBJECT = { [propName: string]: any };
 type ServerType = 'storybook' | 'default';
 type BUILD = 'webpack' | 'rollup' | 'gulp' | 'tsc' | 'next' | '';
 type NPM = 'npm' | 'yarn' | 'pnpm';
@@ -123,11 +124,12 @@ type OmniServer = {
   nextRouter?: NextRouter;
 };
 
-interface OmniConfig {
+interface OmniBaseConfig {
   type: PROJECT_TYPE;
   dev?: OmniServer & {
     devMiddlewareOptions?: Partial<DevMiddlewareOptions>;
     webpack?: Configuration | (() => Configuration);
+    configuration?: (config: ANY_OBJECT) => ANY_OBJECT;
     serverType?: ServerType;
     favicon?: string;
   };
@@ -137,13 +139,14 @@ interface OmniConfig {
     srcDir: string;
     outDir: string;
     esmDir?: string;
-    hash?: boolean;
-    configuration?: (config: ANYOBJECT) => ANYOBJECT;
-    tool?: BUILD;
+    hash?: boolean | HASH;
+    configuration?: (config: ANY_OBJECT) => ANY_OBJECT;
+    tool?: Exclude<BUILD, 'rollup'>;
     preflight?: {
       typescript?: boolean;
       test?: boolean;
       eslint?: boolean;
+      prettier?: boolean;
       stylelint?: boolean;
     };
     reserve?: {
@@ -153,10 +156,13 @@ interface OmniConfig {
   };
   release: {
     git?: string;
-    npm?: string;
+    npm?: string | boolean;
+    autoBuild?: boolean;
+    autoTag?: boolean;
     preflight?: {
       test?: boolean;
       eslint?: boolean;
+      prettier?: boolean;
       stylelint?: boolean;
       commitlint?: boolean;
       branch?: string;
@@ -167,10 +173,19 @@ interface OmniConfig {
     test?: boolean;
     typescript?: boolean;
     stylesheet?: STYLE;
-    readme?: [boolean, 'mdx' | 'md'];
+    readme?: MARKDOWN | boolean;
   };
   plugins?: OmniPlugin<PLUGIN_STAGE>[];
 }
+
+interface OmniRollupConfig extends OmniBaseConfig {
+  build: OmniBaseConfig['build'] & {
+    tool: Extract<BUILD, 'rollup'>;
+    configuration?: (getConfig: (bundle: boolean) => ANY_OBJECT) => ANY_OBJECT;
+  };
+}
+
+type OmniConfig = OmniBaseConfig | OmniRollupConfig;
 ```
 
 - `name`: the name of plugin

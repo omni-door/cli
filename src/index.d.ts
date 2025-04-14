@@ -10,7 +10,7 @@ import type * as KoaApp from 'koa';
 export type { default as KoaApp } from 'koa';
 import type { BUILD, PROJECT_TYPE, STYLE, PLUGIN_STAGE, HASH, SPA_SERVER, COMPONENT_SERVER, SSR_SERVER, MARKDOWN } from '@omni-door/utils';
 
-export type ANYOBJECT = { [propName: string]: any };
+export type ANY_OBJECT = { [propName: string]: any };
 
 export type Method = 'get' | 'GET' | 'post' | 'POST' | 'put' | 'PUT' | 'del' | 'DEL';
 
@@ -60,8 +60,8 @@ export interface NextRouter {
   forEachPattern: (apply: (params: {
     page: string;
     pattern: string;
-    defaultParams?: ANYOBJECT;
-    beforeRender?: (ctx: KoaApp.ParameterizedContext, next: KoaApp.Next) => boolean | ANYOBJECT;
+    defaultParams?: ANY_OBJECT;
+    beforeRender?: (ctx: KoaApp.ParameterizedContext, next: KoaApp.Next) => boolean | ANY_OBJECT;
   }) => any) => void;
 }
 
@@ -98,12 +98,13 @@ export type OmniServer = {
   };
   nextRouter?: NextRouter;
 };
-export interface OmniConfig {
+
+export interface OmniBaseConfig {
   type: PROJECT_TYPE;
   dev?: OmniServer & {
     devMiddlewareOptions?: Partial<DevMiddlewareOptions>;
     webpack?: Configuration | (() => Configuration);
-    configuration?: (config: ANYOBJECT) => ANYOBJECT;
+    configuration?: (config: ANY_OBJECT) => ANY_OBJECT;
     serverType?: ServerType;
     favicon?: string;
   };
@@ -114,8 +115,8 @@ export interface OmniConfig {
     outDir: string;
     esmDir?: string;
     hash?: boolean | HASH;
-    configuration?: (config: ANYOBJECT) => ANYOBJECT;
-    tool?: BUILD;
+    configuration?: (config: ANY_OBJECT) => ANY_OBJECT;
+    tool?: Exclude<BUILD, 'rollup'>;
     preflight?: {
       typescript?: boolean;
       test?: boolean;
@@ -151,3 +152,12 @@ export interface OmniConfig {
   };
   plugins?: OmniPlugin<PLUGIN_STAGE>[];
 }
+
+export interface OmniRollupConfig extends OmniBaseConfig {
+  build: OmniBaseConfig['build'] & {
+    tool: Extract<BUILD, 'rollup'>;
+    configuration?: (getConfig: (bundle: boolean) => ANY_OBJECT) => ANY_OBJECT;
+  };
+}
+
+export type OmniConfig = OmniBaseConfig | OmniRollupConfig;

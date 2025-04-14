@@ -8,7 +8,7 @@ import open from '../dev/open';
 import type NextServer from 'next-server/dist/server/next-server';
 import type * as KoaRouter from 'koa-router';
 import type { ProxyConfig, MiddlewareConfig, CorsConfig } from '../dev/server';
-import type { NextRouter, KNMiddleWareCallback, KoaApp, ANYOBJECT } from '../../index.d';
+import type { NextRouter, KNMiddleWareCallback, KoaApp, ANY_OBJECT } from '../../index.d';
 
 export interface KNServerParams {
   dev: boolean;
@@ -120,7 +120,7 @@ export default function ({
       // based on next-url-prettifier
       // https://github.com/BDav24/next-url-prettifier
       nextRouter && nextRouter?.forEachPattern(({ page, pattern, defaultParams, beforeRender }) => router.get(pattern, async (ctx, next) => {
-        let shouldRender: boolean | ANYOBJECT = true;
+        let shouldRender: boolean | ANY_OBJECT = true;
 
         try {
           const { req, res, query, params } = ctx;

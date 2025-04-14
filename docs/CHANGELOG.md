@@ -2,6 +2,12 @@
 
 English | [简体中文](./CHANGELOG.zh-CN.md)
 # v3
+## v3.1.x
+### v3.1.0
+1. 「update」`omni build` rollup remove old plugins support and upgrade configs
+
+2. 「update」`omni build` configuration for rollup use function as the parameter
+
 ## v3.0.x
 ### v3.0.3
 1. 「update」`omni init` husky init

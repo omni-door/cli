@@ -3,6 +3,12 @@
 [English](./CHANGELOG.md) | 简体中文
 
 # v3
+## v3.1.x
+### v3.1.0
+1. 「update」`omni build` rollup 移除旧的插件支持，并升级配置
+
+2. 「update」`omni build` rollup 的 configuration 使用函数作为参数
+
 ## v3.0.x
 ### v3.0.3
 1. 「update」`omni init` husky 初始化

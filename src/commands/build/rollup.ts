@@ -15,42 +15,26 @@ export default function (config: {
 const fs = require('fs');
 const path = require('path');
 const { requireCwd, logErr } = require('@omni-door/utils');
-const { nodeResolve: resolve_new } = requireCwd('@rollup/plugin-node-resolve', true) || {};
-const resolve_old = requireCwd('rollup-plugin-node-resolve', true);
-const commonjs_new = requireCwd('@rollup/plugin-commonjs', true);
-const commonjs_old = requireCwd('rollup-plugin-commonjs', true);
-const { babel: babel_new } = requireCwd('@rollup/plugin-babel', true) || {};
-const babel_old = requireCwd('rollup-plugin-babel', true);
-const json_new = requireCwd('@rollup/plugin-json', true);
-const json_old = requireCwd('rollup-plugin-json', true);
-${ts ? `const typescript_new = requireCwd('@rollup/plugin-typescript', true);
-const typescript_old = requireCwd('rollup-plugin-typescript', true);
-const typescript2 = requireCwd('rollup-plugin-typescript2');
+const { nodeResolve: resolve } = requireCwd('@rollup/plugin-node-resolve', true) || {};
+const commonjs = requireCwd('@rollup/plugin-commonjs', true);
+const { babel } = requireCwd('@rollup/plugin-babel', true) || {};
+const json = requireCwd('@rollup/plugin-json', true);
+${ts ? `const typescript = requireCwd('@rollup/plugin-typescript', true);
 ` : ''}
-const ppkj = requireCwd('./package.json');
-const configFilePath = (ppkj && ppkj.${pkjFieldName} && ppkj.${pkjFieldName}.filePath) || './${configFileName}';
+const pkj = requireCwd('./package.json');
+const configFilePath = (pkj && pkj.${pkjFieldName} && pkj.${pkjFieldName}.filePath) || './${configFileName}';
 const configs = requireCwd(configFilePath);
 ${configurationPath ? `const customConfig = require('${configurationPath}')
 ` : ''}
-const babel = babel_new || babel_old;
-const resolve = resolve_new || resolve_old;
-const commonjs = commonjs_new || commonjs_old;
-const json = json_new || json_old;
-${ts ? `const typescript = typescript_new || typescript_old;
-` : ''}
 const { build } = configs || {};
-const { configuration = config => config } = build || {};
+const { configuration = getConfig => getConfig(true) } = build || {};
 
 const extensions = ['.ts', '.js'];
 const tsExcludes = ['**/__test__/*'];
-const babelConfig = babel_new ? {
+const babelConfig = {
   exclude: 'node_modules/**',
   plugins: [['@babel/plugin-transform-runtime', { useESModules: false, corejs: 3 }]],
   babelHelpers: 'runtime',
-  extensions
-} : {
-  exclude: 'node_modules/**',
-  runtimeHelpers: true,
   extensions
 };
 const resolveConfig = {
@@ -59,85 +43,26 @@ const resolveConfig = {
   browser: true
 };
 const tsconfig = {
-  ts: {
-    cjs: (file) => ({
+  cjs: (dir = '', emit = false) => ({
+    compilerOptions: {
       target: 'es5',
-      module: 'commonjs',
-      outDir: path.resolve('${outDir}', file),
-      exclude: tsExcludes
-    }),
-    esm: (file) => ({
-      target: 'ESNEXT',
-      module: 'ESNext',
-      outDir: path.resolve('${esmDir}', file),
-      exclude: tsExcludes
-    })
-  },
-  ts2: {
-    cjs: () => ({
-      tsconfigOverride: {
-        compilerOptions: {
-          target: 'es5',
-          module: 'ES2015'
-        },
-        exclude: tsExcludes
-      }
-    }),
-    esm: () => ({
-      tsconfigOverride: {
-        compilerOptions: {
-          target: 'es2015',
-          module: 'ESNext'
-        },
-        exclude: tsExcludes
-      }
-    })
-  }
-};
-
-const commonConfig = commonjs_new? void 0 : {
-  namedExports: {
-    'react': [
-      'Children',
-      'Component',
-      'PropTypes',
-      'createElement',
-      'createRef',
-      'createContext',
-      'PureComponent',
-      'cloneElement',
-      'memo',
-      'createFactory',
-      'isValidElement',
-      'forwardRef',
-      'Fragment',
-      'lazy',
-      'Suspense',
-      'SFC',
-      'FC',
-      'useState',
-      'useEffect',
-      'useContext',
-      'useReducer',
-      'useCallback',
-      'useMemo',
-      'useRef',
-      'useImperativeHandle',
-      'useLayoutEffect',
-      'useDebugValue'
-    ],
-    'react-dom': [
-      'render',
-      'hydrate',
-      'unmountComponentAtNode',
-      'findDOMNode',
-      'createPortal',
-      'renderToString',
-      'renderToStaticMarkup',
-      'renderToNodeStream',
-      'renderToStaticNodeStream'
-    ]
-  }
+      module: 'esnext',
+      declaration: emit,
+      outDir: path.resolve('${outDir}', dir),
+      emitDeclarationOnly: emit
+    },
+    exclude: tsExcludes
+  }),
+  esm: (dir = '', emit = false) => ({
+    compilerOptions: {
+      target: 'esnext',
+      module: 'esnext',
+      declaration: emit,
+      outDir: path.resolve('${esmDir}', dir),
+      emitDeclarationOnly: emit
+    },
+    exclude: tsExcludes
+  })
 };
 
 let indexPath = '';
@@ -157,7 +82,7 @@ function flatten (arr) {
   }, []);
 }
 
-function createConfig () {
+function createConfig (bundle = true) {
   const filesPaths = [];
   ${multiOutput ? `const getEntryPath = (files, preDir) => {
     const len = files.length;
@@ -187,79 +112,123 @@ function createConfig () {
   };
   getEntryPath(fs.readdirSync('${srcDir}'), '');
   ` : ''}
-  return [{
-    input: indexPath,
-    output: {
-      file: '${outDir}/index.js',
-      format: 'cjs',
-      exports: 'named',
-      compact: true
+  return bundle ? [
+    {
+      input: indexPath,
+      output: {
+        file: '${outDir}/index.js',
+        format: 'cjs',
+        exports: 'named',
+        compact: true
+      },
+      plugins: [
+        resolve(resolveConfig),
+        commonjs(),
+        ${ts ? 'typescript(tsconfig.cjs(\'\', true)),' : ''}
+        babel(babelConfig),
+        json()
+      ]
     },
-    plugins: [
-      resolve(resolveConfig),
-      commonjs(commonConfig),
-      ${ts ? 'typescript2(tsconfig.ts2.cjs()),' : ''}
-      babel(babelConfig),
-      json()
-    ]}, ${
-  esmDir
-    ? `{
-          input: indexPath,
+${esmDir
+    ? `
+    {
+      input: indexPath,
+      output: {
+        file: '${esmDir}/index.js',
+        format: 'esm',
+        compact: true
+      },
+      plugins: [
+        resolve(resolveConfig),
+        commonjs({ transformMixedEsModules: true, esmExternals: true }),
+        ${ts ? 'typescript(tsconfig.esm(\'\', true)),' : ''}
+        json()
+      ]
+    },`
+    : ''}
+
+    ...flatten(filesPaths.map(fileParams => {
+      const { entry, file, dir } = fileParams;
+      return [
+        {
+          input: entry,
           output: {
-            file: '${esmDir}/index.js',
+            dir: path.resolve('${outDir}', dir),
+            format: 'cjs',
+            exports: 'named',
+            compact: true
+          },
+          plugins: [
+            resolve(resolveConfig),
+            commonjs(),
+            ${ts ? 'typescript(tsconfig.cjs(dir)),' : ''}
+            json()
+          ]
+        },
+${esmDir
+    ? `
+        {
+          input: entry,
+          output: {
+            dir: path.resolve('${esmDir}', dir),
             format: 'esm',
             compact: true
           },
           plugins: [
             resolve(resolveConfig),
-            commonjs(Object.assign(commonConfig || {}, { transformMixedEsModules: true, esmExternals: true })),
-            json(),
-            ${ts ? 'typescript2(tsconfig.ts2.esm())' : ''}
+            commonjs({ transformMixedEsModules: true, esmExternals: true }),
+            ${ts ? 'typescript(tsconfig.esm(dir)),' : ''}
+            json()
           ]
-        },`
-    : ''
-} ...flatten(filesPaths.map(fileParams => {
-      const { entry, file, dir } = fileParams;
-      return [{
-        input: entry,
-        output: {
-          dir: path.resolve('${outDir}', dir),
-          format: 'cjs',
-          exports: 'named',
-          compact: true
-        },
-        plugins: [
-          resolve(resolveConfig),
-          commonjs(commonConfig),
-          ${ts ? 'typescript(tsconfig.ts.cjs(file)),' : ''}
-          json()
-        ]
-      }, ${
-  esmDir
-    ? `{
-            input: entry,
-            output: {
-              dir: path.resolve('${esmDir}', dir),
-              format: 'esm',
-              compact: true
-            },
-            plugins: [
-              resolve(resolveConfig),
-              commonjs(Object.assign(commonConfig || {}, { transformMixedEsModules: true, esmExternals: true })),
-              json(),
-              ${ts ? 'typescript(tsconfig.ts.esm(file))' : ''}
-            ]
-          }`
-    : ''
-}]
+        }`
+    : ''}
+      ];
     }))
+  ] : [
+   {
+      input: indexPath,
+      output: {
+        dir: '${outDir}',
+        format: 'cjs',
+        exports: 'named',
+        compact: true,
+        preserveModules: true,
+        preserveModulesRoot: '${srcDir}'
+      },
+      plugins: [
+        resolve(resolveConfig),
+        commonjs(),
+        ${ts ? 'typescript(tsconfig.cjs(\'\', true)),' : ''}
+        babel(babelConfig),
+        json()
+      ]
+    },
+${esmDir
+    ? `
+    {
+      input: indexPath,
+      output: {
+        dir: '${esmDir}',
+        format: 'esm',
+        compact: true,
+        preserveModules: true,
+        preserveModulesRoot: '${srcDir}'
+      },
+      plugins: [
+        resolve(resolveConfig),
+        commonjs({ transformMixedEsModules: true, esmExternals: true }),
+        ${ts ? 'typescript(tsconfig.esm(\'\', true)),' : ''}
+        json()
+      ]
+    },`
+    : ''}
   ]
 };
 
 module.exports = ${
   configurationPath
-    ? 'typeof customConfig === \'function\' ? customConfig(createConfig()) : customConfig'
-    : 'configuration(createConfig());'
+    ? 'typeof customConfig === \'function\' ? customConfig((bundle = true) => createConfig(bundle)) : customConfig'
+    : 'configuration((bundle = true) => createConfig(bundle));'
 }
 `;
 }
