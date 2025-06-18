@@ -30,7 +30,7 @@ const { build } = configs || {};
 const { configuration = getConfig => getConfig(true) } = build || {};
 
 const extensions = ['.ts', '.js'];
-const tsExcludes = ['**/__test__/*'];
+const tsExcludes = ['node_modules/**', '**/__test__/*'];
 const babelConfig = {
   exclude: 'node_modules/**',
   plugins: [['@babel/plugin-transform-runtime', { useESModules: false, corejs: 3 }]],

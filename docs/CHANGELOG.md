@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 # v3
 ## v3.1.x
+### v3.1.1
+1. 「fix」`omni build` rollup config
+
 ### v3.1.0
 1. 「update」`omni build` rollup remove old plugins support and upgrade configs
 

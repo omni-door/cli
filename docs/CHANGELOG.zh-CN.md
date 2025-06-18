@@ -4,6 +4,9 @@
 
 # v3
 ## v3.1.x
+### v3.1.1
+1. 「fix」`omni build` rollup 配置
+
 ### v3.1.0
 1. 「update」`omni build` rollup 移除旧的插件支持，并升级配置
 
