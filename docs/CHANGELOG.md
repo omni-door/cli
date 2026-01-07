@@ -2,6 +2,12 @@
 
 English | [简体中文](./CHANGELOG.zh-CN.md)
 # v3
+## v3.2.x
+### v3.2.0
+1. 「feat」`omni dev/start/build` support pass-through args via `--`
+
+2. 「optimization」improve English log messages
+
 ## v3.1.x
 ### v3.1.1
 1. 「fix」`omni build` rollup config

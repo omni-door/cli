@@ -1,157 +1,120 @@
-# omni.config.js Detail
+# omni.config.js Reference
 
 English | [简体中文](./OMNI.zh-CN.md)
 
-## type
-OMNI will process of initialization, construction and template creation according to different project types
+This document describes the fields supported by `omni.config.js`.
 
-The project types:
+## Project Type (`type`)
+The project type controls how initialization, development, build, and template generation behave.
 
-- spa-react - React single-page-application
+Supported values:
+- `spa-react` - React single-page application
+- `spa-react-pc` - React SPA based on [Antd](https://ant.design/)
+- `spa-vue` - Vue single-page application
+- `ssr-react` - React server-side rendered app
+- `component-react` - React component library
+- `component-vue` - Vue component library
+- `toolkit` - SDK/tooling library
 
-- spa-react-pc - React single-page-application based on [Antd](https://ant.design/)
+## Dev (`dev`)
+The dev server is built on Express and uses common middleware for HMR, proxying, and custom hooks.
 
-- spa-vue - Vue single-page-application
+Key fields:
+- `middleware` - custom middleware configuration
+- `webpack` - webpack configuration for the dev server
+- `proxy` - proxy configuration (http-proxy-middleware compatible)
+- `port` - dev server port
+- `host` - dev server host
+- `https` - enable HTTPS (can provide `key` and `cert`)
+- `serverType` - dev server type
+- `favicon` - favicon path
 
-- ssr-react - React sever-side-render application
+Middleware types:
+```ts
+{
+  route: string;
+  callback: (req: any, res: any) => Promise<void>;
+}
+```
 
-- component-react - React Component Library
+Or a factory:
+```ts
+(params: {
+  ip: string;
+  port: number;
+  host?: string;
+  proxyConfig?: (ProxyItem | ProxyFn)[];
+}) => {
+  route: string;
+  callback: (req: any, res: any) => Promise<void>;
+}
+```
 
-- component-vue - Vue Component Library
+Proxy example:
+```ts
+{
+  route: '/api',
+  config: {
+    target: 'http://www.api.com/api',
+    changeOrigin: true
+  }
+}
+```
 
-- toolkit - SDK Library 
+Or a factory:
+```ts
+(params: {
+  ip: string;
+  port: number;
+  host?: string;
+  middlewareConfig?: (MiddlewareItem | MiddlewareFn)[];
+}) => {
+  route: string;
+  config: Config;
+}
+```
 
-## dev
-The dev-server based on express, realizing hot-update, api-proxy and other common functions. Provide personalized customization schemes such as middleware customization, port number, log output level and webpack configuration.
+More proxy options: https://github.com/chimurai/http-proxy-middleware
 
-- middleware - middleware configuration:
+## Build (`build`)
+- `autoRelease` - release automatically after a successful build
+- `srcDir` - source directory
+- `outDir` - build output directory
+- `esmDir` - ES module output directory
+- `hash` - add hashes to build output (`contenthash`, `chunkhash`, `hash`)
+- `configuration` - callback to customize the build configuration
+- `reserve` - assets to keep without bundling
+  - `style` - keep stylesheets in output
+  - `assets` - extra asset paths to copy
+- `preflight` - checks before build
+  - `typescript` - process TS/TSX
+  - `test` - run unit tests
+  - `eslint` - run ESLint
+  - `prettier` - run Prettier
+  - `stylelint` - run Stylelint
 
-    ```ts
-    {
-      route: string;
-      callback: (req: any, res: any) => Promise<void>;
-    }
-    ```
+## Release (`release`)
+- `autoBuild` - build automatically before release
+- `autoTag` - derive npm tag from version
+- `git` - git repository URL
+- `npm` - npm registry URL
+- `preflight` - checks before release
+  - `test` - run unit tests
+  - `eslint` - run ESLint
+  - `prettier` - run Prettier
+  - `stylelint` - run Stylelint
+  - `commitlint` - run commitlint
+  - `branch` - only allow release from the specified branch (empty disables)
 
-    or
+## Template (`template`)
+- `root` - template root directory
+- `typescript` - enable TypeScript
+- `test` - generate unit tests
+- `stylesheet` - stylesheet type
+- `readme` - `true` or `'mdx'` to generate README files
 
-    ```ts
-    (params: {
-      ip: string;
-      port: number;
-      host?: string;
-      proxyConfig?: (ProxyItem | ProxyFn)[];
-    }) => {
-      route: string;
-      callback: (req: any, res: any) => Promise<void>;
-    }
-    ```
-
-- webpack - dev-server webpack configuration
-
-- proxy - dev-server proxy configuration
-
-    ```ts
-    {
-      route: '/api', // Address of the local service for the proxy API
-      config: {
-        target: 'http://www.api.com/api', // The actual address of the proxy API
-        changeOrigin: true // whether change the host
-      }
-    }
-    ```
-
-    or
-
-    ```ts
-    (params: {
-      ip: string;
-      port: number;
-      host?: string;
-      middlewareConfig?: (MiddlewareItem | MiddlewareFn)[];
-    }) => {
-      route: string;
-      config: Config;
-    }
-    ```
-
-    For more configuration, see [http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware)
-
-- port - dev-server port
-
-- host - dev-server host
-
-- https - start dev-server with https protocol which could custom `key` and `cert`
-
-- serverType - dev-server type
-
-- favicon - favicon path for dev-server
-
-## build
-
-- autoRelease - auto release project after build success
-
-- srcDir - the build source directory
-
-- outDir - the directory for compiled project
-
-- esmDir - es6 module compiled directory
-
-- hash - whether the hash tag add to building result, optional 'contenthash', 'chunkhash' and 'hash'(true equal 'contenthash')
-
-- configuration - The callback will be call in the build-process, you can return your custom build configuration
-
-- reserve - Configure resources that are not packaged but need to be kept in the build result
-  - style - whether or not reserve the stylesheet files
-
-  - assets - reserve other asset paths
-
-- preflight - the flight check before build
-  - typescript - whether or not process the ts or tsx files
-
-  - test - whether or not process unit-test
-
-  - eslint - whether or not process eslint check
-
-  - prettier - whether or not process prettier check
-
-  - stylelint - whether or not process stylelint check
-
-## release
-- autoBuild - auto build project before release process
-
-- autoTag - npm publish will auto set tag according to the current version
-
-- git - project git repo url
-
-- npm - npm depository url
-
-- preflight - the flight check before release
-  - test - whether or not process unit-test
-
-  - eslint - whether or not process eslint check
-
-  - prettier - whether or not process prettier check
-
-  - stylelint - whether or not process stylelint check
-
-  - commitlint - whether or not process commitlint check
-
-  - branch - only can release in this branch, set empty string to ignore this check
-
-## template
-- root - the root directory for generate template
-
-- typescript - whether or not apply typescript
-
-- test - whether or not generate unit-test file
-
-- stylesheet - stylesheet type
-
-- readme - [true, 'mdx'] ([whether or not README.md, generate mdx or md file])
-
-## plugins
-plugin must meet following types:
+## Plugins (`plugins`)
+Plugins must match the following types:
 
 ```ts
 type OmniPlugin = {

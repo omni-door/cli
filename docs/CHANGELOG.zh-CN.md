@@ -3,6 +3,12 @@
 [English](./CHANGELOG.md) | 简体中文
 
 # v3
+## v3.2.x
+### v3.2.0
+1. 「feat」`omni dev/start/build` 支持通过 `--` 透传参数
+
+2. 「optimization」优化英文日志文案
+
 ## v3.1.x
 ### v3.1.1
 1. 「fix」`omni build` rollup 配置
