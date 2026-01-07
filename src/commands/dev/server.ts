@@ -70,6 +70,7 @@ export type ServerOptions = {
   serverType: ServerType;
   projectType: PROJECT_TYPE;
   nextRouter?: NextRouter;
+  passThroughArgs?: string[];
 } & EWServerOptions;
 
 async function server ({
@@ -85,7 +86,8 @@ async function server ({
   middlewareConfig = [],
   nextRouter,
   corsConfig,
-  favicon
+  favicon,
+  passThroughArgs = []
 }: ServerOptions): Promise<void> {
   try {
     const CWD = process.cwd();
@@ -195,7 +197,7 @@ async function server ({
           });
           break;
         case 'ssr-vue':
-          logWarn('Not support ssr-vue yet'); 
+          logWarn('ssr-vue is not supported yet'); 
           logWarn('暂不支持 ssr-vue 项目'); 
           break;
         case 'spa-react':
@@ -211,7 +213,8 @@ async function server ({
       }
     } else {
       serverUrl = 'http://' + serverUrl;
-      exec([ServerDevCli[serverType as keyof typeof ServerDevCli]]);
+      const passThrough = passThroughArgs.length ? ` ${passThroughArgs.join(' ')}` : '';
+      exec([`${ServerDevCli[serverType as keyof typeof ServerDevCli]}${passThrough}`]);
       if (~autoOpenServer.indexOf(serverType)) {
         const detectPort = requireCwd('detect-port');
         const openAfterPortAvailable = () => {

@@ -14,6 +14,18 @@ const commandDicts = {
   release: 'release'
 };
 
+function splitPassThroughArgs (argv: string[]) {
+  const splitIndex = argv.indexOf('--');
+  if (splitIndex === -1) {
+    return { passThroughArgs: [], parsedArgv: argv };
+  }
+
+  return {
+    passThroughArgs: argv.slice(splitIndex + 1),
+    parsedArgv: argv.slice(0, splitIndex)
+  };
+}
+
 (async function () {
   try {
     await nodeVersionCheck('10.13.0');
@@ -51,11 +63,13 @@ const commandDicts = {
       logInfo(`The work path change to "${cwd}"`);
       logInfo(`工作路径变更为 "${cwd}"`);
     } catch (err) {
-      logWarn(`Please checking the "${workPath}" had existed`);
+      logWarn(`Please check that "${workPath}" exists`);
       logWarn(`工作路径变更失败，请检查 "${workPath}" 是否存在`);
       process.exit(0);
     }
   }
+
+  const { passThroughArgs, parsedArgv } = splitPassThroughArgs(process.argv);
 
   program
     .version(pkj.version, '-v, --version')
@@ -99,10 +113,11 @@ const commandDicts = {
     .option('-p, --port <port>', 'start the dev-server according to the specified port')
     .option('-H, --hostname <host>', 'start the dev-server according to the specified hostname')
     .option('-P, --path <path>', 'the workpath for start the dev-server')
-    .description('omni dev [-p <port>] [-H <host>] [-P <path>]', {
+    .description('omni dev [-p <port>] [-H <host>] [-P <path>] [-- <args>]', {
       port: 'The dev-server listen port.',
       host: 'The dev-server running hostname.',
-      path: 'The cli workpath for running dev-server.'
+      path: 'The cli workpath for running dev-server.',
+      args: 'Pass extra args to underlying dev command (e.g. omni dev -- --webpack).'
     })
     .action((options) => {
       const workPath = options.path;
@@ -112,7 +127,7 @@ const commandDicts = {
       checkConfig();
       npmVersionCheck(pkj.name, pkj.version);
 
-      dev(config, options);
+      dev(config, { ...options, passThroughArgs });
     });
 
   program
@@ -120,10 +135,11 @@ const commandDicts = {
     .option('-p, --port <port>', 'start the prod-server according to the specified port')
     .option('-H, --hostname <host>', 'start the prod-server according to the specified hostname')
     .option('-P, --path <path>', 'the workpath for start the prod-server')
-    .description('omni start [-p <port>] [-H <host>] [-P <path>]', {
+    .description('omni start [-p <port>] [-H <host>] [-P <path>] [-- <args>]', {
       port: 'The prod-server listen port.',
       host: 'The prod-server running hostname.',
-      path: 'The cli workpath for running prod-server.'
+      path: 'The cli workpath for running prod-server.',
+      args: 'Pass extra args to underlying start command (e.g. omni start -- --hostname 0.0.0.0).'
     })
     .action((options) => {
       const workPath = options.path;
@@ -132,7 +148,7 @@ const commandDicts = {
       getConfig(!!workPath);
       checkConfig();
 
-      start(config, options);
+      start(config, { ...options, passThroughArgs });
     });
 
   program
@@ -162,7 +178,7 @@ const commandDicts = {
     .option('-c, --config <path>', 'specify the path of config file')
     .option('-n, --no-verify', 'bypass all pre-check before building')
     .option('-P, --path <path>', 'the workpath for build project')
-    .description('build your project according to the [omni.config.js]\'s build field')
+    .description('build your project according to the [omni.config.js]\'s build field. Use -- <args> to pass extra args (e.g. omni build -- --webpack).')
     .action((buildTactic) => {
       const workPath = buildTactic.path;
       if (workPath) changeCWD(workPath);
@@ -171,7 +187,7 @@ const commandDicts = {
       checkConfig();
       npmVersionCheck(pkj.name, pkj.version);
 
-      build(config, buildTactic);
+      build(config, { ...buildTactic, passThroughArgs });
     });
 
   program
@@ -214,7 +230,7 @@ const commandDicts = {
       }
     });
 
-  program.parse(process.argv);
+  program.parse(parsedArgv);
   if (!program.args.length) {
     program.help();
   }

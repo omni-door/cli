@@ -12,6 +12,7 @@ function handleException (msg?: string) {
 export default async function (config: OmniConfig | null, options: {
   port?: number | string;
   hostname?: string;
+  passThroughArgs?: string[];
 }) {
   try {
     // node version pre-check
@@ -67,6 +68,7 @@ export default async function (config: OmniConfig | null, options: {
     proxyConfig: proxy,
     middlewareConfig: middleware,
     serverType,
-    projectType: type
+    projectType: type,
+    passThroughArgs: options.passThroughArgs
   });
 }

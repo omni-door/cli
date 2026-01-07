@@ -6,13 +6,14 @@ import { signal } from '../../utils';
 import type { OmniConfig } from '../../index.d';
 
 function handleException (msg?: string) {
-  logWarn(msg || '发生了一些未知错误！(Ops! Some unknown errors have occurred!)');
+  logWarn(msg || '发生了一些未知错误！(Oops! Some unknown errors have occurred!)');
   process.exit(0);
 }
 
 export default async function (config: OmniConfig | null, options: {
   port?: number | string;
   hostname?: string;
+  passThroughArgs?: string[];
 }) {
   try {
     // node version pre-check
@@ -53,7 +54,7 @@ export default async function (config: OmniConfig | null, options: {
   const _host = h || host || '0.0.0.0';
 
   if (_typeof(https) === 'boolean') {
-    logWarn(`The https must specify path when start server at production environment (开发环境中 https 必须指定路径): \n
+    logWarn(`HTTPS requires key/cert paths when starting the server in production (开发环境中 https 必须指定路径): \n
 
     https: {
       key: fs.readFileSync(path.resolve(\${your_path_to_key})),
@@ -61,14 +62,18 @@ export default async function (config: OmniConfig | null, options: {
     }`);
   }
 
+  const passThrough = options.passThroughArgs && options.passThroughArgs.length
+    ? ` ${options.passThroughArgs.join(' ')}`
+    : '';
+
   switch (serverType) {
     case 'next-app':
     case 'next-pages':
-      exec([`${path.resolve(CWD, 'node_modules/.bin/next')} start --port ${_port} --hostname ${_host}`]);
+      exec([`${path.resolve(CWD, 'node_modules/.bin/next')} start --port ${_port} --hostname ${_host}${passThrough}`]);
       break;
     case 'nuxt':
     default:
-      logWarn('Not support ssr-vue yet');
+      logWarn('ssr-vue is not supported yet');
       logWarn('暂不支持 ssr-vue 项目');
   }
 }

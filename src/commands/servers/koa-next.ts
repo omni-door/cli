@@ -84,7 +84,7 @@ export default function ({
             }
           } catch (err) {
             logWarn(err as any);
-            logWarn(`The http-proxy「${route})」match occur error`);
+            logWarn(`The http-proxy「${route}」match error occurred`);
             logWarn(`http-proxy「${route}」匹配异常`);
           }
         }

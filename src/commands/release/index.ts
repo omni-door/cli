@@ -369,19 +369,19 @@ export default async function (
     logTime('RELEASE(发布)');
     logInfo('Starting release process(开始发布)!');
     if (!autoBuild && verify && test) {
-      await exec(['npm test'], () => logSuc('Unit Test!'), handleReleaseErr('The unit test not pass(单元测试失败)'));
+      await exec(['npm test'], () => logSuc('Unit Test!'), handleReleaseErr('Unit tests did not pass(单元测试失败)'));
     }
 
     if (!autoBuild && verify && eslint) {
-      await exec(['npm run lint:es'], () => logSuc('Eslint!'), handleReleaseErr(`The eslint not pass(eslint校验失败) \n try to exec(尝试执行): ${underline('npm run lint:es_fix')}`));
+      await exec(['npm run lint:es'], () => logSuc('Eslint!'), handleReleaseErr(`ESLint did not pass(eslint校验失败) \n try to exec(尝试执行): ${underline('npm run lint:es_fix')}`));
     }
 
     if (!autoBuild && verify && prettier) {
-      await exec(['npm run lint:prettier'], () => logSuc('Prettier!'), handleReleaseErr(`The prettier not pass(prettier校验失败) \n try to exec(尝试执行): ${underline('npm run lint:prettier_fix')}`));
+      await exec(['npm run lint:prettier'], () => logSuc('Prettier!'), handleReleaseErr(`Prettier did not pass(prettier校验失败) \n try to exec(尝试执行): ${underline('npm run lint:prettier_fix')}`));
     }
 
     if (!autoBuild && verify && stylelint) {
-      await exec(['npm run lint:style'], () => logSuc('Stylelint!'), handleReleaseErr(`The stylelint not pass(stylelint校验失败) \n try to exec(尝试执行): ${underline('npm run lint:style_fix')}`));
+      await exec(['npm run lint:style'], () => logSuc('Stylelint!'), handleReleaseErr(`Stylelint did not pass(stylelint校验失败) \n try to exec(尝试执行): ${underline('npm run lint:style_fix')}`));
     }
 
     const versionShellSuffix = ignore
@@ -537,6 +537,6 @@ export default async function (
     handleReleaseSuc()(shouldExit);
   } catch (err) {
     logErr(err as string);
-    handleReleaseErr('👆 Oops! release process occured some accidents(糟糕！发布过程发生了一点意外)')();
+    handleReleaseErr('👆 Oops! The release process encountered an error(糟糕！发布过程发生了一点意外)')();
   }
 }

@@ -264,7 +264,7 @@ export default async function (config: OmniConfig | null, componentName: string,
     },
     function (err: any) {
       logErr(err);
-      logErr('👆 Oops! Some error occured(完蛋！好像有错误)\n');
+      logErr('👆 Oops! An error occurred(完蛋！好像有错误)\n');
       process.exit(1);
     });
 }

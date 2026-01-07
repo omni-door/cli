@@ -325,7 +325,7 @@ export default async function (strategy: STRATEGY, {
           });
         }).catch(err => {
           logErr(err);
-          spinner.state('fail', 'The initializing occurred some accidents(项目初始化发生错误)!');
+          spinner.state('fail', 'Initialization encountered an error(项目初始化发生错误)!');
           process.exit(1);
         });
       }
@@ -621,7 +621,7 @@ export default async function (strategy: STRATEGY, {
           });
       }).catch(err => {
         logErr(err);
-        spinner.state('fail', 'The initializing occurred some accidents(项目初始化发生错误)!');
+        spinner.state('fail', 'Initialization encountered an error(项目初始化发生错误)!');
         process.exit(1);
       });
     }
@@ -650,7 +650,7 @@ export default async function (strategy: STRATEGY, {
         });
       }).catch(err => {
         logErr(err);
-        spinner.state('fail', 'The initializing occurred some accidents(项目初始化发生错误)!');
+        spinner.state('fail', 'Initialization encountered an error(项目初始化发生错误)!');
         process.exit(1);
       });
     }
@@ -722,7 +722,7 @@ export default async function (strategy: STRATEGY, {
     });
   } catch (err) {
     logErr(err as string);
-    spinner.state('fail', 'The initializing occurred some accidents(项目初始化发生错误)!');
+    spinner.state('fail', 'Initialization encountered an error(项目初始化发生错误)!');
     process.exit(1);
   }
 }

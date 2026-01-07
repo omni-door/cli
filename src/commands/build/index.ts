@@ -37,6 +37,7 @@ export default async function (
     buildConfig?: string;
     pkjFieldName?: string;
     configFileName?: string;
+    passThroughArgs?: string[];
   },
   autoBuild?: boolean
 ) {
@@ -82,9 +83,10 @@ export default async function (
   } = preflight || {};
 
   const CWD = process.cwd();
-  const { config: configPath, verify, buildConfig, pkjFieldName, configFileName } = buildTactic || {};
+  const { config: configPath, verify, buildConfig, pkjFieldName, configFileName, passThroughArgs = [] } = buildTactic || {};
   let configurationPath = configPath && path.resolve(CWD, configPath);
   if (configurationPath && !fs.existsSync(configurationPath)) configurationPath = void(0);
+  const appendPassThrough = (cmd: string) => (passThroughArgs.length ? `${cmd} ${passThroughArgs.join(' ')}` : cmd);
 
   if (!outDir || !srcDir) {
     handleBuildErr('The "srcDir" or "outDir" were missed in configuration file(配置文件中未定义 "srcDir" 或 "outDir")')();
@@ -146,7 +148,7 @@ export default async function (
         },
         err => {
           logWarn(err);
-          logWarn('The dependencies install occured some accidents');
+          logWarn('Installing dependencies encountered an error');
           logWarn('依赖安装发生了错误');
           return false;
         });
@@ -195,7 +197,7 @@ export default async function (
       try {
         stats = fs.statSync(srcPath);
       } catch (error) {
-        logWarn(`The path of "${srcPath}" is invaild`);
+        logWarn(`The path "${srcPath}" is invalid`);
         logWarn(`"${srcPath}" 是一个无效的路径`);
         continue;
       }
@@ -210,7 +212,7 @@ export default async function (
         fsExtra.ensureDirSync(path.resolve(destPath, '..'));
         emsPath && fsExtra.ensureDirSync(path.resolve(emsPath, '..'));
       } else {
-        logWarn(`The file or directory path which is "${srcPath}" cannot be found`);
+        logWarn(`The file or directory path "${srcPath}" cannot be found`);
         logWarn(`"${srcPath}" 不是有效的文件或文件夹路径`);
         continue;
       }
@@ -221,19 +223,19 @@ export default async function (
 
   try {
     if (verify && test) {
-      await exec(['npm test'], () => logSuc('Unit Test!'), handleBuildErr('The unit test not pass(单元测试失败)'));
+      await exec(['npm test'], () => logSuc('Unit Test!'), handleBuildErr('Unit tests did not pass(单元测试失败)'));
     }
 
     if (verify && eslint) {
-      await exec(['npm run lint:es'], () => logSuc('Eslint!'), handleBuildErr(`The eslint not pass(eslint校验失败) \n try to exec(尝试执行): ${underline('npm run lint:es_fix')}`));
+      await exec(['npm run lint:es'], () => logSuc('Eslint!'), handleBuildErr(`ESLint did not pass(eslint校验失败) \n try to exec(尝试执行): ${underline('npm run lint:es_fix')}`));
     }
 
     if (verify && prettier) {
-      await exec(['npm run lint:prettier'], () => logSuc('Prettier!'), handleBuildErr(`The prettier not pass(prettier校验失败) \n try to exec(尝试执行): ${underline('npm run lint:prettier_fix')}`));
+      await exec(['npm run lint:prettier'], () => logSuc('Prettier!'), handleBuildErr(`Prettier did not pass(prettier校验失败) \n try to exec(尝试执行): ${underline('npm run lint:prettier_fix')}`));
     }
 
     if (verify && stylelint) {
-      await exec(['npm run lint:style'], () => logSuc('Stylelint!'), handleBuildErr(`The stylelint not pass(stylelint校验失败) \n try to exec(尝试执行): ${underline('npm run lint:style_fix')}`));
+      await exec(['npm run lint:style'], () => logSuc('Stylelint!'), handleBuildErr(`Stylelint did not pass(stylelint校验失败) \n try to exec(尝试执行): ${underline('npm run lint:style_fix')}`));
     }
 
     let realOutDir: string = '';
@@ -264,8 +266,8 @@ export default async function (
         tscPath = buildCliPath.tspc;
       }
 
-      buildCliArr.push(`${tscPath} --outDir ${outDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --rootDir ${srcDir}`);
-      esmDir && buildCliArr.push(`${tscPath} --module ESNext --target ES6 --outDir ${esmDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --rootDir ${srcDir}`);
+      buildCliArr.push(appendPassThrough(`${tscPath} --outDir ${outDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --rootDir ${srcDir}`));
+      esmDir && buildCliArr.push(appendPassThrough(`${tscPath} --module ESNext --target ES6 --outDir ${esmDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --rootDir ${srcDir}`));
       realOutDir = outDir;
     } else if (type === 'ssr-react') {
       const nextPath = buildCliPath.next;
@@ -277,7 +279,7 @@ export default async function (
         if (!is_go_on) return process.exit(0);
       }
 
-      buildCliArr.push(`${nextPath} build`);
+      buildCliArr.push(appendPassThrough(`${nextPath} build`));
     } else {
       const content_rollup = !buildConfig && type === 'toolkit' && rollupConfig({ ts: typescript, multiOutput: true, srcDir, outDir, esmDir, configurationPath, pkjFieldName, configFileName });
       const content_webpack = !buildConfig && (type === 'spa-react' || type === 'spa-react-pc' || type === 'spa-vue') && webpackConfig({ ts: typescript, multiOutput: false, srcDir, outDir, configurationPath, pkjFieldName, configFileName, hash });
@@ -298,7 +300,7 @@ export default async function (
             is_go_on = await installDenpendencies('rollup');
           }
 
-          buildCliArr.push(`${rollupPath} -c ${buildConfigPath}`);
+          buildCliArr.push(appendPassThrough(`${rollupPath} -c ${buildConfigPath}`));
         } else if (type === 'spa-react' || type === 'spa-react-pc' || type === 'spa-vue') {
           const webpackPath = buildCliPath.webpack;
 
@@ -308,7 +310,7 @@ export default async function (
             is_go_on = await installDenpendencies('webpack');
           }
 
-          buildCliArr.push(`${webpackPath} --config ${buildConfigPath}`);
+          buildCliArr.push(appendPassThrough(`${webpackPath} --config ${buildConfigPath}`));
         } else if (type === 'component-react' || type === 'component-vue') {
           let tscPath = buildCliPath.tsc;
           const vTscPath = buildCliPath.vuetsc;
@@ -329,11 +331,11 @@ export default async function (
           }
 
           buildCliArr.push(
-            typescript ? `${tscPath} --outDir ${outDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --emitDeclarationOnly --rootDir ${srcDir}` : '',
-            typescript && esmDir ? `${tscPath} --module ESNext --target ES6 --outDir ${esmDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --emitDeclarationOnly --rootDir ${srcDir}` : '',
-            typescript && type === 'component-vue' ? `${vTscPath} --outDir ${outDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --emitDeclarationOnly --rootDir ${srcDir}` : '',
-            typescript && esmDir && type === 'component-vue' ? `${vTscPath} --module ESNext --target ES6 --outDir ${esmDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --emitDeclarationOnly --rootDir ${srcDir}` : '',
-            `${gulpPath} --gulpfile ${buildConfigPath} --cwd ${CWD}`
+            typescript ? appendPassThrough(`${tscPath} --outDir ${outDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --emitDeclarationOnly --rootDir ${srcDir}`) : '',
+            typescript && esmDir ? appendPassThrough(`${tscPath} --module ESNext --target ES6 --outDir ${esmDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --emitDeclarationOnly --rootDir ${srcDir}`) : '',
+            typescript && type === 'component-vue' ? appendPassThrough(`${vTscPath} --outDir ${outDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --emitDeclarationOnly --rootDir ${srcDir}`) : '',
+            typescript && esmDir && type === 'component-vue' ? appendPassThrough(`${vTscPath} --module ESNext --target ES6 --outDir ${esmDir} --project ${configurationPath || path.resolve(CWD, 'tsconfig.json')} --emitDeclarationOnly --rootDir ${srcDir}`) : '',
+            appendPassThrough(`${gulpPath} --gulpfile ${buildConfigPath} --cwd ${CWD}`)
           );
         }
 
@@ -414,6 +416,6 @@ export default async function (
     }
   } catch (err) {
     logErr(err as string);
-    handleBuildErr('👆 Oops! Building process occured some accidents(糟糕！构建过程发生了点意外)!')();
+    handleBuildErr('👆 Oops! The build process encountered an error(糟糕！构建过程发生了点意外)!')();
   }
 }
