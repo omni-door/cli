@@ -71,7 +71,7 @@ for (let i = 0, len = exts.length; i < len; i++) {
   indexPath = path.resolve('${srcDir}', \`index.\${exts[i]}\`);
   if (fs.existsSync(indexPath)) break;
   if (i === len - 1) {
-    logErr('请以 index 为名称指定正确的入口文件！(Please specify the correct entry file with name of index)');
+    logErr('Please specify the correct entry file named index.');
     process.exit(1);
   }
 }

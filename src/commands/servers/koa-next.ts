@@ -85,7 +85,6 @@ export default function ({
           } catch (err) {
             logWarn(err as any);
             logWarn(`The http-proxy「${route}」match error occurred`);
-            logWarn(`http-proxy「${route}」匹配异常`);
           }
         }
 
@@ -131,7 +130,6 @@ export default function ({
             } catch (err) {
               logWarn(err as any);
               logWarn(`The ${page}'s beforeRender error!`);
-              logWarn(`${page} 页面 beforeRender 执行异常`);
             }
           }
 
@@ -140,7 +138,6 @@ export default function ({
           shouldRender = false;
           logWarn(JSON.stringify(err));
           logWarn(`The ${page} router error`);
-          logWarn(`${page} 路由出错`);
         }
 
         if (shouldRender) {

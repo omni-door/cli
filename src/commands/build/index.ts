@@ -50,15 +50,14 @@ export default async function (
 
   if (!config || JSON.stringify(config) === '{}') {
     logWarn('Please initialize project first');
-    logWarn('请先初始化项目');
     return process.exit(0);
   }
 
   // bind exit signals
   signal();
 
-  const message = 'Building(开始构建)';
-  logTime('BUILD(项目构建)');
+  const message = 'Building';
+  logTime('BUILD');
   logInfo(message);
 
   const { type, template, build, release: configRelease, plugins } = config;
@@ -89,11 +88,11 @@ export default async function (
   const appendPassThrough = (cmd: string) => (passThroughArgs.length ? `${cmd} ${passThroughArgs.join(' ')}` : cmd);
 
   if (!outDir || !srcDir) {
-    handleBuildErr('The "srcDir" or "outDir" were missed in configuration file(配置文件中未定义 "srcDir" 或 "outDir")')();
+    handleBuildErr('The "srcDir" or "outDir" were missed in the configuration file.')();
   }
 
   function handleBuildSuc (msg?: string) {
-    msg = msg || 'Building completed(构建成功)!';
+    msg = msg || 'Building completed!';
 
     return function (isExit?: boolean) {
       logCongrat(msg!);
@@ -102,7 +101,7 @@ export default async function (
   }
 
   function handleBuildErr (msg?: string) {
-    msg = msg || 'Building failed(构建失败)!';
+    msg = msg || 'Building failed!';
 
     return function (err?: string) {
       err && logErr(err);
@@ -117,7 +116,7 @@ export default async function (
       {
         name: 'install',
         type: 'confirm',
-        message: `${logo()} Automatic install dependencies(自动安装所需要的依赖)?`,
+        message: `${logo()} Automatically install build dependencies?`,
         default: true
       }
     ]).then(async answers => {
@@ -143,13 +142,11 @@ export default async function (
         ],
         () => {
           logSuc('The dependencies install completed');
-          logSuc('构建依赖安装完毕');
           return true;
         },
         err => {
           logWarn(err);
           logWarn('Installing dependencies encountered an error');
-          logWarn('依赖安装发生了错误');
           return false;
         });
       } else {
@@ -198,7 +195,6 @@ export default async function (
         stats = fs.statSync(srcPath);
       } catch (error) {
         logWarn(`The path "${srcPath}" is invalid`);
-        logWarn(`"${srcPath}" 是一个无效的路径`);
         continue;
       }
 
@@ -213,7 +209,6 @@ export default async function (
         emsPath && fsExtra.ensureDirSync(path.resolve(emsPath, '..'));
       } else {
         logWarn(`The file or directory path "${srcPath}" cannot be found`);
-        logWarn(`"${srcPath}" 不是有效的文件或文件夹路径`);
         continue;
       }
       fsExtra.copySync(srcPath, destPath);
@@ -223,19 +218,19 @@ export default async function (
 
   try {
     if (verify && test) {
-      await exec(['npm test'], () => logSuc('Unit Test!'), handleBuildErr('Unit tests did not pass(单元测试失败)'));
+      await exec(['npm test'], () => logSuc('Unit Test!'), handleBuildErr('Unit tests did not pass.'));
     }
 
     if (verify && eslint) {
-      await exec(['npm run lint:es'], () => logSuc('Eslint!'), handleBuildErr(`ESLint did not pass(eslint校验失败) \n try to exec(尝试执行): ${underline('npm run lint:es_fix')}`));
+      await exec(['npm run lint:es'], () => logSuc('Eslint!'), handleBuildErr(`ESLint did not pass.\nTry: ${underline('npm run lint:es_fix')}`));
     }
 
     if (verify && prettier) {
-      await exec(['npm run lint:prettier'], () => logSuc('Prettier!'), handleBuildErr(`Prettier did not pass(prettier校验失败) \n try to exec(尝试执行): ${underline('npm run lint:prettier_fix')}`));
+      await exec(['npm run lint:prettier'], () => logSuc('Prettier!'), handleBuildErr(`Prettier did not pass.\nTry: ${underline('npm run lint:prettier_fix')}`));
     }
 
     if (verify && stylelint) {
-      await exec(['npm run lint:style'], () => logSuc('Stylelint!'), handleBuildErr(`Stylelint did not pass(stylelint校验失败) \n try to exec(尝试执行): ${underline('npm run lint:style_fix')}`));
+      await exec(['npm run lint:style'], () => logSuc('Stylelint!'), handleBuildErr(`Stylelint did not pass.\nTry: ${underline('npm run lint:style_fix')}`));
     }
 
     let realOutDir: string = '';
@@ -251,7 +246,7 @@ export default async function (
     };
     if (tool === 'tsc') {
       if (!typescript) {
-        handleBuildErr('The typescript had been forbidden(已禁用 typescript，无法完成构建)')();
+        handleBuildErr('TypeScript is disabled; build cannot proceed.')();
       }
 
       let tscPath = buildCliPath.tsc;
@@ -260,7 +255,6 @@ export default async function (
 
       if (!fs.existsSync(tscPath)) {
         logWarn('Please install typescript first');
-        logWarn('请先安装 typescript 相关依赖');
         const is_go_on = await installDenpendencies('tsc');
         if (!is_go_on) return process.exit(0);
         tscPath = buildCliPath.tspc;
@@ -274,7 +268,6 @@ export default async function (
 
       if (!fs.existsSync(nextPath)) {
         logWarn('Please install webpack first');
-        logWarn('请先安装 webpack 相关依赖');
         const is_go_on = await installDenpendencies('next');
         if (!is_go_on) return process.exit(0);
       }
@@ -296,7 +289,6 @@ export default async function (
 
           if (!fs.existsSync(rollupPath)) {
             logWarn('Please install rollup first');
-            logWarn('请先安装 rollup 相关依赖');
             is_go_on = await installDenpendencies('rollup');
           }
 
@@ -306,7 +298,6 @@ export default async function (
 
           if (!fs.existsSync(webpackPath)) {
             logWarn('Please install webpack first');
-            logWarn('请先安装 webpack 相关依赖');
             is_go_on = await installDenpendencies('webpack');
           }
 
@@ -320,13 +311,11 @@ export default async function (
 
           if (typescript && (!fs.existsSync(tscPath) || (type === 'component-vue' && !fs.existsSync(vTscPath)))) {
             logWarn('Please install typescript first');
-            logWarn('请先安装 typescript 相关依赖');
             is_go_on = await installDenpendencies('tsc');
             if (is_go_on) tscPath = buildCliPath.tspc;
           }
           if (is_go_on && !fs.existsSync(gulpPath)) {
             logWarn('Please install gulp first');
-            logWarn('请先安装 gulp 相关依赖');
             is_go_on = await installDenpendencies('gulp');
           }
 
@@ -357,7 +346,7 @@ export default async function (
     if (type !== 'toolkit') {
       spinner.color('green');
       spinner.prefix('moon');
-      spinner.state('start', 'Building, please wait patiently(项目构建中)');
+      spinner.state('start', 'Building, please wait...');
     }
 
     try {
@@ -394,10 +383,10 @@ export default async function (
       }
 
       if (realOutDir && !fs.existsSync(realOutDir)) {
-        handleBuildErr(`The output file ${realOutDir} doesn't exist(输出的 ${realOutDir} 文件不存在，构建失败)`)();
+        handleBuildErr(`The output path ${realOutDir} doesn't exist; build failed.`)();
       } else {
         type !== 'toolkit' && spinner.state('stop');
-        logTime('BUILD(项目构建)', true);
+        logTime('BUILD', true);
         const shouldExit = !(autoRelease || autoBuild);
         handleBuildSuc()(shouldExit);
       }
@@ -406,16 +395,15 @@ export default async function (
     // auto release
     if (!autoBuild && autoRelease) {
       logEmph(italic('Start auto release'));
-      logEmph(italic('开始自动发布'));
       try {
         await release(config, { verify: false }, autoRelease);
-        handleBuildSuc('Auto release success(自动发布成功)!')(true);
+        handleBuildSuc('Auto release success!')(true);
       } catch (err) {
-        handleBuildErr('Auto release failed(自动发布失败)!')();
+        handleBuildErr('Auto release failed!')();
       }
     }
   } catch (err) {
     logErr(err as string);
-    handleBuildErr('👆 Oops! The build process encountered an error(糟糕！构建过程发生了点意外)!')();
+    handleBuildErr('👆 Oops! The build process encountered an error.')();
   }
 }

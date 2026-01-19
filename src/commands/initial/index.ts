@@ -61,20 +61,20 @@ type OptionCustom = {
 };
 
 const ProjectDict = {
-  'spa-react': 'spa-react (React单页应用)',
-  'spa-react (React单页应用)': 'spa-react',
-  'spa-react-pc': 'spa-react-pc (React中后台应用)',
-  'spa-react-pc (React中后台应用)': 'spa-react-pc',
-  'spa-vue': 'spa-vue (Vue单页应用)',
-  'spa-vue (Vue单页应用)': 'spa-vue',
-  'ssr-react': 'ssr-react (React服务端渲染应用)',
-  'ssr-react (React服务端渲染应用)': 'ssr-react',
-  'component-react': 'component-react (React组件库)',
-  'component-react (React组件库)': 'component-react',
-  'component-vue': 'component-vue (Vue组件库)',
-  'component-vue (Vue组件库)': 'component-vue',
-  'toolkit': 'toolkit (工具库)',
-  'toolkit (工具库)': 'toolkit'
+  'spa-react': 'spa-react (React SPA)',
+  'spa-react (React SPA)': 'spa-react',
+  'spa-react-pc': 'spa-react-pc (React Admin App)',
+  'spa-react-pc (React Admin App)': 'spa-react-pc',
+  'spa-vue': 'spa-vue (Vue SPA)',
+  'spa-vue (Vue SPA)': 'spa-vue',
+  'ssr-react': 'ssr-react (React SSR App)',
+  'ssr-react (React SSR App)': 'ssr-react',
+  'component-react': 'component-react (React Component Library)',
+  'component-react (React Component Library)': 'component-react',
+  'component-vue': 'component-vue (Vue Component Library)',
+  'component-vue (Vue Component Library)': 'component-vue',
+  'toolkit': 'toolkit (Tool Library)',
+  'toolkit (Tool Library)': 'toolkit'
 };
 
 const ServerTypes = {
@@ -122,14 +122,14 @@ async function checkPkgTool(pkgtool: PKJ_TOOL) {
 
     if (!hasTool) {
       if (pkgtool === 'npm') {
-        spinner.state('warn', 'Cannot found the npm package management tool(没有找到 npm 包管理工具，请自行安装)!');
+        spinner.state('warn', 'Cannot find the npm package management tool. Please install it manually!');
         process.exit(0);
       } else {
-        spinner.state('info', `Missing package management tool ${pkgtool}(缺少包管理工具 ${pkgtool})!`);
+        spinner.state('info', `Missing package management tool ${pkgtool}!`);
         inquirer.prompt([{
           name: 'install',
           type: 'confirm',
-          message: `${logo()}Automatic install the ${pkgtool} in the global environment(自动安装 ${pkgtool} 到全局环境)?`,
+          message: `${logo()}Automatically install ${pkgtool} globally?`,
           default: true
         }]).then(answers => {
           const { install } = answers;
@@ -147,7 +147,7 @@ async function checkPkgTool(pkgtool: PKJ_TOOL) {
             } catch (err) {
               logWarn(err as string);
               logWarn(`The setup ${pkgtool} failed, please try it by yourself`);
-              logWarn(`${pkgtool} 安装失败，请自行安装后再试`);
+              logWarn(`Failed to install ${pkgtool}, please install it manually and try again.`);
               process.exit(0);
             }
           }
@@ -316,7 +316,7 @@ export default async function (strategy: STRATEGY, {
           inquirer.prompt([{
             name: 'overwrite',
             type: 'confirm',
-            message: `${logo()}Are you sure to overwrite the "${configFileName}"(确定要覆盖已经存在的 "${configFileName}" 文件)?`,
+            message: `${logo()}Are you sure to overwrite the "${configFileName}"?`,
             default: false
           }]).then(answers => {
             const { overwrite } = answers;
@@ -325,7 +325,7 @@ export default async function (strategy: STRATEGY, {
           });
         }).catch(err => {
           logErr(err);
-          spinner.state('fail', 'Initialization encountered an error(项目初始化发生错误)!');
+          spinner.state('fail', 'Initialization encountered an error!');
           process.exit(1);
         });
       }
@@ -352,7 +352,7 @@ export default async function (strategy: STRATEGY, {
         {
           name: 'overwrite',
           type: 'confirm',
-          message: `${logo()}Are you sure to overwrite this project (确定覆盖该项目)?`,
+          message: `${logo()}Are you sure to overwrite this project?`,
           default: false
         }, {
           name: 'project_type',
@@ -366,7 +366,7 @@ export default async function (strategy: STRATEGY, {
             ProjectDict['ssr-react'],
             ProjectDict['toolkit']
           ],
-          message: `${logo()}[${currStep}/${totalStep}] Please choose the type of project (请选择项目类型):`,
+          message: `${logo()}[${currStep}/${totalStep}] Please choose the project type:`,
           when: function (answer: any) {
             if (answer.overwrite === false) {
               return process.exit(0);
@@ -395,16 +395,16 @@ export default async function (strategy: STRATEGY, {
                 totalStep = 3;
             }
             install && totalStep++;
-            return `${logo()}[${++currStep}/${totalStep}] Please enter your project name (请输入项目名称):`;
+            return `${logo()}[${++currStep}/${totalStep}] Please enter your project name:`;
           },
           validate: async function (input: any) {
             const isValidName = pkgNameCheck(input, true);
             const isExisted = await isDir(input);
             if (isValidName && !isExisted) return true;
             if (isExisted) {
-              logWarn(`The "${input}" directory had been existed ("${input}" 文件夹已经存在)`);
+              logWarn(`The "${input}" directory already exists.`);
             }
-            return isExisted ? `The "${input}" directory had been existed ("${input}" 文件夹已经存在)` : 'Please re-input your project name (请重新输入项目名称)';
+            return isExisted ? `The "${input}" directory already exists.` : 'Please re-enter your project name.';
           },
           default: defaultName
         },
@@ -427,7 +427,7 @@ export default async function (strategy: STRATEGY, {
           },
           message: function (answer: any) {
             const projectType = getProjectType(answer);
-            const msg = projectType === 'ssr-react' ? 'Please chioce the SSR server type (请选择SSR服务类型)' : 'Please chioce the component-library demonstration frame (请选择组件库Demo框架)';
+            const msg = projectType === 'ssr-react' ? 'Please choose the SSR server type' : 'Please choose the component-library demo framework';
             return `${logo()}[${++currStep}/${totalStep}] ${msg}：`;
           },
           when: async function (answer: any) {
@@ -439,7 +439,7 @@ export default async function (strategy: STRATEGY, {
           name: 'ts',
           type: 'confirm',
           message: function (answer: any) {
-            return `${logo()}[${++currStep}/${totalStep}] Apply typescript(使用typescript)?`;
+            return `${logo()}[${++currStep}/${totalStep}] Use TypeScript?`;
           },
           default: true,
           when: function (answer: any) {
@@ -454,7 +454,7 @@ export default async function (strategy: STRATEGY, {
           name: 'test',
           type: 'confirm',
           message: function (answer: any) {
-            return `${logo()}[${++currStep}/${totalStep}] Apply unit-test(开启单元测试)?`;
+            return `${logo()}[${++currStep}/${totalStep}] Enable unit tests?`;
           },
           default: (answer: any) => getProjectType(answer) !== 'spa-react' && getProjectType(answer) !== 'spa-react-pc' && getProjectType(answer) !== 'spa-vue' && getProjectType(answer) !== 'ssr-react',
           when: function (answer: any) {
@@ -470,7 +470,7 @@ export default async function (strategy: STRATEGY, {
           type: 'checkbox',
           choices: ['css', 'less', 'scss'],
           message: function (answer: any) {
-            return `${logo()}[${++currStep}/${totalStep}] Select the stylesheets(选择样式文件):`;
+            return `${logo()}[${++currStep}/${totalStep}] Select stylesheets:`;
           },
           default: ['css'],
           when: async function (answer: any) {
@@ -496,7 +496,7 @@ export default async function (strategy: STRATEGY, {
           },
           choices: [LayoutDict.px, LayoutDict.viewport, LayoutDict.rem],
           message: function (answer: any) {
-            return `${logo()}[${++currStep}/${totalStep}] Select layout plan(选择布局适配方案):`;
+            return `${logo()}[${++currStep}/${totalStep}] Select layout plan:`;
           }
         },
         {
@@ -508,7 +508,7 @@ export default async function (strategy: STRATEGY, {
             return lintArr;
           },
           message: function (answer: any) {
-            return `${logo()}[${++currStep}/${totalStep}] Select the lint tools(选择lint工具):`;
+            return `${logo()}[${++currStep}/${totalStep}] Select lint tools:`;
           },
           default: ['eslint']
         },
@@ -521,7 +521,7 @@ export default async function (strategy: STRATEGY, {
             return true;
           },
           message: function (answer: any) {
-            return `${logo()}[${++currStep}/${totalStep}] Select the package install tool(请选择包安装工具):`;
+            return `${logo()}[${++currStep}/${totalStep}] Select the package manager:`;
           },
           default: 'pnpm'
         }
@@ -621,7 +621,7 @@ export default async function (strategy: STRATEGY, {
           });
       }).catch(err => {
         logErr(err);
-        spinner.state('fail', 'Initialization encountered an error(项目初始化发生错误)!');
+        spinner.state('fail', 'Initialization encountered an error!');
         process.exit(1);
       });
     }
@@ -641,7 +641,7 @@ export default async function (strategy: STRATEGY, {
         inquirer.prompt([{
           name: 'overwrite_dir',
           type: 'confirm',
-          message: `${logo()} Overwrite the "${dirName}" directory, please confirm again(请再次确认覆盖 "${dirName}" 文件夹)!`,
+          message: `${logo()}Overwrite the "${dirName}" directory? Please confirm again.`,
           default: true
         }]).then(answers => {
           const { overwrite_dir } = answers;
@@ -650,7 +650,7 @@ export default async function (strategy: STRATEGY, {
         });
       }).catch(err => {
         logErr(err);
-        spinner.state('fail', 'Initialization encountered an error(项目初始化发生错误)!');
+        spinner.state('fail', 'Initialization encountered an error!');
         process.exit(1);
       });
     }
@@ -661,7 +661,7 @@ export default async function (strategy: STRATEGY, {
       `isSilent=${isSilent}`
     );
     // loading start display
-    spinner.state('start', 'Initializing, please wait patiently(项目初始化中)');
+    spinner.state('start', 'Initializing, please wait...');
     // create the folder
     !configFileExist && create_dir !== false && mkdir(initPath);
 
@@ -680,7 +680,7 @@ export default async function (strategy: STRATEGY, {
     return figlet(getBrand(), function (err, data) {
       if (err) {
         logErr(err.message);
-        spinner.state('fail', 'Something about figlet is wrong(figlet 出现了问题)!');
+        spinner.state('fail', 'Figlet encountered an error!');
       }
       const commitlint = !!~tplParams.indexOf('commitlint=true');
       const execPath = tplParams.find(param => param.startsWith('initPath='))?.split('=')?.[1];
@@ -705,9 +705,9 @@ export default async function (strategy: STRATEGY, {
           }
 
           if (success === false) {
-            spinner.state('fail', msg || 'Initialize project failed(初始化项目失败)!');
+            spinner.state('fail', msg || 'Initialize project failed!');
           } else {
-            spinner.state('succeed', msg || 'Initialize project success(初始化项目完成)!');
+            spinner.state('succeed', msg || 'Initialize project success!');
           }
 
           data && console.info(chalk.yellow(data));
@@ -715,14 +715,14 @@ export default async function (strategy: STRATEGY, {
         },
         async function (err: any) {
           logErr(err);
-          spinner.state('fail', 'Initialize project failed(初始化项目失败)!');
+          spinner.state('fail', 'Initialize project failed!');
           process.exit(1);
         }
       );
     });
   } catch (err) {
     logErr(err as string);
-    spinner.state('fail', 'Initialization encountered an error(项目初始化发生错误)!');
+    spinner.state('fail', 'Initialization encountered an error!');
     process.exit(1);
   }
 }

@@ -27,20 +27,17 @@ updateVersion () {
   if [ "$iterate" = "i" -o "$iterate" = "ignore" ]
   then
     echo -e "\n\033[33m${name} Ignoring the version of iteration \033[0m\n"
-    echo -e "\033[33m${name} 忽略版本号迭代\033[0m\n"
   elif [ "$iterate" = "m" -o "$iterate" = "manual" ]
   then
     newVersion=$(echo ${version/${version}/${inputVersion}})
     newVersionLine=$(echo "${versionLine/${version}/${newVersion}}")
     echo -e "\n\033[35m${name} Manual specify the version of iteration to ${manualVersion} \033[0m\n"
-    echo -e "\033[35m${name} 版本号手动迭代至 ${inputVersion}\033[0m\n"
     replaceVersion "$versionLine" "$newVersionLine"
   elif [ "$iterate" = "a" -o "$iterate" = "auto" ]
   then
     newVersion=$(echo ${version/${version}/${inputVersion}})
     newVersionLine=$(echo "${versionLine/${version}/${newVersion}}")
     echo -e "\n\033[36m${name} Auto-increase the version of iteration to ${newVersion} \033[0m\n"
-    echo -e "\033[36m${name} 版本号自动迭代至 ${newVersion}\033[0m\n"
     replaceVersion "$versionLine" "$newVersionLine"
   elif [ -z "$iterate" ]
   then
@@ -48,11 +45,9 @@ updateVersion () {
     newVersion=$(echo ${version/${dot}${subVersion}${dot}${subSubVersion}/${dot}${subVersion}${dot}${newSubSubVersion}})
     newVersionLine=$(echo "${versionLine/${version}/${newVersion}}")
     echo -e "\n\033[36m${name} Auto-increase the version of iteration to ${newVersion} \033[0m\n"
-    echo -e "\033[36m${name} 版本号自动迭代至 ${newVersion}\033[0m\n"
     replaceVersion "$versionLine" "$newVersionLine"
   else
     echo -e "\n\033[31m${name} Version iteration failed \033[0m\n"
-    echo -e "\033[31m${name} 版本迭代失败\033[0m\n"
     exit 1
   fi
 }

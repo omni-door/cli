@@ -16,7 +16,7 @@ import { getHandlers, signal, logo } from '../../utils';
 import type { OmniConfig, OmniPlugin } from '../../index.d';
 
 function handleException (msg?: string) {
-  logWarn(msg || 'Oops! Some unknown errors have occurred(发生了一些未知错误)!');
+  logWarn(msg || 'Oops! Some unknown errors have occurred!');
   process.exit(0);
 }
 
@@ -44,7 +44,7 @@ export default async function (config: OmniConfig | null, componentName: string,
   }
 
   if (!config || JSON.stringify(config) === '{}') {
-    handleException('Please initialize first(请先初始化项目)!');
+    handleException('Please initialize first!');
   }
 
   const {
@@ -56,7 +56,7 @@ export default async function (config: OmniConfig | null, componentName: string,
   } = config!;
 
   if (!type) {
-    handleException('Cannot find the project type(项目类型缺失)!');
+    handleException('Cannot find the project type!');
   }
 
   const {
@@ -67,10 +67,8 @@ export default async function (config: OmniConfig | null, componentName: string,
     readme = false
   } = template!;
 
-  let module_cn = '组件';
   let module_en = 'component';
   if (type === 'toolkit') {
-    module_cn = '模块';
     module_en = 'module';
   }
 
@@ -78,15 +76,15 @@ export default async function (config: OmniConfig | null, componentName: string,
   let { function: fc, class: cc, render: h, single: sfc, tplPkj, tplPkjTag, before, after } = options || {};
 
   if (!root) {
-    handleException(`Missing the path for generate ${module_en}(生成${module_cn}的路径缺失)!`);
+    handleException(`Missing the path for generating the ${module_en}!`);
   }
 
   if (!componentName || (!fc && !cc && !h && !sfc)) {
     const moduleType = {
-      fc: 'Function-Component(函数组件)',
-      cc: 'Class-Component(类组件)',
-      h: 'Render-Function(渲染函数组件)',
-      sfc: 'Single-File-Component(模板组件)',
+      fc: 'Function Component',
+      cc: 'Class Component',
+      h: 'Render Function',
+      sfc: 'Single File Component',
     };
     const questions = [
       {
@@ -98,14 +96,14 @@ export default async function (config: OmniConfig | null, componentName: string,
           }
           return true;
         },
-        message: `${logo()} Please enter ${module_en} name(请输入${module_cn}名称):`
+        message: `${logo()} Please enter ${module_en} name:`
       },
       {
         name: 'type',
         type: 'list',
         when: (answer: any) => {
           if (!answer.name && !componentName) {
-            handleException(`Please input the ${module_en} name(请输入创建的${module_cn}名称)!`);
+            handleException(`Please input the ${module_en} name!`);
           }
           if (type === 'spa-vue' || type === 'toolkit' || fc || cc) {
             return false;
@@ -113,7 +111,7 @@ export default async function (config: OmniConfig | null, componentName: string,
           return true;
         },
         choices: type === 'component-vue' ? [ moduleType.h, moduleType.sfc ] : [ moduleType.fc, moduleType.cc ],
-        message: `${logo()} Select the type of ${module_en}(选择${module_cn}类型):`
+        message: `${logo()} Select the type of ${module_en}:`
       }      
     ];
     await new Promise((resolve) => {
@@ -144,11 +142,11 @@ export default async function (config: OmniConfig | null, componentName: string,
 
   if (!/^[a-zA-Z\_]\w+$/g.test(componentName)) {
     handleException(
-      `Please input a valid module name(请输入合法的${module_cn}名称)!\n
-      Rules(规则):\n
-        1. The ${module_cn} name must greater-or-equal 2(${module_cn}名大于等于2个字符)\n
-        2. The first character can only be underscore or upper/lower case letter(第一个字符只能由 下划线_ 或 大小写字母 组成)\n
-        3. The subsequent characters can only be numberm, underscore, upper and lower case letter(后续字符只能由 数字、下划线_、大小写字母 组成)\n
+      `Please input a valid ${module_en} name!\n
+      Rules:\n
+        1. The ${module_en} name must be at least 2 characters.\n
+        2. The first character must be underscore or a letter.\n
+        3. Subsequent characters can only be numbers, underscore, or letters.\n
       `
     );
   }
@@ -161,7 +159,7 @@ export default async function (config: OmniConfig | null, componentName: string,
   const path_cp_rel = path.relative(process.cwd(), path_cp);
 
   if (fs.existsSync(path_cp)) {
-    handleException(`The ${componentName} ${module_en} had been existed(${module_cn} ${componentName} 已存在)!`);
+    handleException(`The ${module_en} ${componentName} already exists!`);
   }
 
   const hasStorybook = fs.existsSync(path.resolve(process.cwd(), '.storybook'));
@@ -231,7 +229,7 @@ export default async function (config: OmniConfig | null, componentName: string,
   });
 
   const newTpl = `${newTplPkj}@${templatePackageTag}`;
-  logInfo(`Downloading the ${newTpl}, please wait patiently(正在下载 ${newTpl}，请稍后)…`);
+  logInfo(`Downloading ${newTpl}, please wait...`);
   exec(
     [
       `npx ${newTpl} new ${arr2str(params)}`
@@ -259,12 +257,12 @@ export default async function (config: OmniConfig | null, componentName: string,
         root
       });
       // success logger
-      logSuc(`The ${componentName} local at ${path_cp_rel}, construction completed(${componentName} 位于 ${path_cp_rel}，创建完成)!`);
+      logSuc(`The ${componentName} is created at ${path_cp_rel}.`);
       process.exit(0);
     },
     function (err: any) {
       logErr(err);
-      logErr('👆 Oops! An error occurred(完蛋！好像有错误)\n');
+      logErr('👆 Oops! An error occurred.\n');
       process.exit(1);
     });
 }

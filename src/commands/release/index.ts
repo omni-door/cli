@@ -27,24 +27,24 @@ import type { OmniConfig, OmniPlugin } from '../../index.d';
 const tagCustom = '$omni_custom$';
 
 const tagDict = {
-  '1. alpha (内测版)': 'alpha',
-  '2. beta (公测版)': 'beta',
-  '3. rc (候选版)': 'rc',
-  '4. latest (正式版)': 'latest',
-  '5. custom (自定义)': tagCustom
+  '1. alpha (internal)': 'alpha',
+  '2. beta (public)': 'beta',
+  '3. rc (candidate)': 'rc',
+  '4. latest (stable)': 'latest',
+  '5. custom': tagCustom
 };
 
 const tagDictWithExtraWords = {
-  '1. alpha (内测版 - 当前标签)': 'alpha',
-  '2. beta (公测版 - 当前标签)': 'beta',
-  '3. rc (候选版 - 当前标签)': 'rc',
-  '4. latest (正式版 - 当前标签)': 'latest'
+  '1. alpha (internal - current tag)': 'alpha',
+  '2. beta (public - current tag)': 'beta',
+  '3. rc (candidate - current tag)': 'rc',
+  '4. latest (stable - current tag)': 'latest'
 };
 
 const iterDict = {
-  automatic: '1. automatic(自动)',
-  manual: '2. manual(手动)',
-  ignore: '3. ignore(忽略)'
+  automatic: '1. automatic',
+  manual: '2. manual',
+  ignore: '3. ignore'
 };
 
 function getAutoIterDict (version: string, tag: string) {
@@ -97,7 +97,6 @@ export default async function (
 
   if (!config || JSON.stringify(config) === '{}') {
     logWarn('Please initialize project first');
-    logWarn('请先初始化项目');
     process.exit(0);
   }
 
@@ -136,7 +135,7 @@ export default async function (
   }
 
   function handleReleaseSuc (msg?: string) {
-    msg = msg || 'Release completed (发布完成)!';
+    msg = msg || 'Release completed!';
 
     return function (isExit?: boolean) {
       logCongrat(msg!);
@@ -145,7 +144,7 @@ export default async function (
   }
 
   function handleReleaseErr (msg?: string) {
-    msg = msg || 'Release failed (发布失败)!';
+    msg = msg || 'Release failed!';
 
     return function (err?: string) {
       err && logErr(err);
@@ -179,10 +178,9 @@ export default async function (
     // whether or not need iteration
     const needIteration = ignore === void 0 && manual === void 0 && automatic === void 0;
 
-    const versionErrMsg = `Please input valid version (请输入有效的版本号)\n
-    Reference to (版本号规则可参考): https://semver.org/`;
-    const tagErrMsg = 'The tag can only contain letters (标签只能包含字母)';
-    const versionRepeatMsg = (ver: string) => `The ${ver} is not available (${ver} 不可用)`;
+    const versionErrMsg = 'Please input a valid version.\nReference: https://semver.org/';
+    const tagErrMsg = 'The tag can only contain letters.';
+    const versionRepeatMsg = (ver: string) => `The ${ver} is not available.`;
 
     const existedVersions = [] as string[];
     let versionsPromise = Promise.resolve();
@@ -210,13 +208,13 @@ export default async function (
               const result = Object.keys(tagDict);
               const presetTags = Object.values(tagDict);
               if (!presetTags.some(v => v === defaultTag)) {
-                const key = `0. ${defaultTag} (当前标签)`;
+                const key = `0. ${defaultTag} (current tag)`;
                 result.unshift(key);
                 tagDictWithExtraWords[key as keyof typeof tagDictWithExtraWords] = defaultTag;
               } else {
                 const ind = presetTags.indexOf(defaultTag);
                 const preset = result[ind];
-                result.splice(ind, 1, preset.replace(')', ' - 当前标签)'));
+                result.splice(ind, 1, preset.replace(')', ' - current tag)'));
               }
               return result;
             },
@@ -224,10 +222,10 @@ export default async function (
               const result = Object.keys(tagDict);
               const presetTags = Object.values(tagDict);
               if (presetTags.some(v => v === defaultTag)) {
-                return result[presetTags.indexOf(defaultTag)].replace(')', ' - 当前标签)');
+                return result[presetTags.indexOf(defaultTag)].replace(')', ' - current tag)');
               }
             },
-            message: 'Choose the tag (选择标签):'
+            message: 'Choose the tag:'
           },
           {
             name: 'label',
@@ -243,14 +241,14 @@ export default async function (
               }
               return tagErrMsg;
             },
-            message: `${logo()}Input the tag (输入标签):`
+            message: `${logo()}Input the tag:`
           },
           {
             name: 'iter',
             type: 'list',
             when: () => needIteration,
             choices: [ iterDict.automatic, iterDict.manual, iterDict.ignore ],
-            message: `${logo()}Select the way of iteration (选择迭代方式):`
+            message: `${logo()}Select the iteration method:`
           },
           {
             name: 'version_semantic',
@@ -266,7 +264,7 @@ export default async function (
               ));
               return [ ...Object.keys(autoIterDict) ];
             },
-            message: `${logo()}Select the version (选择版本):`
+            message: `${logo()}Select the version:`
           },
           {
             name: 'version_manual',
@@ -280,7 +278,7 @@ export default async function (
               }
               return true;
             },
-            message: `${logo()}Input the version (输入版本号):`
+            message: `${logo()}Input the version:`
           },
           {
             name: 'changeVersion',
@@ -351,7 +349,6 @@ export default async function (
     // auto build
     if (autoBuild && !autoRelease) {
       logEmph(italic('Start building the project automatically'));
-      logEmph(italic('开始自动构建项目'));
       try {
         await buildCommands(
           config,
@@ -362,26 +359,26 @@ export default async function (
           true
         );
       } catch (err) {
-        handleReleaseErr('Auto building the project failed(自动构建项目失败)!')();
+        handleReleaseErr('Auto building the project failed!')();
       }
     }
 
-    logTime('RELEASE(发布)');
-    logInfo('Starting release process(开始发布)!');
+    logTime('RELEASE');
+    logInfo('Starting release process!');
     if (!autoBuild && verify && test) {
-      await exec(['npm test'], () => logSuc('Unit Test!'), handleReleaseErr('Unit tests did not pass(单元测试失败)'));
+      await exec(['npm test'], () => logSuc('Unit Test!'), handleReleaseErr('Unit tests did not pass.'));
     }
 
     if (!autoBuild && verify && eslint) {
-      await exec(['npm run lint:es'], () => logSuc('Eslint!'), handleReleaseErr(`ESLint did not pass(eslint校验失败) \n try to exec(尝试执行): ${underline('npm run lint:es_fix')}`));
+      await exec(['npm run lint:es'], () => logSuc('Eslint!'), handleReleaseErr(`ESLint did not pass.\nTry: ${underline('npm run lint:es_fix')}`));
     }
 
     if (!autoBuild && verify && prettier) {
-      await exec(['npm run lint:prettier'], () => logSuc('Prettier!'), handleReleaseErr(`Prettier did not pass(prettier校验失败) \n try to exec(尝试执行): ${underline('npm run lint:prettier_fix')}`));
+      await exec(['npm run lint:prettier'], () => logSuc('Prettier!'), handleReleaseErr(`Prettier did not pass.\nTry: ${underline('npm run lint:prettier_fix')}`));
     }
 
     if (!autoBuild && verify && stylelint) {
-      await exec(['npm run lint:style'], () => logSuc('Stylelint!'), handleReleaseErr(`Stylelint did not pass(stylelint校验失败) \n try to exec(尝试执行): ${underline('npm run lint:style_fix')}`));
+      await exec(['npm run lint:style'], () => logSuc('Stylelint!'), handleReleaseErr(`Stylelint did not pass.\nTry: ${underline('npm run lint:style_fix')}`));
     }
 
     const versionShellSuffix = ignore
@@ -397,9 +394,8 @@ export default async function (
         // re-require to get correct version
         pkj = getPkjData(pkjPath);
         logEmph(`The current version is ${pkj.version}`);
-        logEmph(`当前版本号为 ${pkj.version}`);
       },
-      handleReleaseErr('The version iteration failed(版本迭代失败)!')
+      handleReleaseErr('The version iteration failed!')
     );
 
     // handle release plugins
@@ -442,9 +438,9 @@ export default async function (
       let canPush = true;
       let remote = gitUrl === gitOmniUrl ? 'omni' : 'origin';
       if (gitUrl !== gitOriginUrl && gitUrl !== gitOmniUrl) {
-        !gitOmniUrl && logInfo(`Adding remote omni ${git}(新增远程地址omni ${git})`);
+        !gitOmniUrl && logInfo(`Adding remote omni ${git}`);
         const execArr = ['git remote remove omni', `git remote add omni ${git}`];
-        !gitOmniUrl && execArr.shift(); // remote没有omni，移除remove操作
+        !gitOmniUrl && execArr.shift(); // No omni remote yet; skip remove.
 
         await exec(
           execArr,
@@ -454,7 +450,6 @@ export default async function (
           },
           () => {
             logWarn('setting git remote failed');
-            logWarn('git remote 设置失败');
             canPush = false;
           }
         );
@@ -476,9 +471,8 @@ export default async function (
         ],
         () => {
           logSuc('Pushing to git-repo successfully!');
-          logSuc('git仓库推送成功！');
         },
-        handleReleaseErr('Pushing to git-repo failed(git仓库推送失败)!')
+        handleReleaseErr('Pushing to git-repo failed!')
       );
     }
 
@@ -518,12 +512,11 @@ export default async function (
           });
         }
 
-        npm_publish.on('error', handleReleaseErr('The npm-package publish failed(npm包发布失败)!'));
+        npm_publish.on('error', handleReleaseErr('The npm-package publish failed!'));
 
         npm_publish.on('close', code => {
           if (code === 0) {
             logSuc(`The npm-package publish success with version ${pkj.version}@${tag}!`);
-            logSuc(`npm包发布成功, 版本号为 ${pkj.version}@${tag}！`);
             resolve(null);
           } else {
             reject();
@@ -532,11 +525,11 @@ export default async function (
       });
     }
 
-    logTime('RELEASE(发布)', true);
+    logTime('RELEASE', true);
     const shouldExit = !autoRelease;
     handleReleaseSuc()(shouldExit);
   } catch (err) {
     logErr(err as string);
-    handleReleaseErr('👆 Oops! The release process encountered an error(糟糕！发布过程发生了一点意外)')();
+    handleReleaseErr('👆 Oops! The release process encountered an error.')();
   }
 }

@@ -51,7 +51,6 @@ function splitPassThroughArgs (argv: string[]) {
   function checkConfig () {
     if (!config) {
       logWarn(`Please initialize project first or checking the "${configFilePath}" configuration file`);
-      logWarn(`请先初始化项目或检查 "${configFilePath}" 配置文件是否存在问题`);
       process.exit(0);
     }
   }
@@ -61,10 +60,8 @@ function splitPassThroughArgs (argv: string[]) {
       process.chdir(workPath);
       const cwd = process.cwd();
       logInfo(`The work path change to "${cwd}"`);
-      logInfo(`工作路径变更为 "${cwd}"`);
     } catch (err) {
       logWarn(`Please check that "${workPath}" exists`);
-      logWarn(`工作路径变更失败，请检查 "${workPath}" 是否存在`);
       process.exit(0);
     }
   }

@@ -5,7 +5,7 @@ import { signal } from '../../utils';
 import type { OmniConfig } from '../../index.d';
 
 function handleException (msg?: string) {
-  logWarn(msg || 'Oops! Some unknown errors have occurred(发生了一些未知错误)!');
+  logWarn(msg || 'Oops! Some unknown errors have occurred!');
   process.exit(0);
 }
 
@@ -22,7 +22,7 @@ export default async function (config: OmniConfig | null, options: {
   }
 
   if (!config || JSON.stringify(config) === '{}') {
-    handleException('Please initialize project first(请先初始化项目)!');
+    handleException('Please initialize project first!');
   }
 
   const p = options.port;
@@ -30,7 +30,7 @@ export default async function (config: OmniConfig | null, options: {
   const { type, dev, server } = config!;
 
   if (!dev || JSON.stringify(dev) === '{}') {
-    handleException('The dev field is missing in config file(配置文件 dev 字段缺失)!');
+    handleException('The dev field is missing in the config file!');
   }
 
   const { serverType: server_type, ...serverOptions } = server || {};
@@ -50,7 +50,7 @@ export default async function (config: OmniConfig | null, options: {
 
   const EWServerList = [ 'spa-react', 'spa-react-pc', 'spa-vue' ];
   if (~EWServerList.indexOf(type) && !webpack) {
-    handleException(`The ${type}-app missing the dev-server webpack-config(${type}应用 缺少开发服务webpack配置文件)!`); 
+    handleException(`The ${type}-app is missing the dev-server webpack config!`);
   }
 
   const _port = !isNaN(+p!)

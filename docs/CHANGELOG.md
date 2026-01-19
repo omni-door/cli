@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 # v3
 ## v3.2.x
+### v3.2.1
+1. 「chore」remove Chinese comments and logs
+
 ### v3.2.0
 1. 「feat」`omni dev/start/build` support pass-through args via `--`
 

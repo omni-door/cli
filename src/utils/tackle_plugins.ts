@@ -7,7 +7,7 @@ export function getHandlers<T extends PLUGIN_STAGE> (plugins: OmniPlugin<T>[], s
   const handlers: { [pluginName: string]: PluginHandler<T> } = {};
   for (let i = 0; i < plugins.length; i++) {
     const plugin = plugins[i];
-    plugin.stage === stage && (handlers[plugin.name] = handlerFactory<T>(plugin.handler, `The "${plugin.name}" execution failed; will skip the remaining operations(插件 "${plugin.name}" 执行发生错误，将跳过继续执行剩余操作)`));
+    plugin.stage === stage && (handlers[plugin.name] = handlerFactory<T>(plugin.handler, `The "${plugin.name}" execution failed; will skip the remaining operations.`));
   }
 
   return handlers;
@@ -18,7 +18,7 @@ export const handlerFactory: HandlerFactory = (handler, errMsg) => (config, opti
     return Promise.resolve(handler(config, options));
   } catch (err) {
     logWarn(err as any);
-    logWarn(errMsg || 'The plugin execution failed; will skip the remaining operations(插件执行发生错误，将跳过继续执行剩余操作)');
+    logWarn(errMsg || 'The plugin execution failed; will skip the remaining operations.');
   }
   return Promise.resolve({});
 };
