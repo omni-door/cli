@@ -116,8 +116,8 @@ describe('initial preset test', function () {
     expect(cli_entire_react.stylelint).to.be.true;
   });
 
-  it('cli_entire_react checking', function () {
-    expect(cli_entire_react).to.be.an('object');
+  it('cli_pc_react checking', function () {
+    expect(cli_pc_react).to.be.an('object');
 
     expect(cli_pc_react.build).to.be.a('string');
     expect(cli_pc_react.build).to.be.equal('webpack');
