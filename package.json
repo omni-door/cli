@@ -8,7 +8,7 @@
   "main": "lib/commands/commands.js",
   "typings": "lib/commands/commands.d.ts",
   "scripts": {
-    "test": "nyc mocha --opts mocha.opts",
+    "test": "nyc mocha",
     "lint": "eslint src/ --ext .ts --ext .tsx",
     "lint:fix": "eslint src/ --ext .ts --ext .tsx --fix",
     "build": "npm run build:rm && npm run build:tsc && npm run build:copy",
