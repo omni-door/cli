@@ -424,10 +424,10 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@omni-door/utils@~1.4.0":
-  version "1.4.0"
-  resolved "https://registry.npmjs.org/@omni-door/utils/-/utils-1.4.0.tgz#92032af1aecc76950326aa60942e82df2ff0a126"
-  integrity sha512-zWuylySzvuEs2m1Yfg/x6qQo5RwNVtvfzNL45riDuPR32QRIXPaJM1OT977s47yYtk+gCvxkA4jWV0ihd4Woyg==
+"@omni-door/utils@~1.4.1":
+  version "1.4.1"
+  resolved "https://registry.npmjs.org/@omni-door/utils/-/utils-1.4.1.tgz#0a42a8e74ea2f0587d3fda8fcb54b6e484fd97d7"
+  integrity sha512-cPPfKKw77CaefmJlCR1zxljPKy9n63epCaWs+YG4tm+cADbZUa3dcZNmZ4Uetnvl+udI9oi8wVgDV3iVjphbFA==
   dependencies:
     "@types/signale" "1.4.0"
     chalk "3.0.0"

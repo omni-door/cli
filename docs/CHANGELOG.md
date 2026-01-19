@@ -3,6 +3,9 @@
 English | [简体中文](./CHANGELOG.zh-CN.md)
 # v3
 ## v3.2.x
+### v3.2.2
+1. 「chore」upgrade @omni-door/utils
+
 ### v3.2.1
 1. 「chore」remove Chinese comments and logs
 
