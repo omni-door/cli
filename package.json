@@ -25,7 +25,22 @@
   },
   "keywords": [
     "omni",
-    "omni-door"
+    "omni-door",
+    "cli",
+    "scaffold",
+    "boilerplate",
+    "generator",
+    "react",
+    "vue",
+    "spa",
+    "ssr",
+    "component-library",
+    "toolkit",
+    "frontend",
+    "typescript",
+    "webpack",
+    "rollup",
+    "project-template"
   ],
   "author": "bobby.li",
   "license": "MIT",
