@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://github.com/omni-door/cli/blob/master/docs/OMNI.md
+    about: Check the documentation for configuration options
+  - name: Questions & Discussions
+    url: https://github.com/omni-door/cli/issues
+    about: Ask questions and discuss with the community
